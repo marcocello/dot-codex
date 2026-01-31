@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage:
+  committer -m "message" <path> [<path> ...]
+  committer -t <type> -m "message" <path> [<path> ...]
+
+Notes:
+- Stages ONLY the listed paths.
+- Refuses '.' to prevent accidental repo-wide commits.
+- Does NOT push.
+Types (optional): feat|fix|refactor|build|ci|chore|docs|style|perf|test
+EOF
+}
+
+TYPE=""
+MSG=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help) usage; exit 0 ;;
+    -t|--type) TYPE="${2:-}"; shift 2 ;;
+    -m|--message) MSG="${2:-}"; shift 2 ;;
+    --) shift; break ;;
+    -*) echo "Unknown flag: $1" >&2; usage; exit 2 ;;
+    *) break ;;
+  esac
+done
+
+if [[ -z "${MSG}" ]]; then
+  echo "Error: commit message required (-m)." >&2
+  usage
+  exit 2
+fi
+
+if [[ $# -lt 1 ]]; then
+  echo "Error: at least one path required." >&2
+  usage
+  exit 2
+fi
+
+# Prevent accidental repo-wide staging
+for p in "$@"; do
+  if [[ "$p" == "." || "$p" == "./" ]]; then
+    echo "Error: refusing to commit '.' (repo-wide)." >&2
+    exit 2
+  fi
+done
+
+# Ensure we're in a git repo
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "Error: not in a git repo." >&2; exit 2; }
+
+# Compose message
+if [[ -n "${TYPE}" ]]; then
+  case "${TYPE}" in
+    feat|fix|refactor|build|ci|chore|docs|style|perf|test) ;;
+    *) echo "Error: invalid type '${TYPE}'." >&2; usage; exit 2 ;;
+  esac
+  FINAL_MSG="${TYPE}: ${MSG}"
+else
+  FINAL_MSG="${MSG}"
+fi
+
+echo "Staging paths:"
+printf '  - %s\n' "$@"
+
+# Stage only provided paths
+git add -- "$@"
+
+echo
+echo "Staged diff:"
+git --no-pager diff --cached
+
+echo
+read -r -p "Commit with message: '${FINAL_MSG}' ? [y/N] " yn
+case "$yn" in
+  [yY]|[yY][eE][sS]) ;;
+  *) echo "Aborted."; exit 1 ;;
+esac
+
+git commit -m "${FINAL_MSG}"
+
+echo
+echo "Committed locally. No push performed."

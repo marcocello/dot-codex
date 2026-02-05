@@ -4,6 +4,7 @@ Personal Codex CLI home directory. This repo stores the configuration, prompts, 
 
 ## Contents
 - `config.toml`: model and project trust configuration.
+- `DOCS_INDEX.md`: cross-repo docs index for reference material.
 - `prompts/`: reusable prompt definitions.
 - `skills/`: skill definitions (each skill has a `SKILL.md`).
 - `scripts/`: local helper scripts for Codex workflows.

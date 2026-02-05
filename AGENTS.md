@@ -42,6 +42,22 @@ Rules:
 
 ---
 
+## Docs-first (required)
+
+- If the repo root contains `docs/`, read `docs/INDEX.md` or `docs/README.md` first.
+- If neither exists, scan `docs/` for the most relevant files before coding.
+- Also consult `/Users/marcocello/.codex/DOCS_INDEX.md` when present for cross-repo docs and references.
+
+---
+
+## Reference repos (reuse across projects)
+
+If a task resembles something solved before, consult ~/.codex/REFERENCE_REPOS.md
+and inspect the closest matching repo for patterns/tests before inventing a new approach.
+Do not copy blindly; adapt to the current repo’s conventions.
+
+---
+
 ## Non-negotiables
 
 - **Reuse first**  
@@ -67,17 +83,34 @@ Priority order:
 
 ---
 
-## Verification (required before claiming success)
+## Verification gate (required before claiming success)
 
-Use whatever exists in the repo.
+A change is not “done” unless the repo’s verification gate passes.
 
-Typical examples:
-- Backend: `pytest`, `ruff check .`, `mypy`
-- Frontend: `pnpm test`, `pnpm lint`, `pnpm build`
+Gate includes whatever exists in the repo:
+- tests
+- lint
+- typecheck
+- docs checks (if any)
+
+Discover the gate by checking for:
+- `Makefile` or `justfile`
+- `package.json` scripts
+- `pyproject.toml`, `tox.ini`, `noxfile.py`
+- `.github/workflows/` or `scripts/`
 
 Rules:
-- Never claim a change works unless it’s verified.
-- If commands cannot be run here, say so explicitly and list the **exact commands** to run locally or in CI.
+- For bug fixes: add/update a regression test unless impossible.
+- For new behavior: add the smallest test that verifies acceptance criteria.
+- Run the full gate after code changes.
+
+If the gate cannot be run here:
+- say so explicitly
+- list the exact commands required
+
+Typical examples:
+- Backend: `pytest`, `ruff check .`, `mypy` run in the repo virtualenv `.venv`.
+- Frontend: `pnpm test`, `pnpm lint`, `pnpm build`
 
 ---
 

@@ -8,6 +8,11 @@ metadata:
 You are implementing backend changes in a Python codebase (often FastAPI).
 Default posture: reuse-first, surgical edits, service-layer ownership, tests before claims.
 
+## Docs-first (always)
+- If the repo root contains `docs/`, read `docs/INDEX.md` or `docs/README.md` first.
+- If neither exists, scan `docs/` for the most relevant files before coding.
+- Also consult `/Users/marcocello/.codex/DOCS_INDEX.md` when present for cross-repo docs and references.
+
 ## First move (always)
 1) Locate the real owner of the behavior:
    - route/controller, service/use-case, domain logic, data/infra.
@@ -58,7 +63,7 @@ Pick what exists in repo; minimal but real:
 If you cannot execute tests here:
 - state that explicitly
 - provide exact commands:
-  - pytest (and any markers)
+  - pytest (and any markers) run in the repo virtualenv `.venv`.
   - lint/typecheck commands used by the repo
 
 ## Common pitfalls to avoid

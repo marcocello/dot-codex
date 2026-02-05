@@ -1,5 +1,24 @@
 model = "gpt-5.2-codex"
 model_reasoning_effort = "high"
 
+# Autonomy: stop pausing for approvals before running commands
+approval_policy = "never"   # options: untrusted | on-failure | on-request | never  [oai_citation:1‡OpenAI Developers](https://developers.openai.com/codex/config-reference)
+
+# Autonomy: allow full filesystem + network access
+sandbox_mode = "danger-full-access"  # read-only | workspace-write | danger-full-access  [oai_citation:2‡OpenAI Developers](https://developers.openai.com/codex/config-reference)
+personality = "pragmatic"
+
 [projects."/Users/marcocello"]
 trust_level = "untrusted"
+
+# ✅ Trust only the repos you want Codex to fully use (.codex layers)
+[projects."/Users/marcocello/software/amplifyhumans/amplifyhumans"]
+trust_level = "trusted"
+
+# ✅ Reference repos (local)
+[projects."/Users/marcocello/software/marcocello/meshify-backend"]
+trust_level = "trusted"
+
+# (add more repos as needed)
+# [projects."/Users/marcocello/path/to/another-repo"]
+# trust_level = "trusted"

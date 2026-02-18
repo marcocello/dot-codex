@@ -18,11 +18,6 @@ This repo uses shared Codex configuration in `.codex/` (prompts, scripts, skills
   - propose sensible defaults for anything unspecified
   - **do not write code** until blockers are resolved
 
-- When the task is clear:
-  - output **final code only**
-  - no diffs, no planning text
-  - explain only if explicitly asked
-
 ---
 
 ## Source of truth (important)
@@ -131,8 +126,7 @@ Default posture: **safe, local, minimal**.
 
 ## Output rules (strict)
 
-- Output final code only (unless an explanation is requested).
-- Keep comments minimal; explain **why**, not **what**.
+- Keep comments minimal; explain **why** and **what**.
 - Don’t invent new modules/helpers unless required for correctness or reuse.
 - Any new addition must be minimal and clearly justified.
 

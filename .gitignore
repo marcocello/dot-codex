@@ -17,3 +17,8 @@
 # 4. Block some directories and files
 *.git
 skills/.system/
+sessions/
+shell_snapshots/
+sqlite/
+tmp/
+vendor_imports/

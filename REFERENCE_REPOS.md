@@ -10,6 +10,11 @@ Use these as pattern references when implementing similar features/bugs.
 - Key path: app/db/
 - Key path: docs/ARCHITECTURE_OVERVIEW.md
 
+## Infrastructure, IaC, Azure — /Users/marcocello/software/terraform-azure-template/
+- all files in the repo are relevant for patterns around Terraform, Azure, and IaC best practices
+
+
+
 ## Notes
 - Prefer copying patterns/approaches, not whole files.
 - Always adapt to the current repo’s conventions.

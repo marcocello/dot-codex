@@ -78,34 +78,53 @@ Priority order:
 
 ---
 
-## Verification gate (required before claiming success)
+# Verification gates (HARD RULES)
 
-A change is not “done” unless the repo’s verification gate passes.
+A change is not “done” unless BOTH of these pass:
 
-Gate includes whatever exists in the repo:
-- tests
-- lint
-- typecheck
-- docs checks (if any)
+1) **Engineering Gate** (repo-wide): `$HOME/.codex/scripts/gate`
+2) **Acceptance Gate** (feature-scoped): `$HOME/.codex/scripts/acceptance --feature <feature_dir>`
 
-Discover the gate by checking for:
-- `Makefile` or `justfile`
-- `package.json` scripts
-- `pyproject.toml`, `tox.ini`, `noxfile.py`
-- `.github/workflows/` or `scripts/`
+### Canonical commands (mandatory)
+- Gate command is **always** `$HOME/.codex/scripts/gate`.
+- Acceptance command is **always** `$HOME/.codex/scripts/acceptance --feature <dir>`.
 
-Rules:
+If either script does not exist:
+- create it immediately as part of repo bootstrapping
+- keep it deterministic (exit code 0/1, no prompts, no interactivity)
+
+### What you must do on every change
 - For bug fixes: add/update a regression test unless impossible.
 - For new behavior: add the smallest test that verifies acceptance criteria.
-- Run the full gate after code changes.
+- Run `$HOME/.codex/scripts/gate` and `$HOME/.codex/scripts/acceptance --feature <dir>` before claiming readiness.
 
-If the gate cannot be run here:
+### Acceptance criteria compilation (backpressure-friendly)
+If acceptance criteria are only in natural language (e.g. in `features/<id>/feature.yaml`):
+- you must translate them into executable checks (tests/scripts)
+- wire those checks into `$HOME/.codex/scripts/acceptance --feature <dir>`
+- do not stop until acceptance passes
+
+### If a gate cannot be run here
 - say so explicitly
-- list the exact commands required
+- list exact commands required and why they cannot run in this environment
 
-Typical examples:
-- Backend: `pytest`, `ruff check .`, `mypy` run in the repo virtualenv `.venv`.
-- Frontend: `pnpm test`, `pnpm lint`, `pnpm build`
+---
+
+## Press protocol & status artifact (required)
+
+This repo may be driven by an orchestrator (“Press”). Follow this protocol:
+
+- At the end of each run, write `.press/status.json` (create folder if missing).
+- End your final output with exactly ONE token:
+
+  - `READY_FOR_PRESS`
+  - `DONE`
+  - `BLOCKED: <reason>`
+  - `NEED_INPUT: <question>`
+
+Rules:
+- Do not claim success without both gates passing.
+- Press is authoritative: it will re-run the gates and treat its results as truth.
 
 ---
 

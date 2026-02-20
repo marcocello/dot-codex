@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# scripts/write-status --feature features/001-foo --phase IMPLEMENT --gate-passed true --acceptance-passed false --summary "..."
+FEATURE_DIR=""
+PHASE=""
+GATE_PASSED=""
+AC_PASSED=""
+SUMMARY=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --feature) FEATURE_DIR="$2"; shift 2 ;;
+    --phase) PHASE="$2"; shift 2 ;;
+    --gate-passed) GATE_PASSED="$2"; shift 2 ;;
+    --acceptance-passed) AC_PASSED="$2"; shift 2 ;;
+    --summary) SUMMARY="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1" >&2; exit 2 ;;
+  esac
+done
+
+mkdir -p .press
+HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
+
+python3 - <<PY
+import json, os
+p = {
+  "feature_dir": "${FEATURE_DIR}",
+  "phase": "${PHASE}",
+  "head_sha": "${HEAD_SHA}",
+  "gate": { "cmd": "./scripts/gate", "passed": ${str(GATE_PASSED).lower() == "true"} },
+  "acceptance": { "cmd": "./scripts/acceptance --feature ${FEATURE_DIR}", "passed": ${str(AC_PASSED).lower() == "true"} },
+  "summary": ["${SUMMARY}"] if "${SUMMARY}" else []
+}
+os.makedirs(".press", exist_ok=True)
+with open(".press/status.json", "w", encoding="utf-8") as f:
+  json.dump(p, f, indent=2)
+PY

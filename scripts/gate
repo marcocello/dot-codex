@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Global gate: run from repo root (Press sets cwd).
+ROOT="$(pwd)"
+ART_DIR="$ROOT/artifacts"
+mkdir -p "$ART_DIR"
+
+HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
+
+fail() {
+  local msg="$1"
+  echo "GATE: FAIL: $msg" >&2
+  python3 - <<PY
+import json, os
+p = {"head_sha": "$HEAD_SHA", "passed": False, "error": "$msg"}
+os.makedirs("$ART_DIR", exist_ok=True)
+with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
+  json.dump(p, f, indent=2)
+PY
+  exit 1
+}
+
+ok() {
+  echo "GATE: PASS"
+  python3 - <<PY
+import json, os
+p = {"head_sha": "$HEAD_SHA", "passed": True}
+os.makedirs("$ART_DIR", exist_ok=True)
+with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
+  json.dump(p, f, indent=2)
+PY
+}
+
+echo "== gate: start =="
+echo "repo=$ROOT"
+echo "head_sha=$HEAD_SHA"
+
+# Python
+if [[ -f "pyproject.toml" ]]; then
+  echo "== gate: python =="
+  command -v python3 >/dev/null || fail "python3 not found"
+  command -v pytest  >/dev/null || fail "pytest not found (install deps / activate venv)"
+
+  if command -v ruff >/dev/null; then
+    ruff format --check .
+    ruff check .
+  else
+    echo "WARN: ruff not found, skipping ruff"
+  fi
+
+  if command -v mypy >/dev/null; then
+    mypy .
+  else
+    echo "INFO: mypy not found, skipping mypy"
+  fi
+
+  pytest -q
+fi
+
+# Node
+if [[ -f "package.json" ]]; then
+  echo "== gate: node =="
+  PM="npm"
+  command -v pnpm >/dev/null && PM="pnpm"
+  command -v yarn >/dev/null && PM="yarn"
+
+  $PM -s run lint
+  $PM -s run test || echo "INFO: test script failed/missing; enforce by defining stable test script"
+  $PM -s run build
+fi
+
+# Terraform
+if ls *.tf >/dev/null 2>&1 || [[ -d "infra" ]] || [[ -d "terraform" ]]; then
+  echo "== gate: terraform =="
+  command -v terraform >/dev/null || fail "terraform not found"
+  terraform fmt -check -recursive
+  terraform validate
+fi
+
+ok

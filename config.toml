@@ -1,26 +1,42 @@
 model = "gpt-5.3-codex"
 model_reasoning_effort = "high"
-
-# Autonomy: stop pausing for approvals before running commands
-approval_policy = "never"   # options: untrusted | on-failure | on-request | never  [oai_citation:1‡OpenAI Developers](https://developers.openai.com/codex/config-reference)
-
-# Autonomy: allow full filesystem + network access
-sandbox_mode = "danger-full-access"  # read-only | workspace-write | danger-full-access  [oai_citation:2‡OpenAI Developers](https://developers.openai.com/codex/config-reference)
 personality = "pragmatic"
 
+# Run freely in workspace, but only prompt if something fails
+# (matches Codex "full-auto" pattern)  [oai_citation:6‡npm](https://www.npmjs.com/package/%40openai/codex/v/0.13.0?utm_source=chatgpt.com)
+approval_policy = "on-failure"
+sandbox_mode = "workspace-write"
+
+# Keep web search on if you like. (Just know it can reduce reproducibility.)
 web_search = "live"
 
+# Default: treat broad folders as untrusted
 [projects."/Users/marcocello"]
 trust_level = "untrusted"
 
-# ✅ Trust only the repos you want Codex to fully use (.codex layers)
+# Explicit trusted repos
 [projects."/Users/marcocello/software/amplifyhumans/amplifyhumans"]
 trust_level = "trusted"
 
-# ✅ Reference repos (local)
 [projects."/Users/marcocello/software/marcocello/meshify-backend"]
 trust_level = "trusted"
 
-# (add more repos as needed)
-# [projects."/Users/marcocello/path/to/another-repo"]
-# trust_level = "trusted"
+# ---- Optional: Profiles ----
+[profiles.yolo]
+# Use ONLY in a container / docker sandbox / disposable VM.
+# "YOLO mode" = no approvals + full access  [oai_citation:7‡Docker Documentation](https://docs.docker.com/ai/sandboxes/agents/codex/?utm_source=chatgpt.com)
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+web_search = "live"
+
+[profiles.press]
+# Very deterministic mode for orchestration runs
+approval_policy = "on-failure"
+sandbox_mode = "workspace-write"
+web_search = "live"
+model_reasoning_effort = "high"
+
+[profiles.readonly]
+approval_policy = "never"
+sandbox_mode = "read-only"
+web_search = "live"

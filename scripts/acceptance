@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+FEATURE_DIR=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --feature) FEATURE_DIR="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1" >&2; exit 2 ;;
+  esac
+done
+
+if [[ -z "$FEATURE_DIR" ]]; then
+  echo "Usage: $0 --feature features/<id>" >&2
+  exit 2
+fi
+
+if [[ ! -d "$FEATURE_DIR" ]]; then
+  echo "Feature dir not found: $FEATURE_DIR" >&2
+  exit 2
+fi
+
+ART_DIR="$FEATURE_DIR/artifacts"
+mkdir -p "$ART_DIR"
+
+HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
+
+write_json () {
+  local passed="$1"
+  local msg="$2"
+  python3 - <<PY
+import json, os
+p = {"head_sha": "$HEAD_SHA", "feature_dir": "$FEATURE_DIR", "passed": bool($passed), "message": "$msg"}
+os.makedirs("$ART_DIR", exist_ok=True)
+with open("$ART_DIR/acceptance.json", "w", encoding="utf-8") as f:
+  json.dump(p, f, indent=2)
+PY
+}
+
+echo "== acceptance: feature=$FEATURE_DIR =="
+echo "head_sha=$HEAD_SHA"
+
+# Preferred: feature-local runner
+if [[ -x "$FEATURE_DIR/acceptance/run.sh" ]]; then
+  echo "== acceptance: run.sh =="
+  set +e
+  "$FEATURE_DIR/acceptance/run.sh"
+  code=$?
+  set -e
+  if [[ $code -ne 0 ]]; then
+    write_json 0 "acceptance runner failed"
+    exit $code
+  fi
+  write_json 1 "acceptance runner passed"
+  echo "ACCEPTANCE: PASS"
+  exit 0
+fi
+
+# Fallback: pytest tests under feature folder
+if [[ -d "$FEATURE_DIR/acceptance/tests" ]]; then
+  command -v pytest >/dev/null || { write_json 0 "pytest not found"; exit 1; }
+  echo "== acceptance: pytest =="
+  set +e
+  pytest -q "$FEATURE_DIR/acceptance/tests"
+  code=$?
+  set -e
+  if [[ $code -ne 0 ]]; then
+    write_json 0 "pytest acceptance tests failed"
+    exit $code
+  fi
+  write_json 1 "pytest acceptance tests passed"
+  echo "ACCEPTANCE: PASS"
+  exit 0
+fi
+
+write_json 0 "missing acceptance harness"
+echo "ACCEPTANCE: FAIL - missing acceptance harness." >&2
+echo "Create one of:" >&2
+echo "  - $FEATURE_DIR/acceptance/run.sh (executable)" >&2
+echo "  - $FEATURE_DIR/acceptance/tests/ (pytest tests)" >&2
+exit 1

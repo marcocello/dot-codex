@@ -1,9 +1,90 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ ! -d ".venv" ]]; then
-  echo "Creating .venv"
-  python3 -m venv .venv
+ROOT="${1:-$(pwd)}"
+cd "$ROOT"
+
+VENV=".venv"
+PY="$VENV/bin/python"
+PIP="$VENV/bin/pip"
+
+echo "== ensure_venv =="
+echo "repo=$(pwd)"
+
+# Create venv if missing
+if [[ ! -x "$PY" ]]; then
+  echo "Creating .venv..."
+  python3 -m venv "$VENV"
 fi
 
-.venv/bin/python -m pip install -U pip setuptools wheel
+# Upgrade packaging basics
+"$PIP" install -U pip setuptools wheel >/dev/null
+
+# Helper: find first existing file among candidates
+first_existing() {
+  for p in "$@"; do
+    if [[ -f "$p" ]]; then
+      echo "$p"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Candidate manifest locations (root + common subfolders)
+REQ_DEV_CANDIDATES=(
+  "requirements-dev.txt"
+  "requirements/dev.txt"
+  "requirements/dev-requirements.txt"
+  "app/requirements-dev.txt"
+  "backend/requirements-dev.txt"
+  "server/requirements-dev.txt"
+)
+
+REQ_CANDIDATES=(
+  "requirements.txt"
+  "requirements/base.txt"
+  "requirements/prod.txt"
+  "app/requirements.txt"
+  "backend/requirements.txt"
+  "server/requirements.txt"
+)
+
+echo "Detecting dependency source..."
+
+if [[ -f "pyproject.toml" ]]; then
+  echo "Found pyproject.toml (root). Installing editable package..."
+  # Try dev extras if present (best effort)
+  if "$PY" - <<'PY' >/dev/null 2>&1
+import tomllib, pathlib
+t = tomllib.loads(pathlib.Path("pyproject.toml").read_text("utf-8"))
+proj = t.get("project", {})
+opt = proj.get("optional-dependencies", {}) or {}
+print("dev" in opt)
+PY
+  then
+    "$PIP" install -e ".[dev]"
+    echo "Installed: -e .[dev]"
+  else
+    "$PIP" install -e .
+    echo "Installed: -e ."
+  fi
+else
+  if REQ_DEV="$(first_existing "${REQ_DEV_CANDIDATES[@]}" || true)"; [[ -n "${REQ_DEV:-}" ]]; then
+    echo "Found $REQ_DEV. Installing..."
+    "$PIP" install -r "$REQ_DEV"
+  elif REQ="$(first_existing "${REQ_CANDIDATES[@]}" || true)"; [[ -n "${REQ:-}" ]]; then
+    echo "Found $REQ. Installing..."
+    "$PIP" install -r "$REQ"
+  else
+    echo "No requirements/pyproject found. Installing minimal tooling only."
+  fi
+fi
+
+# Ensure baseline tools for gates (idempotent)
+echo "Ensuring baseline tooling (pytest, ruff)..."
+"$PIP" install -U pytest ruff >/dev/null
+
+echo "== ensure_venv: done =="
+"$PY" -c "import sys; print('python', sys.version.split()[0])"
+"$PY" -c "import pytest, ruff; print('pytest', pytest.__version__); print('ruff', ruff.__version__)"

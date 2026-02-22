@@ -47,12 +47,11 @@ metadata:
 ## Reference repos (Python backend)
 Use only if current repo lacks a needed pattern.
 
-- ~/software/marcocello/meshify-backend
-  - FastAPI service structure
-  - pytest setup
-  - ruff configuration
-  - service-layer conventions
+- `$HOME/software/marcocello/meshify-backend`
+  - FastAPI service layout
+  - pytest fixtures style
+  - ruff config conventions
 
 When using a reference repo:
-- Borrow patterns, not whole implementations
-- Mention which repo and what pattern was reused (1 line)
+- Borrow patterns, not whole implementations.
+- Mention repo + pattern reused (1 line).

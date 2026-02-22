@@ -1,96 +1,58 @@
 ---
-name: Python-Backend
-description: Use when implementing backend changes in a Python codebase (often FastAPI).
+name: python-backend
+description: Use when implementing backend implementations and changes in a Python codebase (often FastAPI).
 metadata:
   short-description: Optional user-facing description
 ---
 
-You are implementing backend changes in a Python codebase (often FastAPI).
-Default posture: reuse-first, surgical edits, service-layer ownership, tests before claims.
+## Scope
+- Applies when:
+  - The feature affects backend logic
+  - Python project detected (pyproject.toml / requirements.txt)
+  - FastAPI / service-layer architecture is in use
 
-## Docs-first (always)
-- If the repo root contains `docs/`, read `docs/INDEX.md` or `docs/README.md` first.
-- If neither exists, scan `docs/` for the most relevant files before coding.
-- Also consult `/Users/marcocello/.codex/DOCS_INDEX.md` when present for cross-repo docs and references.
+## Architecture expectations
+- routes → services/use-cases → domain → infra/data
+- No cyclic imports
+- No “god” services
+- Keep business logic out of routes
 
-## First move (always)
-1) Locate the real owner of the behavior:
-   - route/controller, service/use-case, domain logic, data/infra.
-2) Search for existing functions/services that already do 60–90% of the job.
-3) Identify the smallest change that satisfies the request without refactoring the world.
+## Implementation rules
+- Reuse existing patterns before creating new modules
+- Follow existing naming and folder structure exactly
+- Smallest change that satisfies the feature
 
-## Architecture assumptions (unless repo says otherwise)
-- routes/controllers: orchestration only (request parsing, auth, call service, return response).
-- services/use-cases: business logic + transactions + orchestration of domain + infra.
-- domain: pure logic (no DB sessions, no network, no framework imports).
-- data/infra: ORM models, repositories/adapters, external clients.
+## Tests (required)
+- Add/extend repo tests (pytest) so that:
+  - New behavior is covered
+  - At least one failing test exists before change and passes after
+- Tests must contain real assertions
+- Do not weaken or delete existing tests
 
-## Service-layer discipline (Marco default)
-- Prefer cohesive service classes/functions that encapsulate both business logic and data access,
-  *unless* the repo clearly uses repositories already.
-- Avoid creating new layers/interfaces “just in case.”
-- If a function is the owner of a rule, everyone calls it—no re-implementations.
+## Acceptance harness
+- If `FEATURE_DIR/acceptance/` is missing:
+  - Create `FEATURE_DIR/acceptance/tests/`
+  - Use FastAPI TestClient
+  - Write black-box tests hitting actual endpoints
+- Translate acceptance criteria in `feature.yaml` into executable checks
 
-## Data & DB changes
-- Prefer small, explicit queries over clever abstractions.
-- Keep transaction boundaries clear (one request → one unit of work, unless async/job).
-- When changing schema/contracts:
-  - update model/schema
-  - update validators/serializers
-  - update tests
-  - update any downstream call sites
+## Virtualenv policy
+- If Python is detected:
+  - `.venv/` at repo root is required
+  - Never delete `.venv`
+  - Prefer incremental repair
+  - If available, use `$HOME/.codex/scripts/ensure_venv`
+- All Python tools must be run via `.venv/bin/python -m <tool>`
 
-## API behavior
-- Be explicit about:
-  - status codes
-  - error shapes
-  - validation rules
-  - idempotency where relevant
-- Do not silently swallow errors at boundaries (DB, network, parsing).
-- Return stable response schemas; avoid breaking clients.
+## Reference repos (Python backend)
+Use only if current repo lacks a needed pattern.
 
-## Code quality defaults
-- Types: add/adjust typing where it improves correctness and readability.
-- Logging: only at boundaries and key business events; avoid noisy logs.
-- Comments: rare; explain WHY, not WHAT.
+- ~/software/marcocello/meshify-backend
+  - FastAPI service structure
+  - pytest setup
+  - ruff configuration
+  - service-layer conventions
 
-## Testing & verification (required before claiming success)
-
-This setup uses global gates (run from repo root):
-
-- Engineering gate: `$HOME/.codex/scripts/gate`
-- Acceptance gate: `$HOME/.codex/scripts/acceptance --feature features/<id>`
-
-### Python virtualenv rule
-If Python is detected in the repo, the canonical environment is a repo-local venv at:
-
-- `.venv/` (repo root)
-
-Do not rely on activating the venv in a shell. Prefer deterministic invocation:
-
-- `.venv/bin/python -m pytest ...`
-- `.venv/bin/python -m ruff ...`
-- `.venv/bin/python -m mypy ...`
-
-### Acceptance harness (feature-scoped)
-When implementing a feature from `features/<id>/feature.yaml`, you must compile acceptance criteria into executable checks under:
-
-- `features/<id>/acceptance/`
-
-Preferred forms:
-- `features/<id>/acceptance/tests/` (pytest)
-- `features/<id>/acceptance/run.sh` (executable script)
-
-The acceptance gate will run one of those.
-
-### Definition of done (Python backend)
-- Feature behavior matches acceptance criteria.
-- `$HOME/.codex/scripts/gate` passes.
-- `$HOME/.codex/scripts/acceptance --feature features/<id>` passes.
-- Tests cover new behavior or regressions (smallest effective tests).
-
-## Common pitfalls to avoid
-- Duplicating logic across routes/services.
-- Adding new “manager” / “helper” modules for one-off needs.
-- Over-validating (double validation in route + service) unless required.
-- Refactoring unrelated code while implementing a small feature.
+When using a reference repo:
+- Borrow patterns, not whole implementations
+- Mention which repo and what pattern was reused (1 line)

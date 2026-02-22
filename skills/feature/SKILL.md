@@ -1,53 +1,86 @@
 ---
 name: feature
-description: "Create or update FEATURE.md from a rough idea (user story + acceptance criteria). Read_when You want to define feature scope and user stories for this repo."
+description: "Create or update features/<id>/feature.yaml from a rough idea (user story + constraints)."
 metadata:
-  short-description: Optional user-facing description
+  short-description: Define a feature spec compatible with Press + gate workflow
 ---
 
-Purpose: produce a high-quality FEATURE.md for this repo.
+Purpose: produce a high-quality `feature.yaml` inside `features/<id>/`.
+
+This file is the source of truth for implementation and acceptance harness generation.
+
+---
 
 ## Inputs
-If the user did not provide them, ask only the minimum questions needed:
-- target user/persona
+
+If missing, ask only the minimum necessary:
+
+- feature id (e.g., FEAT-001)
+- short title
+- user persona
 - core workflow (happy path)
 - key constraints (must/avoid)
-- what “done” means
+- definition of done (observable behavior)
+
+Do NOT ask architecture questions unless strictly required.
+
+---
 
 ## Behavior
-1) If FEATURE.md exists, update it (preserve useful sections; replace scope/stories as needed).
-2) If ARCHITECTURE.md exists, skim it for constraints that affect the feature (do not quote it; just apply).
-3) Write FEATURE.md using the template below.
-4) Keep it specific, testable, and minimal. Avoid speculation.
+
+1) Determine feature directory:
+   - `features/<id>/`
+   - If it exists → update `feature.yaml`
+   - If not → create directory and file
+
+2) Convert rough idea into:
+   - Clear description
+   - Explicit, testable acceptance criteria
+   - Minimal constraints
+
+3) Keep acceptance criteria:
+   - Observable
+   - Black-box
+   - Deterministic
+   - Suitable for automated testing
+
+4) Avoid:
+   - Internal implementation details
+   - Speculation
+   - Over-engineering
+   - Architecture decisions unless explicitly provided
+
+---
 
 ## Output rules
-- Output ONLY the contents of FEATURE.md (no commentary, no diffs).
-- Use clear user stories and acceptance criteria that can be turned into tests.
 
-## FEATURE.md template
-# FEATURE.md
+- Output ONLY valid YAML for `feature.yaml`
+- No commentary
+- No Markdown
+- No diffs
+- Must be machine-parseable
 
-## Context
-- Problem:
-- Users:
-- Why now:
+---
 
-## Scope
-### In scope
-- ...
+## feature.yaml Template
 
-### Out of scope
-- ...
+id: <FEAT-ID>
+title: <Short title>
+description: |
+  <Clear problem statement in user-story form>
 
-## User stories
-### US-1: <title>
-- As a <user>, I want <capability>, so that <benefit>.
-- Acceptance criteria:
-  - [ ] ...
-  - [ ] ...
+acceptance:
+  - id: AC-1
+    text: "<Observable behavior>"
+  - id: AC-2
+    text: "<Observable behavior>"
 
-## Success criteria
-- ...
+constraints:
+  backend: "<if relevant>"
+  frontend: "<if relevant>"
+  storage: "<if relevant>"
+  testing: "<if relevant>"
+  avoid: "<optional>"
 
-## Open questions
-- ...
+notes:
+  - "<Optional clarifications>"

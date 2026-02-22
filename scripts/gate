@@ -20,7 +20,7 @@ PY
   exit 1
 }
 
-ok() {
+pass() {
   echo "GATE: PASS"
   python3 - <<PY
 import json, os
@@ -31,28 +31,24 @@ with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
 PY
 }
 
-echo "== gate: start =="
-echo "repo=$ROOT"
-echo "head_sha=$HEAD_SHA"
+echo "== gate: repo=$ROOT sha=$HEAD_SHA =="
 
-# --- Detect Python project anywhere (monorepo-friendly) ---
+# Detect python anywhere (monorepo-ish)
 HAS_PY=0
-if find . -maxdepth 6 -name "pyproject.toml" -o -name "requirements.txt" -o -name "requirements-dev.txt" -o -name "poetry.lock" 2>/dev/null | rg -q .; then
+if find . -maxdepth 6 \
+  \( -name "pyproject.toml" -o -name "requirements.txt" -o -name "requirements-dev.txt" -o -name "poetry.lock" \) \
+  2>/dev/null | head -n 1 | grep -q .; then
   HAS_PY=1
 fi
 
 if [[ "$HAS_PY" -eq 1 ]]; then
-  echo "== gate: python =="
+  echo "== gate: python detected =="
 
-  command -v python3 >/dev/null || fail "python3 not found"
   if [[ ! -x ".venv/bin/python" ]]; then
-    fail "Python detected but .venv/bin/python missing at repo root. Run: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
+    fail "Python detected but .venv/bin/python missing at repo root. Use: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
   fi
 
   PY=".venv/bin/python"
-
-  # Install tooling only if already declared by the repo; do not auto-install here.
-  # Gate must stay deterministic and non-mutating.
 
   if "$PY" -c "import ruff" >/dev/null 2>&1; then
     "$PY" -m ruff format --check .
@@ -67,31 +63,37 @@ if [[ "$HAS_PY" -eq 1 ]]; then
     echo "INFO: mypy not installed in .venv; skipping mypy"
   fi
 
-  if "$PY" -c "import pytest" >/dev/null 2>&1; then
-    "$PY" -m pytest -q
-  else
-    fail "pytest not installed in .venv"
-  fi
+  "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
+  "$PY" -m pytest -q
 fi
 
-# --- Node (repo root package.json only; keep it simple) ---
+# --- Node (repo root package.json only; deterministic) ---
 if [[ -f "package.json" ]]; then
   echo "== gate: node =="
+  command -v node >/dev/null || fail "node not found but package.json exists"
+
   PM="npm"
   command -v pnpm >/dev/null && PM="pnpm"
   command -v yarn >/dev/null && PM="yarn"
 
   $PM -s run lint
-  $PM -s run test || echo "INFO: test script failed/missing; define stable test script to enforce"
+
+  # Only run tests if the script exists; if it exists, failure is a gate failure.
+  if node -e "const p=require('./package.json'); process.exit(p.scripts && p.scripts.test ? 0 : 1)"; then
+    $PM -s run test
+  else
+    echo "INFO: no test script in package.json; skipping node tests"
+  fi
+
   $PM -s run build
 fi
 
-# --- Terraform ---
+# Terraform (simple)
 if ls *.tf >/dev/null 2>&1 || [[ -d "infra" ]] || [[ -d "terraform" ]]; then
-  echo "== gate: terraform =="
+  echo "== gate: terraform detected =="
   command -v terraform >/dev/null || fail "terraform not found"
   terraform fmt -check -recursive
   terraform validate
 fi
 
-ok
+pass

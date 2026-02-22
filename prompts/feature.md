@@ -1,27 +1,21 @@
+# Implement Feature Prompt
 
-You are implementing exactly ONE feature folder in a repo, intended to be driven by an orchestrator ("Press").
+You are implementing exactly one feature directory: FEATURE_DIR.
 
-## Input
-A feature folder exists at:
-- `features/<id>/feature.yaml` (and optional `notes.md`)
+Source of truth:
+- FEATURE_DIR/feature.yaml
+- optional: FEATURE_DIR/notes.*
 
-## Your job
-1) Read `feature.yaml` and implement the feature.
-2) Ensure repo has canonical scripts:
-   - `./scripts/gate`
-   - `./scripts/acceptance` (must support `--feature <dir>`)
-   If missing, create them first.
-3) Convert acceptance criteria from `feature.yaml` into executable checks:
-   - Prefer pytest for FastAPI (TestClient), or Playwright for Next.js flows.
-   - Put feature-specific checks under `features/<id>/acceptance/` (tests/data/scripts).
-4) Self-verify:
-   - Run `./scripts/gate`
-   - Run `./scripts/acceptance --feature features/<id>`
-   Fix and rerun until both pass (unless blocked).
-5) Write `.press/status.json` with phase + results + head sha.
-6) End output with `READY_FOR_PRESS` (or `DONE` if both gates passed and feature is complete).
+Definition of done (authoritative):
+- `$HOME/.codex/scripts/gate` passes (repo-wide)
+- `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR` passes (feature-scoped)
 
-## Constraints
-- Smallest effective changes.
-- Do not weaken gates to pass.
-- If blocked, write status with phase=BLOCKED and end with `BLOCKED: ...`.
+Requirements:
+- Add/extend repo tests that are run by the gate.
+- If `FEATURE_DIR/acceptance/` is missing, create it and implement black-box acceptance checks for `feature.yaml`.
+- Do not delete or weaken tests to make checks pass.
+
+After changes:
+- Run `$HOME/.codex/scripts/gate`
+- Run `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`
+- End with exactly: `READY`

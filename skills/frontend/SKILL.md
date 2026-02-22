@@ -42,16 +42,11 @@ metadata:
 ## Reference repos (Frontend)
 Use only if current repo lacks a needed pattern.
 
-- ~/software/.../nextjs-app
+- `$HOME/software/marcocello/meshify-frontend`
   - Next.js app structure
-  - Lint/build scripts
-  - Component conventions
-
-- ~/software/.../design-system
-  - Tailwind tokens
-  - Layout patterns
-  - Accessibility baseline
+  - lint/build scripts
+  - component conventions
 
 When using a reference repo:
-- Borrow structure/patterns, not entire files
-- Mention which repo and what pattern was reused (1 line)
+- Borrow patterns, not whole implementations.
+- Mention repo + pattern reused (1 line).

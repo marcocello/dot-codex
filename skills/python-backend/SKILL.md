@@ -55,16 +55,39 @@ Default posture: reuse-first, surgical edits, service-layer ownership, tests bef
 - Comments: rare; explain WHY, not WHAT.
 
 ## Testing & verification (required before claiming success)
-Pick what exists in repo; minimal but real:
-- Unit test for service logic.
-- FastAPI TestClient test for route + validation.
-- If async tasks: test the task function directly.
 
-If you cannot execute tests here:
-- state that explicitly
-- provide exact commands:
-  - pytest (and any markers) run in the repo virtualenv `.venv`.
-  - lint/typecheck commands used by the repo
+This setup uses global gates (run from repo root):
+
+- Engineering gate: `$HOME/.codex/scripts/gate`
+- Acceptance gate: `$HOME/.codex/scripts/acceptance --feature features/<id>`
+
+### Python virtualenv rule
+If Python is detected in the repo, the canonical environment is a repo-local venv at:
+
+- `.venv/` (repo root)
+
+Do not rely on activating the venv in a shell. Prefer deterministic invocation:
+
+- `.venv/bin/python -m pytest ...`
+- `.venv/bin/python -m ruff ...`
+- `.venv/bin/python -m mypy ...`
+
+### Acceptance harness (feature-scoped)
+When implementing a feature from `features/<id>/feature.yaml`, you must compile acceptance criteria into executable checks under:
+
+- `features/<id>/acceptance/`
+
+Preferred forms:
+- `features/<id>/acceptance/tests/` (pytest)
+- `features/<id>/acceptance/run.sh` (executable script)
+
+The acceptance gate will run one of those.
+
+### Definition of done (Python backend)
+- Feature behavior matches acceptance criteria.
+- `$HOME/.codex/scripts/gate` passes.
+- `$HOME/.codex/scripts/acceptance --feature features/<id>` passes.
+- Tests cover new behavior or regressions (smallest effective tests).
 
 ## Common pitfalls to avoid
 - Duplicating logic across routes/services.

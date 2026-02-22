@@ -86,21 +86,24 @@ A change is not “done” unless BOTH of these pass:
 2) **Acceptance Gate** (feature-scoped): `$HOME/.codex/scripts/acceptance --feature <feature_dir>`
 
 ### Canonical commands (mandatory)
-- Gate command is **always** `$HOME/.codex/scripts/gate`.
-- Acceptance command is **always** `$HOME/.codex/scripts/acceptance --feature <dir>`.
+- Gate command is **always** `$HOME/.codex/scripts/gate` (run from repo root).
+- Acceptance command is **always** `$HOME/.codex/scripts/acceptance --feature <dir>` (run from repo root).
 
-If either script does not exist:
-- create it immediately as part of repo bootstrapping
-- keep it deterministic (exit code 0/1, no prompts, no interactivity)
+### Profile-based enforcement
+The gate auto-detects project types (Python/Node/Terraform) by scanning the repo (bounded depth).
+Rules apply only to detected profiles.
+
+- If Python is detected anywhere, the repo must have a repo-local venv at `.venv/`.
+- The gate runs Python tooling via `.venv/bin/python -m ...` (no reliance on activation).
 
 ### What you must do on every change
 - For bug fixes: add/update a regression test unless impossible.
 - For new behavior: add the smallest test that verifies acceptance criteria.
-- Run `$HOME/.codex/scripts/gate` and `$HOME/.codex/scripts/acceptance --feature <dir>` before claiming readiness.
+- Run the gate and acceptance commands above before claiming readiness.
 
 ### Acceptance criteria compilation (backpressure-friendly)
 If acceptance criteria are only in natural language (e.g. in `features/<id>/feature.yaml`):
-- you must translate them into executable checks (tests/scripts)
+- translate them into executable checks (tests/scripts)
 - wire those checks into `$HOME/.codex/scripts/acceptance --feature <dir>`
 - do not stop until acceptance passes
 

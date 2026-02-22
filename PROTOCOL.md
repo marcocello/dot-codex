@@ -18,7 +18,8 @@ Minimum schema:
   "acceptance": { "cmd": "./scripts/acceptance --feature features/001-example", "passed": false, "failed_acs": ["AC-2"] },
   "summary": ["..."],
   "files_changed": ["..."]
-}```
+}
+```
 
 ## Required end token
 End your final message with exactly ONE of:

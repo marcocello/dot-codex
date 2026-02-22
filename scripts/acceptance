@@ -19,33 +19,53 @@ if [[ ! -d "$FEATURE_DIR" ]]; then
   exit 2
 fi
 
-ART_DIR="$FEATURE_DIR/artifacts"
+ROOT="$(pwd)"
+FEATURE_KEY="$(printf '%s' "$FEATURE_DIR" | sed 's#[^A-Za-z0-9._-]#_#g')"
+ART_DIR="$ROOT/.press/artifacts/acceptance"
+ART_FILE="$ART_DIR/$FEATURE_KEY.json"
 mkdir -p "$ART_DIR"
 
-HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
+if ! HEAD_SHA="$(git rev-parse HEAD 2>/dev/null)"; then
+  HEAD_SHA="no-git"
+fi
 
 write_json () {
   local passed="$1"
   local msg="$2"
   python3 - <<PY
 import json, os
-p = {"head_sha": "$HEAD_SHA", "feature_dir": "$FEATURE_DIR", "passed": bool($passed), "message": "$msg"}
+p = {
+  "head_sha": """$HEAD_SHA""".strip(),
+  "feature_dir": """$FEATURE_DIR""".strip(),
+  "passed": bool($passed),
+  "message": """$msg""".strip()
+}
 os.makedirs("$ART_DIR", exist_ok=True)
-with open("$ART_DIR/acceptance.json", "w", encoding="utf-8") as f:
+with open("$ART_FILE", "w", encoding="utf-8") as f:
   json.dump(p, f, indent=2)
 PY
 }
 
+run_with_rc() {
+  set +e
+  "$@"
+  local rc=$?
+  set -e
+  return "$rc"
+}
+
 echo "== acceptance: feature=$FEATURE_DIR =="
 echo "head_sha=$HEAD_SHA"
+echo "artifact_json=$ART_FILE"
 
 # Preferred: feature-local runner
 if [[ -x "$FEATURE_DIR/acceptance/run.sh" ]]; then
   echo "== acceptance: run.sh =="
-  set +e
-  "$FEATURE_DIR/acceptance/run.sh"
-  code=$?
-  set -e
+  if run_with_rc "$FEATURE_DIR/acceptance/run.sh"; then
+    code=0
+  else
+    code=$?
+  fi
   if [[ $code -ne 0 ]]; then
     write_json 0 "acceptance runner failed"
     exit $code
@@ -57,16 +77,29 @@ fi
 
 # Fallback: pytest tests under feature folder
 if [[ -d "$FEATURE_DIR/acceptance/tests" ]]; then
-  command -v pytest >/dev/null || { write_json 0 "pytest not found"; exit 1; }
   echo "== acceptance: pytest =="
-  set +e
-  pytest -q "$FEATURE_DIR/acceptance/tests"
-  code=$?
-  set -e
+
+  # Prefer venv python if present (more deterministic than PATH pytest)
+  VENV_PY="$ROOT/.venv/bin/python"
+  PYTEST_CMD=()
+  if [[ -x "$VENV_PY" ]]; then
+    PYTEST_CMD=("$VENV_PY" -m pytest -q "$FEATURE_DIR/acceptance/tests")
+  else
+    command -v pytest >/dev/null || { write_json 0 "pytest not found (no .venv present either)"; exit 1; }
+    PYTEST_CMD=(pytest -q "$FEATURE_DIR/acceptance/tests")
+  fi
+
+  if run_with_rc "${PYTEST_CMD[@]}"; then
+    code=0
+  else
+    code=$?
+  fi
+
   if [[ $code -ne 0 ]]; then
     write_json 0 "pytest acceptance tests failed"
     exit $code
   fi
+
   write_json 1 "pytest acceptance tests passed"
   echo "ACCEPTANCE: PASS"
   exit 0

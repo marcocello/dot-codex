@@ -1,5 +1,5 @@
 ---
-name: Feature
+name: feature
 description: "Create or update FEATURE.md from a rough idea (user story + acceptance criteria). Read_when You want to define feature scope and user stories for this repo."
 metadata:
   short-description: Optional user-facing description

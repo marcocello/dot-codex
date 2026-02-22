@@ -1,5 +1,5 @@
 ---
-name: Compare
+name: compare
 description: "Deep-dive compare my architecture/solution vs a provided reference (file/link/SOTA), recommend whether to change, and produce an implementation spec if yes. Read_when You have a draft architecture/solution and want to compare it to a reference and decide whether to migrate."
 metadata:
   short-description: Optional user-facing description

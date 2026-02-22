@@ -1,19 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Global gate: run from repo root (Press sets cwd).
+# Global gate: must be run from repo root (Press sets cwd=<repo>).
 ROOT="$(pwd)"
-ART_DIR="$ROOT/artifacts"
+ART_DIR="$ROOT/.press/artifacts"
 mkdir -p "$ART_DIR"
 
-HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
+if ! HEAD_SHA="$(git rev-parse HEAD 2>/dev/null)"; then
+  HEAD_SHA="no-git"
+fi
+
+# Bound recursive detection to keep gate fast on big repos.
+DETECT_DEPTH="${GATE_DETECT_DEPTH:-4}"
 
 fail() {
   local msg="$1"
   echo "GATE: FAIL: $msg" >&2
   python3 - <<PY
 import json, os
-p = {"head_sha": "$HEAD_SHA", "passed": False, "error": "$msg"}
+p = {
+    "head_sha": """$HEAD_SHA""".strip(),
+    "passed": False,
+    "error": """$msg""".strip()
+}
 os.makedirs("$ART_DIR", exist_ok=True)
 with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
   json.dump(p, f, indent=2)
@@ -25,57 +34,164 @@ ok() {
   echo "GATE: PASS"
   python3 - <<PY
 import json, os
-p = {"head_sha": "$HEAD_SHA", "passed": True}
+p = {
+    "head_sha": """$HEAD_SHA""".strip(),
+    "passed": True
+}
 os.makedirs("$ART_DIR", exist_ok=True)
 with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
   json.dump(p, f, indent=2)
 PY
 }
 
+first_match_dir() {
+  # Prints directory of first file match within DETECT_DEPTH, or empty.
+  # Usage: first_match_dir "pyproject.toml" "requirements.txt"
+  local patterns=("$@")
+  local find_expr=()
+  local first=1
+  for p in "${patterns[@]}"; do
+    if [[ $first -eq 1 ]]; then
+      find_expr+=( -name "$p" )
+      first=0
+    else
+      find_expr+=( -o -name "$p" )
+    fi
+  done
+
+  local hit
+  hit="$(find . -maxdepth "$DETECT_DEPTH" -type f \( "${find_expr[@]}" \) 2>/dev/null | head -n 1 || true)"
+  if [[ -n "$hit" ]]; then
+    dirname "$hit"
+  else
+    echo ""
+  fi
+}
+
+first_tf_dir() {
+  local hit
+  hit="$(find . -maxdepth "$DETECT_DEPTH" -type f -name "*.tf" 2>/dev/null | head -n 1 || true)"
+  if [[ -n "$hit" ]]; then
+    dirname "$hit"
+  else
+    echo ""
+  fi
+}
+
 echo "== gate: start =="
 echo "repo=$ROOT"
 echo "head_sha=$HEAD_SHA"
+echo "detect_depth=$DETECT_DEPTH"
+echo "artifact_json=$ART_DIR/gate.json"
 
-# Python
-if [[ -f "pyproject.toml" ]]; then
+PY_ROOT="$(first_match_dir "pyproject.toml" "requirements.txt" "poetry.lock")"
+NODE_ROOT="$(first_match_dir "package.json")"
+TF_ROOT="$(first_tf_dir)"
+
+HAS_PY=0; [[ -n "$PY_ROOT" ]] && HAS_PY=1
+HAS_NODE=0; [[ -n "$NODE_ROOT" ]] && HAS_NODE=1
+HAS_TF=0; [[ -n "$TF_ROOT" ]] && HAS_TF=1
+
+echo "profiles: python=$HAS_PY node=$HAS_NODE terraform=$HAS_TF"
+[[ $HAS_PY -eq 1 ]] && echo "python_root=$PY_ROOT"
+[[ $HAS_NODE -eq 1 ]] && echo "node_root=$NODE_ROOT"
+[[ $HAS_TF -eq 1 ]] && echo "terraform_root=$TF_ROOT"
+
+# -------------------------
+# Python profile
+# -------------------------
+if [[ "$HAS_PY" -eq 1 ]]; then
   echo "== gate: python =="
+
   command -v python3 >/dev/null || fail "python3 not found"
-  command -v pytest  >/dev/null || fail "pytest not found (install deps / activate venv)"
 
-  if command -v ruff >/dev/null; then
-    ruff format --check .
-    ruff check .
-  else
-    echo "WARN: ruff not found, skipping ruff"
+  # Enforce repo-local venv ONLY when Python detected.
+  VENV_PY="$ROOT/.venv/bin/python"
+  if [[ ! -x "$VENV_PY" ]]; then
+    fail "Python detected but .venv missing. Run: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
   fi
 
-  if command -v mypy >/dev/null; then
-    mypy .
+  # Helper to run python module from venv in a given cwd
+  vpy() {
+    local cwd="$1"; shift
+    (cd "$cwd" && "$VENV_PY" "$@")
+  }
+
+  # Optional tools: ruff/mypy. Required: pytest.
+  # We prefer module execution to avoid PATH ambiguity.
+  if vpy "$PY_ROOT" -m ruff --version >/dev/null 2>&1; then
+    vpy "$PY_ROOT" -m ruff format --check .
+    vpy "$PY_ROOT" -m ruff check .
   else
-    echo "INFO: mypy not found, skipping mypy"
+    echo "WARN: ruff not installed in .venv; skipping ruff (install ruff to enforce formatting/lint)"
   fi
 
-  pytest -q
+  if vpy "$PY_ROOT" -m mypy --version >/dev/null 2>&1; then
+    vpy "$PY_ROOT" -m mypy .
+  else
+    echo "INFO: mypy not installed in .venv; skipping mypy"
+  fi
+
+  if ! vpy "$PY_ROOT" -m pytest --version >/dev/null 2>&1; then
+    fail "pytest not installed in .venv. Install deps in .venv then rerun gate."
+  fi
+
+  vpy "$PY_ROOT" -m pytest -q
+
+  # Anti-cheat checks for feature acceptance tests.
+  if command -v rg >/dev/null 2>&1; then
+    ACCEPT_TEST_FILES=()
+    if [[ -d "$ROOT/features" ]]; then
+      while IFS= read -r test_file; do
+        ACCEPT_TEST_FILES+=("$test_file")
+      done < <(find "$ROOT/features" -type f -path "*/acceptance/tests/*.py" 2>/dev/null)
+    fi
+
+    if [[ "${#ACCEPT_TEST_FILES[@]}" -gt 0 ]]; then
+      for test_file in "${ACCEPT_TEST_FILES[@]}"; do
+        rg -q '\bassert\b' "$test_file" || fail "Acceptance test has no assert: $test_file"
+      done
+
+      if rg -q -m1 'from fastapi import|import fastapi|FastAPI\(' "$PY_ROOT"; then
+        rg -q 'TestClient' "${ACCEPT_TEST_FILES[@]}" || fail "FastAPI repo: acceptance tests must use TestClient"
+      fi
+    fi
+  else
+    echo "WARN: rg not found; skipping acceptance anti-cheat checks"
+  fi
 fi
 
-# Node
-if [[ -f "package.json" ]]; then
+# -------------------------
+# Node profile
+# -------------------------
+if [[ "$HAS_NODE" -eq 1 ]]; then
   echo "== gate: node =="
-  PM="npm"
-  command -v pnpm >/dev/null && PM="pnpm"
-  command -v yarn >/dev/null && PM="yarn"
 
-  $PM -s run lint
-  $PM -s run test || echo "INFO: test script failed/missing; enforce by defining stable test script"
-  $PM -s run build
+  PM="npm"
+  command -v pnpm >/dev/null 2>&1 && PM="pnpm"
+  command -v yarn >/dev/null 2>&1 && PM="yarn"
+
+  (
+    cd "$NODE_ROOT"
+    $PM -s run lint
+    $PM -s run test
+    $PM -s run build
+  )
 fi
 
-# Terraform
-if ls *.tf >/dev/null 2>&1 || [[ -d "infra" ]] || [[ -d "terraform" ]]; then
+# -------------------------
+# Terraform profile
+# -------------------------
+if [[ "$HAS_TF" -eq 1 ]]; then
   echo "== gate: terraform =="
+
   command -v terraform >/dev/null || fail "terraform not found"
-  terraform fmt -check -recursive
-  terraform validate
+
+  (
+    cd "$TF_ROOT"
+    terraform fmt -check -recursive
+    terraform validate
+  )
 fi
 
 ok

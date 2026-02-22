@@ -1,38 +1,56 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+import argparse
+import json
+import subprocess
+from pathlib import Path
 
-# scripts/write-status --feature features/001-foo --phase IMPLEMENT --gate-passed true --acceptance-passed false --summary "..."
-FEATURE_DIR=""
-PHASE=""
-GATE_PASSED=""
-AC_PASSED=""
-SUMMARY=""
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --feature) FEATURE_DIR="$2"; shift 2 ;;
-    --phase) PHASE="$2"; shift 2 ;;
-    --gate-passed) GATE_PASSED="$2"; shift 2 ;;
-    --acceptance-passed) AC_PASSED="$2"; shift 2 ;;
-    --summary) SUMMARY="$2"; shift 2 ;;
-    *) echo "Unknown arg: $1" >&2; exit 2 ;;
-  esac
-done
+def parse_bool(value: str) -> bool:
+    lowered = value.strip().lower()
+    if lowered in {"1", "true", "yes", "y"}:
+        return True
+    if lowered in {"0", "false", "no", "n"}:
+        return False
+    raise argparse.ArgumentTypeError(f"invalid boolean value: {value}")
 
-mkdir -p .press
-HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
 
-python3 - <<PY
-import json, os
-p = {
-  "feature_dir": "${FEATURE_DIR}",
-  "phase": "${PHASE}",
-  "head_sha": "${HEAD_SHA}",
-  "gate": { "cmd": "./scripts/gate", "passed": ${str(GATE_PASSED).lower() == "true"} },
-  "acceptance": { "cmd": "./scripts/acceptance --feature ${FEATURE_DIR}", "passed": ${str(AC_PASSED).lower() == "true"} },
-  "summary": ["${SUMMARY}"] if "${SUMMARY}" else []
-}
-os.makedirs(".press", exist_ok=True)
-with open(".press/status.json", "w", encoding="utf-8") as f:
-  json.dump(p, f, indent=2)
-PY
+def head_sha() -> str:
+    proc = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        text=True,
+        capture_output=True,
+    )
+    if proc.returncode != 0:
+        return "no-git"
+    return proc.stdout.strip()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(prog="scripts/write-status")
+    parser.add_argument("--feature", default="")
+    parser.add_argument("--phase", default="")
+    parser.add_argument("--gate-passed", type=parse_bool, default=False)
+    parser.add_argument("--acceptance-passed", type=parse_bool, default=False)
+    parser.add_argument("--summary", default="")
+    args = parser.parse_args()
+
+    payload = {
+        "feature_dir": args.feature,
+        "phase": args.phase,
+        "head_sha": head_sha(),
+        "gate": {"cmd": "./scripts/gate", "passed": args.gate_passed},
+        "acceptance": {
+            "cmd": f"./scripts/acceptance --feature {args.feature}",
+            "passed": args.acceptance_passed,
+        },
+        "summary": [args.summary] if args.summary else [],
+    }
+
+    press_dir = Path(".press")
+    press_dir.mkdir(parents=True, exist_ok=True)
+    (press_dir / "status.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

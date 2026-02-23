@@ -18,6 +18,8 @@ metadata:
 - Keep business logic out of routes
 
 ## Implementation rules
+- Application code must be located in `app/` folder
+- `requirements.txt` must be located in `app/` folder
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly
 - Smallest change that satisfies the feature

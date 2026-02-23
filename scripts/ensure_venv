@@ -11,16 +11,28 @@ PIP="$VENV/bin/pip"
 echo "== ensure_venv =="
 echo "repo=$(pwd)"
 
+# Enforce convention: requirements live under app/
+# If you want to allow root requirements.txt, set ALLOW_ROOT_REQUIREMENTS=1
+if [[ -f "requirements.txt" && "${ALLOW_ROOT_REQUIREMENTS:-0}" != "1" ]]; then
+  echo "ERROR: found ./requirements.txt but this setup expects requirements under ./app/." >&2
+  echo "Move it to ./app/requirements.txt (or set ALLOW_ROOT_REQUIREMENTS=1 to bypass)." >&2
+  exit 2
+fi
+
+if [[ ! -d "app" ]]; then
+  echo "ERROR: missing ./app directory. This setup expects backend code under ./app/." >&2
+  exit 2
+fi
+
 # Create venv if missing
 if [[ ! -x "$PY" ]]; then
   echo "Creating .venv..."
   python3 -m venv "$VENV"
 fi
 
-# Upgrade packaging basics
+# Upgrade base tooling
 "$PIP" install -U pip setuptools wheel >/dev/null
 
-# Helper: find first existing file among candidates
 first_existing() {
   for p in "$@"; do
     if [[ -f "$p" ]]; then
@@ -31,44 +43,26 @@ first_existing() {
   return 1
 }
 
-# Candidate manifest locations (root + common subfolders)
+echo "Detecting dependency source..."
+
+# Preferred: app-level requirements
 REQ_DEV_CANDIDATES=(
-  "requirements-dev.txt"
-  "requirements/dev.txt"
-  "requirements/dev-requirements.txt"
   "app/requirements-dev.txt"
-  "backend/requirements-dev.txt"
-  "server/requirements-dev.txt"
+  "app/requirements/dev.txt"
+  "app/requirements/dev-requirements.txt"
 )
 
 REQ_CANDIDATES=(
-  "requirements.txt"
-  "requirements/base.txt"
-  "requirements/prod.txt"
   "app/requirements.txt"
-  "backend/requirements.txt"
-  "server/requirements.txt"
+  "app/requirements/base.txt"
+  "app/requirements/prod.txt"
 )
 
-echo "Detecting dependency source..."
-
-if [[ -f "pyproject.toml" ]]; then
-  echo "Found pyproject.toml (root). Installing editable package..."
-  # Try dev extras if present (best effort)
-  if "$PY" - <<'PY' >/dev/null 2>&1
-import tomllib, pathlib
-t = tomllib.loads(pathlib.Path("pyproject.toml").read_text("utf-8"))
-proj = t.get("project", {})
-opt = proj.get("optional-dependencies", {}) or {}
-print("dev" in opt)
-PY
-  then
-    "$PIP" install -e ".[dev]"
-    echo "Installed: -e .[dev]"
-  else
-    "$PIP" install -e .
-    echo "Installed: -e ."
-  fi
+# Optional: root pyproject (only if you actually package the repo)
+# If you don't package, keep this off.
+if [[ -f "pyproject.toml" && "${ALLOW_ROOT_PYPROJECT_INSTALL:-0}" == "1" ]]; then
+  echo "Found pyproject.toml (root) and ALLOW_ROOT_PYPROJECT_INSTALL=1. Installing editable package..."
+  "$PIP" install -e .
 else
   if REQ_DEV="$(first_existing "${REQ_DEV_CANDIDATES[@]}" || true)"; [[ -n "${REQ_DEV:-}" ]]; then
     echo "Found $REQ_DEV. Installing..."
@@ -77,11 +71,11 @@ else
     echo "Found $REQ. Installing..."
     "$PIP" install -r "$REQ"
   else
-    echo "No requirements/pyproject found. Installing minimal tooling only."
+    echo "No app/requirements*.txt found. Installing minimal tooling only."
   fi
 fi
 
-# Ensure baseline tools for gates (idempotent)
+# Ensure baseline tools needed by gate
 echo "Ensuring baseline tooling (pytest, ruff)..."
 "$PIP" install -U pytest ruff >/dev/null
 

@@ -2,34 +2,23 @@
 set -euo pipefail
 
 ROOT="$(pwd)"
-ART_DIR="$ROOT/artifacts"
-mkdir -p "$ART_DIR"
-
-HEAD_SHA="$(git rev-parse HEAD 2>/dev/null || echo "no-git")"
 
 fail() {
   local msg="$1"
   echo "GATE: FAIL: $msg" >&2
-  python3 - <<PY
-import json, os
-p = {"head_sha": "$HEAD_SHA", "passed": False, "error": "$msg"}
-os.makedirs("$ART_DIR", exist_ok=True)
-with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
-  json.dump(p, f, indent=2)
-PY
   exit 1
 }
 
 pass() {
   echo "GATE: PASS"
-  python3 - <<PY
-import json, os
-p = {"head_sha": "$HEAD_SHA", "passed": True}
-os.makedirs("$ART_DIR", exist_ok=True)
-with open("$ART_DIR/gate.json", "w", encoding="utf-8") as f:
-  json.dump(p, f, indent=2)
-PY
 }
+
+# Deterministic single-line SHA (informational only)
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  HEAD_SHA="$(git rev-parse --verify HEAD 2>/dev/null || echo "no-git")"
+else
+  HEAD_SHA="no-git"
+fi
 
 echo "== gate: repo=$ROOT sha=$HEAD_SHA =="
 
@@ -44,8 +33,16 @@ fi
 if [[ "$HAS_PY" -eq 1 ]]; then
   echo "== gate: python detected =="
 
+  # Enforce your backend layout
+  [[ -d "app" ]] || fail "Expected backend code under ./app (missing app/ directory)"
+
+  # Catch common failure: pip installed packages into repo root (fastapi/, pytest/, etc.)
+  if [[ -d "fastapi" || -d "pytest" ]]; then
+    fail "Detected top-level package directories (e.g., fastapi/, pytest/). Dependencies must be installed inside .venv only."
+  fi
+
   if [[ ! -x ".venv/bin/python" ]]; then
-    fail "Python detected but .venv/bin/python missing at repo root. Use: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
+    fail "Python detected but .venv/bin/python missing at repo root. Run: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
   fi
 
   PY=".venv/bin/python"

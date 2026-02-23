@@ -15,9 +15,6 @@ web_search = "live"
 trust_level = "untrusted"
 
 # Explicit trusted repos
-[projects."/Users/marcocello/software/amplifyhumans/amplifyhumans"]
-trust_level = "trusted"
-
 [projects."/Users/marcocello/software/marcocello/meshify-backend"]
 trust_level = "trusted"
 

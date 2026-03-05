@@ -12,7 +12,7 @@ metadata:
   - Feature includes user-facing interaction
 
 ## Structure expectations
-- UI components → hooks/state → API client → shared utils
+- UI components -> hooks/state -> API client -> shared utils
 - No business logic inside UI components
 - Keep components focused and composable
 
@@ -27,6 +27,7 @@ metadata:
 - Reuse existing components before creating new ones
 - Follow existing lint/build conventions
 - No large refactors unless required
+- Avoid backward compatibility work by default; do it only when explicitly requested
 
 ## Tests (required if repo has frontend tests)
 - Extend existing test setup (vitest/jest) if present
@@ -34,7 +35,7 @@ metadata:
 - Do not weaken or delete tests
 
 ## Acceptance harness (if feature includes UI behavior)
-- If feature.yaml includes frontend acceptance criteria:
+- If `FEATURE.md` includes frontend acceptance behavior:
   - Add feature-scoped acceptance under `FEATURE_DIR/acceptance/`
   - Prefer test-based verification over snapshot-only tests
 - Tests must assert observable behavior (DOM/state changes)

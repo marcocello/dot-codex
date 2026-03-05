@@ -40,6 +40,9 @@ Method:
    - Compatibility risks
    - Verification plan
 
+Policy:
+- AVOID backward compatibility by default; include compatibility work only when explicitly requested.
+
 Output (STRICT):
 
 ## Diff

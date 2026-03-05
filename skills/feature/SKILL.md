@@ -1,11 +1,11 @@
 ---
 name: feature
-description: "Create or update features/<id>/feature.yaml from a rough idea (user story + constraints)."
+description: "Create or update features/<id>/FEATURE.md from a rough idea (user story + constraints)."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
 
-Purpose: produce a high-quality `feature.yaml` inside `features/<id>/`.
+Purpose: produce a high-quality `FEATURE.md` inside `features/<id>/`.
 
 This file is the source of truth for implementation and acceptance harness generation.
 
@@ -15,7 +15,6 @@ This file is the source of truth for implementation and acceptance harness gener
 
 If missing, ask only the minimum necessary:
 
-- feature id (e.g., FEAT-001)
 - short title
 - user persona
 - core workflow (happy path)
@@ -30,15 +29,16 @@ Do NOT ask architecture questions unless strictly required.
 
 1) Determine feature directory:
    - `features/<id>/`
-   - If it exists → update `feature.yaml`
-   - If not → create directory and file
+   - If it exists -> update `FEATURE.md`
+   - If not -> create directory and file
 
 2) Convert rough idea into:
-   - Clear description
-   - Explicit, testable acceptance criteria
+   - Clear title and description
+   - Explicit, testable behavior
+   - Optional user stories and Gherkin scenarios when helpful
    - Minimal constraints
 
-3) Keep acceptance criteria:
+3) Keep acceptance behavior:
    - Observable
    - Black-box
    - Deterministic
@@ -49,38 +49,36 @@ Do NOT ask architecture questions unless strictly required.
    - Speculation
    - Over-engineering
    - Architecture decisions unless explicitly provided
+   - Backward compatibility requirements unless explicitly requested
 
 ---
 
 ## Output rules
 
-- Output ONLY valid YAML for `feature.yaml`
-- No commentary
-- No Markdown
-- No diffs
-- Must be machine-parseable
+- Output Markdown content for `FEATURE.md`
+- Keep it concise and human-readable
+- Include title and description at minimum
+- If scenarios are provided, use valid Gherkin wording
 
 ---
 
-## feature.yaml Template
+## FEATURE.md Template
 
-id: <FEAT-ID>
-title: <Short title>
-description: |
-  <Clear problem statement in user-story form>
+# <Feature title>
 
-acceptance:
-  - id: AC-1
-    text: "<Observable behavior>"
-  - id: AC-2
-    text: "<Observable behavior>"
+## Description
+<Clear problem statement in user-story form>
 
-constraints:
-  backend: "<if relevant>"
-  frontend: "<if relevant>"
-  storage: "<if relevant>"
-  testing: "<if relevant>"
-  avoid: "<optional>"
+## Acceptance Scenarios
+Feature: <Behavioral capability>
+  In order to <goal>
+  As a <user>
+  I want <capability>
 
-notes:
-  - "<Optional clarifications>"
+  Scenario: <Scenario title>
+    Given <context>
+    When <action>
+    Then <observable outcome>
+
+## Constraints (optional)
+- <constraint>

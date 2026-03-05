@@ -3,7 +3,7 @@
 You are working on one feature directory: FEATURE_DIR.
 
 Source of truth:
-- FEATURE_DIR/feature.yaml
+- FEATURE_DIR/FEATURE.md
 - optional: FEATURE_DIR/notes.*
 
 Goal:
@@ -11,7 +11,10 @@ Goal:
 
 Rules:
 - If `FEATURE_DIR/acceptance/` is missing, create it.
-- Translate acceptance criteria from `FEATURE_DIR/feature.yaml` into executable checks.
+- Translate behavior from `FEATURE_DIR/FEATURE.md` into executable checks.
+- If `FEATURE.md` includes Given/When/Then scenarios, mirror them in setup/action/assertion structure.
+- Preserve scenario IDs/titles in test names/markers/comments for traceability.
+- Keep scenarios in `FEATURE.md`; keep `FEATURE_DIR/acceptance/` for executable test code only.
 - Prefer `FEATURE_DIR/acceptance/tests/` (pytest) or `FEATURE_DIR/acceptance/run.sh`.
 - Acceptance tests must be black-box and contain real assertions.
 - Do not delete or weaken existing tests to get green.

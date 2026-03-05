@@ -5,17 +5,13 @@ personality = "pragmatic"
 # Run freely in workspace, but only prompt if something fails
 # (matches Codex "full-auto" pattern)  [oai_citation:6‡npm](https://www.npmjs.com/package/%40openai/codex/v/0.13.0?utm_source=chatgpt.com)
 approval_policy = "never"
-sandbox_mode = "workspace-write"
+sandbox_mode = "danger-full-access"
 
 # Keep web search on if you like. (Just know it can reduce reproducibility.)
 web_search = "live"
 
-# Default: treat broad folders as untrusted
-[projects."/Users/marcocello"]
-trust_level = "untrusted"
-
 # Explicit trusted repos
-[projects."/Users/marcocello/software/marcocello/meshify-backend"]
+[projects."/Users/marcocello/software/marcocello"]
 trust_level = "trusted"
 
 # ---- Optional: Profiles ----
@@ -37,3 +33,6 @@ model_reasoning_effort = "high"
 approval_policy = "never"
 sandbox_mode = "read-only"
 web_search = "live"
+
+[notice.model_migrations]
+gpt-5-codex = "gpt-5.3-codex"

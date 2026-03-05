@@ -3,8 +3,8 @@
 You are implementing exactly one feature directory: FEATURE_DIR.
 
 Source of truth:
-- FEATURE_DIR/feature.yaml
-- optional: FEATURE_DIR/notes.*
+- FEATURE_DIR/FEATURE.md
+- optional: docs/ARCHITECTURE.md
 
 Definition of done (authoritative):
 - `$HOME/.codex/scripts/gate` passes (repo-wide)
@@ -12,7 +12,11 @@ Definition of done (authoritative):
 
 Requirements:
 - Add/extend repo tests that are run by the gate.
-- If `FEATURE_DIR/acceptance/` is missing, create it and implement black-box acceptance checks for `feature.yaml`.
+- If `FEATURE_DIR/acceptance/` is missing, create it and implement black-box acceptance checks.
+- Translate behavior from `FEATURE.md` into executable checks.
+- If `FEATURE.md` includes Gherkin scenarios, treat them as authoritative for acceptance behavior.
+- Preserve scenario names/IDs in test names/markers/comments for traceability.
+- Keep Gherkin scenarios in `FEATURE.md`; keep `FEATURE_DIR/acceptance/` for executable test code only.
 - Do not delete or weaken tests to make checks pass.
 
 After changes:

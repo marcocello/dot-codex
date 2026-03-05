@@ -1,9 +1,11 @@
 ---
-summary: 'Fix an issue correctly with tests and verification (safe, local by default).'
-read_when:
-  - You need a disciplined issue fix with proper verification.
+name: fixissue
+description: Fix a clear issue with the smallest effective code change, regression tests, and verification. Use when the user asks to debug/fix an existing problem.
+metadata:
+  short-description: Disciplined issue-fix workflow
 ---
-# /fixissue
+
+# Fix Issue
 
 Purpose: fix an issue correctly, with the smallest effective change and proper verification.
 
@@ -34,8 +36,8 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
    - Frontend: add or update a minimal test if the repo uses frontend testing.
    - Run relevant tests, or state explicitly if they cannot be run here and list exact commands.
 
-6) Commit locally
-   - Create a small, traceable local commit.
+6) Finalize safely
+   - Do not commit unless explicitly instructed by the user.
    - Do not push, open PRs, update changelogs, or close issues unless explicitly instructed.
 
 ## Output

@@ -12,7 +12,7 @@ metadata:
   - FastAPI / service-layer architecture is in use
 
 ## Architecture expectations
-- routes → services/use-cases → domain → infra/data
+- routes -> services/use-cases -> domain -> infra/data
 - No cyclic imports
 - No “god” services
 - Keep business logic out of routes
@@ -23,6 +23,7 @@ metadata:
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly
 - Smallest change that satisfies the feature
+- Avoid backward compatibility work by default; do it only when explicitly requested
 
 ## Tests (required)
 - Add/extend repo tests (pytest) so that:
@@ -36,7 +37,7 @@ metadata:
   - Create `FEATURE_DIR/acceptance/tests/`
   - Use FastAPI TestClient
   - Write black-box tests hitting actual endpoints
-- Translate acceptance criteria in `feature.yaml` into executable checks
+- Translate behavior described in `FEATURE.md` into executable checks
 
 ## Virtualenv policy
 - If Python is detected:

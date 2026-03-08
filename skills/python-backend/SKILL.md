@@ -1,6 +1,6 @@
 ---
 name: python-backend
-description: Use when implementing backend implementations and changes in a Python codebase (often FastAPI).
+description: Implement backend changes in Python codebases (especially FastAPI/service-layer projects) with clear route/service/domain boundaries and pytest coverage. Use only for backend-focused tasks where Python application code is in scope.
 metadata:
   short-description: Optional user-facing description
 ---

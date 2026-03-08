@@ -1,0 +1,6 @@
+interface:
+  display_name: "Issue Fix"
+  short_description: "Apply minimal corrective changes with regression verification."
+  default_prompt: "Fix this issue with the smallest effective change and add verification for the regression."
+policy:
+  allow_implicit_invocation: true

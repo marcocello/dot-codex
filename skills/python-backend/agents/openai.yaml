@@ -1,0 +1,6 @@
+interface:
+  display_name: "Python Backend"
+  short_description: "Implement Python backend changes with clear layering and tests."
+  default_prompt: "Implement this backend change in Python with route-service-domain boundaries and add or update pytest coverage."
+policy:
+  allow_implicit_invocation: true

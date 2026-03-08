@@ -27,8 +27,9 @@ metadata:
 
 ## Tests (required)
 - Add/extend repo tests (pytest) so that:
+  - Red phase: at least one relevant test fails before implementation
+  - Green phase: the same test passes after the code change
   - New behavior is covered
-  - At least one failing test exists before change and passes after
 - Tests must contain real assertions
 - Do not weaken or delete existing tests
 

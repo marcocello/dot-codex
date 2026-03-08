@@ -26,17 +26,22 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
    - Search for existing functions/components that already implement similar behavior.
    - Reuse or extend existing code; do not duplicate logic.
 
-4) Implement the smallest effective fix
+4) Red phase (test first)
+   - Add or update the smallest regression test for the issue.
+   - Run the narrowest relevant test command and confirm failure.
+
+5) Green phase (minimal fix)
    - Keep changes local to the affected area.
    - Avoid refactors unless required for correctness.
    - Do not change unrelated code.
+   - Re-run the same test and confirm it passes.
 
-5) Add verification
+6) Add verification
    - Backend: add or update the smallest regression test that would have caught the issue.
    - Frontend: add or update a minimal test if the repo uses frontend testing.
    - Run relevant tests, or state explicitly if they cannot be run here and list exact commands.
 
-6) Finalize safely
+7) Finalize safely
    - Do not commit unless explicitly instructed by the user.
    - Do not push, open PRs, update changelogs, or close issues unless explicitly instructed.
 

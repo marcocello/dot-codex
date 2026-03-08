@@ -8,6 +8,9 @@ Objective
 Rules
 - Do NOT weaken/delete tests to make the gate pass.
 - If Python/.venv is involved: do NOT delete `.venv`; use `$HOME/.codex/scripts/ensure_venv`.
+- For behavior-related fixes, use red/green TDD:
+  - Red: isolate or add the smallest regression test and confirm failure.
+  - Green: apply the smallest code change and confirm pass.
 
 Steps
 1) Run `$HOME/.codex/scripts/gate` from the repo root.

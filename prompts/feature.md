@@ -12,6 +12,9 @@ Definition of done (authoritative):
 
 Requirements:
 - Add/extend repo tests that are run by the gate.
+- Use red/green TDD:
+  - Red: add/update the smallest relevant test and confirm it fails before implementation.
+  - Green: implement the smallest effective change and confirm that same test passes.
 - If `FEATURE_DIR/acceptance/` is missing, create it and implement black-box acceptance checks.
 - Translate behavior from `FEATURE.md` into executable checks.
 - If `FEATURE.md` includes Gherkin scenarios, treat them as authoritative for acceptance behavior.

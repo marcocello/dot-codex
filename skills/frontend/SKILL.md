@@ -31,6 +31,8 @@ metadata:
 
 ## Tests (required if repo has frontend tests)
 - Extend existing test setup (vitest/jest) if present
+- Red phase: add/update the smallest relevant frontend test and confirm it fails first
+- Green phase: implement the minimal UI/code change and make that same test pass
 - Add meaningful assertions for new behavior
 - Do not weaken or delete tests
 

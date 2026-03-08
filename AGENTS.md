@@ -32,6 +32,18 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 - Correctness > clarity > consistency > DRY
 - Prefer explicit code over cleverness.
 
+## Red/Green TDD (mandatory)
+- Use red/green TDD for implementation and bug fixes.
+- Red phase:
+  - Add or update the smallest test that captures the required behavior/regression.
+  - Run that test (or the narrowest relevant test command) and confirm it fails.
+- Green phase:
+  - Implement the smallest effective code change.
+  - Re-run the same test and confirm it passes.
+- Then run broader checks (`$HOME/.codex/scripts/gate` and feature acceptance when applicable).
+- In handoff, state red evidence (failing test command/result) and green evidence (passing command/result).
+- If red/green cannot be executed, state exactly why.
+
 ## Deterministic checks (authoritative)
 - Repo gate: `$HOME/.codex/scripts/gate`
 - Feature acceptance: `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`

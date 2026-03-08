@@ -1,11 +1,11 @@
 ---
 name: feature
-description: "Create or update features/<id>/FEATURE.md from a rough idea (user story + constraints)."
+description: "Create or update features/{feature-id-slug}/FEATURE.md from a rough idea (user story plus constraints). Use when the task is feature-spec authoring or refinement."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
 
-Purpose: produce a high-quality `FEATURE.md` inside `features/<id>/`.
+Purpose: produce a high-quality `FEATURE.md` inside `features/<feature-id-slug>/`.
 
 This file is the source of truth for implementation and acceptance harness generation.
 
@@ -28,7 +28,8 @@ Do NOT ask architecture questions unless strictly required.
 ## Behavior
 
 1) Determine feature directory:
-   - `features/<id>/`
+   - `features/<feature-id-slug>/`
+   - Slug format: lowercase words separated by hyphens (for example `features/auth-login-flow/`)
    - If it exists -> update `FEATURE.md`
    - If not -> create directory and file
 

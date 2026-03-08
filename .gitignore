@@ -14,12 +14,16 @@
 !*.md
 !*.toml
 !scripts/*
+!.agents/
+!.agents/skills
+!skills/*/agents/openai.yaml
 
 # 4. Block some directories and files
 *.git
 skills/.system/
 sessions/
 shell_snapshots/
+worktrees/
 sqlite/
 tmp/
 vendor_imports/

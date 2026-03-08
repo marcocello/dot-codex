@@ -1,6 +1,6 @@
 ---
 name: review-code-architecture
-description: Analyze code snippets/files/diffs for architecture quality_ boundary violations, duplication, unnecessary verbosity, and maintainability risks. Use for targeted technical review, not feature implementation.
+description: "Analyze code snippets/files/diffs for architecture quality: boundary violations, duplication, unnecessary verbosity, and maintainability risks. Use for targeted technical review, not feature implementation."
 ---
 
 # Review Code Architecture

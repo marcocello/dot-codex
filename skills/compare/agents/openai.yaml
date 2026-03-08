@@ -1,0 +1,6 @@
+interface:
+  display_name: "Architecture Compare"
+  short_description: "Compare current architecture against a reference and decide keep or migrate."
+  default_prompt: "Compare this architecture against the provided reference. Return differences, tradeoffs, decision, and migration steps if change is needed."
+policy:
+  allow_implicit_invocation: false

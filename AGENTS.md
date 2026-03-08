@@ -39,7 +39,7 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 
 ## Tests (required)
 - Add/extend repo tests that are run by the gate (pytest/unit/integration as appropriate).
-- If acceptance tests are missing, use `prompts/spec_driven_acceptance.md` to derive and generate them from `FEATURE.md`.
+- If acceptance tests are missing, use `prompts/acceptance.md` to derive and generate them from `FEATURE.md`.
 - Acceptance harness:
   - If `FEATURE_DIR/acceptance/` is missing, create it.
   - Translate behavior described in `FEATURE_DIR/FEATURE.md` into executable checks.

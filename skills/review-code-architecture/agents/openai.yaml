@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Review"
+  short_description: "Technical review for boundaries, DRY, verbosity, and maintainability."
+  default_prompt: "Review this code for architecture boundaries, duplication, verbosity, and maintainability risks. Return prioritized findings with file/line and minimal fixes."

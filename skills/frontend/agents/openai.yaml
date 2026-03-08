@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontend"
+  short_description: "Implement React or Next.js UI changes with production-grade quality."
+  default_prompt: "Implement this frontend change in React or Next.js, preserving repo conventions and adding meaningful UI verification."
+policy:
+  allow_implicit_invocation: true

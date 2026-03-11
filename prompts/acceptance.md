@@ -12,6 +12,7 @@ Goal:
 
 Rules:
 - If `FEATURE_DIR/acceptance/` is missing, create it.
+- Place feature-scoped acceptance checks under `FEATURE_DIR/acceptance/tests/` (or `FEATURE_DIR/acceptance/run.sh`).
 - Translate behavior from `FEATURE_DIR/FEATURE.md` into executable checks.
 - Use `FEATURE.md` as the BDD source of truth:
   - Keep scenarios in valid Gherkin (`Feature`, `Scenario`/`Scenario Outline`, `Given/When/Then`).

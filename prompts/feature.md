@@ -13,6 +13,7 @@ Definition of done (authoritative):
 
 Requirements:
 - Add/extend repo tests that are run by the gate.
+- Place repo-level tests under `tests/` (for example `tests/unit/`, `tests/integration/`).
 - Use red/green TDD:
   - Red: add/update the smallest relevant test and confirm it fails before implementation.
   - Green: implement the smallest effective change and confirm that same test passes.
@@ -25,6 +26,7 @@ Requirements:
   - Do not add a separate `## Description` section unless explicitly requested.
   - Put intent/context in Gherkin `Feature` narrative lines when needed.
 - If `FEATURE_DIR/acceptance/` is missing, create it and implement black-box acceptance checks.
+- Place feature-scoped acceptance checks under `FEATURE_DIR/acceptance/tests/` (or `FEATURE_DIR/acceptance/run.sh`).
 - Translate behavior from `FEATURE.md` into executable checks.
 - Treat Gherkin scenarios in `FEATURE.md` as authoritative for acceptance behavior.
 - Preserve scenario names/IDs in test names/markers/comments for traceability.

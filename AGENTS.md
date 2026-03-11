@@ -54,6 +54,7 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 
 ## Tests (required)
 - Add/extend repo tests that are run by the gate (pytest/unit/integration as appropriate).
+- Place repo-level tests under `tests/` (for example `tests/unit/` or `tests/integration/`).
 - If acceptance tests are missing, use `prompts/acceptance.md` to derive and generate them from `FEATURE.md`.
 - BDD-first scenario authoring:
   - Treat `FEATURE.md` scenarios as the canonical behavior contract.
@@ -62,6 +63,7 @@ If the current repository contains `docs/ARCHITECTURE.md`:
   - Cover at least one happy path and the key edge/error paths.
 - Acceptance harness:
   - If `FEATURE_DIR/acceptance/` is missing, create it.
+  - Place feature-scoped executable checks under `FEATURE_DIR/acceptance/tests/` (or `FEATURE_DIR/acceptance/run.sh`).
   - Translate behavior described in `FEATURE_DIR/FEATURE.md` into executable checks.
   - Use scenarios described in `FEATURE.md` (including Gherkin blocks) as authoritative behavior.
   - Preserve scenario IDs/titles in test names/markers/comments for traceability.

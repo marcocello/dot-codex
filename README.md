@@ -2,7 +2,7 @@
 
 Minimal structure around Codex to make autonomous development predictable.
 
-The human defines the target: a feature spec (`features/<id>/FEATURE.md`), constraints, and what “done” means at a high level. When asked to generate acceptance coverage, Codex translates behavior described in `FEATURE.md` (including any Gherkin scenarios) into executable black-box tests under the feature folder. Those tests become the concrete definition of success.
+The human defines the target: a feature spec (`docs/features/<id>/FEATURE.md`), constraints, and what “done” means at a high level. When asked to generate acceptance coverage, Codex translates behavior described in `FEATURE.md` (including any Gherkin scenarios) into executable black-box tests under the feature folder. Those tests become the concrete definition of success.
 
 Codex then implements the necessary code, updates tests as needed, runs commands, fixes failures, and iterates until all checks pass. Correctness is enforced by scripts, not by the model.
 

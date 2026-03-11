@@ -2,7 +2,7 @@
 
 ## Feature Path
 - Work is driven by a single feature directory: `FEATURE_DIR`.
-- The user or orchestrator provides `FEATURE_DIR` (e.g. `features/001-todo-api`).
+- The user or orchestrator provides `FEATURE_DIR` (e.g. `docs/features/todo-api`).
 - Source of truth:
   - `FEATURE_DIR/FEATURE.md`
   - optional: `FEATURE_DIR/notes.*`
@@ -47,11 +47,19 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 ## Deterministic checks (authoritative)
 - Repo gate: `$HOME/.codex/scripts/gate`
 - Feature acceptance: `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`
-- Do not claim done unless both pass.
+- Required checks:
+  - Always run repo gate.
+  - Run feature acceptance when a concrete `FEATURE_DIR` is in scope.
+- Do not claim done unless all required checks pass.
 
 ## Tests (required)
 - Add/extend repo tests that are run by the gate (pytest/unit/integration as appropriate).
 - If acceptance tests are missing, use `prompts/acceptance.md` to derive and generate them from `FEATURE.md`.
+- BDD-first scenario authoring:
+  - Treat `FEATURE.md` scenarios as the canonical behavior contract.
+  - Write scenarios in valid Gherkin with `Feature`, `Scenario`/`Scenario Outline`, `Given`, `When`, `Then` (and `And`/`But` when needed).
+  - Keep step wording black-box and domain-focused (no implementation details).
+  - Cover at least one happy path and the key edge/error paths.
 - Acceptance harness:
   - If `FEATURE_DIR/acceptance/` is missing, create it.
   - Translate behavior described in `FEATURE_DIR/FEATURE.md` into executable checks.
@@ -60,7 +68,10 @@ If the current repository contains `docs/ARCHITECTURE.md`:
   - Prefer `FEATURE_DIR/acceptance/tests/` (pytest) or `FEATURE_DIR/acceptance/run.sh`.
 - For spec-driven acceptance refinement outputs:
   - Keep `FEATURE.md` as the source-of-truth feature document.
-  - Keep `FEATURE.md` less schematic: title + feature description minimum; optional user stories and Gherkin scenarios.
+  - Keep `FEATURE.md` concise and behavior-first.
+  - Prefer no separate `## Description` section.
+  - Use Gherkin scenarios as the default BDD artifact for feature behavior.
+  - Include at least one happy-path scenario and key edge/error scenarios.
   - Put Gherkin scenarios in `FEATURE.md` (not in `FEATURE_DIR/acceptance/features/`).
   - Keep `FEATURE_DIR/acceptance/` for executable test code only.
 - No cheating:

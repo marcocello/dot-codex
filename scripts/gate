@@ -61,7 +61,13 @@ if [[ "$HAS_PY" -eq 1 ]]; then
   fi
 
   "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
-  "$PY" -m pytest -q
+  # Ignore embedded worktrees/snapshots that may contain unrelated repos and dependencies.
+  "$PY" -m pytest -q \
+    --ignore=worktrees \
+    --ignore=archived_sessions \
+    --ignore=.venv \
+    --ignore=vendor_imports \
+    --ignore=tmp
 fi
 
 # --- Node (repo root package.json only; deterministic) ---

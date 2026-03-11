@@ -1,6 +1,7 @@
 # Acceptance Fix Prompt (Feature-Scoped)
 
 You are working on one feature directory: FEATURE_DIR.
+Example feature directory: `docs/features/todo-api`.
 
 Source of truth:
 - FEATURE_DIR/FEATURE.md
@@ -12,7 +13,10 @@ Goal:
 Rules:
 - If `FEATURE_DIR/acceptance/` is missing, create it.
 - Translate behavior from `FEATURE_DIR/FEATURE.md` into executable checks.
-- If `FEATURE.md` includes Given/When/Then scenarios, mirror them in setup/action/assertion structure.
+- Use `FEATURE.md` as the BDD source of truth:
+  - Keep scenarios in valid Gherkin (`Feature`, `Scenario`/`Scenario Outline`, `Given/When/Then`).
+  - Mirror each scenario in setup/action/assertion structure.
+  - Mirror each `Scenario Outline` with parameterized acceptance checks.
 - Use red/green TDD for acceptance behavior changes:
   - Red: ensure at least one relevant acceptance check fails before code changes.
   - Green: implement the smallest fix and make that same check pass.

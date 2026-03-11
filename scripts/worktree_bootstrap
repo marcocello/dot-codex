@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: worktree_bootstrap [--source-root <path>] [--target-root <path>] [--skip-install]
+
+Bootstraps a worktree by:
+  1) Copying app/.env from source repo root to target repo root
+  2) Creating .venv in target repo root if missing
+  3) Installing Python dependencies from app/requirements*.txt when present
+EOF
+}
+
+SOURCE_ROOT=""
+TARGET_ROOT="$(pwd)"
+SKIP_INSTALL=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --source-root)
+      SOURCE_ROOT="$2"
+      shift 2
+      ;;
+    --target-root)
+      TARGET_ROOT="$2"
+      shift 2
+      ;;
+    --skip-install)
+      SKIP_INSTALL=1
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+TARGET_ROOT="$(cd "$TARGET_ROOT" && pwd)"
+
+if [[ -z "$SOURCE_ROOT" ]]; then
+  if ! git -C "$TARGET_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "ERROR: --source-root was not provided and target is not a git worktree." >&2
+    exit 2
+  fi
+
+  COMMON_DIR="$(git -C "$TARGET_ROOT" rev-parse --git-common-dir)"
+  if [[ "$COMMON_DIR" != /* ]]; then
+    COMMON_DIR="$(cd "$TARGET_ROOT" && cd "$COMMON_DIR" && pwd)"
+  fi
+
+  SOURCE_ROOT="$(cd "$COMMON_DIR/.." && pwd)"
+fi
+
+SOURCE_ROOT="$(cd "$SOURCE_ROOT" && pwd)"
+SOURCE_ENV="$SOURCE_ROOT/app/.env"
+TARGET_ENV="$TARGET_ROOT/app/.env"
+
+if [[ ! -f "$SOURCE_ENV" ]]; then
+  echo "ERROR: source .env not found at $SOURCE_ENV" >&2
+  exit 2
+fi
+
+mkdir -p "$TARGET_ROOT/app"
+cp "$SOURCE_ENV" "$TARGET_ENV"
+echo "Copied $SOURCE_ENV -> $TARGET_ENV"
+
+VENV_DIR="$TARGET_ROOT/.venv"
+PY_BIN="$VENV_DIR/bin/python"
+PIP_BIN="$VENV_DIR/bin/pip"
+
+if [[ ! -x "$PY_BIN" ]]; then
+  python3 -m venv "$VENV_DIR"
+  echo "Created virtualenv at $VENV_DIR"
+else
+  echo "Virtualenv already exists at $VENV_DIR"
+fi
+
+if [[ "$SKIP_INSTALL" -eq 1 ]]; then
+  echo "Skipping requirements installation (--skip-install)"
+  exit 0
+fi
+
+first_existing() {
+  for p in "$@"; do
+    if [[ -f "$p" ]]; then
+      echo "$p"
+      return 0
+    fi
+  done
+  return 1
+}
+
+REQ_DEV_CANDIDATES=(
+  "$TARGET_ROOT/app/requirements-dev.txt"
+  "$TARGET_ROOT/app/requirements/dev.txt"
+  "$TARGET_ROOT/app/requirements/dev-requirements.txt"
+)
+
+REQ_CANDIDATES=(
+  "$TARGET_ROOT/app/requirements.txt"
+  "$TARGET_ROOT/app/requirements/base.txt"
+  "$TARGET_ROOT/app/requirements/prod.txt"
+)
+
+REQ_FILE="$(first_existing "${REQ_DEV_CANDIDATES[@]}" || true)"
+if [[ -z "$REQ_FILE" ]]; then
+  REQ_FILE="$(first_existing "${REQ_CANDIDATES[@]}" || true)"
+fi
+
+if [[ -n "$REQ_FILE" ]]; then
+  "$PIP_BIN" install -r "$REQ_FILE"
+  echo "Installed dependencies from $REQ_FILE"
+else
+  echo "No requirements file found under $TARGET_ROOT/app; skipped install."
+fi

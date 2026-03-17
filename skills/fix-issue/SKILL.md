@@ -1,5 +1,5 @@
 ---
-name: fixissue
+name: fix-issue
 description: Fix a clear issue with the smallest effective code change, regression tests, and verification. Use when the user asks to debug/fix an existing problem.
 metadata:
   short-description: Disciplined issue-fix workflow

@@ -1,6 +1,6 @@
 ---
 name: feature
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough idea (user story plus constraints). Use when the task is feature-spec authoring or refinement."
+description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases) before BDD scenarios. Use when the task is feature-spec authoring or refinement."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
@@ -16,12 +16,13 @@ This file is the source of truth for implementation and acceptance harness gener
 If missing, ask only the minimum necessary:
 
 - short title
-- user persona
+- user persona or core job-to-be-done
 - core workflow (happy path)
 - key constraints (must/avoid)
 - definition of done (observable behavior)
 
 Do NOT ask architecture questions unless strictly required.
+Subsequent questions are not mandatory and should be asked only when direction is unclear or a missing detail is blocking progress.
 
 ---
 
@@ -34,22 +35,30 @@ Do NOT ask architecture questions unless strictly required.
    - If not -> create directory and file
    - no numbering or date prefixes; just a clear slug
 
-2) Convert rough idea into:
+2) Run a discovery pass when the idea is incomplete:
+   - Write one JTBD statement (`When ... I want ... so that ...`)
+   - Map the end-to-end user journey (key steps only)
+   - Expand use-case coverage: happy path, key variants, edge cases, and failure/recovery cases
+   - Identify user roles and external integrations involved
+   - Record high-impact assumptions to validate
+   - Ask subsequent questions only when direction is unclear and discovery cannot continue safely
+
+3) Convert discovery into `FEATURE.md` behavior:
    - Clear feature title
    - Explicit, testable behavior
    - BDD scenarios as the default acceptance format
    - Gherkin scenarios as the canonical BDD artifact
    - Minimal constraints
 
-3) Keep acceptance behavior:
+4) Keep acceptance behavior:
    - Observable
    - Black-box
    - Deterministic
    - Suitable for automated testing
 
-4) Avoid:
+5) Avoid:
    - Internal implementation details
-   - Speculation
+   - Speculation without tagging assumptions
    - Over-engineering
    - Architecture decisions unless explicitly provided
    - Backward compatibility requirements unless explicitly requested
@@ -66,12 +75,23 @@ Do NOT ask architecture questions unless strictly required.
 - Include at least one happy-path scenario plus key edge/error scenarios
 - Use `Scenario Outline` + `Examples` when behavior is identical and only data varies
 - Do not add a separate `## Description` section unless explicitly requested
+- If discovery was needed, include `## Discovery Notes` with short bullets for:
+  - JTBD
+  - user journey coverage
+  - edge/failure coverage
+  - assumptions to validate
 
 ---
 
 ## FEATURE.md Template
 
 # <Feature title>
+
+## Discovery Notes (optional)
+- JTBD: <when / want / so that>
+- User journey: <step 1 -> step 2 -> ...>
+- Edge/failure coverage: <bullet list>
+- Assumptions to validate: <bullet list>
 
 ## Acceptance Scenarios
 Feature: <Behavioral capability>

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Review Architecture"
+  short_description: "State-of-the-art review architecture deep dive on a component's logic, implementation, security, cost, and bottlenecks."
+  default_prompt: "Review architecture for this component: run a deep dive on architectural, logical, and implementation choices; identify weaknesses, flaws, limitations, performance bottlenecks, security risks, and cost inefficiencies; return prioritized findings with root cause, evidence, confidence, and a staged remediation roadmap."
+policy:
+  allow_implicit_invocation: true

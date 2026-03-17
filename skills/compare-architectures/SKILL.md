@@ -1,5 +1,5 @@
 ---
-name: compare
+name: compare-architectures
 description: "Compare an existing architecture/solution against a specific reference and decide KEEP, PARTIAL ADOPT, or REPLACE with explicit migration steps. Use only when both current-state material and a concrete reference are provided."
 metadata:
   short-description: Optional user-facing description

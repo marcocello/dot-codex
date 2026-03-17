@@ -36,3 +36,6 @@ web_search = "live"
 
 [notice.model_migrations]
 gpt-5-codex = "gpt-5.3-codex"
+
+[features]
+multi_agent = false

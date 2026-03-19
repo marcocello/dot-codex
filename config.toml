@@ -39,3 +39,7 @@ gpt-5-codex = "gpt-5.3-codex"
 
 [features]
 multi_agent = false
+
+[mcp_servers.shadcn]
+command = "npx"
+args = ["shadcn@latest", "mcp"]

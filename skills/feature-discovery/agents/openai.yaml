@@ -1,6 +1,6 @@
 interface:
   display_name: "Feature Discovery"
-  short_description: "Expand rough feature ideas into full user journey and use-case coverage before implementation."
-  default_prompt: "I have a rough feature idea. Build a discovery canvas with JTBD, full user journey, use cases, edge/failure cases, roles, integrations, and V1/V2/V3 scope, then produce scenario seeds ready for docs/features/todo-api/FEATURE.md."
+  short_description: "Lean, dry, breadth-first feature discovery with concise acceptance scenarios."
+  default_prompt: "I have a rough feature idea. Produce a lean breadth-first discovery doc with a compact Discovery Canvas and concise Gherkin Acceptance Scenarios. Keep it dry, avoid bloat, and include only the highest-value edge/failure coverage."
 policy:
   allow_implicit_invocation: true

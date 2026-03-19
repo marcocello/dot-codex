@@ -75,16 +75,9 @@ Subsequent questions are not mandatory; ask them only when direction is unclear 
    - user/system impact
    - recommended change (minimal viable fix)
    - confidence
-3. Include this final structure:
-   - `## Deep Dive Summary`
-   - `## Architecture Model`
-   - `## Prioritized Findings`
-   - `## Benchmark Protocol`
-   - `## Bottleneck Table`
-   - `## Capacity Model`
-   - `## Threat Model`
-   - `## Remediation Roadmap`
-   - `## Open Risks and Unknowns`
+3. Return a single main section:
+   - `## Deep Dive Findings`
+4. Keep findings concise and technical. Include only the highest-value evidence and actions.
 
 ## Constraints
 - Be precise and technical; avoid generic advice.

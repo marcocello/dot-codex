@@ -1,13 +1,13 @@
 ---
 name: feature-discovery
-description: "Expand a rough feature idea into full problem-space coverage before coding: JTBD, user journey, use cases, edge/failure cases, roles, integrations, assumptions, and V1/V2/V3 scope cuts. Use when a user has an idea but lacks clarity on complete behavior."
+description: "Produce a lean, dry, breadth-first discovery document for a feature idea before coding. Use when the user needs fast clarity on journey coverage, key edge/failure paths, and a concise acceptance contract without bloated artifacts."
 metadata:
-  short-description: Discovery workflow for feature completeness
+  short-description: Lean discovery for feature completeness
 ---
 
-Purpose: turn a partial feature idea into a discovery artifact that is ready to merge into `FEATURE.md`.
+Purpose: turn a rough feature idea into a lean, dry, actionable document that covers behavior breadth without unnecessary sections.
 
-Use this before implementation when behavior coverage is unclear.
+Use this before implementation when direction is partially clear but coverage is incomplete.
 
 ---
 
@@ -17,7 +17,7 @@ Ask only for missing essentials:
 
 - feature idea/title
 - target user/persona
-- desired business or user outcome
+- desired user/business outcome
 - hard constraints (must/avoid)
 
 If details are still missing, proceed with explicit assumptions.
@@ -30,35 +30,24 @@ Subsequent questions are not mandatory and should be asked only when direction i
 1) Frame the job-to-be-done
    - Write one JTBD statement: `When ... I want ... so that ...`
 
-2) Map the user journey
-   - List the end-to-end journey in ordered steps
-   - Keep steps user-visible and domain-focused
+2) Map user journey breadth
+   - List only key user-visible steps end-to-end
+   - Keep journey compact and outcome-focused
 
-3) Expand use-case coverage
-   - Happy path
-   - Key variants
-   - Edge cases
-   - Failure and recovery cases
+3) Expand coverage minimally
+   - Capture core happy path
+   - Capture highest-risk variants/edge cases/failure cases
+   - Avoid duplicate phrasing across sections
 
-4) Identify opportunity areas
-   - User pain/friction points along the journey
-   - Candidate solution options for each high-impact pain
+4) Lock a concise behavior contract
+   - Convert stable findings directly into Gherkin `Acceptance Scenarios`
+   - Keep black-box wording and implementation-agnostic steps
 
-5) Define operating context
-   - User roles interacting with the feature
-   - Integration dependencies and external systems
-   - Assumptions and unknowns that need validation
-
-6) Slice delivery scope
-   - V1: smallest valuable slice
-   - V2: important capability expansion
-   - V3: advanced/optimization scope
-
-7) Prepare merge-ready output
-   - If a feature directory is provided, map findings into `docs/features/<feature-id-slug>/FEATURE.md`
-   - Preserve concise, behavior-first wording
-   - Convert stable findings into Gherkin acceptance scenarios
-   - Ask subsequent questions only when direction is unclear and the discovery cannot proceed safely
+5) Keep output lean
+   - Discovery Canvas max 8 bullets total
+   - Acceptance Scenarios max 6 scenarios total (4 core + 2 edge/failure)
+   - One-line bullets when possible
+   - Scenario Seeds are optional and only added when explicitly requested
 
 ---
 
@@ -71,20 +60,25 @@ Return concise Markdown with this shape:
 ## Discovery Canvas
 - JTBD: <statement>
 - User journey: <step 1 -> step 2 -> ...>
-- Use cases: <happy path + variants>
-- Edge cases: <list>
-- Failure and recovery: <list>
-- Roles: <list>
-- Integrations: <list>
-- Assumptions to validate: <list>
-- Scope cuts: V1 / V2 / V3
+- Core use cases: <short bullets>
+- Edge/failure focus: <short bullets>
+- Roles/integrations (only if relevant): <short bullets>
+- Assumptions to validate: <short bullets>
+- Scope cut (V1 first): <one line>
 
-## Scenario Seeds
-- <black-box scenario statement 1>
-- <black-box scenario statement 2>
-- <key error-path scenario statement>
+## Acceptance Scenarios
+Feature: <Behavioral capability>
+  In order to <goal>
+  As a <user>
+  I want <capability>
+
+  Scenario: <Core behavior>
+    Given <context>
+    When <action>
+    Then <observable result>
 
 Constraints:
 - Keep language implementation-agnostic
 - Focus on observable behavior
-- Prefer completeness of behavior space over solution detail
+- Prefer breadth coverage over verbose prose
+- Keep the document lean and dry

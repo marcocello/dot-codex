@@ -3,9 +3,7 @@
 ## Feature Path
 - Work is driven by a single feature directory: `FEATURE_DIR`.
 - The user or orchestrator provides `FEATURE_DIR` (e.g. `docs/features/todo-api`).
-- Source of truth:
-  - `FEATURE_DIR/FEATURE.md`
-  - optional: `FEATURE_DIR/notes.*`
+- Source of truth: `FEATURE_DIR/FEATURE.md`
 - If `FEATURE_DIR` is missing, ask once: “What is the feature directory?” Then proceed.
 
 ## Project Architecture (Optional)
@@ -31,6 +29,28 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 ## Quality
 - Correctness > clarity > consistency > DRY
 - Prefer explicit code over cleverness.
+
+## Hard Limits
+- Target limits for newly written or modified code:
+  - ≤100 lines per function.
+  - Cyclomatic complexity ≤8 where tooling exists.
+  - ≤5 positional parameters.
+  - 100-character line width unless project tooling is stricter.
+- If a limit cannot be met without worse design, state the reason and keep scope tight.
+
+## Zero-Warning Standard
+- Treat warnings as defects in touched scope.
+- Fix warnings from linters, type checkers, compilers, and test runners.
+- If a warning must remain, add a local ignore with a one-line justification.
+
+## Review Order
+- Review in this order: architecture → code quality → tests → performance.
+- For findings, include concrete impact and file:line references.
+
+## Dependency Hygiene
+- When adding or upgrading dependencies, use current stable versions and pin explicitly unless ecosystem conventions prevent it.
+- Run stack-appropriate dependency/security audits when dependencies change.
+- Do not add dependencies when existing stdlib or current repo patterns are sufficient.
 
 ## Red/Green TDD (mandatory)
 - Use red/green TDD for implementation and bug fixes.

@@ -27,3 +27,6 @@ worktrees/
 sqlite/
 tmp/
 vendor_imports/
+automations
+docs
+tests

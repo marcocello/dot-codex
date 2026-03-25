@@ -20,6 +20,8 @@
 
 # 4. Block some directories and files
 *.git
+**/.venv/
+**/log
 skills/.system/
 sessions/
 shell_snapshots/
@@ -30,3 +32,5 @@ vendor_imports/
 automations
 docs
 tests
+archived_sessions
+.*_cache

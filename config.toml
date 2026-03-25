@@ -11,39 +11,6 @@ web_search = "disabled"
 [projects."/Users/marcocello/software/marcocello"]
 trust_level = "trusted"
 
-# ---- Optional: Profiles ----
-[profiles.yolo]
-# Explicit full-access profile for trusted environments only.
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-web_search = "live"
-
-[profiles.strict]
-# Reproducible default profile: no live web search.
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-web_search = "disabled"
-model_reasoning_effort = "high"
-
-[profiles.research]
-# Research profile: explicitly enables live web search.
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-web_search = "live"
-model_reasoning_effort = "high"
-
-[profiles.press]
-# Very deterministic mode for orchestration runs
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-web_search = "disabled"
-model_reasoning_effort = "high"
-
-[profiles.readonly]
-approval_policy = "never"
-sandbox_mode = "read-only"
-web_search = "live"
-
 [notice.model_migrations]
 gpt-5-codex = "gpt-5.3-codex"
 

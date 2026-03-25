@@ -45,11 +45,16 @@ PY=".venv/bin/python"
 
 "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
 
-# Run only feature-scoped tests if directory exists
-if [[ -d "$FEATURE_DIR/acceptance" ]]; then
-  "$PY" -m pytest -q "$FEATURE_DIR/acceptance"
+# Feature contract and harness are mandatory when feature is in scope.
+[[ -f "$FEATURE_DIR/FEATURE.md" ]] || fail "missing feature contract: $FEATURE_DIR/FEATURE.md"
+[[ -d "$FEATURE_DIR/acceptance" ]] || fail "missing acceptance directory: $FEATURE_DIR/acceptance"
+
+if [[ -d "$FEATURE_DIR/acceptance/tests" ]]; then
+  "$PY" -m pytest -q "$FEATURE_DIR/acceptance/tests"
+elif [[ -x "$FEATURE_DIR/acceptance/run.sh" ]]; then
+  "$FEATURE_DIR/acceptance/run.sh"
 else
-  echo "INFO: no acceptance directory found for feature; skipping."
+  fail "acceptance harness missing: add $FEATURE_DIR/acceptance/tests or executable $FEATURE_DIR/acceptance/run.sh"
 fi
 
 echo "ACCEPTANCE: PASS"

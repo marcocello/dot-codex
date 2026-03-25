@@ -2,13 +2,10 @@ model = "gpt-5.3-codex"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
-# Run freely in workspace, but only prompt if something fails
-# (matches Codex "full-auto" pattern)  [oai_citation:6‡npm](https://www.npmjs.com/package/%40openai/codex/v/0.13.0?utm_source=chatgpt.com)
+# Safer default: write only inside workspace by default.
 approval_policy = "never"
-sandbox_mode = "danger-full-access"
-
-# Keep web search on if you like. (Just know it can reduce reproducibility.)
-web_search = "live"
+sandbox_mode = "workspace-write"
+web_search = "disabled"
 
 # Explicit trusted repos
 [projects."/Users/marcocello/software/marcocello"]
@@ -16,17 +13,30 @@ trust_level = "trusted"
 
 # ---- Optional: Profiles ----
 [profiles.yolo]
-# Use ONLY in a container / docker sandbox / disposable VM.
-# "YOLO mode" = no approvals + full access  [oai_citation:7‡Docker Documentation](https://docs.docker.com/ai/sandboxes/agents/codex/?utm_source=chatgpt.com)
+# Explicit full-access profile for trusted environments only.
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 web_search = "live"
+
+[profiles.strict]
+# Reproducible default profile: no live web search.
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+web_search = "disabled"
+model_reasoning_effort = "high"
+
+[profiles.research]
+# Research profile: explicitly enables live web search.
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+web_search = "live"
+model_reasoning_effort = "high"
 
 [profiles.press]
 # Very deterministic mode for orchestration runs
 approval_policy = "never"
 sandbox_mode = "workspace-write"
-web_search = "live"
+web_search = "disabled"
 model_reasoning_effort = "high"
 
 [profiles.readonly]

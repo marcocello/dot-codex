@@ -30,8 +30,10 @@ if [[ ! -x "$PY" ]]; then
   python3 -m venv "$VENV"
 fi
 
-# Upgrade base tooling
-"$PIP" install -U pip setuptools wheel >/dev/null
+# Upgrade base tooling (best-effort in offline environments)
+if ! "$PIP" install -U pip setuptools wheel >/dev/null; then
+  echo "WARNING: could not update pip/setuptools/wheel (likely offline). Continuing with current versions." >&2
+fi
 
 first_existing() {
   for p in "$@"; do
@@ -76,9 +78,37 @@ else
 fi
 
 # Ensure baseline tools needed by gate
-echo "Ensuring baseline tooling (pytest, ruff)..."
-"$PIP" install -U pytest ruff >/dev/null
+echo "Ensuring baseline tooling (pytest, ruff, mypy, pip-audit)..."
+if ! "$PIP" install -U pytest ruff mypy pip-audit >/dev/null; then
+  echo "WARNING: could not install baseline tooling (likely offline). Verifying existing environment." >&2
+fi
 
 echo "== ensure_venv: done =="
 "$PY" -c "import sys; print('python', sys.version.split()[0])"
-"$PY" -c "import pytest, ruff; print('pytest', pytest.__version__); print('ruff', ruff.__version__)"
+"$PY" - <<'PY'
+from importlib.metadata import PackageNotFoundError, version
+import importlib
+
+required_modules = ("pytest", "mypy")
+missing = [name for name in required_modules if importlib.util.find_spec(name) is None]
+
+for name in required_modules:
+    if name in missing:
+        continue
+    mod = importlib.import_module(name)
+    mod_version = getattr(mod, "__version__", version(name))
+    print(f"{name} {mod_version}")
+
+try:
+    print(f"ruff {version('ruff')}")
+except PackageNotFoundError:
+    missing.append("ruff")
+
+try:
+    print(f"pip-audit {version('pip-audit')}")
+except PackageNotFoundError:
+    print("WARNING: pip-audit not available; dependency audits will fail when manifests change.")
+
+if missing:
+    raise SystemExit(f"missing required tooling in .venv: {', '.join(missing)}")
+PY

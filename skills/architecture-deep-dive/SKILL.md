@@ -1,11 +1,11 @@
 ---
-name: review-architecture
+name: architecture-deep-dive
 description: "Review the architecture of a specific codebase component with a state-of-the-art deep-dive method: analyze architectural, logical, and implementation choices to identify weaknesses, flaws, limitations, and performance bottlenecks. Use when precise, evidence-based component assessment is requested before refactoring or scaling decisions."
 metadata:
   short-description: Deep component architecture and performance analysis
 ---
 
-# Review Architecture
+# Architecture Deep Dive
 
 Purpose: produce a precise, evidence-based architectural assessment for one component of a codebase.
 

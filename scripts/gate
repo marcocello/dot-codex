@@ -47,18 +47,23 @@ if [[ "$HAS_PY" -eq 1 ]]; then
 
   PY=".venv/bin/python"
 
-  if "$PY" -c "import ruff" >/dev/null 2>&1; then
-    "$PY" -m ruff format --check .
-    "$PY" -m ruff check .
-  else
-    echo "INFO: ruff not installed in .venv; skipping ruff"
-  fi
+  "$PY" -c "import ruff" >/dev/null 2>&1 || fail "ruff not installed in .venv. Run: $HOME/.codex/scripts/ensure_venv"
+  "$PY" -m ruff format --check .
+  "$PY" -m ruff check .
 
-  if "$PY" -c "import mypy" >/dev/null 2>&1; then
-    "$PY" -m mypy .
-  else
-    echo "INFO: mypy not installed in .venv; skipping mypy"
-  fi
+  "$PY" -c "import mypy" >/dev/null 2>&1 || fail "mypy not installed in .venv. Install with: .venv/bin/python -m pip install mypy"
+  MYPY_TARGETS=()
+  for target in app scripts tests lovejoy.py press.py; do
+    if [[ -f "$target" ]]; then
+      MYPY_TARGETS+=("$target")
+      continue
+    fi
+    if [[ -d "$target" ]] && find "$target" -type f \( -name "*.py" -o -name "*.pyi" \) | head -n 1 | grep -q .; then
+      MYPY_TARGETS+=("$target")
+    fi
+  done
+  [[ "${#MYPY_TARGETS[@]}" -gt 0 ]] || fail "mypy target set is empty; expected python files under app/, scripts/, tests/, or top-level tools."
+  "$PY" -m mypy "${MYPY_TARGETS[@]}"
 
   "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
   # Ignore embedded worktrees/snapshots that may contain unrelated repos and dependencies.
@@ -68,6 +73,27 @@ if [[ "$HAS_PY" -eq 1 ]]; then
     --ignore=.venv \
     --ignore=vendor_imports \
     --ignore=tmp
+
+  # Run dependency audit only when python dependency manifests changed.
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    CHANGED_FILES="$(
+      {
+        git diff --name-only HEAD
+        git ls-files --others --exclude-standard
+      } | sort -u
+    )"
+  else
+    CHANGED_FILES=""
+  fi
+
+  if echo "$CHANGED_FILES" | grep -Eq '^(app/requirements(-dev)?\.txt|requirements(-dev)?\.txt|poetry\.lock|uv\.lock)$'; then
+    "$PY" -c "import pip_audit" >/dev/null 2>&1 || fail "pip-audit not installed in .venv. Install with: .venv/bin/python -m pip install pip-audit"
+    echo "== gate: pip-audit =="
+    # Audit current environment because manifest changes imply dependency risk changes.
+    "$PY" -m pip_audit
+  else
+    echo "INFO: no python dependency manifest changes; skipping pip-audit"
+  fi
 fi
 
 # --- Node (repo root package.json only; deterministic) ---

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintainability Review"
+  short_description: "Deep audit of function quality, verbosity, and maintainability"
+  default_prompt: "Review this codebase with a deep function-level analysis: assess how functions are written, classify verbosity, flag intertwined concerns, and return prioritized lean refactors."

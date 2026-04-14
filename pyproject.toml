@@ -2,9 +2,11 @@
 line-length = 100
 exclude = [
   ".git",
+  ".tmp",
   ".venv",
   "worktrees",
   "archived_sessions",
+  "plugins/cache",
   "vendor_imports",
   "tmp",
 ]
@@ -19,4 +21,4 @@ max-complexity = 8
 python_version = "3.13"
 ignore_missing_imports = true
 warn_unused_ignores = true
-exclude = '(^worktrees/|^archived_sessions/|^vendor_imports/|^tmp/)'
+exclude = '(^\\.tmp/|^worktrees/|^archived_sessions/|^plugins/cache/|^vendor_imports/|^tmp/)'

@@ -1,6 +1,6 @@
 ---
 name: feature
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases) before BDD scenarios. Use when the task is feature-spec authoring or refinement."
+description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases) before BDD scenarios. Use when the task is feature-spec authoring or refinement. Use the `research` skill when important product, domain, or API assumptions need external evidence."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
@@ -28,35 +28,43 @@ Subsequent questions are not mandatory and should be asked only when direction i
 
 ## Behavior
 
-1) Determine feature directory:
+1) Load repo-level context when present:
+   - Read `docs/APP.md` if it exists.
+   - Read `docs/ARCHITECTURE.md` if it exists.
+   - Read `docs/CONVENTIONS.md` if it exists.
+   - Read `docs/TESTING.md` if it exists.
+
+2) Determine feature directory:
    - `docs/features/<feature-id-slug>/`
    - Slug format: lowercase words separated by hyphens (for example `docs/features/todo-api/`)
    - If it exists -> update `FEATURE.md`
    - If not -> create directory and file
    - no numbering or date prefixes; just a clear slug
 
-2) Run a discovery pass when the idea is incomplete:
+3) Run a discovery pass when the idea is incomplete:
    - Write one JTBD statement (`When ... I want ... so that ...`)
    - Map the end-to-end user journey (key steps only)
    - Expand use-case coverage: happy path, key variants, edge cases, and failure/recovery cases
    - Identify user roles and external integrations involved
    - Record high-impact assumptions to validate
+   - Use `research` when high-impact assumptions depend on external APIs, framework behavior,
+     domain rules, or competitive/product evidence
    - Ask subsequent questions only when direction is unclear and discovery cannot continue safely
 
-3) Convert discovery into `FEATURE.md` behavior:
+4) Convert discovery into `FEATURE.md` behavior:
    - Clear feature title
    - Explicit, testable behavior
    - BDD scenarios as the default acceptance format
    - Gherkin scenarios as the canonical BDD artifact
    - Minimal constraints
 
-4) Keep acceptance behavior:
+5) Keep acceptance behavior:
    - Observable
    - Black-box
    - Deterministic
    - Suitable for automated testing
 
-5) Avoid:
+6) Avoid:
    - Internal implementation details
    - Speculation without tagging assumptions
    - Over-engineering

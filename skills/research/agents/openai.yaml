@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research"
+  short_description: "Gather external evidence with Context7 first and live web search only when needed."
+  default_prompt: "Investigate this question using Context7 first and official docs where possible. Use live web search only if the question cannot be answered from repo context or Context7, then summarize the findings and the implication for docs/APP.md, docs/ARCHITECTURE.md, or FEATURE.md."
+policy:
+  allow_implicit_invocation: true

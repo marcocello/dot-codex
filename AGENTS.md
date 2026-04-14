@@ -5,6 +5,38 @@
 - The user or orchestrator provides `FEATURE_DIR` (e.g. `docs/features/todo-api`).
 - Source of truth: `FEATURE_DIR/FEATURE.md`
 - If `FEATURE_DIR` is missing, ask once: “What is the feature directory?” Then proceed.
+- Exception: when `app-to-features` is explicitly used for greenfield bootstrap, it may create
+  `docs/APP.md`, optionally `docs/ARCHITECTURE.md`, and multiple `docs/features/<slug>/FEATURE.md`
+  files. After that bootstrap step, return to the normal single-`FEATURE_DIR` workflow.
+
+## Repo Bootstrap (Mandatory)
+- For any repository without a `.git/` directory, initialize it first with `git init`.
+- In that same bootstrap step, create a root `.gitignore` in whitelist mode when missing.
+- Use this exact starter content for new repo `.gitignore` files:
+
+```gitignore
+## From https://jasonstitt.com/gitignore-whitelisting-patterns
+
+# 1. Ignore everything
+*
+
+# 2. But descend into directories
+!*/
+
+# 3. Allow specific files and file extensions
+!.gitignore
+!*.md
+...
+
+# 4. Block some directories and files
+*.git
+**/.venv
+**/.mypy_cache
+**/.pytest_cache
+**/.ruff_cache
+**/.terraform*
+...
+```
 
 ## Project Architecture (Optional)
 If the current repository contains `docs/ARCHITECTURE.md`:
@@ -112,5 +144,4 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 - If you use one, state which repo and what pattern you reused (1 line).
 
 ## Output token
-- When handing control back, end with exactly: `READY`
 - If blocked: `NEED_INPUT: <question>` or `BLOCKED: <reason>`

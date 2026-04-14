@@ -33,8 +33,14 @@ fi
 if [[ "$HAS_PY" -eq 1 ]]; then
   echo "== gate: python detected =="
 
-  # Enforce your backend layout
-  [[ -d "app" ]] || fail "Expected backend code under ./app (missing app/ directory)"
+  APP_DIR=""
+  for candidate in app backend/app; do
+    if [[ -d "$candidate" ]]; then
+      APP_DIR="$candidate"
+      break
+    fi
+  done
+  [[ -n "$APP_DIR" ]] || fail "Expected backend code under ./app or ./backend/app (missing directory)"
 
   # Catch common failure: pip installed packages into repo root (fastapi/, pytest/, etc.)
   if [[ -d "fastapi" || -d "pytest" ]]; then
@@ -53,7 +59,7 @@ if [[ "$HAS_PY" -eq 1 ]]; then
 
   "$PY" -c "import mypy" >/dev/null 2>&1 || fail "mypy not installed in .venv. Install with: .venv/bin/python -m pip install mypy"
   MYPY_TARGETS=()
-  for target in app scripts tests lovejoy.py press.py; do
+  for target in "$APP_DIR" scripts tests lovejoy.py press.py; do
     if [[ -f "$target" ]]; then
       MYPY_TARGETS+=("$target")
       continue
@@ -62,7 +68,7 @@ if [[ "$HAS_PY" -eq 1 ]]; then
       MYPY_TARGETS+=("$target")
     fi
   done
-  [[ "${#MYPY_TARGETS[@]}" -gt 0 ]] || fail "mypy target set is empty; expected python files under app/, scripts/, tests/, or top-level tools."
+  [[ "${#MYPY_TARGETS[@]}" -gt 0 ]] || fail "mypy target set is empty; expected python files under app/ or backend/app, scripts/, tests/, or top-level tools."
   "$PY" -m mypy "${MYPY_TARGETS[@]}"
 
   "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
@@ -86,7 +92,7 @@ if [[ "$HAS_PY" -eq 1 ]]; then
     CHANGED_FILES=""
   fi
 
-  if echo "$CHANGED_FILES" | grep -Eq '^(app/requirements(-dev)?\.txt|requirements(-dev)?\.txt|poetry\.lock|uv\.lock)$'; then
+  if echo "$CHANGED_FILES" | grep -Eq '^(app/requirements(-dev)?\.txt|backend/app/requirements(-dev)?\.txt|requirements(-dev)?\.txt|poetry\.lock|uv\.lock)$'; then
     "$PY" -c "import pip_audit" >/dev/null 2>&1 || fail "pip-audit not installed in .venv. Install with: .venv/bin/python -m pip install pip-audit"
     echo "== gate: pip-audit =="
     # Audit current environment because manifest changes imply dependency risk changes.

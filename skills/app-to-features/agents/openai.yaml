@@ -1,0 +1,6 @@
+interface:
+  display_name: "App To Features"
+  short_description: "Sharpen a greenfield app idea, research uncertain assumptions, and split it into a small series of feature specs."
+  default_prompt: "Take this overall app description, use the research skill when assumptions need evidence, create or update docs/APP.md, write docs/ARCHITECTURE.md only if it is explicit enough to be authoritative, then use the feature skill to materialize a small series of docs/features/<slug>/FEATURE.md files."
+policy:
+  allow_implicit_invocation: true

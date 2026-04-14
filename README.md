@@ -14,9 +14,17 @@ Determinism comes from two scripts. These scripts decide success.
     `$HOME/.codex/scripts/gate` runs repo-wide checks such as linting, tests, and builds.
     `$HOME/.codex/scripts/acceptance --feature <dir>` runs feature-scoped black-box tests derived from `FEATURE.md`.
 
-Orchestration in this repo is script-driven (`scripts/gate`, `scripts/acceptance`, `scripts/ensure_venv`). No in-repo `press.py` wrapper is currently present.
+Workflow guidance in this repo is skill-driven. Validation is script-driven
+(`scripts/gate`, `scripts/acceptance`, `scripts/ensure_venv`). No in-repo orchestrator is present.
 
 Specs define intent. Acceptance tests define “done.” Architecture defines structure. Scripts define correctness. Codex produces code.
+
+Repo-level context lives in lightweight docs:
+- `docs/APP.md` for overall app or project context
+- `docs/ARCHITECTURE.md` for authoritative architecture
+- optional `docs/CONVENTIONS.md` and `docs/TESTING.md` for repo-level guidance
+
+These docs help Codex reason better without turning the repo into a workflow engine.
 
 ## Operator Guide
 
@@ -53,10 +61,23 @@ codex --search "your prompt here"
   - Runs feature-scoped acceptance checks.
   - Fails if `FEATURE.md` is missing.
   - Fails if acceptance harness is missing.
+- `skills/feature-execute`
+  - Drives feature delivery with red/green TDD and deterministic checks.
+- `skills/acceptance-author`
+  - Translates `FEATURE.md` behavior into executable acceptance tests.
+- `skills/auto-improve`
+  - Repairs failing gate or acceptance checks with bounded, minimal fixes.
+- `skills/research`
+  - Gathers external evidence with Context7 first and live web search only when the task needs it.
 
 ### 4) Skills currently available
+- `feature-execute`: implement one feature end-to-end inside Codex App
+- `acceptance-author`: generate or repair feature acceptance coverage from `FEATURE.md`
+- `auto-improve`: repair failing gate or acceptance checks with bounded fixes
+- `research`: gather external docs and evidence before committing to assumptions
+- `app-to-features`: greenfield bootstrap that creates `docs/APP.md`, optional repo docs, and
+  multiple feature specs before returning to normal single-feature work
 - `feature`: create/update `docs/features/<id>/FEATURE.md`
-- `feature-discovery`: quick breadth-first discovery before coding
 - `fix-issue`: minimal corrective change with regression checks
 - `python-backend`: backend layering + pytest discipline
 - `frontend`: React/Next.js UI implementation discipline
@@ -65,31 +86,46 @@ codex --search "your prompt here"
 - `maintainability-review`: codebase maintainability and function-quality audit
 
 ### 5) Standard workflow (day-to-day)
-1. Define feature directory and spec:
+1. Optional greenfield bootstrap:
+```bash
+codex "Use the app-to-features skill for this app idea"
+```
+2. Define feature directory and spec:
 ```bash
 mkdir -p docs/features/<feature-id>
 $EDITOR docs/features/<feature-id>/FEATURE.md
 ```
-2. Prepare toolchain:
+3. Prepare toolchain:
 ```bash
 ./scripts/ensure_venv
 ```
-3. Implement with Codex (default mode):
+4. Create or refine the feature spec in Codex:
 ```bash
-codex "Implement docs/features/<feature-id>/FEATURE.md"
+codex "Use the feature skill for docs/features/<feature-id>"
 ```
-4. Validate repo:
+5. If discovery needs external evidence, run a focused research pass:
+```bash
+codex --search "Use the research skill to gather evidence for docs/features/<feature-id>"
+```
+6. If acceptance is missing, add it explicitly:
+```bash
+codex "Use the acceptance-author skill for docs/features/<feature-id>"
+```
+7. Implement with Codex:
+```bash
+codex "Use the feature-execute skill for docs/features/<feature-id>"
+```
+8. Validate repo:
 ```bash
 $HOME/.codex/scripts/gate
 ```
-5. Validate feature:
+9. Validate feature:
 ```bash
 $HOME/.codex/scripts/acceptance --feature docs/features/<feature-id>
 ```
-6. If a check fails, run a focused fix pass:
+10. If a check fails, run a focused fix pass:
 ```bash
-codex "Fix gate failures only. Do not add scope."
-codex "Fix acceptance for docs/features/<feature-id> only."
+codex "Use the auto-improve skill for docs/features/<feature-id>"
 ```
 
 ### 6) What “good” looks like
@@ -97,7 +133,6 @@ codex "Fix acceptance for docs/features/<feature-id> only."
 - Red/green evidence exists for the changed behavior.
 - `gate` passes.
 - feature `acceptance` passes.
-- Final handoff ends with `READY`.
 
 # Acknowledgments
 

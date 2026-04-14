@@ -1,6 +1,0 @@
-interface:
-  display_name: "Feature Discovery"
-  short_description: "Lean, dry, breadth-first feature discovery with concise acceptance scenarios."
-  default_prompt: "I have a rough feature idea. Produce a lean breadth-first discovery doc with a compact Discovery Canvas and concise Gherkin Acceptance Scenarios. Keep it dry, avoid bloat, and include only the highest-value edge/failure coverage."
-policy:
-  allow_implicit_invocation: true

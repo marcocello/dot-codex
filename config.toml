@@ -1,4 +1,4 @@
-model = "gpt-5.3-codex"
+model = "gpt-5.4"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
@@ -6,10 +6,6 @@ personality = "pragmatic"
 approval_policy = "never"
 sandbox_mode = "workspace-write"
 web_search = "disabled"
-
-# Explicit trusted repos
-[projects."/Users/marcocello/software/marcocello"]
-trust_level = "trusted"
 
 [notice.model_migrations]
 gpt-5-codex = "gpt-5.3-codex"
@@ -20,3 +16,16 @@ multi_agent = false
 [mcp_servers.shadcn]
 command = "npx"
 args = ["shadcn@latest", "mcp"]
+
+[mcp_servers.shadcn.tools.search_items_in_registries]
+approval_mode = "approve"
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp", "--api-key", "ctx7sk-2a90cb6e-6d37-4943-81ce-10f659e47a39"]
+
+[sandbox_workspace_write]
+network_access = true
+
+[plugins."github@openai-curated"]
+enabled = true

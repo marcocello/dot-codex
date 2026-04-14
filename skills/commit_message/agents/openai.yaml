@@ -1,0 +1,6 @@
+interface:
+  display_name: "Commit Message"
+  short_description: "Draft a conventional commit message from the latest local changes."
+  default_prompt: "Inspect the latest local changes and draft a simple Conventional Commit message without committing."
+policy:
+  allow_implicit_invocation: true

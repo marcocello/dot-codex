@@ -5,7 +5,7 @@ personality = "pragmatic"
 # Safer default: write only inside workspace by default.
 approval_policy = "never"
 sandbox_mode = "workspace-write"
-web_search = "disabled"
+web_search = "enabled"
 
 [notice.model_migrations]
 gpt-5-codex = "gpt-5.3-codex"

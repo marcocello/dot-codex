@@ -11,21 +11,24 @@ Purpose: self-correct after a failed implementation attempt without introducing 
 orchestrator.
 
 ## Workflow
-1) Run the authoritative checks
+1) Prepare the environment
+   - Use `prepare-environment` if dependencies, env files, or command prefixes are not known-good.
+
+2) Run the authoritative checks
    - Run `$HOME/.codex/scripts/gate`.
    - If a concrete `FEATURE_DIR` is in scope, run
      `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`.
 
-2) Isolate the smallest failing scope
+3) Isolate the smallest failing scope
    - Prefer the narrowest failing test, file, or validation command.
    - Do not broaden the repair beyond the actual failure.
 
-3) Repair with bounded loops
+4) Repair with bounded loops
    - Use a bounded retry approach.
    - Make one small fix at a time.
    - Re-run the narrowest failing check after each fix.
 
-4) Re-run the authoritative checks
+5) Re-run the authoritative checks
    - Re-run gate.
    - Re-run feature acceptance when the feature is in scope.
 

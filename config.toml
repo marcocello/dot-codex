@@ -1,11 +1,11 @@
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
 # Safer default: write only inside workspace by default.
 approval_policy = "never"
 sandbox_mode = "workspace-write"
-web_search = "enabled"
+web_search = "live"
 
 [notice.model_migrations]
 gpt-5-codex = "gpt-5.3-codex"

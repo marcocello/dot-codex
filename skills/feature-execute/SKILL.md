@@ -24,21 +24,25 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Use `frontend` when React or Next.js UI work is in scope.
    - Use `fix-issue` for small corrective changes.
 
-4) Ensure acceptance coverage exists
+4) Prepare the environment
+   - Use `prepare-environment` before running tests, gates, acceptance, package installs,
+     dev servers, or framework CLIs.
+
+5) Ensure acceptance coverage exists
    - If `FEATURE_DIR/acceptance/` is missing or incomplete, use `acceptance-author` first.
    - Do not continue broad implementation without the required acceptance harness.
 
-5) Use red/green TDD
+6) Use red/green TDD
    - Add or update the smallest relevant test.
    - Confirm it fails before implementation.
    - Make the smallest code change.
    - Confirm the same test passes after implementation.
 
-6) Validate
+7) Validate
    - Run `$HOME/.codex/scripts/gate`.
    - Run `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`.
 
-7) Escalate only on failure
+8) Escalate only on failure
    - If gate or acceptance fails, use `auto-improve`.
    - Keep fixes within the smallest failing scope.
 

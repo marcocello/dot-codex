@@ -1,0 +1,8 @@
+interface:
+  display_name: "Prepare Environment"
+  short_description: "Prepare repo environments before implementation work."
+  default_prompt: >-
+    Use $prepare-environment to inspect this repository and prepare the local
+    environment before running tests or implementation.
+policy:
+  allow_implicit_invocation: true

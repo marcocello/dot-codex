@@ -40,13 +40,10 @@ metadata:
   - Write black-box tests hitting actual endpoints
 - Translate behavior described in `FEATURE.md` into executable checks
 
-## Virtualenv policy
-- If Python is detected:
-  - `.venv/` at repo root is required
-  - Never delete `.venv`
-  - Prefer incremental repair
-  - If available, use `$HOME/.codex/scripts/ensure_venv`
-- All Python tools must be run via `.venv/bin/python -m <tool>`
+## Environment
+- Before running Python tooling, use `prepare-environment`.
+- Treat `prepare-environment` as the source of truth for `.venv`, dependency install,
+  `.env` location, and command-prefix policy.
 
 ## Reference repos (Python backend)
 Use only if current repo lacks a needed pattern.

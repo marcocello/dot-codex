@@ -24,6 +24,8 @@ metadata:
 - Ensure layout works on desktop and mobile
 
 ## Implementation rules
+- Before installing packages, starting dev servers, or running frontend checks, use
+  `prepare-environment`.
 - Reuse existing components before creating new ones
 - Follow existing lint/build conventions
 - No large refactors unless required

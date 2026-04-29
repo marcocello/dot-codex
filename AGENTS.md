@@ -9,35 +9,6 @@
   `docs/APP.md`, optionally `docs/ARCHITECTURE.md`, and multiple `docs/features/<slug>/FEATURE.md`
   files. After that bootstrap step, return to the normal single-`FEATURE_DIR` workflow.
 
-## Repo Bootstrap (Mandatory)
-- For any repository without a `.git/` directory, initialize it first with `git init`.
-- In that same bootstrap step, create a root `.gitignore` in whitelist mode when missing.
-- Use this exact starter content for new repo `.gitignore` files:
-
-```gitignore
-## From https://jasonstitt.com/gitignore-whitelisting-patterns
-
-# 1. Ignore everything
-*
-
-# 2. But descend into directories
-!*/
-
-# 3. Allow specific files and file extensions
-!.gitignore
-!*.md
-...
-
-# 4. Block some directories and files
-*.git
-**/.venv
-**/.mypy_cache
-**/.pytest_cache
-**/.ruff_cache
-**/.terraform*
-...
-```
-
 ## Project Architecture (Optional)
 If the current repository contains `docs/ARCHITECTURE.md`:
 - Treat it as authoritative project architecture.
@@ -132,11 +103,10 @@ If the current repository contains `docs/ARCHITECTURE.md`:
   - Don’t delete/loosen tests to get green.
   - Tests must contain real assertions.
 
-## Python virtualenv (only if Python detected)
-- If Python is detected anywhere in the repo, `.venv/` at repo root is required.
-- Never delete `.venv`. Prefer incremental repair.
-- If available, use `$HOME/.codex/scripts/ensure_venv`.
-- Run python tooling via `.venv/bin/python -m <tool>` (no shell activation assumptions).
+## Environment preparation
+- Use `skills/prepare-environment` as the single source of truth for stack setup.
+- Delegate Python, React/Node, PHP, Laravel, WordPress, `.env`, dependency install,
+  and command-prefix decisions to that skill instead of duplicating setup rules here.
 
 ## References (skill-scoped)
 - Reference repos are defined inside skills (Python backend, frontend, infra).

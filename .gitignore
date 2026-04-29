@@ -32,11 +32,6 @@ vendor_imports/
 automations
 docs
 tests
-!tests/
-tests/*
-!tests/unit/
-tests/unit/*
-!tests/unit/test_prepare_environment_skill.py
 archived_sessions
 .*_cache
 plugins/cache

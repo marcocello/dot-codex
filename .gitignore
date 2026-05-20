@@ -30,24 +30,3 @@
 *.git
 **/.venv/
 skills/.system/
-# sessions/
-# shell_snapshots/
-# worktrees/
-# sqlite/
-# tmp/
-# vendor_imports/
-# automations
-# docs
-# tests
-# archived_sessions
-# .*_cache
-# plugins/cache
-# .tmp
-
-# **/__pycache__/
-# *.py[cod]
-# .DS_Store
-# config.toml
-# environments/
-# skills/.system/
-# /skills/.system

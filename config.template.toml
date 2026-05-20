@@ -1,0 +1,63 @@
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+
+# Safer default: write inside the workspace and selected local repos.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "live"
+
+[notice.model_migrations]
+gpt-5-codex = "gpt-5.3-codex"
+
+[features]
+multi_agent = false
+
+[mcp_servers.shadcn]
+command = "npx"
+args = ["shadcn@latest", "mcp"]
+
+[mcp_servers.shadcn.tools.search_items_in_registries]
+approval_mode = "approve"
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+
+[mcp_servers.context7.env]
+CONTEXT7_API_KEY = "replace-me"
+
+[sandbox_workspace_write]
+network_access = true
+writable_roots = ["/path/to/your/workspace"]
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[marketplaces.openai-bundled]
+last_updated = "2026-05-19T22:02:31Z"
+source_type = "local"
+source = "/path/to/codex/marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-19T08:38:39Z"
+source_type = "local"
+source = "/path/to/codex/plugins/openai-primary-runtime"
+
+[projects."/path/to/your/workspace/example-project"]
+trust_level = "trusted"
+
+[projects."/path/to/another/project"]
+trust_level = "trusted"

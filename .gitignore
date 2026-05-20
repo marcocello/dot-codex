@@ -30,3 +30,4 @@
 *.git
 **/.venv/
 skills/.system/
+config.toml

@@ -4,7 +4,13 @@
 - Work is driven by a single feature directory: `FEATURE_DIR`.
 - The user or orchestrator provides `FEATURE_DIR` (e.g. `docs/features/todo-api`).
 - Source of truth: `FEATURE_DIR/FEATURE.md`
-- If `FEATURE_DIR` is missing, ask once: “What is the feature directory?” Then proceed.
+- If `FEATURE_DIR` is not explicitly provided, resolve it autonomously:
+  - First inspect `docs/features/*/FEATURE.md` for a clear match to the user's request.
+  - If exactly one existing feature clearly matches, use that directory as `FEATURE_DIR`.
+  - If no existing feature clearly matches, create `docs/features/<request-slug>/FEATURE.md`
+    from the request and use that new directory as `FEATURE_DIR`.
+  - Ask for input only when multiple existing feature directories plausibly match and choosing one
+    would materially change scope, or when the repository cannot be inspected/updated.
 - Exception: when `app-to-features` is explicitly used for greenfield bootstrap, it may create
   `docs/APP.md`, optionally `docs/ARCHITECTURE.md`, and multiple `docs/features/<slug>/FEATURE.md`
   files. After that bootstrap step, return to the normal single-`FEATURE_DIR` workflow.
@@ -70,7 +76,9 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 ## Deterministic checks (authoritative)
 - Repo gate: `$HOME/.codex/scripts/gate`
 - Feature acceptance: `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`
-- Required checks:
+- Exception: when working inside the `dot-codex` configuration repo itself, do not run repo gate
+  or feature acceptance unless the user explicitly asks for those commands.
+- Required checks for target app repos:
   - Always run repo gate.
   - Run feature acceptance when a concrete `FEATURE_DIR` is in scope.
 - Do not claim done unless all required checks pass.
@@ -79,6 +87,13 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 - Add/extend repo tests that are run by the gate (pytest/unit/integration as appropriate).
 - Place repo-level tests under `tests/` (for example `tests/unit/` or `tests/integration/`).
 - If acceptance tests are missing, use `prompts/acceptance.md` to derive and generate them from `FEATURE.md`.
+- Acceptance tests must exercise public system boundaries instead of implementation internals:
+  - API features must call real HTTP endpoints with a normal HTTP client.
+  - Non-API backend behavior must be triggered through public commands, workers, scheduled jobs,
+    files, queues, or equivalent external boundaries.
+  - Do not import application internals from `app`, `backend`, `src`, `server`, or `api`.
+  - Do not use mocks, monkeypatching, in-process route clients, or direct function calls for
+    feature acceptance.
 - BDD-first scenario authoring:
   - Treat `FEATURE.md` scenarios as the canonical behavior contract.
   - Write scenarios in valid Gherkin with `Feature`, `Scenario`/`Scenario Outline`, `Given`, `When`, `Then` (and `And`/`But` when needed).
@@ -112,6 +127,21 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 - Reference repos are defined inside skills (Python backend, frontend, infra).
 - Use reference repos only when the matching skill is active and current repo lacks a pattern.
 - If you use one, state which repo and what pattern you reused (1 line).
+
+## Commit Messages
+- When asked to generate a commit message, read the actual changes first:
+  - Prefer `git diff --staged` for staged commits.
+  - Use `git diff` as well when unstaged changes are part of the requested scope.
+  - Include untracked files only when the user asks to include them or they are clearly part of
+    the change.
+- Use a best-practice Conventional Commits format:
+  - Subject: `<type>(<scope>): <imperative summary>`
+  - Keep the subject concise, specific, and under 72 characters when practical.
+  - Use `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `build`, `ci`, `chore`, or `revert`.
+  - Add a body when it helps reviewers understand what changed and why.
+  - Add footers for breaking changes, issue references, or migration notes.
+- Prefer accurate, change-specific wording over generic summaries.
+- Do not invent intent, issue numbers, or external context not present in the diff or user request.
 
 ## Output token
 - If blocked: `NEED_INPUT: <question>` or `BLOCKED: <reason>`

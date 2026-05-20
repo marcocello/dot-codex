@@ -4,35 +4,50 @@
 *
 
 # 2. But descend into directories
-!*/
+!/docs/
+!/docs/**/
+
+!/prompts/
+
+!/scripts/
+
+!/skills/
+!/skills/**/
+
+!/tests/
+!/tests/**/
 
 # 3. Allow specific files and file extensions
 !.gitignore
 !*.md
-!*.tf
 !*.py
-!*.md
 !*.toml
-!scripts/*
-!.agents/
-!.agents/skills
-!skills/*/agents/openai.yaml
+!*.ini
+!*.yaml
+!*.sh
 
 # 4. Block some directories and files
 *.git
 **/.venv/
-**/log
 skills/.system/
-sessions/
-shell_snapshots/
-worktrees/
-sqlite/
-tmp/
-vendor_imports/
-automations
-docs
-tests
-archived_sessions
-.*_cache
-plugins/cache
-.tmp
+# sessions/
+# shell_snapshots/
+# worktrees/
+# sqlite/
+# tmp/
+# vendor_imports/
+# automations
+# docs
+# tests
+# archived_sessions
+# .*_cache
+# plugins/cache
+# .tmp
+
+# **/__pycache__/
+# *.py[cod]
+# .DS_Store
+# config.toml
+# environments/
+# skills/.system/
+# /skills/.system

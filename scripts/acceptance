@@ -49,7 +49,108 @@ PY=".venv/bin/python"
 [[ -f "$FEATURE_DIR/FEATURE.md" ]] || fail "missing feature contract: $FEATURE_DIR/FEATURE.md"
 [[ -d "$FEATURE_DIR/acceptance" ]] || fail "missing acceptance directory: $FEATURE_DIR/acceptance"
 
+lint_pytest_acceptance() {
+  "$PY" - "$FEATURE_DIR" <<'PY'
+import ast
+import sys
+from pathlib import Path
+
+
+def fail(message: str) -> None:
+    print(f"ACCEPTANCE: FAIL: {message}", file=sys.stderr)
+    raise SystemExit(1)
+
+
+def dotted_name(node: ast.AST) -> str:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        parent = dotted_name(node.value)
+        if parent:
+            return f"{parent}.{node.attr}"
+    return ""
+
+
+feature_dir = Path(sys.argv[1])
+feature_text = feature_dir.joinpath("FEATURE.md").read_text(encoding="utf-8").lower()
+tests_dir = feature_dir / "acceptance" / "tests"
+test_files = sorted(tests_dir.rglob("*.py"))
+
+if not test_files:
+    fail(f"acceptance harness missing pytest files under {tests_dir}")
+
+first_party_roots = {"app", "backend", "src", "server", "api"}
+api_terms = ("api", "endpoint", "http", "request", "route", "rest", "graphql")
+http_terms = (
+    "requests.",
+    "httpx.",
+    "urllib.request",
+    "aiohttp.",
+    "http.client",
+    "httplib2.",
+)
+http_import_roots = {"requests", "httpx", "aiohttp", "httplib2"}
+http_call_roots = ("requests", "httpx", "urllib.request", "aiohttp", "http.client", "httplib2")
+mock_terms = ("unittest.mock", "pytest-mock", "monkeypatch", "mock.")
+
+api_feature = any(term in feature_text for term in api_terms)
+http_boundary_seen = False
+assert_count = 0
+violations: list[str] = []
+
+for path in test_files:
+    source = path.read_text(encoding="utf-8")
+    source_lower = source.lower()
+    http_boundary_seen = http_boundary_seen or any(term in source_lower for term in http_terms)
+
+    if any(term in source_lower for term in mock_terms):
+        violations.append(f"{path}: acceptance tests must not use mocks")
+
+    try:
+        tree = ast.parse(source, filename=str(path))
+    except SyntaxError as exc:
+        fail(f"invalid pytest acceptance file {path}: {exc}")
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assert):
+            assert_count += 1
+        if isinstance(node, ast.Import):
+            imported_names = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            imported_names = [node.module or ""]
+        else:
+            continue
+
+        for imported_name in imported_names:
+            root = imported_name.split(".", 1)[0]
+            if root in http_import_roots or imported_name == "urllib.request":
+                http_boundary_seen = True
+            if root in first_party_roots:
+                violations.append(
+                    f"{path}: imports {imported_name}; "
+                    "acceptance tests must use public boundaries"
+                )
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        call_name = dotted_name(node.func)
+        if any(call_name == root or call_name.startswith(f"{root}.") for root in http_call_roots):
+            http_boundary_seen = True
+
+if assert_count == 0:
+    fail("acceptance tests must contain real assertions")
+
+if violations:
+    fail("; ".join(violations))
+
+if api_feature and not http_boundary_seen:
+    fail("API acceptance must call the real API endpoint through an HTTP client boundary")
+PY
+}
+
 if [[ -d "$FEATURE_DIR/acceptance/tests" ]]; then
+  lint_pytest_acceptance
   "$PY" -m pytest -q "$FEATURE_DIR/acceptance/tests"
 elif [[ -x "$FEATURE_DIR/acceptance/run.sh" ]]; then
   "$FEATURE_DIR/acceptance/run.sh"

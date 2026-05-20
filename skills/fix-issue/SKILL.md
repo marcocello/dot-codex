@@ -45,6 +45,13 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
    - Do not commit unless explicitly instructed by the user.
    - Do not push, open PRs, update changelogs, or close issues unless explicitly instructed.
 
+## Behavioral Baseline
+- Think before changing code: reproduce the issue or name the missing evidence before editing.
+- Simplicity first: fix the observed issue without speculative cleanup or broader redesign.
+- Surgical changes: change only the failing path and remove only artifacts introduced by the fix.
+- Goal-driven execution: connect the fix to the regression test or verification command that proves
+  the issue is resolved.
+
 ## Output
 - Output final code only unless explanation is explicitly requested.
 - Keep comments minimal; explain WHY, not WHAT.

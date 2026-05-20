@@ -64,7 +64,13 @@ Subsequent questions are not mandatory and should be asked only when direction i
    - Deterministic
    - Suitable for automated testing
 
-6) Avoid:
+6) Keep optional change notes local:
+   - For larger brownfield changes, optionally create `FEATURE_DIR/change.md` for intent,
+     non-goals, design notes, and task checklist details.
+   - FEATURE.md remains the authoritative behavior contract.
+   - Do not require `FEATURE_DIR/change.md` for small features or bug fixes.
+
+7) Avoid:
    - Internal implementation details
    - Speculation without tagging assumptions
    - Over-engineering

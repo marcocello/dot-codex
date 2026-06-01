@@ -1,0 +1,4 @@
+interface:
+  display_name: "Casual Message Rewriter"
+  short_description: "Rewrite text like a casual human message"
+  default_prompt: "Use $casual-message-rewriter to make this sound casual and natural."

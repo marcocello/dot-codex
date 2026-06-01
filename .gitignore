@@ -25,6 +25,8 @@
 !*.ini
 !*.yaml
 !*.sh
+!scripts/gate
+!docs/presentations/*.html
 
 # 4. Block some directories and files
 *.git

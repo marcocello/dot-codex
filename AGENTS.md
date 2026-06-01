@@ -24,6 +24,20 @@ If the current repository contains `docs/ARCHITECTURE.md`:
 - Only read `docs/ARCHITECTURE.md` if it exists in the current repo.
 - Do not search other repos for architecture documents.
 
+## Default Greenfield Architecture
+When bootstrapping a greenfield application and no repository architecture overrides it:
+- Use a React frontend.
+- The frontend talks to the backend through APIs; do not couple frontend code to backend
+  internals.
+- The repo root contains `backend/`, `frontend/`, and `docs/`.
+- Inside `backend/`, use `app/`, `deployment/`, and `pipelines/`, yielding `backend/app`,
+  `backend/deployment`, and `backend/pipelines`.
+- Inside `frontend/`, use `app/`, `deployment/`, and `pipelines/`, yielding `frontend/app`,
+  `frontend/deployment`, and `frontend/pipelines`.
+- Delegate backend framework, service layering, and API implementation details to the
+  python-backend skill.
+- Delegate frontend starter, component system, and UI baseline choices to the frontend skill.
+
 ## Living Documentation
 - Keep `FEATURE_DIR/FEATURE.md` updated whenever implemented behavior changes or expands during the conversation.
 - If an implementation introduces an architectural change, update `docs/ARCHITECTURE.md` in the same change.

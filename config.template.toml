@@ -2,8 +2,8 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
-# Safer default: write inside the workspace and selected local repos.
-approval_policy = "on-request"
+# Default to no approval prompts; blocked commands should fail instead of asking.
+approval_policy = "never"
 sandbox_mode = "workspace-write"
 web_search = "live"
 

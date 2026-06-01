@@ -8,7 +8,7 @@ metadata:
 ## Scope
 - Applies when:
   - The feature affects backend logic
-  - Python project detected (pyproject.toml / requirements.txt)
+  - Python project detected (`backend/pyproject.toml`, `backend/requirements.txt`, or equivalent)
   - FastAPI / service-layer architecture is in use
 
 ## Architecture expectations
@@ -18,8 +18,9 @@ metadata:
 - Keep business logic out of routes
 
 ## Implementation rules
-- Application code must be located in `app/` folder
-- `requirements.txt` must be located in `app/` folder
+- In the default greenfield layout, backend application code lives in `backend/app`.
+- Backend dependency and tool configuration files live under `backend/` unless repo docs provide a
+  different established layout.
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly
 - Smallest change that satisfies the feature

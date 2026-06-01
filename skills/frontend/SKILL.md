@@ -15,6 +15,20 @@ metadata:
 - UI components -> hooks/state -> API client -> shared utils
 - No business logic inside UI components
 - Keep components focused and composable
+- In the default greenfield layout, frontend application code lives in `frontend/app`.
+
+## Default UI baseline
+- Preserve an existing repo design system when one is already established.
+- For new React/Next.js frontend work with no existing design system, use `shadcn/ui` by default.
+- When the task requires creating a frontend and the user/repo does not specify a different
+  starter, clone [satnaing/shadcn-admin](https://github.com/satnaing/shadcn-admin) as the default
+  UI baseline and modify that cloned codebase as the frontend baseline.
+- Do not recreate a generic shadcn app from scratch when this default applies; adapt the cloned
+  `satnaing/shadcn-admin` project in place.
+- If `frontend/app` is missing or has no existing frontend package, clone before adding package
+  scaffolding, tests, routes, or UI files. Clone the baseline into `frontend/app` first, then make
+  feature changes inside that cloned codebase.
+- Do not create a minimal Vite, Next.js, or generic React skeleton when the default clone applies.
 
 ## Design principles
 - Avoid generic “AI-safe” layouts

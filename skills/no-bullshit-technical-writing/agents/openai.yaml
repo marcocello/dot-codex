@@ -1,0 +1,6 @@
+interface:
+  display_name: "No-Bullshit Technical Writing"
+  short_description: "Write clear, useful pieces that show competence."
+  default_prompt: "Use $no-bullshit-technical-writing to draft a clear, useful piece for my website that demonstrates competence without over-technical language."
+policy:
+  allow_implicit_invocation: true

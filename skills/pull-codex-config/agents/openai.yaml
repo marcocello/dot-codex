@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pull Codex Config"
+  short_description: "Safely update this Codex config repo"
+  default_prompt: "Use $pull-codex-config to pull the latest marcocello/dot-codex configuration."

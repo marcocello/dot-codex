@@ -75,6 +75,15 @@ When bootstrapping a greenfield application and no repository architecture overr
 - Run stack-appropriate dependency/security audits when dependencies change.
 - Do not add dependencies when existing stdlib or current repo patterns are sufficient.
 
+## Secret-Bearing Deployment Files
+- Preserve existing secret values when editing deployment YAML, Kubernetes manifests, Helm values,
+  Kustomize overlays, `.env` files, and CI/CD deployment files.
+- Do not replace them with placeholders such as `secret`, `REDACTED`, or `<secret>` while writing
+  files. Redaction is for user-facing output only, not for persisted file edits.
+- If a missing secret value is required to complete an edit, ask for the source of truth or leave
+  the existing reference intact; do not invent, normalize, or decode secret data.
+- Do not print raw secret values in responses, logs, or command summaries.
+
 ## Red/Green TDD (mandatory)
 - Use red/green TDD for implementation and bug fixes.
 - Red phase:

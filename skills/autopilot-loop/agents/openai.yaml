@@ -1,0 +1,10 @@
+interface:
+  display_name: "Autopilot Loop"
+  short_description: "Run bounded Codex loops, scheduled automations, and cron-safe checks."
+  default_prompt: >-
+    Use the $autopilot-loop skill to turn this recurring or keep-going Codex workflow into a
+    bounded, verified automation plan. Prefer Codex App automations when available, keep destructive
+    actions forbidden, isolate background work in a branch or worktree, and include audit and
+    verification steps.
+policy:
+  allow_implicit_invocation: true

@@ -151,17 +151,28 @@ When bootstrapping a greenfield application and no repository architecture overr
 - Use reference repos only when the matching skill is active and current repo lacks a pattern.
 - If you use one, state which repo and what pattern you reused (1 line).
 
-## Commit Messages
+## Local Commits
 - When asked to generate a commit message, read the actual changes first:
   - Prefer `git diff --staged` for staged commits.
   - Use `git diff` as well when unstaged changes are part of the requested scope.
   - Include untracked files only when the user asks to include them or they are clearly part of
     the change.
+- When asked to commit locally:
+  - Stage selected files with explicit paths; do not use `git add .`.
+  - Create a local commit only after inspecting the staged diff.
+  - Do not push unless the user explicitly asks for push behavior.
 - Use a best-practice Conventional Commits format:
   - Subject: `<type>(<scope>): <imperative summary>`
-  - Keep the subject concise, specific, and under 72 characters when practical.
+  - Keep the subject clear enough for a reviewer scanning history to understand the actual change.
+  - Keep the subject concise, specific, and under 72 characters; prefer 50-60 when clarity
+    allows.
   - Use `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `build`, `ci`, `chore`, or `revert`.
-  - Add a body when it helps reviewers understand what changed and why.
+  - Avoid vague summaries such as `update changes`, `fix stuff`, `misc cleanup`, or
+    `improve code`.
+  - Default to a subject, blank line, and one compact paragraph explaining why the change matters.
+  - Omit the body only when the user explicitly asks for a subject-only answer.
+  - Draft one honest commit message when staged changes span multiple concerns; use the body to
+    explain the grouped changes.
   - Add footers for breaking changes, issue references, or migration notes.
 - Prefer accurate, change-specific wording over generic summaries.
 - Do not invent intent, issue numbers, or external context not present in the diff or user request.

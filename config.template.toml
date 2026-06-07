@@ -2,16 +2,23 @@ model = "gpt-5.5"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 
-approval_policy = "never"
+approval_policy = "on-request"
 sandbox_mode = "workspace-write"
+approvals_reviewer = "auto_review"
 web_search = "live"
+
+notify = ["/path/to/local/notification-client", "turn-ended"]
 
 [sandbox_workspace_write]
 network_access = true
-writable_roots = ["/path/to/your/workspace/example-project1", "/path/to/your/workspace/example-project2", "/path/to/your/workspace/example-project3"]
+writable_roots = [
+    "/path/to/your/workspace/example-project",
+    "/path/to/your/local/state",
+]
 
 [features]
 multi_agent = false
+js_repl = false
 
 [mcp_servers.shadcn]
 command = "npx"
@@ -19,4 +26,55 @@ args = ["shadcn@latest", "mcp"]
 
 [mcp_servers.context7]
 command = "npx"
-args = ["-y", "@upstash/context7-mcp", "--api-key", "xx..."]
+args = ["-y", "@upstash/context7-mcp", "--api-key", "your-context7-api-key"]
+
+[mcp_servers.node_repl]
+args = ["/path/to/node-repl-server.js"]
+command = "node"
+startup_timeout_sec = 30
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/path/to/node_modules"
+NODE_REPL_NODE_PATH = "/path/to/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/path/to/trusted/code"
+CODEX_HOME = "/path/to/codex/home"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "browser-client-sha256-placeholder"
+BROWSER_USE_AVAILABLE_BACKENDS = "browser,chrome"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Use for local browser automation."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Use for existing Chrome session automation."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "stable"
+BROWSER_USE_CODEX_APP_VERSION = "0.0.0"
+CODEX_CLI_PATH = "/path/to/codex"
+
+[marketplaces.openai-bundled]
+last_updated = "2026-01-01T00:00:00Z"
+source_type = "local"
+source = "/path/to/local/openai-bundled-marketplace"
+
+[projects."/path/to/your/workspace/example-project"]
+trust_level = "trusted"
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
+enabled = true
+
+[desktop]
+appearanceLightCodeThemeId = "vscode-plus"
+preventSleepWhileRunning = true
+
+[desktop.appearanceLightChromeTheme]
+accent = "#007acc"
+contrast = 45
+ink = "#000000"
+opaqueWindows = false
+surface = "#ffffff"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#008000"
+diffRemoved = "#ee0000"
+skill = "#0000ff"

@@ -64,6 +64,7 @@ enabled = true
 [desktop]
 appearanceLightCodeThemeId = "vscode-plus"
 preventSleepWhileRunning = true
+git-commit-instructions = "Use Conventional Commits. Keep the subject clear, specific, lowercase, imperative, and under 72 chars; prefer 50-60 when clarity allows. Add one short body paragraph after a blank line to explain why the change matters. If changes span multiple concerns, draft one honest message and explain the grouped changes. Avoid vague summaries. Stage selected files only; never push."
 
 [desktop.appearanceLightChromeTheme]
 accent = "#007acc"

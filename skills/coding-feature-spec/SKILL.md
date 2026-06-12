@@ -1,5 +1,5 @@
 ---
-name: feature
+name: coding-feature-spec
 description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases), BDD scenarios, and feature queue updates. Use when the task is feature-spec authoring or refinement. Use the `research` skill when important product, domain, or API assumptions need external evidence."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow

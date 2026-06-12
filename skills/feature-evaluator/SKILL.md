@@ -1,6 +1,6 @@
 ---
 name: feature-evaluator
-description: Evaluate whether a completed feature or issue fix is actually done using a read-only skeptical review, deterministic checks, acceptance coverage review, and clear PASS/FAIL/BLOCKED output. Use after feature-execute, fix-issue, auto-improve, or autopilot-loop before marking work complete.
+description: Evaluate whether a completed feature or issue fix is actually done using a read-only skeptical review, deterministic checks, acceptance coverage review, and clear PASS/FAIL/BLOCKED output. Use after feature-execute, fix-issue, auto-improve, or autonomous-execute before marking work complete.
 metadata:
   short-description: Read-only skeptical feature judge
 ---
@@ -68,5 +68,5 @@ Required next action:
 
 ## Handoff
 - If `PASS`, the caller may mark the feature queue item as `passing`.
-- If `FAIL`, the caller should use `autopilot-loop` or `auto-improve` for bounded repair.
+- If `FAIL`, the caller should use `autonomous-execute` or `auto-improve` for bounded repair.
 - If `BLOCKED`, do not mark done; report the exact blocker.

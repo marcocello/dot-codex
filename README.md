@@ -36,7 +36,8 @@ The manual entry point for one ready feature is still:
 codex "Use the feature-execute skill for docs/features/<feature-id>"
 ```
 
-For autonomous multi-feature work, create or update the queue first, then run `autopilot-loop`.
+For autonomous multi-feature work, create or update the queue first, then run
+`autonomous-execute`.
 
 ## Core Artifacts
 - `AGENTS.md`: global engineering discipline and safety rules.
@@ -62,15 +63,15 @@ For autonomous multi-feature work, create or update the queue first, then run `a
 - `fix-issue`: fixes a clear defect with regression coverage.
 - `feature-evaluator`: read-only skeptical judge. Returns `PASS`, `FAIL`, or `BLOCKED`.
 - `auto-improve`: repairs the smallest failing check.
-- `autopilot-loop`: turns queue or repair work into a bounded Codex Goal plus loop discipline. It
-  is not cron and not a daemon.
+- `autonomous-execute`: turns queue or repair work into a bounded Codex Goal. It is not cron, a
+  scheduler, or a daemon.
 
 ## Greenfield Workflow
 1. Describe the app.
 2. Use `app-to-features`.
 3. Review the generated `docs/APP.md`, `docs/ARCHITECTURE.md`, feature specs, and
    `docs/features/status.json`.
-4. Use `autopilot-loop` to execute the queue.
+4. Use `autonomous-execute` to execute the queue.
 5. Codex repeatedly:
    - selects one feature with `feature-queue`
    - ensures acceptance exists
@@ -85,14 +86,14 @@ For autonomous multi-feature work, create or update the queue first, then run `a
 1. Describe one or more changes.
 2. Use `feature` to create or refine one `FEATURE.md` per coherent behavior change.
 3. Use `feature-queue` to add those features to `docs/features/status.json`.
-4. Use `autopilot-loop` for the same execution path as greenfield.
+4. Use `autonomous-execute` for the same execution path as greenfield.
 
 Brownfield and greenfield intentionally converge after feature creation.
 
 For either path, the autonomous form is:
 
 ```text
-Use autopilot-loop to set a Codex Goal for the queue, then keep executing one FEATURE_DIR at a
+Use autonomous-execute to set a Codex Goal for the queue, then keep executing one FEATURE_DIR at a
 time until all items are passing or the remaining items are blocked with concrete reasons.
 ```
 

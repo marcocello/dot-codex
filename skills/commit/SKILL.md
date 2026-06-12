@@ -86,7 +86,7 @@ Describe the sign-in behavior now covered and why the fallback matters for users
 ```
 
 ```text
-feat(skills): add automation and commit guidance
+feat(skills): add autonomous execution guidance
 
-Add bounded autopilot workflow guidance and commit-message defaults so Codex can run repeatable checks and draft reviewer-friendly commit messages.
+Add Goal-based execution guidance and commit-message defaults so Codex can run repeatable checks and draft reviewer-friendly commit messages.
 ```

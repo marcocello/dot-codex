@@ -1,6 +1,6 @@
 ---
 name: fix-issue
-description: Fix a clear issue with the smallest effective code change, regression tests, verification, and automatic autopilot-loop escalation when bounded repeated repair is needed. Use when the user asks to debug/fix an existing problem.
+description: Fix a clear issue with the smallest effective code change, regression tests, verification, and automatic autonomous-execute escalation when bounded repeated repair is needed. Use when the user asks to debug/fix an existing problem.
 metadata:
   short-description: Disciplined issue-fix workflow
 ---
@@ -50,9 +50,9 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
    - Do not commit unless explicitly instructed by the user.
    - Do not push, open PRs, update changelogs, or close issues unless explicitly instructed.
 
-8) Automatically use `autopilot-loop` for repeated repair
+8) Automatically use `autonomous-execute` for repeated repair
    - If the regression test, narrow verification command, or relevant broader check is still
-     failing after the first focused fix attempt, automatically use `autopilot-loop`.
+     failing after the first focused fix attempt, automatically use `autonomous-execute`.
    - Do not wait for a separate user request.
    - Use this stop condition: the regression test and relevant verification pass, or the same
      blocker repeats three times.
@@ -61,8 +61,8 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
      the narrowest failing check before any broader check.
    - Use `feature-evaluator` after each repair pass when a feature contract or user-visible workflow
      is in scope.
-   - Do not start cron, scheduled automations, or background work unless the user explicitly asks
-     for recurring or unattended execution.
+   - Do not start schedulers or background work unless the user explicitly asks for recurring or
+     unattended execution.
 
 ## Behavioral Baseline
 - Think before changing code: reproduce the issue or name the missing evidence before editing.
@@ -70,8 +70,8 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
 - Surgical changes: change only the failing path and remove only artifacts introduced by the fix.
 - Goal-driven execution: connect the fix to the regression test or verification command that proves
   the issue is resolved.
-- `autopilot-loop` is an automatic bounded escalation path for stubborn failures, not permission to
-  broaden scope or introduce a repo-local orchestrator.
+- `autonomous-execute` is an automatic bounded escalation path for stubborn failures, not
+  permission to broaden scope or introduce a repo-local orchestrator.
 
 ## Output
 - Output final code only unless explanation is explicitly requested.

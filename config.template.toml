@@ -63,6 +63,9 @@ enabled = true
 [plugins."clickup@openai-curated"]
 enabled = true
 
+[plugins."prospecting@dot-codex-local"]
+enabled = true
+
 [desktop]
 appearanceLightCodeThemeId = "vscode-plus"
 preventSleepWhileRunning = true

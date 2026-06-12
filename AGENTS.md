@@ -15,6 +15,32 @@
   `docs/APP.md`, optionally `docs/ARCHITECTURE.md`, and multiple `docs/features/<slug>/FEATURE.md`
   files. After that bootstrap step, return to the normal single-`FEATURE_DIR` workflow.
 
+## Feature Queue (Autonomy)
+- When greenfield bootstrap or a brownfield change creates multiple features, maintain
+  `docs/features/status.json`.
+- FEATURE.md remains the behavior source of truth; `status.json` is only a machine-readable
+  progress queue.
+- Use `feature-queue` to add features, select the next pending/failing feature, and mark progress.
+- Use one `FEATURE_DIR` at a time even when executing a queue.
+- Do not mark a queue item `passing` until deterministic checks pass and `feature-evaluator`
+  returns `PASS`.
+- If `feature-evaluator` returns `FAIL`, use bounded repair through `autopilot-loop`,
+  `auto-improve`, or `fix-issue`.
+- If `feature-evaluator` returns `BLOCKED`, keep the item blocked and report the concrete blocker.
+
+## Codex Goals (Autonomous Runtime)
+- When the user explicitly asks for autonomous execution, queue completion, "keep going until done",
+  or autopilot behavior, use a Codex Goal as the thread-scoped completion contract.
+- A Goal is runtime state for the current thread. It does not replace `FEATURE_DIR/FEATURE.md`,
+  `docs/features/status.json`, deterministic checks, or `feature-evaluator`.
+- Write Goals with a measurable outcome, verification surface, constraints, iteration budget, and
+  blocked stop condition.
+- Do not mark a Goal complete until the relevant gate, feature acceptance, evaluator result, and
+  queue update prove completion.
+- Budget exhaustion, partial progress, or a plausible implementation is not completion.
+- Do not use Goals for one-line edits, simple explanations, vague improvement requests, or work
+  without an auditable finish line.
+
 ## Project Architecture (Optional)
 If the current repository contains `docs/ARCHITECTURE.md`:
 - Treat it as authoritative project architecture.

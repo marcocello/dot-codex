@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Session Showcase"
+  short_description: "Turn Codex sessions into grounded recaps"
+  default_prompt: "Use $codex-session-showcase to screenshot the Codex app first, then turn this chat into a concise proof-of-work recap."

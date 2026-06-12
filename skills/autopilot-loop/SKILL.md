@@ -10,6 +10,51 @@ metadata:
 Purpose: make Codex repeat or schedule useful work without adding a repo-local workflow engine.
 Do not introduce a repo-local workflow engine.
 
+## Codex Goal Operating Contract
+Use a Codex Goal when the user asks Codex to keep working until a feature, issue, or queue is
+actually complete. A Goal is a thread-scoped completion contract: it tells the current Codex thread
+what outcome to keep pursuing and what evidence proves completion.
+
+The Goal does not replace `FEATURE_DIR/FEATURE.md`, `docs/features/status.json`, deterministic
+checks, or `feature-evaluator`.
+
+- `FEATURE.md` remains the behavior source of truth.
+- `docs/features/status.json` remains the durable repo progress queue.
+- `/goal` remains runtime state for the current Codex thread.
+- `feature-evaluator` remains the read-only judge for `PASS`, `FAIL`, or `BLOCKED`.
+
+Use this queue Goal shape for autonomous greenfield or brownfield execution:
+
+```text
+/goal Complete all non-blocked items in docs/features/status.json one feature at a time. For each
+feature, ensure acceptance exists, run feature-execute, run $HOME/.codex/scripts/gate, run
+$HOME/.codex/scripts/acceptance --feature FEATURE_DIR, run feature-evaluator, repair bounded
+failures, and mark the item passing only after evaluator PASS. Stop when all features are passing
+or remaining items are blocked with concrete reasons.
+```
+
+Use this single-feature Goal shape when one `FEATURE_DIR` is in scope:
+
+```text
+/goal Complete FEATURE_DIR according to FEATURE_DIR/FEATURE.md, verified by the narrowest relevant
+test, $HOME/.codex/scripts/gate, $HOME/.codex/scripts/acceptance --feature FEATURE_DIR, and
+feature-evaluator PASS. Preserve the repo architecture and stop as BLOCKED if the same blocker
+repeats three times.
+```
+
+Use this issue-fix Goal shape when the request is a concrete defect:
+
+```text
+/goal Fix the reported issue with a regression test, verified by the failing test turning green and
+the relevant broader check passing. Keep the fix minimal, preserve current behavior outside the
+failing path, and stop as BLOCKED if the issue cannot be reproduced or the same blocker repeats
+three times.
+```
+
+Budget limit is not completion. Mark a Goal complete only when the named evidence passes and any
+queue item was updated. Do not use Goals for one-line edits, simple explanations, vague improvement
+requests, or work with no auditable finish line.
+
 ## Choose the Smallest Automation Layer
 1) In-session loop
    - Use for current-turn repair: failing tests, incomplete feature work, migration batches, or
@@ -57,6 +102,31 @@ Do not introduce a repo-local workflow engine.
 4) Record what changed.
    - Summarize attempts, failing checks, passing checks, skipped checks, and remaining risk.
    - Do not claim done until required checks pass.
+
+## Feature Queue Autonomy
+Use `feature-queue` when `docs/features/status.json` exists or when the user asks to implement all
+features.
+
+Outer loop:
+1. Read `docs/features/status.json`.
+2. Select the next item with `feature-queue`.
+3. Mark the selected item `in_progress`.
+4. Run the inner loop for that one feature.
+5. Use `feature-evaluator`.
+6. Mark the item `passing`, `failing`, or `blocked`.
+7. Repeat until all features are `passing` or the remaining items are `blocked`.
+
+Inner loop:
+1. Use `acceptance-author` if acceptance coverage is missing.
+2. Use `feature-execute` for the implementation attempt.
+3. Run `$HOME/.codex/scripts/gate`.
+4. Run `$HOME/.codex/scripts/acceptance --feature FEATURE_DIR`.
+5. Use `feature-evaluator` as the read-only judge.
+6. If checks or evaluator fail, use `auto-improve` or `fix-issue` for the smallest concrete
+   failure.
+7. Stop after three loop iterations or when the same blocker repeats three times.
+
+Do not skip the evaluator just because deterministic checks pass.
 
 ## Scheduled Prompt Template
 Use this shape for Codex App automations or CLI-safe schedules:

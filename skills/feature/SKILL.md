@@ -1,6 +1,6 @@
 ---
 name: feature
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases) before BDD scenarios. Use when the task is feature-spec authoring or refinement. Use the `research` skill when important product, domain, or API assumptions need external evidence."
+description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases), BDD scenarios, and feature queue updates. Use when the task is feature-spec authoring or refinement. Use the `research` skill when important product, domain, or API assumptions need external evidence."
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
@@ -70,7 +70,14 @@ Subsequent questions are not mandatory and should be asked only when direction i
    - FEATURE.md remains the authoritative behavior contract.
    - Do not require `FEATURE_DIR/change.md` for small features or bug fixes.
 
-7) Avoid:
+7) Update the feature queue:
+   - Use `feature-queue` to create or update `docs/features/status.json`.
+   - Add the feature if it is new.
+   - Preserve existing status when refining a feature unless the behavior contract materially
+     changes; then set status to `pending` or `failing` and explain why.
+   - FEATURE.md remains the source of truth for behavior.
+
+8) Avoid:
    - Internal implementation details
    - Speculation without tagging assumptions
    - Over-engineering

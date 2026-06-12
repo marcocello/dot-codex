@@ -42,7 +42,6 @@ CODEX_HOME = "/path/to/codex/home"
 NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "browser-client-sha256-placeholder"
 BROWSER_USE_AVAILABLE_BACKENDS = "browser,chrome"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Use for local browser automation."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Use for existing Chrome session automation."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "stable"
 BROWSER_USE_CODEX_APP_VERSION = "0.0.0"
 CODEX_CLI_PATH = "/path/to/codex"
@@ -58,13 +57,17 @@ trust_level = "trusted"
 [plugins."browser@openai-bundled"]
 enabled = true
 
-[plugins."chrome@openai-bundled"]
+[plugins."zotero@openai-curated"]
+enabled = true
+
+[plugins."clickup@openai-curated"]
 enabled = true
 
 [desktop]
 appearanceLightCodeThemeId = "vscode-plus"
 preventSleepWhileRunning = true
 git-commit-instructions = "Use Conventional Commits. Keep the subject clear, specific, lowercase, imperative, and under 72 chars; prefer 50-60 when clarity allows. Add one short body paragraph after a blank line to explain why the change matters. If changes span multiple concerns, draft one honest message and explain the grouped changes. Avoid vague summaries. Stage selected files only; never push."
+dock-icon-preference = "app-default"
 
 [desktop.appearanceLightChromeTheme]
 accent = "#007acc"

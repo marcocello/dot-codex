@@ -1,0 +1,6 @@
+interface:
+  display_name: "Capture Note"
+  short_description: "Add structured notes to an existing collection."
+  default_prompt: "Use $capture-note to add this note to my markdown second brain."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,9 @@
+interface:
+  display_name: "CODING | Feature Queue"
+  short_description: "Maintain docs/features/status.json for autonomous feature progress."
+  default_prompt: >-
+    Use the $coding-feature-queue skill to create, update, or inspect docs/features/status.json. Keep
+    FEATURE.md authoritative, select the next pending or failing feature by priority, and mark
+    progress only after checks and evaluator results justify it.
+policy:
+  allow_implicit_invocation: true

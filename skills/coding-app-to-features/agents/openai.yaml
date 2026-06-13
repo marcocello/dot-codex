@@ -1,0 +1,9 @@
+interface:
+  display_name: "CODING | App To Features"
+  short_description: "Sharpen a greenfield app idea and split it into foundation-first feature specs."
+  default_prompt: >-
+    Use $coding-app-to-features for this app description: use research when assumptions need
+    evidence, create or update docs/APP.md, write docs/ARCHITECTURE.md when authoritative, then use
+    coding-feature-spec to materialize docs/features/<slug>/FEATURE.md files.
+policy:
+  allow_implicit_invocation: true

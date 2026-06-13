@@ -57,6 +57,7 @@ Subsequent questions are not mandatory and should be asked only when direction i
    - BDD scenarios as the default acceptance format
    - Gherkin scenarios as the canonical BDD artifact
    - Minimal constraints
+   - A short `## Implementation Routing` section when a domain skill is clearly required
 
 5) Keep acceptance behavior:
    - Observable
@@ -64,20 +65,29 @@ Subsequent questions are not mandatory and should be asked only when direction i
    - Deterministic
    - Suitable for automated testing
 
-6) Keep optional change notes local:
+6) Add implementation routing without turning it into architecture:
+   - Use routing only to name skills that must be loaded during implementation.
+   - If the feature creates or changes backend API/application code, include
+     `- Required skills: coding-python-backend`.
+   - If the feature creates or changes React/Next.js UI code, include
+     `- Required skills: coding-frontend`.
+   - If both are in scope, include both skills.
+   - Keep framework, starter, and implementation details inside the domain skills.
+
+7) Keep optional change notes local:
    - For larger brownfield changes, optionally create `FEATURE_DIR/change.md` for intent,
      non-goals, design notes, and task checklist details.
    - FEATURE.md remains the authoritative behavior contract.
    - Do not require `FEATURE_DIR/change.md` for small features or bug fixes.
 
-7) Update the feature queue:
-   - Use `feature-queue` to create or update `docs/features/status.json`.
+8) Update the feature queue:
+   - Use `coding-feature-queue` to create or update `docs/features/status.json`.
    - Add the feature if it is new.
    - Preserve existing status when refining a feature unless the behavior contract materially
      changes; then set status to `pending` or `failing` and explain why.
    - FEATURE.md remains the source of truth for behavior.
 
-8) Avoid:
+9) Avoid:
    - Internal implementation details
    - Speculation without tagging assumptions
    - Over-engineering
@@ -136,3 +146,6 @@ Feature: <Behavioral capability>
 
 ## Constraints (optional)
 - <constraint>
+
+## Implementation Routing (optional)
+- Required skills: <coding-python-backend | coding-frontend | other relevant skills>

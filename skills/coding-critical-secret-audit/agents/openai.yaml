@@ -1,0 +1,13 @@
+interface:
+  display_name: "CODING | Critical Secret Audit"
+  short_description: "Scan current checkout for critical secrets."
+  default_prompt: "Use $coding-critical-secret-audit to scan the current checkout for critical secrets with GitGuardian ggmcp."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "GitGuardian/ggmcp"
+      description: "GitGuardian ggmcp server exposing scan_secrets for server-side secret scanning."
+      transport: "stdio"
+      url: "git+https://github.com/GitGuardian/ggmcp.git"
+policy:
+  allow_implicit_invocation: true

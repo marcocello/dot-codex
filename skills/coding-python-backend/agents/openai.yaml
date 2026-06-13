@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Python Backend"
+  short_description: "Implement Python backend changes with clear layering and tests."
+  default_prompt: "Use $coding-python-backend to implement this backend change with route-service-domain boundaries and pytest coverage."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Architecture Deep Dive"
+  short_description: "State-of-the-art architecture deep dive on a component's logic, implementation, security, cost, and bottlenecks."
+  default_prompt: "Use $coding-architecture-deep-dive to analyze this component and return ## Deep Dive Findings with evidence and minimal corrective actions."
+policy:
+  allow_implicit_invocation: true

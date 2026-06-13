@@ -1,4 +1,0 @@
-interface:
-  display_name: "Autonomous Execute"
-  short_description: "Run Goal-based feature queue execution."
-  default_prompt: "Use $autonomous-execute to complete this feature queue with a Codex Goal and evaluator-backed verification."

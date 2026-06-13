@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Feature Execute"
+  short_description: "Implement one feature with validation"
+  default_prompt: "Use $coding-feature-execute to implement docs/features/todo-api end to end with tests and verification."
+policy:
+  allow_implicit_invocation: true

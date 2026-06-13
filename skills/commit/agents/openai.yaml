@@ -1,6 +1,0 @@
-interface:
-  display_name: "Commit"
-  short_description: "Stage selected files and create a local Conventional Commit."
-  default_prompt: "Inspect local changes, stage selected files if the user asked to commit, and create a local Conventional Commit with one short body paragraph. Never push."
-policy:
-  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PROSPECTING | LinkedIn Content Manager"
+  short_description: "Plan, research, write, and review LinkedIn content"
+  default_prompt: "Use $prospecting-linkedin-content-manager with my provided brief or files to plan a LinkedIn content campaign."

@@ -1,0 +1,8 @@
+interface:
+  display_name: "CODING | Operational Issue Diagnostics"
+  short_description: "Diagnose local, Docker, database, AKS, and Azure issues."
+  default_prompt: >
+    Use $coding-operational-issue-diagnostics to investigate this runtime or deployment issue with
+    read-only local, database, Docker, Kubernetes, and Azure checks.
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+"""Scan tracked and untracked checkout files through GitGuardian ggmcp."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+from pathlib import Path
+from typing import Any
+
+DEFAULT_URL = "http://127.0.0.1:8000"
+DEFAULT_MAX_BYTES = 1_000_000
+DEFAULT_BATCH_SIZE = 20
+SECRET_KEYS = {"match", "secret", "value", "token", "password", "apikey", "api_key"}
+
+
+def git_output(root: Path, args: list[str]) -> bytes:
+    return subprocess.check_output(["git", *args], cwd=root)
+
+
+def checkout_paths(root: Path) -> list[str]:
+    output = git_output(root, ["ls-files", "--cached", "--others", "--exclude-standard", "-z"])
+    return [item.decode("utf-8", errors="surrogateescape") for item in output.split(b"\0") if item]
+
+
+def read_checkout_document(
+    root: Path, relative_path: str, max_bytes: int
+) -> tuple[dict[str, str] | None, dict[str, str] | None]:
+    path = root / relative_path
+    if not path.is_file():
+        return None, {"path": relative_path, "reason": "not a file"}
+
+    size = path.stat().st_size
+    if size > max_bytes:
+        return None, {"path": relative_path, "reason": f"larger than {max_bytes} bytes"}
+
+    data = path.read_bytes()
+    if b"\0" in data:
+        return None, {"path": relative_path, "reason": "binary content"}
+
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return None, {"path": relative_path, "reason": "non-utf8 content"}
+
+    return {"document": text, "filename": relative_path}, None
+
+
+def collect_checkout_documents(
+    root: Path, max_bytes: int = DEFAULT_MAX_BYTES
+) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+    root = root.resolve()
+    documents: list[dict[str, str]] = []
+    skipped: list[dict[str, str]] = []
+
+    for relative_path in checkout_paths(root):
+        document, skip = read_checkout_document(root, relative_path, max_bytes)
+        if document is not None:
+            documents.append(document)
+        if skip is not None:
+            skipped.append(skip)
+
+    return documents, skipped
+
+
+def chunked(items: list[dict[str, str]], size: int) -> list[list[dict[str, str]]]:
+    return [items[index : index + size] for index in range(0, len(items), size)]
+
+
+def call_ggmcp_scan(
+    url: str,
+    token: str | None,
+    documents: list[dict[str, str]],
+    timeout: float,
+) -> list[dict[str, Any]]:
+    endpoint = url.rstrip("/") + "/tools/call"
+    payload = json.dumps({"name": "scan_secrets", "arguments": {"documents": documents}}).encode(
+        "utf-8"
+    )
+    headers = {"Content-Type": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    request = urllib.request.Request(endpoint, data=payload, headers=headers, method="POST")
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            body = response.read().decode("utf-8")
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"GitGuardian ggmcp scan failed: {exc}") from exc
+
+    return extract_scan_results(json.loads(body))
+
+
+def extract_scan_results(response: Any) -> list[dict[str, Any]]:
+    if isinstance(response, list):
+        return [item for item in response if isinstance(item, dict)]
+    if not isinstance(response, dict):
+        return []
+    if isinstance(response.get("scan_results"), list):
+        return response["scan_results"]
+    if isinstance(response.get("result"), dict):
+        return extract_scan_results(response["result"])
+    if isinstance(response.get("structuredContent"), dict):
+        return extract_scan_results(response["structuredContent"])
+    if isinstance(response.get("content"), list):
+        for item in response["content"]:
+            if isinstance(item, dict) and isinstance(item.get("text"), str):
+                try:
+                    return extract_scan_results(json.loads(item["text"]))
+                except json.JSONDecodeError:
+                    continue
+    return []
+
+
+def redact(value: Any) -> Any:
+    if isinstance(value, dict):
+        redacted: dict[str, Any] = {}
+        for key, child in value.items():
+            if key.lower() in SECRET_KEYS:
+                redacted[key] = "[redacted]"
+            else:
+                redacted[key] = redact(child)
+        return redacted
+    if isinstance(value, list):
+        return [redact(item) for item in value]
+    return value
+
+
+def normalize_severity(raw_value: Any) -> str:
+    if raw_value is None:
+        return "unknown"
+    value = str(raw_value).strip().lower()
+    return value or "unknown"
+
+
+def finding_line(match: dict[str, Any]) -> str:
+    start = match.get("line_start") or match.get("line")
+    end = match.get("line_end") or start
+    if start is None:
+        return "unknown"
+    if end == start or end is None:
+        return str(start)
+    return f"{start}-{end}"
+
+
+def format_scan_report(
+    documents: list[dict[str, str]],
+    scan_results: list[dict[str, Any]],
+    skipped: list[dict[str, str]],
+) -> dict[str, Any]:
+    findings: list[dict[str, Any]] = []
+
+    for index, result in enumerate(scan_results):
+        if index < len(documents):
+            filename = documents[index].get("filename", f"document-{index}")
+        else:
+            filename = f"document-{index}"
+        for policy_break in result.get("policy_breaks", []):
+            if not isinstance(policy_break, dict):
+                continue
+            severity = normalize_severity(policy_break.get("severity"))
+            critical = severity in {"critical", "high", "unknown"}
+            raw_matches = policy_break.get("matches")
+            matches: list[Any] = raw_matches if isinstance(raw_matches, list) else [{}]
+            for match in matches:
+                match_data = match if isinstance(match, dict) else {}
+                findings.append(
+                    {
+                        "file": filename,
+                        "detector": policy_break.get("type", "unknown"),
+                        "policy": policy_break.get("policy", "unknown"),
+                        "line": finding_line(match_data),
+                        "severity": severity,
+                        "critical": critical,
+                        "details": redact(
+                            {
+                                key: value
+                                for key, value in policy_break.items()
+                                if key not in {"matches"}
+                            }
+                        ),
+                    }
+                )
+
+    critical_count = sum(1 for finding in findings if finding["critical"])
+    return {
+        "summary": {
+            "files_scanned": len(documents),
+            "files_skipped": len(skipped),
+            "findings": len(findings),
+            "critical_findings": critical_count,
+        },
+        "findings": findings,
+        "skipped": skipped,
+    }
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=Path.cwd(), help="Git repository root")
+    parser.add_argument("--url", default=os.environ.get("GGMCP_URL", DEFAULT_URL))
+    parser.add_argument(
+        "--token",
+        default=os.environ.get("GITGUARDIAN_PERSONAL_ACCESS_TOKEN")
+        or os.environ.get("GGMCP_TOKEN"),
+    )
+    parser.add_argument("--max-bytes", type=int, default=DEFAULT_MAX_BYTES)
+    parser.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
+    parser.add_argument("--timeout", type=float, default=60.0)
+    parser.add_argument("--dry-run", action="store_true", help="List counts without calling ggmcp")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str]) -> int:
+    args = parse_args(argv)
+    documents, skipped = collect_checkout_documents(args.root, max_bytes=args.max_bytes)
+    if args.dry_run:
+        report = format_scan_report(documents, [], skipped)
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return 0
+
+    scan_results: list[dict[str, Any]] = []
+    for batch in chunked(documents, args.batch_size):
+        scan_results.extend(call_ggmcp_scan(args.url, args.token, batch, args.timeout))
+
+    report = format_scan_report(documents, scan_results, skipped)
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 1 if report["summary"]["critical_findings"] else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

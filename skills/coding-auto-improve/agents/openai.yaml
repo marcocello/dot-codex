@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Auto Improve"
+  short_description: "Repair failing checks with bounded fixes"
+  default_prompt: "Use $coding-auto-improve to repair the failing gate or feature acceptance checks with minimal changes."
+policy:
+  allow_implicit_invocation: true

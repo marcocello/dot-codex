@@ -1,0 +1,4 @@
+interface:
+  display_name: "PROSPECTING | Signal Context Builder"
+  short_description: "Build reusable GTM signal context files"
+  default_prompt: "Use $prospecting-signal-context-builder to turn my provided brief or files into signal-context.md for signal detection."

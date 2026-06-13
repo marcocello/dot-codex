@@ -1,0 +1,4 @@
+interface:
+  display_name: "PROSPECTING | Signal Detector"
+  short_description: "Scan and act on product-agnostic GTM signals"
+  default_prompt: "Use $prospecting-signal-detector with my provided brief or files to scan recent GTM signals and produce a prioritized report."

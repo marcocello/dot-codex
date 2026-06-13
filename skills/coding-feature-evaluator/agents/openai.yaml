@@ -1,0 +1,9 @@
+interface:
+  display_name: "CODING | Feature Evaluator"
+  short_description: "Read-only skeptical judge for feature completeness and acceptance quality."
+  default_prompt: >-
+    Use the $coding-feature-evaluator skill to judge this completed feature or issue fix. Stay read-only,
+    compare the implementation against FEATURE.md or the bug contract, review acceptance coverage,
+    verify check results, and return PASS, FAIL, or BLOCKED with concrete findings.
+policy:
+  allow_implicit_invocation: true

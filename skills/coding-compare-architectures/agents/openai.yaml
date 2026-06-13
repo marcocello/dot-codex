@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Compare Architectures"
+  short_description: "Compare current architecture against a reference and decide keep or migrate."
+  default_prompt: "Use $coding-compare-architectures to compare this architecture against the provided reference and return a decision with migration steps."
+policy:
+  allow_implicit_invocation: false

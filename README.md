@@ -33,11 +33,11 @@ still defines behavior, and `docs/features/status.json` still tracks durable pro
 The manual entry point for one ready feature is still:
 
 ```text
-codex "Use the feature-execute skill for docs/features/<feature-id>"
+codex "Use the coding-feature-execute skill for docs/features/<feature-id>"
 ```
 
 For autonomous multi-feature work, create or update the queue first, then run
-`autonomous-execute`.
+`coding-autonomous-execute`.
 
 ## Core Artifacts
 - `AGENTS.md`: global engineering discipline and safety rules.
@@ -52,48 +52,48 @@ For autonomous multi-feature work, create or update the queue first, then run
 `FEATURE.md` remains the behavior contract. `status.json` only tracks progress.
 
 ## Roles
-- `app-to-features`: greenfield planner. Turns an app idea into app docs, feature specs, and a
+- `coding-app-to-features`: greenfield planner. Turns an app idea into app docs, feature specs, and a
   feature queue.
-- `feature`: brownfield or single-feature planner. Creates/refines `FEATURE.md` and updates the
+- `coding-feature-spec`: brownfield or single-feature planner. Creates/refines `FEATURE.md` and updates the
   queue.
-- `feature-queue`: maintains `docs/features/status.json` and selects the next pending/failing
+- `coding-feature-queue`: maintains `docs/features/status.json` and selects the next pending/failing
   feature.
-- `acceptance-author`: creates or repairs executable feature acceptance checks.
-- `feature-execute`: implements one feature with red/green TDD and deterministic validation.
-- `fix-issue`: fixes a clear defect with regression coverage.
-- `feature-evaluator`: read-only skeptical judge. Returns `PASS`, `FAIL`, or `BLOCKED`.
-- `auto-improve`: repairs the smallest failing check.
-- `autonomous-execute`: turns queue or repair work into a bounded Codex Goal. It is not cron, a
+- `coding-acceptance-author`: creates or repairs executable feature acceptance checks.
+- `coding-feature-execute`: implements one feature with red/green TDD and deterministic validation.
+- `coding-fix-issue`: fixes a clear defect with regression coverage.
+- `coding-feature-evaluator`: read-only skeptical judge. Returns `PASS`, `FAIL`, or `BLOCKED`.
+- `coding-auto-improve`: repairs the smallest failing check.
+- `coding-autonomous-execute`: turns queue or repair work into a bounded Codex Goal. It is not cron, a
   scheduler, or a daemon.
 
 ## Greenfield Workflow
 1. Describe the app.
-2. Use `app-to-features`.
+2. Use `coding-app-to-features`.
 3. Review the generated `docs/APP.md`, `docs/ARCHITECTURE.md`, feature specs, and
    `docs/features/status.json`.
-4. Use `autonomous-execute` to execute the queue.
+4. Use `coding-autonomous-execute` to execute the queue.
 5. Codex repeatedly:
-   - selects one feature with `feature-queue`
+   - selects one feature with `coding-feature-queue`
    - ensures acceptance exists
-   - implements with `feature-execute`
+   - implements with `coding-feature-execute`
    - runs gate and feature acceptance
-   - judges with `feature-evaluator`
-   - repairs bounded failures with `auto-improve` or `fix-issue`
+   - judges with `coding-feature-evaluator`
+   - repairs bounded failures with `coding-auto-improve` or `coding-fix-issue`
    - marks the queue item `passing`, `failing`, or `blocked`
 6. The run is complete when all features are `passing` or the remaining items are `blocked`.
 
 ## Brownfield Workflow
 1. Describe one or more changes.
-2. Use `feature` to create or refine one `FEATURE.md` per coherent behavior change.
-3. Use `feature-queue` to add those features to `docs/features/status.json`.
-4. Use `autonomous-execute` for the same execution path as greenfield.
+2. Use `coding-feature-spec` to create or refine one `FEATURE.md` per coherent behavior change.
+3. Use `coding-feature-queue` to add those features to `docs/features/status.json`.
+4. Use `coding-autonomous-execute` for the same execution path as greenfield.
 
 Brownfield and greenfield intentionally converge after feature creation.
 
 For either path, the autonomous form is:
 
 ```text
-Use autonomous-execute to set a Codex Goal for the queue, then keep executing one FEATURE_DIR at a
+Use coding-autonomous-execute to set a Codex Goal for the queue, then keep executing one FEATURE_DIR at a
 time until all items are passing or the remaining items are blocked with concrete reasons.
 ```
 
@@ -104,7 +104,7 @@ time until all items are passing or the remaining items are blocked with concret
 - A Codex Goal is runtime thread state, not global memory and not repo state.
 - One feature is implemented at a time.
 - Repair loops are bounded to three iterations by default.
-- `feature-evaluator` is read-only and never fixes its own findings.
+- `coding-feature-evaluator` is read-only and never fixes its own findings.
 - Do not mark work done until deterministic checks and evaluator judgment pass.
 
 ## Checks

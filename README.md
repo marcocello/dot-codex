@@ -39,6 +39,10 @@ codex "Use the coding-feature-execute skill for docs/features/<feature-id>"
 For autonomous multi-feature work, create or update the queue first, then run
 `coding-autonomous-execute`.
 
+The `docs/features/*` artifacts are created in the target software repository that Codex is
+building or maintaining. This `dot-codex` repository supplies the reusable operating contract,
+skills, and scripts.
+
 ## Core Artifacts
 - `AGENTS.md`: global engineering discipline and safety rules.
 - `docs/APP.md`: overall product context when present.
@@ -52,10 +56,13 @@ For autonomous multi-feature work, create or update the queue first, then run
 `FEATURE.md` remains the behavior contract. `status.json` only tracks progress.
 
 ## Roles
+### Coding Harness
 - `coding-app-to-features`: greenfield planner. Turns an app idea into app docs, feature specs, and a
   feature queue.
 - `coding-feature-spec`: brownfield or single-feature planner. Creates/refines `FEATURE.md` and updates the
   queue.
+- `coding-feature-quality`: pre-implementation review for ambiguity, missing edge cases,
+  testability gaps, and architecture conflicts.
 - `coding-feature-queue`: maintains `docs/features/status.json` and selects the next pending/failing
   feature.
 - `coding-acceptance-author`: creates or repairs executable feature acceptance checks.
@@ -65,6 +72,36 @@ For autonomous multi-feature work, create or update the queue first, then run
 - `coding-auto-improve`: repairs the smallest failing check.
 - `coding-autonomous-execute`: turns queue or repair work into a bounded Codex Goal. It is not cron, a
   scheduler, or a daemon.
+- `coding-prepare-environment`: central setup policy for Python, Node, PHP, Laravel, WordPress,
+  `.env`, dependency installs, and command prefixes.
+- `coding-vscode-generate-run-tasks`: creates the standard VS Code fullstack run tasks.
+- `coding-commit`: stages selected paths and creates local Conventional Commits when explicitly
+  requested.
+
+### Domain Coding Skills
+- `coding-python-backend`: backend API/application work, including greenfield `backend/app`.
+- `coding-frontend`: React/Next.js frontend work, including greenfield `frontend/app`.
+- `coding-laravel-feature-builder`: Laravel feature implementation and tests.
+- `coding-php-legacy-maintainer`: plain PHP or framework-light PHP maintenance.
+- `coding-operational-issue-diagnostics`: read-only local/cloud runtime diagnostics.
+- `coding-critical-secret-audit`: GitGuardian-backed current-checkout secret audit.
+- `coding-maintainability-review`, `coding-architecture-deep-dive`, and
+  `coding-compare-architectures`: review and decision-support skills. They are useful but not part
+  of the default autonomous feature loop.
+
+### Non-Coding Skills
+- `research`: bounded external evidence for planning.
+- `prospecting-*`: GTM signal context, detection, and LinkedIn content workflows.
+- `capture-note`, `casual-message-rewriter`, `codex-session-showcase`,
+  `no-bullshit-technical-writing`, and `html-presentations`: personal productivity, writing, and
+  presentation workflows. They should not be invoked for software feature execution unless the user
+  explicitly asks for that output.
+
+## Repair Routing
+- Use `coding-fix-issue` when the entry point is a user-reported bug or broken behavior.
+- Use `coding-auto-improve` when the entry point is a concrete failing check or evaluator `FAIL`.
+- Use `coding-autonomous-execute` when repeated bounded repair or queue completion needs a Codex
+  Goal.
 
 ## Greenfield Workflow
 1. Describe the app.

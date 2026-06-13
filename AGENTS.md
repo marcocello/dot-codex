@@ -60,7 +60,13 @@ When bootstrapping a greenfield application and no repo architecture overrides i
 
 ## Skill Routing
 - Use `coding-feature-spec` to create or refine `FEATURE.md`.
+- Use `coding-feature-quality` before non-trivial implementation when `FEATURE.md` has ambiguity,
+  missing edge cases, weak testability, or possible architecture conflicts.
 - Use `coding-feature-execute` to implement a ready feature.
+- Use `coding-fix-issue` for a clear reported defect or runtime bug that needs reproduction and a
+  regression test.
+- Use `coding-auto-improve` for a known failing command, gate, acceptance check, typecheck, lint
+  result, or evaluator `FAIL`.
 - Use `coding-autonomous-execute` for queue completion or repeated bounded repair.
 - Use `coding-acceptance-author` when acceptance coverage is missing or weak.
 - Use `coding-feature-evaluator` before marking feature or issue work complete.

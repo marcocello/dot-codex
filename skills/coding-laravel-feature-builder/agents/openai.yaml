@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Laravel Feature Builder"
+  short_description: "Build or fix Laravel application features"
+  default_prompt: "Use $coding-laravel-feature-builder to implement this Laravel feature with tests and validation."
+policy:
+  allow_implicit_invocation: true

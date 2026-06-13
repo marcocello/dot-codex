@@ -1,0 +1,9 @@
+interface:
+  display_name: "CODING | Frontend"
+  short_description: "Implement React or Next.js UI, defaulting new apps to shadcn-admin."
+  default_prompt: >-
+    Use $coding-frontend to implement this React or Next.js UI change. Preserve repo conventions;
+    when creating a new frontend without a different starter, clone satnaing/shadcn-admin into
+    frontend/app before adding package scaffolding or tests.
+policy:
+  allow_implicit_invocation: true

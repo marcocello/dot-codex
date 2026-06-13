@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Commit"
+  short_description: "Stage selected files and create a local Conventional Commit."
+  default_prompt: "Use $coding-commit to inspect local changes, stage selected files if requested, and create a local Conventional Commit. Never push."
+policy:
+  allow_implicit_invocation: true

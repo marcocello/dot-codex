@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | PHP Legacy Maintainer"
+  short_description: "Maintain and debug legacy PHP projects"
+  default_prompt: "Use $coding-php-legacy-maintainer to diagnose and safely fix this PHP issue."
+policy:
+  allow_implicit_invocation: true

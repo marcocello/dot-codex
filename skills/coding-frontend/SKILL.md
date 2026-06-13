@@ -2,8 +2,13 @@
 name: coding-frontend
 description: Implement, bootstrap, or refactor user-facing React/Next.js UI with strong layout, interaction, and visual quality while preserving repo conventions. Use for frontend surface changes, greenfield frontend skeleton creation, missing frontend/app setup, or new React/Next.js app work even when no existing frontend is detected. Do not use for backend-only or infrastructure tasks.
 metadata:
-  short-description: Optional user-facing description
+  short-description: React and Next.js frontend implementation
 ---
+
+# Frontend
+
+Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the
+repo's design system and frontend conventions.
 
 ## Scope
 - Applies when:

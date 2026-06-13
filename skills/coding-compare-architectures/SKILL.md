@@ -2,18 +2,22 @@
 name: coding-compare-architectures
 description: "Compare an existing architecture/solution against a specific reference and decide KEEP, PARTIAL ADOPT, or REPLACE with explicit migration steps. Use only when both current-state material and a concrete reference are provided."
 metadata:
-  short-description: Optional user-facing description
+  short-description: Compare current architecture with a reference
 ---
 
+# Compare Architectures
 
-Input:
+Purpose: compare the current architecture or solution with a concrete reference and decide whether
+to keep it, partially adopt the reference, or replace it.
+
+## Input
 - Mine: code / doc / architecture (partial ok)
 - Reference: file(s) or link(s)
 - Goal: what we optimize for (perf, cost, simplicity, scale, reliability)
 
 If inputs are incomplete, ask only blocking questions (max 3).
 
-Method:
+## Method
 1) Normalize both designs into the same model:
    - components
    - data flow
@@ -40,10 +44,10 @@ Method:
    - Compatibility risks
    - Verification plan
 
-Policy:
+## Policy
 - AVOID backward compatibility by default; include compatibility work only when explicitly requested.
 
-Output (STRICT):
+## Output
 
 ## Diff
 - ...

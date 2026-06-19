@@ -1,6 +1,10 @@
 ---
 name: coding-feature-execute
-description: Implement one feature end-to-end in Codex App using existing repo skills, red/green TDD, deterministic validation, mandatory frontend/backend domain-skill handoff, and automatic coding-autonomous-execute escalation when bounded repeated repair is needed. Use when a feature contract is ready and the goal is delivery rather than planning infrastructure.
+description: >-
+  Implement one feature end-to-end in Codex App using existing repo skills, red/green TDD,
+  deterministic validation, mandatory backend/frontend/WordPress domain-skill handoff, and
+  automatic coding-autonomous-execute escalation when bounded repeated repair is needed. Use when a
+  feature contract is ready and the goal is delivery rather than planning infrastructure.
 metadata:
   short-description: Codex-native feature execution
 ---
@@ -25,12 +29,12 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - For software projects, initialize a Git repository with `git init` when the current project
      directory is not already inside a Git worktree.
    - Do not overwrite existing Git history or reinitialize a repository that already has `.git`.
-   - Use `coding-vscode-generate-run-tasks` to create or update `.vscode/tasks.json` when the
-     project has or is creating the standard frontend/backend local run layout.
+   - Use `coding-prepare-environment` to create or update `.vscode/tasks.json` when the selected
+     domain skills call for local run tasks.
 
 4) Choose the right implementation skill
-   - Mandatory domain handoff: when a feature touches frontend or backend application code,
-     explicitly use the matching domain skill before creating files, installing packages, or
+   - Mandatory domain handoff: when a feature touches backend, frontend, or WordPress application
+     code, explicitly use the matching domain skill before creating files, installing packages, or
      choosing a starter.
    - Obey skill routing declared in `FEATURE.md`; treat missing routing as a fallback case, not as
      permission to skip domain skills.
@@ -38,6 +42,8 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
      layer creation before creating backend files.
    - Use `coding-frontend` when React or Next.js UI work is in scope, including greenfield frontend
      skeleton creation before creating frontend files.
+   - Use `coding-wordpress` when WordPress plugin, theme, full-site, or Bedrock-style work is in
+     scope, including greenfield WordPress structure before creating WordPress files.
    - Use `coding-fix-issue` for small corrective changes.
    - If the chosen domain skill defines a default bootstrap, follow it before generic scaffolding,
      package setup, or first-code decisions. Do not invent a generic framework skeleton when a
@@ -73,13 +79,13 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Treat evaluator `BLOCKED` as a real blocker; do not claim done.
    - If a Codex Goal is active, keep it open until gate, acceptance, evaluator `PASS`, and queue
      status prove completion.
-   - If `docs/features/status.json` exists, use `coding-feature-queue` to mark the feature `passing`,
-     `failing`, or `blocked` based on the evaluator result.
+   - If `docs/features/status.json` exists, use `coding-feature-queue` to mark the feature
+     `passing`, `failing`, or `blocked` based on the evaluator result.
 
 11) Escalate only on failure
    - If gate or acceptance fails, use `coding-auto-improve`.
-   - If `coding-feature-evaluator` returns `FAIL`, use `coding-auto-improve` or `coding-fix-issue` on the concrete
-     findings.
+   - If `coding-feature-evaluator` returns `FAIL`, use `coding-auto-improve` or
+     `coding-fix-issue` on the concrete findings.
    - Keep fixes within the smallest failing scope.
    - Keep making bounded fixes until required checks pass.
    - Do not hand off as done while feature acceptance is failing.
@@ -113,7 +119,8 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 - Do not build orchestration infrastructure in this repo.
 - Prefer existing domain skills over inventing new coordination logic.
 - Feature execution does not require Spec Kit or OpenSpec command phases.
-- `coding-autonomous-execute` is an automatic bounded escalation path, not a repo-local orchestrator.
+- `coding-autonomous-execute` is an automatic bounded escalation path, not a repo-local
+  orchestrator.
 
 ## Handoff
 - Include `Skills used:` with every skill actually loaded or followed.

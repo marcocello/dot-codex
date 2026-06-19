@@ -13,12 +13,9 @@ Use this file as the shared setup policy. Keep stack skills thin by pointing the
 
 ## Environment Files
 
-Canonical greenfield layout:
-
-- The repo root contains `backend/`, `frontend/`, and `docs/`.
-- Backend app code lives under `backend/app`.
-- Frontend app code lives under `frontend/app`.
-- Follow an existing repo's documented layout when it intentionally differs.
+Environment files follow the repo's current structure and the owning domain skill's layout
+guidance. This setup reference detects common paths, but it does not define the canonical
+greenfield tree.
 
 Order of preference:
 
@@ -37,11 +34,82 @@ Python backend convention:
 - If only root `.env.example` exists, use it only when repo docs or code clearly read root `.env`.
 - Do not move env files between root, `backend/`, and `frontend/` without an explicit repo pattern.
 
+## Repository Ignore Policy
+
+When creating a new root `.gitignore`, use a whitelist pattern by default:
+
+```gitignore
+# Ignore everything by default.
+*
+
+# Keep repo metadata and human/project docs.
+!.gitignore
+!README*
+!AGENTS.md
+!docs/
+!docs/**
+
+# Keep stack-owned source trees. Add only the trees that exist or are being created.
+!backend/
+!backend/**
+!frontend/
+!frontend/**
+!wordpress/
+!wordpress/**
+
+# Keep common project config and checked-in examples.
+!Makefile
+!package.json
+!package-lock.json
+!pnpm-lock.yaml
+!yarn.lock
+!composer.json
+!composer.lock
+!pyproject.toml
+!requirements*.txt
+!.env.example
+!**/.env.example
+!**/.env.local.example
+
+# Always keep local-only and generated artifacts ignored.
+.env
+.env.*
+!.env.example
+!**/.env.example
+!**/.env.local.example
+.venv/
+node_modules/
+vendor/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.next/
+dist/
+build/
+coverage/
+*.sqlite
+*.sqlite3
+*.db
+uploads/
+wordpress/app/wp-content/uploads/
+wordpress/app/wp-content/cache/
+```
+
+Rules:
+
+- Preserve an existing `.gitignore` style unless it is unsafe or clearly incomplete.
+- Add domain-specific unignore entries for source trees created by the active stack skill.
+- Keep examples such as `.env.example` tracked, but keep real `.env*` files ignored.
+- Do not switch a whitelist `.gitignore` to blacklist-style appends.
+- Do not whitelist dependency directories, generated output, uploads, caches, or databases.
+
 ## Python
 
-Detect Python with `backend/pyproject.toml`, `backend/requirements*.txt`, `backend/app`,
-root `pyproject.toml`, root `requirements*.txt`, `pytest.ini`, `tox.ini`, or Python source under
-documented package directories.
+Detect Python with `backend/pyproject.toml`, `backend/requirements*.txt`,
+`backend/app/requirements*.txt`, `backend/app`, root `pyproject.toml`, root
+`requirements*.txt`, `pytest.ini`, `tox.ini`, or Python source under documented package
+directories.
 
 Setup:
 
@@ -52,6 +120,8 @@ Setup:
 5. Upgrade packaging only when needed by the repo: `.venv/bin/python -m pip install -U pip`.
 6. Install dependencies with the repo's chosen mechanism:
    - `backend/requirements.txt`: `.venv/bin/python -m pip install -r backend/requirements.txt`
+   - `backend/app/requirements.txt`:
+     `.venv/bin/python -m pip install -r backend/app/requirements.txt`
    - `requirements.txt`: `.venv/bin/python -m pip install -r requirements.txt`
    - `backend/pyproject.toml`: prefer documented `uv`, `poetry`, or `pip install -e backend`
      pattern.
@@ -62,6 +132,8 @@ Command policy:
 - Run Python tooling through `.venv/bin/python -m <tool>`.
 - Use `.venv/bin/python -m pytest ...` for pytest.
 - Use `.venv/bin/python -m ruff ...`, `.venv/bin/python -m mypy ...`, etc. when installed.
+- For FastAPI apps with `app = FastAPI()` in `backend/app/main.py`, run the dev server from
+  `backend/app` with `.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`.
 - Do not assume shell activation.
 
 ## React and Node

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create or update VS Code tasks for a frontend/backend dev loop."""
+"""Create or update VS Code tasks for a backend/frontend dev loop."""
 
 from __future__ import annotations
 
@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any
 
 GENERATED_LABELS = {"frontend", "backend:app", "backend:ngrok", "backend", "fullstack"}
+DEFAULT_BACKEND_CWD = "${workspaceFolder}/backend/app"
+PROJECT_VENV_PYTHON = "${workspaceFolder}/.venv/bin/python"
 
 
 def shell_task(label: str, command: str, cwd: str, is_background: bool) -> dict[str, Any]:
@@ -29,13 +31,64 @@ def aggregate_task(label: str, depends_on: list[str]) -> dict[str, Any]:
 
 
 def generated_tasks(args: argparse.Namespace) -> list[dict[str, Any]]:
+    backend_app_command = resolve_backend_app_command(args)
     return [
         shell_task("frontend", args.frontend_command, args.frontend_cwd, True),
-        shell_task("backend:app", args.backend_app_command, args.backend_cwd, True),
+        shell_task("backend:app", backend_app_command, args.backend_cwd, True),
         shell_task("backend:ngrok", args.backend_ngrok_command, args.backend_cwd, True),
         aggregate_task("backend", ["backend:app", "backend:ngrok"]),
         aggregate_task("fullstack", ["frontend", "backend"]),
     ]
+
+
+def resolve_backend_app_command(args: argparse.Namespace) -> str:
+    if args.backend_app_command:
+        return args.backend_app_command
+    backend_path = vscode_cwd_to_path(args.project_root.resolve(), args.backend_cwd)
+    if has_fastapi_app(backend_path):
+        return f"{PROJECT_VENV_PYTHON} -m uvicorn main:app --reload --host 127.0.0.1 --port 8000"
+    return f"{PROJECT_VENV_PYTHON} main.py"
+
+
+def vscode_cwd_to_path(project_root: Path, cwd: str) -> Path:
+    if cwd.startswith("${workspaceFolder}"):
+        suffix = cwd.removeprefix("${workspaceFolder}").lstrip("/")
+        return project_root / suffix
+    return Path(cwd)
+
+
+def has_fastapi_app(backend_path: Path) -> bool:
+    main_path = backend_path / "main.py"
+    if not main_path.exists():
+        return False
+    try:
+        main_source = main_path.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    if "FastAPI(" not in main_source or "app" not in main_source:
+        return False
+    dependency_text = read_backend_dependency_text(backend_path)
+    if not dependency_text:
+        return True
+    return "fastapi" in dependency_text or "uvicorn" in dependency_text
+
+
+def read_backend_dependency_text(backend_path: Path) -> str:
+    dependency_paths = [
+        backend_path / "requirements.txt",
+        backend_path.parent / "requirements.txt",
+        backend_path / "pyproject.toml",
+        backend_path.parent / "pyproject.toml",
+    ]
+    dependency_text = []
+    for dependency_path in dependency_paths:
+        if not dependency_path.exists():
+            continue
+        try:
+            dependency_text.append(dependency_path.read_text(encoding="utf-8").lower())
+        except OSError:
+            continue
+    return "\n".join(dependency_text)
 
 
 def load_existing_tasks(tasks_path: Path) -> dict[str, Any]:
@@ -107,8 +160,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("project_root", nargs="?", default=".", type=Path)
     parser.add_argument("--frontend-command", default="npm run dev")
     parser.add_argument("--frontend-cwd", default="${workspaceFolder}/frontend/app")
-    parser.add_argument("--backend-cwd", default="${workspaceFolder}/backend/app")
-    parser.add_argument("--backend-app-command", default="${workspaceFolder}/.venv/bin/python main.py")
+    parser.add_argument("--backend-cwd", default=DEFAULT_BACKEND_CWD)
+    parser.add_argument("--backend-app-command")
     parser.add_argument(
         "--backend-ngrok-command",
         default="ngrok http 8000",

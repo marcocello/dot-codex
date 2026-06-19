@@ -1,6 +1,11 @@
 ---
 name: coding-app-to-features
-description: Turn an overall app description into a sharper app brief, bootstrap repo-level docs, create a series of features, and initialize the feature queue through discovery-first feature specs. Use for greenfield work when the user has an app idea and wants Codex to initialize the project before returning to feature execution. Use the `research` skill when assumptions need external evidence.
+description: >-
+  Turn an overall app description into a sharper app brief, bootstrap repo-level docs, create a
+  series of features, and initialize the feature queue through discovery-first feature specs. Use
+  for greenfield work when the user has an app idea and wants Codex to initialize the project
+  before returning to feature execution. Use the `research` skill when assumptions need external
+  evidence.
 metadata:
   short-description: Greenfield app idea to feature series
 ---
@@ -24,8 +29,8 @@ them into repo docs.
    - For greenfield software projects, initialize a Git repository with `git init` when the
      current project directory is not already inside a Git worktree.
    - Do not overwrite existing Git history or reinitialize a repository that already has `.git`.
-   - Use `coding-vscode-generate-run-tasks` to create or update `.vscode/tasks.json` for the
-     standard frontend/backend/fullstack local run workflow.
+   - Use `coding-prepare-environment` to create or update `.vscode/tasks.json` for the standard
+     backend/frontend/fullstack local run workflow.
 
 2) Improve the app brief
    - Rewrite the raw idea into a concise, sharper app description.
@@ -39,15 +44,15 @@ them into repo docs.
    - Default greenfield architecture: when a new app has no explicit architecture, make
      `docs/ARCHITECTURE.md` authoritative with backend APIs, a React frontend, and frontend
      communication with the backend through APIs.
-   - Use this default layout unless the user or existing repo architecture overrides it:
-     root contains `backend/`, `frontend/`, and `docs/`; inside `backend/`, use `app/`,
-     `deployment/`, and `pipelines/`, yielding `backend/app`, `backend/deployment`, and
-     `backend/pipelines`; inside `frontend/`, use `app/`, `deployment/`, and `pipelines/`,
-     yielding `frontend/app`, `frontend/deployment`, and `frontend/pipelines`.
-   - For backend framework, service layering, and API implementation details, delegate to the
-     `coding-python-backend` skill instead of duplicating those specifics here.
-   - For frontend starter, component system, and UI baseline choices, delegate to the
-     `coding-frontend` skill instead of duplicating those specifics here.
+   - Do not define the application folder tree in this skill. Architecture docs may name the
+     selected stack and boundaries, but stack/domain skills own concrete directories and bootstrap
+     structure.
+   - For backend framework, service layering, API implementation details, and backend tree
+     structure, delegate to the `coding-python-backend` skill.
+   - For frontend starter, component system, UI baseline choices, and frontend tree structure,
+     delegate to the `coding-frontend` skill.
+   - For WordPress plugin, theme, full-site, or Bedrock-style app structure, delegate to the
+     `coding-wordpress` skill.
    - If useful, also create or update `docs/CONVENTIONS.md` and `docs/TESTING.md`.
 
 4) Research before guessing when needed
@@ -61,12 +66,16 @@ them into repo docs.
    - Order features from foundation to highest user-visible value.
    - Keep each feature independently specifiable and testable.
    - For greenfield apps with no user-specified implementation order, make the first generated
-     features technical foundation features in this order:
+     features technical foundation features based on the selected stack. For the default
+     React/API architecture, use this order:
      1. `Build API layer` - use the `coding-python-backend` skill for backend framework and API
         implementation specifics.
-     2. `Build frontend skeleton` - use the `coding-frontend` skill for starter and UI baseline specifics.
+     2. `Build frontend skeleton` - use the `coding-frontend` skill for starter and UI baseline
+        specifics.
      3. `Build data model` - create the SQLite database model, migrations/schema, and persistence
         boundary.
+   - For WordPress apps, start with a foundation feature routed to `coding-wordpress` before
+     product-facing WordPress behavior.
    - After those foundations, add the smallest product-facing features needed for a shippable
      first slice.
 
@@ -98,7 +107,7 @@ them into repo docs.
 ## Rules
 - Do not add an in-repo orchestration layer.
 - Do not create a planning daemon, router, or local workflow engine.
-- Reuse the repo's `coding-feature-spec` skill for final feature specs rather than inventing a new spec
-  format.
-- Keep outputs concise. Outside the default greenfield architecture above, avoid unnecessary
-  implementation commitments.
+- Reuse the repo's `coding-feature-spec` skill for final feature specs rather than inventing a new
+  spec format.
+- Keep outputs concise. Avoid unnecessary implementation commitments and leave concrete folder
+  structure to the owning stack/domain skill.

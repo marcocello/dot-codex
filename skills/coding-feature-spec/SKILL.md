@@ -1,6 +1,10 @@
 ---
 name: coding-feature-spec
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, including discovery (JTBD, user journey, use cases, and edge cases), BDD scenarios, and feature queue updates. Use when the task is feature-spec authoring or refinement. Use the `research` skill when important product, domain, or API assumptions need external evidence."
+description: >-
+  Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea,
+  including discovery (JTBD, user journey, use cases, and edge cases), BDD scenarios, and feature
+  queue updates. Use when the task is feature-spec authoring or refinement. Use the `research`
+  skill when important product, domain, or API assumptions need external evidence.
 metadata:
   short-description: Define a feature spec compatible with Press + gate workflow
 ---
@@ -22,7 +26,8 @@ If missing, ask only the minimum necessary:
 - definition of done (observable behavior)
 
 Do NOT ask architecture questions unless strictly required.
-Subsequent questions are not mandatory and should be asked only when direction is unclear or a missing detail is blocking progress.
+Subsequent questions are not mandatory and should be asked only when direction is unclear or a
+missing detail is blocking progress.
 
 ---
 
@@ -71,6 +76,8 @@ Subsequent questions are not mandatory and should be asked only when direction i
      `- Required skills: coding-python-backend`.
    - If the feature creates or changes React/Next.js UI code, include
      `- Required skills: coding-frontend`.
+   - If the feature creates or changes WordPress plugin, theme, full-site, or Bedrock-style code,
+     include `- Required skills: coding-wordpress`.
    - If both are in scope, include both skills.
    - Keep framework, starter, and implementation details inside the domain skills.
 
@@ -148,4 +155,5 @@ Feature: <Behavioral capability>
 - <constraint>
 
 ## Implementation Routing (optional)
-- Required skills: <coding-python-backend | coding-frontend | other relevant skills>
+- Required skills: <coding-python-backend | coding-frontend | coding-wordpress | other relevant
+  skills>

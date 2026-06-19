@@ -1,8 +1,9 @@
 interface:
   display_name: "CODING | Prepare Environment"
-  short_description: "Prepare repo environments before implementation work."
+  short_description: "Prepare envs, whitelist gitignore, and run tasks."
   default_prompt: >-
     Use $coding-prepare-environment to inspect this repository and prepare the local
-    environment before running tests or implementation.
+    environment, including whitelist .gitignore and VS Code run tasks when needed, before running
+    tests or implementation.
 policy:
   allow_implicit_invocation: true

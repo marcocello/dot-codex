@@ -73,14 +73,14 @@ skills, and scripts.
 - `coding-autonomous-execute`: turns queue or repair work into a bounded Codex Goal. It is not cron, a
   scheduler, or a daemon.
 - `coding-prepare-environment`: central setup policy for Python, Node, PHP, Laravel, WordPress,
-  `.env`, dependency installs, and command prefixes.
-- `coding-vscode-generate-run-tasks`: creates the standard VS Code fullstack run tasks.
+  `.env`, dependency installs, command prefixes, and VS Code fullstack run tasks.
 - `coding-commit`: stages selected paths and creates local Conventional Commits when explicitly
   requested.
 
 ### Domain Coding Skills
-- `coding-python-backend`: backend API/application work, including greenfield `backend/app`.
-- `coding-frontend`: React/Next.js frontend work, including greenfield `frontend/app`.
+- `coding-python-backend`: backend API/application work, including greenfield backend structure.
+- `coding-frontend`: React/Next.js frontend work, including greenfield frontend structure.
+- `coding-wordpress`: WordPress plugin, theme, full-site, and Bedrock-style implementation.
 - `coding-laravel-feature-builder`: Laravel feature implementation and tests.
 - `coding-php-legacy-maintainer`: plain PHP or framework-light PHP maintenance.
 - `coding-operational-issue-diagnostics`: read-only local/cloud runtime diagnostics.

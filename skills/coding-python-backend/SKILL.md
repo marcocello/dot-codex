@@ -15,7 +15,8 @@ repo-native setup, and pytest coverage.
   - The feature affects backend logic
   - The feature mentions backend, API layer, endpoints, routes, services, data persistence, or
     server-side behavior
-  - Python project detected (`backend/pyproject.toml`, `backend/requirements.txt`, or equivalent)
+  - Python project detected (`backend/pyproject.toml`, `backend/requirements*.txt`,
+    `backend/app/requirements*.txt`, or equivalent)
   - Greenfield work needs a backend API layer or `backend/app`
   - No existing backend package exists and the feature requires Python API/application code
   - FastAPI / service-layer architecture is in use

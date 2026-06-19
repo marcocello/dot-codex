@@ -1,0 +1,8 @@
+interface:
+  display_name: "CODING | WordPress"
+  short_description: "Implement WordPress app/deployments structure."
+  default_prompt: >-
+    Use $coding-wordpress to implement this WordPress plugin, theme, or application change with
+    repo-native structure and tests.
+policy:
+  allow_implicit_invocation: true

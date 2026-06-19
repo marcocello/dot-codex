@@ -1,0 +1,4 @@
+interface:
+  display_name: "Real-user Scenario Tests"
+  short_description: "Author live-system scenario testbeds"
+  default_prompt: "Use $coding-real-user-scenario-tests to create a real-user scenario testbed for my agent workflow."

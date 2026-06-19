@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | VS Code Run Tasks"
-  short_description: "Generate VS Code tasks for fullstack dev"
-  default_prompt: "Use $coding-vscode-generate-run-tasks to create VS Code tasks that run the frontend, backend, and fullstack dev workflow."
-policy:
-  allow_implicit_invocation: true

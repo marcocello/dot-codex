@@ -44,19 +44,21 @@
 - Keep implementation behavior aligned with `docs/APP.md`, `docs/CONVENTIONS.md`, and
   `docs/TESTING.md` when those files exist.
 - For software project bootstrap or feature execution, make sure the project has a Git repository
-  and VS Code run tasks when the matching skills call for them.
+  and use `coding-prepare-environment` to create VS Code run tasks when needed.
 
 ## Default Greenfield Architecture
 When bootstrapping a greenfield application and no repo architecture overrides it:
-- Use a React frontend.
-- The frontend talks to the backend through APIs.
-- The repo root contains `backend/`, `frontend/`, and `docs/`.
-- Use `backend/app`, `backend/deployment`, `backend/pipelines`.
-- Use `frontend/app`, `frontend/deployment`, `frontend/pipelines`.
-- Delegate backend framework, service layering, and API details to the
+- Use stack/domain skills before creating application folders or choosing starters.
+- Prefer a React frontend that talks to backend APIs unless the user, repo docs, or selected stack
+  skill points to a different architecture.
+- Delegate backend framework, service layering, API details, and backend tree structure to the
   `coding-python-backend` skill.
-- Delegate frontend starter, component system, and UI baseline choices to the
-  `coding-frontend` skill.
+- Delegate frontend starter, component system, UI baseline choices, and frontend tree structure to
+  the `coding-frontend` skill.
+- Delegate WordPress plugin, theme, full-site, and Bedrock-style tree structure to the
+  `coding-wordpress` skill when WordPress is in scope.
+- Keep repo-level docs focused on architecture decisions; do not define application folder
+  structure outside the owning stack/domain skill.
 
 ## Skill Routing
 - Use `coding-feature-spec` to create or refine `FEATURE.md`.
@@ -70,11 +72,11 @@ When bootstrapping a greenfield application and no repo architecture overrides i
 - Use `coding-autonomous-execute` for queue completion or repeated bounded repair.
 - Use `coding-acceptance-author` when acceptance coverage is missing or weak.
 - Use `coding-feature-evaluator` before marking feature or issue work complete.
-- Use `coding-prepare-environment` for local setup, dependencies, `.env`, command prefixes, and
-  stack-specific preparation.
-- Use `coding-vscode-generate-run-tasks` when a software project needs `.vscode/tasks.json`.
+- Use `coding-prepare-environment` for local setup, dependencies, `.env`, command prefixes,
+  stack-specific preparation, and `.vscode/tasks.json`.
 - Use `coding-commit` when the user asks to stage, commit, or draft a commit message.
-- Use stack/domain skills for implementation details instead of copying those rules here.
+- Use stack/domain skills for folder structure and implementation details instead of copying those
+  rules here.
 - Use reference repos only when the matching skill is active and the current repo lacks a pattern;
   state the repo and pattern reused in one line.
 

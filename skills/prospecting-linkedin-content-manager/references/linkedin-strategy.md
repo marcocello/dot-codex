@@ -1,7 +1,6 @@
 # LinkedIn Strategy Reference
 
-Use this reference when defining LinkedIn goals, content pillars, cadence, audience targets, and
-growth strategy.
+Use this reference when defining LinkedIn goals, content pillars, cadence, audience targets, and growth strategy.
 
 ## Content Flywheel
 

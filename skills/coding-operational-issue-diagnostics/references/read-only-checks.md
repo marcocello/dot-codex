@@ -26,8 +26,7 @@ python -m pip check
 python -m pip list --format=freeze | sed -n '1,120p'
 ```
 
-If the repo has tests, run the narrowest failing test first. Avoid broad installs or dependency
-upgrades during diagnostics unless the user asks for repair.
+If the repo has tests, run the narrowest failing test first. Avoid broad installs or dependency upgrades during diagnostics unless the user asks for repair.
 
 ## PostgreSQL and psql
 
@@ -40,9 +39,7 @@ psql -X -v ON_ERROR_STOP=1 -d "${PGDATABASE:-postgres}" \
   -c 'select datname from pg_database order by datname;'
 ```
 
-Avoid connection strings on the command line when they include passwords. Prefer `PGHOST`,
-`PGPORT`, `PGDATABASE`, `PGUSER`, and `PGPASSWORD` environment variables if credentials are
-already configured.
+Avoid connection strings on the command line when they include passwords. Prefer `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, and `PGPASSWORD` environment variables if credentials are already configured.
 
 ## Docker
 
@@ -124,8 +121,7 @@ az staticwebapp environment list -g <resource-group> -n <static-web-app> -o tabl
 az staticwebapp hostname list -g <resource-group> -n <static-web-app> -o table
 ```
 
-Do not run commands that list secrets or deployment tokens. If the issue is a failed deployment,
-check the CI provider logs and correlate with the Static Web App branch/environment.
+Do not run commands that list secrets or deployment tokens. If the issue is a failed deployment, check the CI provider logs and correlate with the Static Web App branch/environment.
 
 ## Azure Monitor and Application Insights
 
@@ -156,11 +152,7 @@ Keep query windows small first. Expand only if the symptom predates the initial 
 
 - Image pull errors: compare image name, registry auth, image tag, and pod events.
 - CrashLoopBackOff: inspect previous logs, container command, required env vars, and health probes.
-- 502/503 ingress errors: inspect service selectors, endpoints, ingress annotations, and pod
-  readiness.
-- Static Web App route failures: inspect `staticwebapp.config.json`, deployed branch/environment,
-  and linked API/function health.
-- PostgreSQL connection failures: check socket/host, port, database name, user, SSL mode, and
-  container networking.
-- Local-only failures: compare Python version, dependency lock state, `.env` selection, local
-  ports, PostgreSQL readiness, and Docker compose service names/ports.
+- 502/503 ingress errors: inspect service selectors, endpoints, ingress annotations, and pod readiness.
+- Static Web App route failures: inspect `staticwebapp.config.json`, deployed branch/environment, and linked API/function health.
+- PostgreSQL connection failures: check socket/host, port, database name, user, SSL mode, and container networking.
+- Local-only failures: compare Python version, dependency lock state, `.env` selection, local ports, PostgreSQL readiness, and Docker compose service names/ports.

@@ -10,18 +10,13 @@ description: >
 
 # Operational Issue Diagnostics
 
-Purpose: gather evidence quickly and safely across local runtime, databases, containers,
-Kubernetes, and Azure so the root cause can be narrowed before changing code or infrastructure.
+Purpose: gather evidence quickly and safely across local runtime, databases, containers, Kubernetes, and Azure so the root cause can be narrowed before changing code or infrastructure.
 
 ## Safety Rules
-- Start read-only. Do not run `kubectl delete`, `kubectl apply`, `kubectl edit`, `kubectl scale`,
-  `az delete`, `az deployment`, restarts, rollouts, secret reads, or write operations unless the
-  user explicitly asks for remediation.
-- Treat database writes as destructive. Do not run SQL statements other than metadata or read-only
-  `SELECT` checks unless the user explicitly asks for remediation.
+- Start read-only. Do not run `kubectl delete`, `kubectl apply`, `kubectl edit`, `kubectl scale`, `az delete`, `az deployment`, restarts, rollouts, secret reads, or write operations unless the user explicitly asks for remediation.
+- Treat database writes as destructive. Do not run SQL statements other than metadata or read-only `SELECT` checks unless the user explicitly asks for remediation.
 - State the active Azure subscription and Kubernetes context before interpreting cloud results.
-- Do not print secret values, deployment tokens, kubeconfigs, connection strings, or full
-  environment dumps. Redact sensitive values if they appear in logs.
+- Do not print secret values, deployment tokens, kubeconfigs, connection strings, or full environment dumps. Redact sensitive values if they appear in logs.
 - Prefer bounded commands: use explicit namespaces, resource groups, time windows, and log tails.
 - If production resources may be touched, pause before any command that can alter state.
 
@@ -43,8 +38,7 @@ skills/coding-operational-issue-diagnostics/scripts/ops_diag_preflight.sh \
 
 Use only the flags that are known. Add `--all-namespaces` only when a broad AKS scan is justified.
 
-4. Read `references/read-only-checks.md` for deeper command sets after preflight identifies the
-   likely area: local runtime, PostgreSQL, Docker, AKS, Azure Static Web Apps, or Azure Monitor.
+4. Read `references/read-only-checks.md` for deeper command sets after preflight identifies the likely area: local runtime, PostgreSQL, Docker, AKS, Azure Static Web Apps, or Azure Monitor.
 
 ## Investigation Flow
 1. Establish context
@@ -57,10 +51,8 @@ Use only the flags that are known. Add `--all-namespaces` only when a broad AKS 
 3. Inspect cloud health
    - Local: process status, bound ports, logs, Docker containers, database readiness.
    - AKS: nodes, pods, events, deployments, replica sets, services, ingress, recent logs.
-   - Azure Static Web Apps: resource state, environments, custom domains, deployment history when
-     available, linked APIs/functions, and monitor logs when configured.
-   - Azure Monitor/Application Insights: query recent exceptions, failed requests, dependency
-     failures, and traces for the affected timeframe.
+   - Azure Static Web Apps: resource state, environments, custom domains, deployment history when available, linked APIs/functions, and monitor logs when configured.
+   - Azure Monitor/Application Insights: query recent exceptions, failed requests, dependency failures, and traces for the affected timeframe.
 4. Correlate timestamps
    - Align user-reported time, deployment time, pod restarts, events, and error logs.
    - Convert time zones explicitly when needed.

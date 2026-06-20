@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | Acceptance Author"
-  short_description: "Create black-box feature acceptance checks"
-  default_prompt: "Use $coding-acceptance-author to generate or repair acceptance checks for docs/features/todo-api."
-policy:
-  allow_implicit_invocation: true

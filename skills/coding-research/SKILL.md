@@ -1,14 +1,13 @@
 ---
 name: coding-research
-description: Gather external evidence for product, domain, library, or API questions before feature or app planning commits to assumptions. Use when `coding-app-to-features` or `coding-feature-spec` needs grounded facts, official docs, or comparable examples, especially when web search or Context7 is required.
+description: "Gather external evidence for product, domain, library, or API questions before feature or app planning commits to assumptions. Use when `coding-app-to-features` or `coding-feature-spec` needs grounded facts, official docs, or comparable examples, especially when web search or Context7 is required."
 metadata:
   short-description: External evidence gathering for planning
 ---
 
 # Research
 
-Purpose: gather the minimum external evidence needed to reduce speculative planning before findings
-are written into `docs/APP.md`, `docs/ARCHITECTURE.md`, or `FEATURE.md`.
+Purpose: gather the minimum external evidence needed to reduce speculative planning before findings are written into `docs/APP.md`, `docs/ARCHITECTURE.md`, or `FEATURE.md`.
 
 ## Workflow
 1) Start with the concrete question
@@ -30,6 +29,6 @@ are written into `docs/APP.md`, `docs/ARCHITECTURE.md`, or `FEATURE.md`.
 
 ## Rules
 - Do not turn research notes into a parallel planning system.
-- Keep claims source-backed when they affect architecture, APIs, or acceptance behavior.
+- Keep claims source-backed when they affect architecture, APIs, or feature proof.
 - Respect the repo default that web search is disabled unless the run explicitly enables it.
 - If evidence is weak or conflicting, state that clearly instead of pretending the question is settled.

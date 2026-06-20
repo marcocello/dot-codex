@@ -1,0 +1,8 @@
+interface:
+  display_name: "CODING | Proof Author"
+  short_description: "Create PROOF.md and behavioral proof artifacts"
+  default_prompt: >-
+    Use $coding-proof-author to create or repair PROOF.md and behavioral proof artifacts for
+    docs/features/todo-api.
+policy:
+  allow_implicit_invocation: true

@@ -4,10 +4,8 @@ Detailed product-agnostic procedures for each scanning surface.
 
 ## Before Scanning
 
-1. Load product context, sector context, ICP, competitors, and signal criteria from user-provided
-   text or files.
-2. Generate the scan plan from that context: platforms, communities, search queries, target roles,
-   competitor terms, pain phrases, and disqualifiers.
+1. Load product context, sector context, ICP, competitors, and signal criteria from user-provided text or files.
+2. Generate the scan plan from that context: platforms, communities, search queries, target roles, competitor terms, pain phrases, and disqualifiers.
 3. Create `signals-database.json` if missing.
 4. Confirm logged-in surfaces are available before using browser automation.
 
@@ -19,8 +17,7 @@ Detailed product-agnostic procedures for each scanning surface.
 2. Read visible post content using browser or accessibility tools.
 3. Scan a bounded set of recent visible posts.
 4. Compare each post against the user-provided signal criteria.
-5. Extract author name, title, company, profile URL, post summary, post URL, engagement count, and
-   relevant quoted evidence.
+5. Extract author name, title, company, profile URL, post summary, post URL, engagement count, and relevant quoted evidence.
 
 ### Search Scan
 
@@ -34,8 +31,7 @@ Detailed product-agnostic procedures for each scanning surface.
 ### Notification Scan
 
 1. Navigate to LinkedIn notifications when the user asks for it.
-2. Check for profile views, post engagement, connection requests, mentions, and replies from
-   ICP-matching people or accounts.
+2. Check for profile views, post engagement, connection requests, mentions, and replies from ICP-matching people or accounts.
 3. Extract person, company, action type, and source URL where available.
 
 ## Reddit and Community Scan Procedure
@@ -96,5 +92,4 @@ All signals are stored in `signals-database.json` at the workspace root:
 }
 ```
 
-Always append new signals. Before adding a signal, check if a similar signal already exists by
-person/account, source, and week.
+Always append new signals. Before adding a signal, check if a similar signal already exists by person/account, source, and week.

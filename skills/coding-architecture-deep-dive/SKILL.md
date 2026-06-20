@@ -18,8 +18,7 @@ Purpose: produce a precise, evidence-based architectural assessment for one comp
   - peak load profile
   - known incidents or regressions
 
-If context is incomplete, infer from repository artifacts first and ask only blocking questions.
-Subsequent questions are not mandatory; ask them only when direction is unclear or blocked.
+If context is incomplete, infer from repository artifacts first and ask only blocking questions. Subsequent questions are not mandatory; ask them only when direction is unclear or blocked.
 
 ## State-of-the-art analysis method
 1. Scope and boundary model

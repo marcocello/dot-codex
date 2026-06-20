@@ -7,8 +7,7 @@ metadata:
 
 # Compare Architectures
 
-Purpose: compare the current architecture or solution with a concrete reference and decide whether
-to keep it, partially adopt the reference, or replace it.
+Purpose: compare the current architecture or solution with a concrete reference and decide whether to keep it, partially adopt the reference, or replace it.
 
 ## Input
 - Mine: code / doc / architecture (partial ok)

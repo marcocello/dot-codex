@@ -4,30 +4,26 @@
 
 ### Content Distribution Phases
 
-**Phase 1: Quality Scoring (0-60 minutes)**
-The algorithm evaluates content quality before broad distribution:
+**Phase 1: Quality Scoring (0-60 minutes)** The algorithm evaluates content quality before broad distribution:
 - Spam detection and classification
 - Content categorization (topic, format)
 - Initial quality score based on text analysis
 - Creator credibility score (SSI, history)
 
-**Phase 2: Test Audience (1-4 hours)**
-Content is shown to a small test group:
+**Phase 2: Test Audience (1-4 hours)** Content is shown to a small test group:
 - First-degree connections (~8-10% of network)
 - Engagement rate in this window is critical
 - Comments weighted 10-15x more than likes
 - Saves and reposts are strong positive signals
 - Dwell time (time spent reading) matters
 
-**Phase 3: Extended Distribution (4-24 hours)**
-If Phase 2 performs well:
+**Phase 3: Extended Distribution (4-24 hours)** If Phase 2 performs well:
 - Second-degree connections (friends of friends)
 - Topic followers (hashtag and topic feeds)
 - Geographic and industry expansion
 - Engagement velocity determines speed of expansion
 
-**Phase 4: Long Tail (1-14 days)**
-High-performing content continues distributing:
+**Phase 4: Long Tail (1-14 days)** High-performing content continues distributing:
 - Resurfaced in feeds intermittently
 - "Trending" placement possible
 - Newsletter and digest inclusion

@@ -7,9 +7,7 @@ description: Rewrite text into casual, natural, human-sounding messages for chat
 
 ## Goal
 
-Turn structured or polished text into something that feels like a real person wrote it quickly.
-Preserve the core meaning, but reduce stiffness, over-explanation, formal punctuation,
-and unnecessary capitalization.
+Turn structured or polished text into something that feels like a real person wrote it quickly. Preserve the core meaning, but reduce stiffness, over-explanation, formal punctuation, and unnecessary capitalization.
 
 ## Workflow
 

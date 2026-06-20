@@ -5,8 +5,7 @@ description: Audit the current git checkout for critical hardcoded secrets with 
 
 # Critical Secret Audit
 
-Purpose: scan the current checkout for exposed credentials without putting raw secret values in the
-conversation.
+Purpose: scan the current checkout for exposed credentials without putting raw secret values in the conversation.
 
 ## Default Workflow
 
@@ -30,8 +29,7 @@ conversation.
 
 ## GitGuardian ggmcp
 
-Use GitGuardian/ggmcp as the scanner. The current ggmcp server exposes `scan_secrets`, whose
-arguments are:
+Use GitGuardian/ggmcp as the scanner. The current ggmcp server exposes `scan_secrets`, whose arguments are:
 
 ```json
 {
@@ -56,16 +54,13 @@ GGMCP_URL=http://127.0.0.1:8000 \
   python skills/coding-critical-secret-audit/scripts/scan_current_checkout.py --root <repo-root>
 ```
 
-If a native GitGuardian MCP tool is already callable in the active Codex session, it is acceptable
-to call `scan_secrets` directly. Keep the same file-selection and redaction rules.
+If a native GitGuardian MCP tool is already callable in the active Codex session, it is acceptable to call `scan_secrets` directly. Keep the same file-selection and redaction rules.
 
 ## Severity Rules
 
 - Treat explicit `critical` and `high` severities as critical.
-- Treat scan findings with no severity as critical until triaged; proactive scan responses may not
-  include incident severity.
-- Treat every detected secret as requiring immediate revoke/rotate unless GitGuardian validity or
-  incident context proves otherwise.
+- Treat scan findings with no severity as critical until triaged; proactive scan responses may not include incident severity.
+- Treat every detected secret as requiring immediate revoke/rotate unless GitGuardian validity or incident context proves otherwise.
 
 ## Remediation Output
 
@@ -76,13 +71,11 @@ For each finding, recommend:
 3. Replace it with an environment variable, secret manager lookup, or local ignored config file.
 4. Re-run the same scan command.
 
-Do not edit files automatically unless the user asked for remediation, because removing secrets can
-break local configuration and the credential still must be revoked.
+Do not edit files automatically unless the user asked for remediation, because removing secrets can break local configuration and the credential still must be revoked.
 
 ## Failure Handling
 
 - If ggmcp is unavailable, say the scan is blocked and provide the exact server command above.
-- If authentication is missing, say a GitGuardian token or OAuth-authenticated ggmcp session is
-  required.
+- If authentication is missing, say a GitGuardian token or OAuth-authenticated ggmcp session is required.
 - If the scan fails for size or rate limits, reduce `--batch-size` or `--max-bytes` and retry.
 - If findings are present, do not claim the checkout is safe.

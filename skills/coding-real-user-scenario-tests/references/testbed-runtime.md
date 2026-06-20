@@ -1,7 +1,6 @@
 # Testbed Runtime Reference
 
-Use this reference when authoring real-user scenario test fixtures for Followups-style dev listener
-testbeds.
+Use this reference when authoring real-user scenario test fixtures for Followups-style dev listener testbeds.
 
 ## Dev Listener Runtime
 
@@ -28,13 +27,11 @@ Required runtime inputs:
 - `--timeout-seconds`: per-turn timeout.
 - `--hubspot-token`: required only for HubSpot real object checks.
 
-The runner preserves order, waits for a final response before moving to the next turn, writes JSON
-evidence, and stops on the first timeout/failure/assertion failure.
+The runner preserves order, waits for a final response before moving to the next turn, writes JSON evidence, and stops on the first timeout/failure/assertion failure.
 
 ## Fixture Format
 
-Each user turn starts with `- `. Indented lines continue the same turn. Comment lines start with
-`#`.
+Each user turn starts with `- `. Indented lines continue the same turn. Comment lines start with `#`.
 
 ```text
 - User asks a realistic question or gives an update.
@@ -46,8 +43,7 @@ Each user turn starts with `- `. Indented lines continue the same turn. Comment 
   expect_delivery_status: suppressed
 ```
 
-Do not use exact full response equality. Prefer durable phrases, tool checks, and real-system
-checks.
+Do not use exact full response equality. Prefer durable phrases, tool checks, and real-system checks.
 
 ## Supported Directives
 
@@ -66,13 +62,11 @@ checks.
 
 - `expect_tool_result: <tool>:<path>=<value>`
   - Checks a successful tool result has a field at a dotted path equal to a value.
-  - Useful for provider write responses that include ids, status, subject, event id, draft id,
-    spreadsheet row ids, or normalized payload fields.
+  - Useful for provider write responses that include ids, status, subject, event id, draft id, spreadsheet row ids, or normalized payload fields.
 
 - `expect_tool_row: <tool>:<field>=<value>;...`
   - Scans dict rows returned in a tool result and passes when one row matches all fields.
-  - Useful for Google Sheet/CRM read-back checks after `get_objects` or write responses that return
-    `record`.
+  - Useful for Google Sheet/CRM read-back checks after `get_objects` or write responses that return `record`.
 
 - `expect_delivery_status: <status>`
   - Checks final delivery status, commonly `suppressed` in dev listener runs.
@@ -95,8 +89,7 @@ expect_tool: create_deal
 expect_hubspot_object: deal:create_deal
 ```
 
-For contact/company writes, inspect the current runner. If no real object directive exists, use a
-read-back turn with `get_objects` plus `expect_tool_row`, or extend the runner.
+For contact/company writes, inspect the current runner. If no real object directive exists, use a read-back turn with `get_objects` plus `expect_tool_row`, or extend the runner.
 
 ### Google Sheets
 
@@ -122,8 +115,7 @@ If the write tool does not return the updated row, add the next turn as a read-b
   expect_tool_row: get_objects:Nome=Emanuela;Cognome=Bivio;Stato Lead=IN TRATTATIVA
 ```
 
-Always include sheet interpretation instructions when column semantics are non-standard, especially
-owner columns.
+Always include sheet interpretation instructions when column semantics are non-standard, especially owner columns.
 
 ### Email Drafts
 
@@ -134,8 +126,7 @@ expect_tool: draft_email
 expect_tool_result: draft_email:subject=Recap incontro
 ```
 
-If the runtime cannot query the provider for the created draft, name the gap and add a runner task:
-verify draft existence through Gmail/Outlook API by returned draft id, recipient, and subject.
+If the runtime cannot query the provider for the created draft, name the gap and add a runner task: verify draft existence through Gmail/Outlook API by returned draft id, recipient, and subject.
 
 ### Calendar / Meeting Creation
 
@@ -146,9 +137,7 @@ expect_tool: create_event
 expect_tool_result: create_event:summary=Demo Progetto 5
 ```
 
-Real verification should read the provider calendar by returned event id and assert title, time,
-attendees, and Meet/link state when relevant. If the runner lacks this, specify the missing
-calendar verifier.
+Real verification should read the provider calendar by returned event id and assert title, time, attendees, and Meet/link state when relevant. If the runner lacks this, specify the missing calendar verifier.
 
 ### Documents / PDF Reports
 
@@ -159,8 +148,7 @@ expect_tool: create_pdf_recap_report
 expect_tool_result: create_pdf_recap_report:path=...
 ```
 
-When possible, verify the artifact exists and contains stable text. If the runner does not support
-artifact checks, add acceptance coverage or a runner extension.
+When possible, verify the artifact exists and contains stable text. If the runner does not support artifact checks, add proof coverage or a runner extension.
 
 ## Definition Of Done
 
@@ -170,5 +158,5 @@ A real-user scenario testbed is done only when:
 - Each write has a real-system verification path or a documented unsupported gap.
 - The dev listener run command is documented.
 - Result inspection commands are documented.
-- Relevant acceptance tests pass.
+- Relevant proof tests pass.
 - The repo gate or project-required checks pass, or a concrete blocker is reported.

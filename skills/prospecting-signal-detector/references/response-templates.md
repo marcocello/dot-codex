@@ -1,7 +1,6 @@
 # Response Templates
 
-Use these product-agnostic engagement templates after loading the user's product context, sector
-context, approved positioning, and signal criteria from text or files.
+Use these product-agnostic engagement templates after loading the user's product context, sector context, approved positioning, and signal criteria from text or files.
 
 ## Pain Signal Response
 
@@ -29,8 +28,7 @@ Example framework:
 
 ## Trigger Event Response
 
-When you detect a role change, launch, funding, expansion, deadline, regulation, migration, or other
-event from the user's signal criteria:
+When you detect a role change, launch, funding, expansion, deadline, regulation, migration, or other event from the user's signal criteria:
 
 Approach: Congratulate or acknowledge -> Relevant resource or lesson -> Soft seed.
 

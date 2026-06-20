@@ -5,14 +5,11 @@ description: Product-agnostic GTM signal detection workflow converted from the C
 
 # Signal Detector
 
-Use this skill to scan, classify, store, report on, and act on GTM buying signals for any product,
-project, sector, or ICP. Product context, sector context, ICP, competitors, and signal criteria
-must come from user-provided text or files.
+Use this skill to scan, classify, store, report on, and act on GTM buying signals for any product, project, sector, or ICP. Product context, sector context, ICP, competitors, and signal criteria must come from user-provided text or files.
 
 ## Context Intake
 
-Before scanning, reporting, or engaging, load the user's context from the current message, pasted
-brief, or named workspace files. Useful inputs include:
+Before scanning, reporting, or engaging, load the user's context from the current message, pasted brief, or named workspace files. Useful inputs include:
 
 - Product or project description.
 - Sector context and target geographies.
@@ -23,12 +20,9 @@ brief, or named workspace files. Useful inputs include:
 - Approved positioning, banned claims, tone, and engagement constraints.
 - Target platforms, communities, search queries, hashtags, and keywords.
 
-If context is missing, ask for the smallest missing piece before proceeding. Do not infer the
-product, project, sector, competitor list, or signal criteria from this skill.
+If context is missing, ask for the smallest missing piece before proceeding. Do not infer the product, project, sector, competitor list, or signal criteria from this skill.
 
-If the user wants Codex to generate this context, or if product context, sector context, ICP,
-competitors, alternatives, or signal criteria are too incomplete to scan reliably, use
-`prospecting-signal-context-builder` before scanning. Prefer loading `signal-context.md` when it exists.
+If the user wants Codex to generate this context, or if product context, sector context, ICP, competitors, alternatives, or signal criteria are too incomplete to scan reliably, use `prospecting-signal-context-builder` before scanning. Prefer loading `signal-context.md` when it exists.
 
 ## Data Store
 
@@ -45,17 +39,13 @@ Maintain `signals-database.json` at the workspace root:
 }
 ```
 
-Always append new signals, preserve existing engagement history, and update metadata after every
-scan or engagement session. Before adding a finding, deduplicate by same person, same source, and
-same week. Also check whether similar content from the same person was already engaged.
+Always append new signals, preserve existing engagement history, and update metadata after every scan or engagement session. Before adding a finding, deduplicate by same person, same source, and same week. Also check whether similar content from the same person was already engaged.
 
 ## Reference Loading
 
-- Read `references/signal-detection.md` for product-agnostic signal classes, context intake,
-  query generation, target surfaces, and classification rules.
+- Read `references/signal-detection.md` for product-agnostic signal classes, context intake, query generation, target surfaces, and classification rules.
 - Read `references/scan-procedures.md` before running a scan.
-- Read `references/response-templates.md` before drafting comments, posts, DMs, or follow-up
-  actions.
+- Read `references/response-templates.md` before drafting comments, posts, DMs, or follow-up actions.
 
 ## Safety Rules
 
@@ -66,8 +56,7 @@ same week. Also check whether similar content from the same person was already e
 - Stop immediately if the page, person, or post does not match the selected signal.
 - Never repeat an action already present in `engagement.actions_taken`.
 - Never pitch the user's product or project in Touch 1 comments.
-- Treat competitor praise as intelligence only unless there is explicit dissatisfaction or an
-  alternatives request.
+- Treat competitor praise as intelligence only unless there is explicit dissatisfaction or an alternatives request.
 
 ## Workflow Modes
 
@@ -78,16 +67,13 @@ Use when the user asks to scan for signals, detect opportunities, or check Linke
 1. Load `references/signal-detection.md` and `references/scan-procedures.md`.
 2. Create `signals-database.json` if missing.
 3. Use Codex Chrome/browser capabilities for LinkedIn surfaces only when the user is logged in.
-4. Scan LinkedIn feed, LinkedIn content searches, relevant role-change searches, configured Reddit
-   communities, industry forums, and keyword searches as scope allows.
+4. Scan LinkedIn feed, LinkedIn content searches, relevant role-change searches, configured Reddit communities, industry forums, and keyword searches as scope allows.
 5. Classify each signal as CRITICAL, HIGH, MEDIUM, or LOW and assign signal type and source.
-6. Capture author, title, company, profile URL, summary, source URL, full text when available,
-   timestamp, and scan session.
+6. Capture author, title, company, profile URL, summary, source URL, full text when available, timestamp, and scan session.
 7. Deduplicate before writing.
 8. Save all findings and show a quick summary with class breakdown and top 3 actions.
 
-Use morning or afternoon scan session names based on local time:
-`YYYY-MM-DD-morning` before noon, `YYYY-MM-DD-afternoon` otherwise.
+Use morning or afternoon scan session names based on local time: `YYYY-MM-DD-morning` before noon, `YYYY-MM-DD-afternoon` otherwise.
 
 ### Report
 
@@ -96,14 +82,12 @@ Use when the user asks for a signal report for `today`, `week`, or `all`.
 1. Read `signals-database.json`; if missing or empty, tell the user to run Scan first.
 2. Default to `week` when no period is specified.
 3. Filter to the requested period: last 24 hours, last 7 days, or all data.
-4. Save `signal-report-YYYY-MM-DD.md` with executive summary, class/type/source breakdown,
-   critical and high actions, engagement pipeline, trend analysis, and weekly recommendations.
+4. Save `signal-report-YYYY-MM-DD.md` with executive summary, class/type/source breakdown, critical and high actions, engagement pipeline, trend analysis, and weekly recommendations.
 5. Show a concise chat summary with the most actionable items and the report path.
 
 ### Engage
 
-Use when the user asks to engage signals, draft responses, post comments, send DMs, or turn market
-signals into LinkedIn posts.
+Use when the user asks to engage signals, draft responses, post comments, send DMs, or turn market signals into LinkedIn posts.
 
 1. Load `references/signal-detection.md` and `references/response-templates.md`.
 2. Read `signals-database.json`; if missing or empty, tell the user to run Scan first.
@@ -114,13 +98,11 @@ signals into LinkedIn posts.
    - Remove competitor tracking signals from engagement actions.
    - Separate market-trend signals as content opportunities.
    - Respect Touch 1, Touch 2, Touch 3 ordering.
-5. Present eligible signals with state, class, person, signal type, source, original post URL, and
-   recommended action.
+5. Present eligible signals with state, class, person, signal type, source, original post URL, and recommended action.
 6. Ask the user which signals to engage.
 7. Draft text using the matching response template and touch number.
 8. Ask for approval or edits for each draft.
-9. For browser-assisted LinkedIn actions, navigate to the original post/profile, verify it, show
-   the draft in place before posting, and get final explicit approval.
+9. For browser-assisted LinkedIn actions, navigate to the original post/profile, verify it, show the draft in place before posting, and get final explicit approval.
 10. Update `signals-database.json` for posted, scheduled, skipped, edited, or failed actions.
 
 Every `actions_taken` entry should include:

@@ -6,22 +6,11 @@
 
 For each content pillar, research and maintain a library of hashtags across three tiers:
 
-**Tier 1 — Broad Reach (>500K followers):**
-Purpose: Maximum exposure, highly competitive
-Examples: broad category, role, or movement hashtags from the user's sector context.
-Use: 1 per post maximum
+**Tier 1 — Broad Reach (>500K followers):** Purpose: Maximum exposure, highly competitive Examples: broad category, role, or movement hashtags from the user's sector context. Use: 1 per post maximum
 
-**Tier 2 — Targeted (10K-500K followers):**
-Purpose: Reach relevant professionals, moderate competition
-Examples: audience, job-to-be-done, product category, or problem-space hashtags from the user's
-provided context.
-Use: 1-2 per post
+**Tier 2 — Targeted (10K-500K followers):** Purpose: Reach relevant professionals, moderate competition Examples: audience, job-to-be-done, product category, or problem-space hashtags from the user's provided context. Use: 1-2 per post
 
-**Tier 3 — Niche (<10K followers):**
-Purpose: Community building, low competition, high relevance
-Examples: niche community, use-case, location, event, or buyer-problem hashtags from the user's
-provided context.
-Use: 1-2 per post
+**Tier 3 — Niche (<10K followers):** Purpose: Community building, low competition, high relevance Examples: niche community, use-case, location, event, or buyer-problem hashtags from the user's provided context. Use: 1-2 per post
 
 ### Step 2: Research Hashtag Performance
 

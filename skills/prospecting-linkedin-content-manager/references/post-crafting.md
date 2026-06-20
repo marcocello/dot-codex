@@ -12,8 +12,7 @@ Strong hook patterns:
 
 - Bold statement: "Most LinkedIn advice is wrong. Here's what actually works."
 - Contrarian take: "Unpopular opinion: hustle culture is killing innovation."
-- Surprising stat: "[Specific percentage] of [audience] struggle with [problem]. But not for the
-  reason you think."
+- Surprising stat: "[Specific percentage] of [audience] struggle with [problem]. But not for the reason you think."
 - Personal vulnerability: "I got fired last month. Best thing that ever happened."
 - Question: "What's the one skill that 10x'd your career?"
 - Pattern interrupt: "Stop scrolling. This might save your next product launch."
@@ -33,8 +32,7 @@ Rules:
 - Keep most paragraphs to 1-2 sentences.
 - Use line breaks aggressively.
 - Use bullets, arrows, or numbered lists only when they improve scanning.
-- Choose the structure that fits the topic: framework, story, contrarian argument, how-to,
-  observation, or list.
+- Choose the structure that fits the topic: framework, story, contrarian argument, how-to, observation, or list.
 
 ### CTA
 

@@ -1,20 +1,18 @@
 ---
 name: coding-feature-queue
-description: Maintain docs/features/status.json as a lightweight machine-readable feature queue for greenfield and brownfield autonomy. Use when creating multiple features, selecting the next feature, marking feature progress, or running coding-autonomous-execute across all features.
+description: "Maintain docs/features/status.json as a lightweight machine-readable feature queue for greenfield and brownfield autonomy. Use when creating multiple features, selecting the next feature, marking feature progress, or running coding-autonomous-execute across all features."
 metadata:
   short-description: Feature status queue for autonomous runs
 ---
 
 # Feature Queue
 
-Purpose: provide durable progress for autonomous feature execution without creating a workflow
-engine. FEATURE.md remains the source of truth for behavior.
+Purpose: provide durable progress for autonomous feature execution without creating a workflow engine. `FEATURE.md` and `PROOF.md` remain the authoritative feature contracts.
 
 ## File
 Use `docs/features/status.json`.
 
-Do not use the queue as a workflow engine. It is only a progress index that points to authoritative
-feature directories.
+Do not use the queue as a workflow engine. It is only a progress index that points to authoritative feature directories.
 
 ## Schema
 ```json
@@ -23,9 +21,9 @@ feature directories.
     {
       "id": "short-feature-id",
       "feature_dir": "docs/features/short-feature-id",
+      "proof": "docs/features/short-feature-id/PROOF.md",
       "priority": 1,
       "status": "pending",
-      "verify": "$HOME/.codex/scripts/acceptance --feature docs/features/short-feature-id",
       "notes": ""
     }
   ]
@@ -35,19 +33,19 @@ feature directories.
 Allowed `status` values:
 - `pending`: specified but not started.
 - `in_progress`: currently being implemented.
-- `failing`: attempted, but checks or evaluator failed.
+- `failing`: attempted, but proof, gate, or evaluator failed.
 - `blocked`: cannot proceed without user input or external state.
-- `passing`: gate, acceptance, and evaluator passed.
+- `passing`: primary proof, gate, and evaluator passed.
 
 ## Rules
-- Keep `FEATURE.md` authoritative; never move behavior details into `status.json`.
-- Keep `feature_dir` relative to the repo root.
+- Keep `FEATURE.md` and `PROOF.md` authoritative; never move behavior or proof details into `status.json`.
+- Keep `feature_dir` and `proof` relative to the repo root.
 - Keep `priority` numeric; lower numbers run first.
 - Update the queue whenever `coding-app-to-features` creates a feature series.
-- Update the queue whenever `coding-feature-spec` creates or materially changes a feature.
+- Update the queue whenever `coding-feature-spec` or `coding-proof-author` materially changes a feature or proof.
 - Mark one item `in_progress` at a time during autonomous execution.
-- Mark `passing` only after deterministic checks and `coding-feature-evaluator` pass.
-- Mark `failing` when checks or evaluator fail but bounded repair can continue.
+- Mark `passing` only after primary proof, gate, and `coding-feature-evaluator` pass.
+- Mark `failing` when proof, gate, or evaluator fail but bounded repair can continue.
 - Mark `blocked` only when the same blocker repeats or required input is missing.
 
 ## Next Item Selection
@@ -60,5 +58,6 @@ Allowed `status` values:
 When updating the queue, report:
 - selected feature id
 - old status -> new status
-- verification command
+- proof path
+- primary proof command if known
 - reason for `failing` or `blocked`

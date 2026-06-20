@@ -6,8 +6,7 @@ Use this reference when researching selected LinkedIn content topics.
 
 1. Run broad searches from 3-5 angles.
 2. Search specifically for statistics, research papers, surveys, and benchmarks.
-3. Find expert perspectives from credible operators, analysts, researchers, practitioners, or
-   leaders in the user's provided sector context.
+3. Find expert perspectives from credible operators, analysts, researchers, practitioners, or leaders in the user's provided sector context.
 4. Look for counter-arguments and active debates.
 5. Find real case studies from companies or people.
 6. Search LinkedIn for similar topics to inspect angles, formats, and hashtags.

@@ -7,9 +7,7 @@ description: Build product-agnostic GTM signal context files for signal detectio
 
 Use this skill to create or update `signal-context.md` for `prospecting-signal-detector`.
 
-This skill is product, project, and sector agnostic. All product context, sector context, ICP,
-competitors, alternatives, signal criteria, and engagement constraints must come from
-user-provided text or files.
+This skill is product, project, and sector agnostic. All product context, sector context, ICP, competitors, alternatives, signal criteria, and engagement constraints must come from user-provided text or files.
 
 ## Inputs
 
@@ -17,43 +15,32 @@ Accept source material from:
 
 - The user's current message or pasted notes.
 - Workspace files named by the user.
-- Product briefs, positioning docs, website copy, sales notes, ICP notes, CRM exports, competitor
-  notes, market research, call transcripts, campaign plans, or existing `signal-context.md`.
+- Product briefs, positioning docs, website copy, sales notes, ICP notes, CRM exports, competitor notes, market research, call transcripts, campaign plans, or existing `signal-context.md`.
 - Links or live research only when the user asks for current external evidence.
 
-If source material is missing or too thin, ask for the smallest missing high-impact input. Do not
-invent product claims, sectors, ICPs, competitors, alternatives, or signal definitions.
+If source material is missing or too thin, ask for the smallest missing high-impact input. Do not invent product claims, sectors, ICPs, competitors, alternatives, or signal definitions.
 
 ## Output
 
-Write a human-editable markdown file named `signal-context.md` at the workspace root unless the
-user asks for another path.
+Write a human-editable markdown file named `signal-context.md` at the workspace root unless the user asks for another path.
 
-Use `references/context-template.md` as the output structure. Keep unknowns explicit with
-`Unknown` or `Needs input`, and include a short `Open Questions` section when important gaps remain.
+Use `references/context-template.md` as the output structure. Keep unknowns explicit with `Unknown` or `Needs input`, and include a short `Open Questions` section when important gaps remain.
 
 ## Workflow
 
 1. Gather source material.
    - Read user-named files first.
    - Preserve the source-of-truth order the user provides.
-   - If existing `signal-context.md` exists, update it instead of starting over unless the user asks
-     for a rebuild.
+   - If existing `signal-context.md` exists, update it instead of starting over unless the user asks for a rebuild.
 2. Extract context.
-   - Product context: what it is, who it helps, outcomes, proof, pricing or delivery model if
-     supplied.
+   - Product context: what it is, who it helps, outcomes, proof, pricing or delivery model if supplied.
    - Sector context: market, submarkets, geography, regulation, seasonality, and communities.
-   - ICP: account types, roles, buying committee, users, qualification rules, and disqualification
-     rules.
-   - Competitors and alternatives: named competitors, incumbent workflows, internal substitutes,
-     agencies, consultants, spreadsheets, manual process, or "do nothing" if supplied.
-   - Pain points and triggers: urgent problems, trigger events, objections, adoption barriers, and
-     timing signals.
+   - ICP: account types, roles, buying committee, users, qualification rules, and disqualification rules.
+   - Competitors and alternatives: named competitors, incumbent workflows, internal substitutes, agencies, consultants, spreadsheets, manual process, or "do nothing" if supplied.
+   - Pain points and triggers: urgent problems, trigger events, objections, adoption barriers, and timing signals.
    - Signal criteria: CRITICAL, HIGH, MEDIUM, and LOW definitions that map to the provided context.
-   - Search seeds: keywords, phrases, queries, communities, hashtags, job titles, company types,
-     events, and competitor terms.
-   - Engagement constraints: approved positioning, banned claims, tone, channels, compliance notes,
-     and approval requirements.
+   - Search seeds: keywords, phrases, queries, communities, hashtags, job titles, company types, events, and competitor terms.
+   - Engagement constraints: approved positioning, banned claims, tone, channels, compliance notes, and approval requirements.
 3. Normalize the output.
    - Convert vague inputs into concrete bullets without adding unsupported facts.
    - Keep labels stable so `prospecting-signal-detector` can scan the file quickly.

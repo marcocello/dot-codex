@@ -1,14 +1,13 @@
 ---
 name: coding-frontend
-description: Implement, bootstrap, or refactor user-facing React/Next.js UI with strong layout, interaction, and visual quality while preserving repo conventions. Use for frontend surface changes, greenfield frontend skeleton creation, missing frontend/app setup, or new React/Next.js app work even when no existing frontend is detected. Do not use for backend-only or infrastructure tasks.
+description: "Implement, bootstrap, or refactor user-facing React/Next.js UI with strong layout, interaction, and visual quality while preserving repo conventions. Use for frontend surface changes, greenfield frontend skeleton creation, missing frontend/app setup, or new React/Next.js app work even when no existing frontend is detected. Do not use for backend-only or infrastructure tasks."
 metadata:
   short-description: React and Next.js frontend implementation
 ---
 
 # Frontend
 
-Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the
-repo's design system and frontend conventions.
+Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the repo's design system and frontend conventions.
 
 ## Scope
 - Applies when:
@@ -27,14 +26,9 @@ repo's design system and frontend conventions.
 ## Default UI baseline
 - Preserve an existing repo design system when one is already established.
 - For new React/Next.js frontend work with no existing design system, use `shadcn/ui` by default.
-- When the task requires creating a frontend and the user/repo does not specify a different
-  starter, clone [satnaing/shadcn-admin](https://github.com/satnaing/shadcn-admin) as the default
-  UI baseline and modify that cloned codebase as the frontend baseline.
-- Do not recreate a generic shadcn app from scratch when this default applies; adapt the cloned
-  `satnaing/shadcn-admin` project in place.
-- If `frontend/app` is missing or has no existing frontend package, clone before adding package
-  scaffolding, tests, routes, or UI files. Clone the baseline into `frontend/app` first, then make
-  feature changes inside that cloned codebase.
+- When the task requires creating a frontend and the user/repo does not specify a different starter, clone [satnaing/shadcn-admin](https://github.com/satnaing/shadcn-admin) as the default UI baseline and modify that cloned codebase as the frontend baseline.
+- Do not recreate a generic shadcn app from scratch when this default applies; adapt the cloned `satnaing/shadcn-admin` project in place.
+- If `frontend/app` is missing or has no existing frontend package, clone before adding package scaffolding, tests, routes, or UI files. Clone the baseline into `frontend/app` first, then make feature changes inside that cloned codebase.
 - Do not create a minimal Vite, Next.js, or generic React skeleton when the default clone applies.
 
 ## Design principles
@@ -45,8 +39,7 @@ repo's design system and frontend conventions.
 - Ensure layout works on desktop and mobile
 
 ## Implementation rules
-- Before installing packages, starting dev servers, or running frontend checks, use
-  `coding-prepare-environment`.
+- Before installing packages, starting dev servers, or running frontend checks, use `coding-prepare-environment`.
 - Reuse existing components before creating new ones
 - Follow existing lint/build conventions
 - No large refactors unless required
@@ -59,11 +52,11 @@ repo's design system and frontend conventions.
 - Add meaningful assertions for new behavior
 - Do not weaken or delete tests
 
-## Acceptance harness (if feature includes UI behavior)
-- If `FEATURE.md` includes frontend acceptance behavior:
-  - Add feature-scoped acceptance under `FEATURE_DIR/acceptance/`
-  - Prefer test-based verification over snapshot-only tests
-- Tests must assert observable behavior (DOM/state changes)
+## Feature Proof (if feature includes UI behavior)
+- If `FEATURE_DIR/PROOF.md` is missing or weak, use `coding-proof-author`.
+- For user-facing UI behavior, prefer browser E2E proof that exercises the app as a user.
+  - Prefer test-based verification over snapshot-only tests.
+- Tests must assert observable behavior such as DOM state, navigation, persisted data, or API effects.
 
 ## Reference repos (Frontend)
 Use only if current repo lacks a needed pattern.

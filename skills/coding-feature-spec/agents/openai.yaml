@@ -1,6 +1,8 @@
 interface:
   display_name: "CODING | Feature Spec"
-  short_description: "Create or refine the final FEATURE.md with discovery-first coverage and BDD Gherkin behavior."
-  default_prompt: "Use $coding-feature-spec to create or update the final FEATURE.md under docs/features/todo-api with discovery and Gherkin scenarios."
+  short_description: "Create FEATURE.md plus executable proof package."
+  default_prompt: >-
+    Use $coding-feature-spec to create or update FEATURE.md under docs/features/todo-api, then use
+    $coding-proof-author to create PROOF.md and executable proof artifacts.
 policy:
   allow_implicit_invocation: true

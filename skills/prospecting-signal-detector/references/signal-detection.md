@@ -1,8 +1,6 @@
 # Signal Detection Reference
 
-Use this reference for product-agnostic signal classification, query generation, and target
-surfaces. Product context, sector context, ICP, competitors, and signal criteria must come from
-user-provided text or files.
+Use this reference for product-agnostic signal classification, query generation, and target surfaces. Product context, sector context, ICP, competitors, and signal criteria must come from user-provided text or files.
 
 ## Required Context
 
@@ -17,8 +15,7 @@ Load or ask for:
 - Signal criteria for CRITICAL, HIGH, MEDIUM, and LOW.
 - Target platforms, communities, keywords, hashtags, and search queries.
 
-If the user provides a file, treat it as the source of truth for classification and engagement.
-If multiple files conflict, ask which one wins.
+If the user provides a file, treat it as the source of truth for classification and engagement. If multiple files conflict, ask which one wins.
 
 ## Default Signal Classes
 
@@ -38,10 +35,8 @@ Respond within 2 hours.
 Respond same day.
 
 - Strong pain signal from an ICP-matching person or account.
-- Trigger event that plausibly creates need: new role, funding, launch, expansion, regulation,
-  migration, outage, deadline, hiring, or budget cycle.
-- Mention of manual work, process failure, cost pressure, risk, lost revenue, slow delivery, or
-  poor customer/user experience tied to the user's problem space.
+- Trigger event that plausibly creates need: new role, funding, launch, expansion, regulation, migration, outage, deadline, hiring, or budget cycle.
+- Mention of manual work, process failure, cost pressure, risk, lost revenue, slow delivery, or poor customer/user experience tied to the user's problem space.
 - Hiring or roadmap language that matches the user-provided category.
 
 ### MEDIUM
@@ -95,7 +90,6 @@ Use only surfaces relevant to the user's provided sector context:
 
 - LinkedIn feed, content search, people search, profile activity, and notifications.
 - Reddit communities named by the user or found through research.
-- Public industry forums, Slack/Discord communities with user approval, review sites, job boards,
-  conference pages, newsletters, and web search.
+- Public industry forums, Slack/Discord communities with user approval, review sites, job boards, conference pages, newsletters, and web search.
 
 When a surface requires authentication, never enter credentials. Ask the user to log in manually.

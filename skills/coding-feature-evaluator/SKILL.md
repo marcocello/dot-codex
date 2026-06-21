@@ -22,12 +22,16 @@ Purpose: act as the done judge, not the doer and not the main test runner. This 
 - The final diff or changed files.
 - The latest proof, gate, build, browser, or runtime results.
 - For issue fixes without `FEATURE_DIR`, the regression proof and observed bug description.
+- For issue fixes, evidence that `docs/features/*/FEATURE.md` was inspected or a clear reason why feature lookup did not apply.
 
 ## Workflow
 1) Load the contracts
    - If `FEATURE_DIR` exists, read `FEATURE_DIR/FEATURE.md`.
    - If `FEATURE_DIR` exists, read `FEATURE_DIR/PROOF.md`.
    - If there is no feature contract, evaluate against the user-reported issue and regression proof.
+   - For issue fixes, check whether the caller looked for one clear matching `docs/features/*/FEATURE.md`.
+   - If exactly one matching feature existed and was ignored, return `FAIL`.
+   - If no feature clearly matched, accept a focused local regression proof without requiring new feature artifacts.
 
 2) Inspect the implementation
    - Review changed files and touched boundaries.
@@ -37,6 +41,7 @@ Purpose: act as the done judge, not the doer and not the main test runner. This 
 3) Evaluate proof quality
    - Confirm `PROOF.md` actually proves the behavior in `FEATURE.md`.
    - Confirm the primary proof command is explicit and runnable.
+   - For issue fixes attached to a `FEATURE_DIR`, confirm the proof package catches or was strengthened to catch the regression.
    - Confirm proof uses public boundaries when the feature is user/API/provider visible.
    - Confirm internal proof is appropriate for internal-only work such as migrations or refactors.
    - Flag tests that only assert implementation details when observable behavior is available.

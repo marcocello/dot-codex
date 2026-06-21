@@ -103,6 +103,10 @@ The `docs/features/*` artifacts are created in the target software repository th
 
 ## Repair Routing
 - Use `coding-fix-issue` when the entry point is a user-reported bug or broken behavior.
+- Bugfixes first look for one clear matching `docs/features/*/FEATURE.md`.
+- If exactly one feature matches, attach the fix to that `FEATURE_DIR`, use its `PROOF.md`, and strengthen that proof with a focused failing regression if the existing proof misses the bug.
+- If no feature clearly matches, do not create `FEATURE.md` by default; add the smallest local regression proof near the affected code.
+- Create or update `FEATURE.md` for a bug only when the expected behavior itself needs durable definition or has changed.
 - Use `coding-auto-improve` when the entry point is a concrete failing check or evaluator `FAIL`.
 - Use `coding-autonomous-execute` when repeated bounded repair or queue completion needs a Codex Goal.
 

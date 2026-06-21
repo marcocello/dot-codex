@@ -12,6 +12,9 @@
 - Feature description: `FEATURE_DIR/FEATURE.md`.
 - Proof contract: `FEATURE_DIR/PROOF.md`.
 - FEATURE.md describes what to build. PROOF.md defines how done is proven.
+- For issue work, first check whether the bug clearly belongs to an existing `docs/features/*/FEATURE.md`.
+- If exactly one feature matches an issue, use that `FEATURE_DIR`, run or inspect its `PROOF.md`, and strengthen the proof with a focused failing regression before fixing when the existing proof misses the bug.
+- If no feature clearly matches an issue, do not create `FEATURE.md` by default; use the smallest local regression proof unless the expected behavior itself needs durable definition.
 - If `FEATURE_DIR` is missing:
   - inspect `docs/features/*/FEATURE.md` for one clear match;
   - use that match when exactly one is clear;

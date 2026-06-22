@@ -30,6 +30,10 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
 3) Understand and reproduce the issue
    - Quote exact error messages or failing tests when available.
    - Identify the owning area (backend route/service/domain, or frontend component/hook).
+   - Follow the real call path before deciding the fix: entrypoint, validation/parsing, routing or dispatch, owner module, shared helper, persistence, network, or runtime boundary.
+   - Identify the root cause and state confidence as `clear`, `likely`, or `unknown`.
+   - If root cause is `unknown`, create the smallest diagnostic or reproduction that would make the next step concrete before editing production code.
+   - Prefer current source, executable proof, and runtime evidence over stale comments, assumptions, or old CI output.
 
 4) Gather local runtime evidence before editing
    - When the issue is reproducible locally, check app/runtime logs before changing code.
@@ -43,6 +47,7 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
 5) Locate existing logic
    - Search for existing functions/components that already implement similar behavior.
    - Reuse or extend existing code; do not duplicate logic.
+   - Read adjacent tests and ownership-boundary code, not only the first file that mentions the error.
 
 6) Red phase (test first)
    - Add or update the smallest regression test for the issue.
@@ -80,6 +85,7 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
 
 ## Behavioral Baseline
 - Think before changing code: reproduce the issue or name the missing evidence before editing.
+- Root cause first: trace the owning call path and explain why the failing behavior occurs before choosing a patch.
 - Local evidence first: for local app failures, check Docker/runtime logs and browser console logs before deciding the fault is understood.
 - Simplicity first: fix the observed issue without speculative cleanup or broader redesign.
 - Surgical changes: change only the failing path and remove only artifacts introduced by the fix.

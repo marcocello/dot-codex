@@ -41,6 +41,7 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Run the primary proof command from `PROOF.md` before implementation when practical.
    - Confirm the proof fails or is unmet for the expected missing behavior.
    - If the proof already passes, inspect whether the feature is already done or whether `PROOF.md` is too weak.
+   - If the proof is too weak, use `coding-proof-author` to strengthen the anti-gaming review and executable proof before implementation.
 
 7) Review non-trivial feature quality
    - For non-trivial feature work, use `coding-feature-quality` before implementation to scan ambiguity, edge cases, testability, proof quality, and architecture conflicts.
@@ -61,6 +62,8 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Treat evaluator `BLOCKED` as a real blocker; do not claim done.
    - If a Codex Goal is active, keep it open until proof, gate, evaluator `PASS`, and queue status prove completion.
    - If `docs/features/status.json` exists, use `coding-feature-queue` to mark the feature `passing`, `failing`, or `blocked` based on proof, gate, and evaluator result.
+   - If proof, gate, and evaluator pass but a human reports the feature still does not work, treat the proof package as insufficient.
+   - In that case, use `coding-proof-author` to add a failing proof that captures the real broken behavior before changing production code again.
 
 11) Escalate only on failure
    - If the primary proof or gate fails, use `coding-auto-improve`.
@@ -81,6 +84,7 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 - Simplicity first: implement the smallest design that satisfies `FEATURE.md` and `PROOF.md`.
 - Surgical changes: touch only files and lines needed for the feature, and clean up only dead code introduced by the current change.
 - Goal-driven execution: tie each implementation step to the primary proof or a narrower check that supports it.
+- Green-but-broken handling: when passing proof contradicts observed behavior, improve the proof contract before repairing code.
 
 ## Rules
 - Keep changes local.

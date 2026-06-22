@@ -12,6 +12,7 @@
 - Feature description: `FEATURE_DIR/FEATURE.md`.
 - Proof contract: `FEATURE_DIR/PROOF.md`.
 - FEATURE.md describes what to build. PROOF.md defines how done is proven.
+- For non-trivial feature work, PROOF.md must include an anti-gaming review that names fake or incomplete implementations the proof should catch.
 - For issue work, first check whether the bug clearly belongs to an existing `docs/features/*/FEATURE.md`.
 - If exactly one feature matches an issue, use that `FEATURE_DIR`, run or inspect its `PROOF.md`, and strengthen the proof with a focused failing regression before fixing when the existing proof misses the bug.
 - If no feature clearly matches an issue, do not create `FEATURE.md` by default; use the smallest local regression proof unless the expected behavior itself needs durable definition.
@@ -29,6 +30,7 @@
 - A Goal is runtime state. It does not replace `FEATURE.md`, `PROOF.md`, `status.json`, checks, or evaluator judgment.
 - Do not mark a Goal or queue item complete because the implementation looks plausible.
 - Completion requires the primary proof in `PROOF.md`, gate, `coding-feature-evaluator`, and queue progress evidence when a queue exists.
+- If proof, gate, and evaluator pass but credible observed behavior is still broken, treat the proof as insufficient and strengthen it before patching implementation again.
 - If `coding-feature-evaluator` returns `FAIL`, repair through `coding-auto-improve`, `coding-fix-issue`, or `coding-autonomous-execute`.
 - If `coding-feature-evaluator` returns `BLOCKED`, keep the item blocked and report the concrete blocker.
 

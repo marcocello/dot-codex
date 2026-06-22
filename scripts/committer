@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -f
 
 usage() {
   cat <<'EOF'
@@ -8,10 +9,10 @@ Usage:
   committer -t <type> -m "message" <path> [<path> ...]
 
 Notes:
-- Stages ONLY the listed paths.
-- Refuses '.' to prevent accidental repo-wide commits.
-- Does NOT push.
-Types (optional): feat|fix|refactor|build|ci|chore|docs|style|perf|test
+- Stages only the listed paths.
+- Refuses "." to prevent accidental repo-wide commits.
+- Does not prompt and does not push.
+- Types: feat|fix|refactor|build|ci|chore|docs|style|perf|test
 EOF
 }
 
@@ -20,18 +21,41 @@ MSG=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -h|--help) usage; exit 0 ;;
-    -t|--type) TYPE="${2:-}"; shift 2 ;;
-    -m|--message) MSG="${2:-}"; shift 2 ;;
-    --) shift; break ;;
-    -*) echo "Unknown flag: $1" >&2; usage; exit 2 ;;
-    *) break ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -t|--type)
+      TYPE="${2:-}"
+      shift 2
+      ;;
+    -m|--message)
+      MSG="${2:-}"
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Error: unknown flag: $1" >&2
+      usage
+      exit 2
+      ;;
+    *)
+      break
+      ;;
   esac
 done
 
-if [[ -z "${MSG}" ]]; then
+if [[ -z "${MSG//[[:space:]]/}" ]]; then
   echo "Error: commit message required (-m)." >&2
   usage
+  exit 2
+fi
+
+if [[ -e "$MSG" ]]; then
+  echo "Error: message looks like a file path; pass the message to -m." >&2
   exit 2
 fi
 
@@ -41,46 +65,48 @@ if [[ $# -lt 1 ]]; then
   exit 2
 fi
 
-# Prevent accidental repo-wide staging
-for p in "$@"; do
-  if [[ "$p" == "." || "$p" == "./" ]]; then
-    echo "Error: refusing to commit '.' (repo-wide)." >&2
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+  echo "Error: not in a git repo." >&2
+  exit 2
+}
+
+case "${TYPE}" in
+  "")
+    FINAL_MSG="${MSG}"
+    ;;
+  feat|fix|refactor|build|ci|chore|docs|style|perf|test)
+    FINAL_MSG="${TYPE}: ${MSG}"
+    ;;
+  *)
+    echo "Error: invalid type '${TYPE}'." >&2
+    usage
     exit 2
+    ;;
+esac
+
+for path in "$@"; do
+  if [[ "$path" == "." || "$path" == "./" ]]; then
+    echo "Error: refusing to commit '.'; list specific paths instead." >&2
+    exit 2
+  fi
+
+  if [[ ! -e "$path" ]]; then
+    if ! git ls-files --error-unmatch -- "$path" >/dev/null 2>&1; then
+      if ! git cat-file -e "HEAD:$path" >/dev/null 2>&1; then
+        echo "Error: file not found or tracked: $path" >&2
+        exit 2
+      fi
+    fi
   fi
 done
 
-# Ensure we're in a git repo
-git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "Error: not in a git repo." >&2; exit 2; }
+git restore --staged :/
+git add -A -- "$@"
 
-# Compose message
-if [[ -n "${TYPE}" ]]; then
-  case "${TYPE}" in
-    feat|fix|refactor|build|ci|chore|docs|style|perf|test) ;;
-    *) echo "Error: invalid type '${TYPE}'." >&2; usage; exit 2 ;;
-  esac
-  FINAL_MSG="${TYPE}: ${MSG}"
-else
-  FINAL_MSG="${MSG}"
+if git diff --staged --quiet; then
+  echo "Error: no staged changes detected for listed paths." >&2
+  exit 1
 fi
 
-echo "Staging paths:"
-printf '  - %s\n' "$@"
-
-# Stage only provided paths
-git add -- "$@"
-
-echo
-echo "Staged diff:"
-git --no-pager diff --cached
-
-echo
-read -r -p "Commit with message: '${FINAL_MSG}' ? [y/N] " yn
-case "$yn" in
-  [yY]|[yY][eE][sS]) ;;
-  *) echo "Aborted."; exit 1 ;;
-esac
-
-git commit -m "${FINAL_MSG}"
-
-echo
+git commit -m "$FINAL_MSG" -- "$@"
 echo "Committed locally. No push performed."

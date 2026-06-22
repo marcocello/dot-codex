@@ -41,9 +41,14 @@ Purpose: act as the done judge, not the doer and not the main test runner. This 
 3) Evaluate proof quality
    - Confirm `PROOF.md` actually proves the behavior in `FEATURE.md`.
    - Confirm the primary proof command is explicit and runnable.
+   - Confirm `PROOF.md` includes an anti-gaming review for non-trivial feature work.
+   - Check whether a broken implementation could still pass the primary proof.
+   - Return `FAIL` when the proof can pass while the feature is visibly, externally, or behaviorally broken.
    - For issue fixes attached to a `FEATURE_DIR`, confirm the proof package catches or was strengthened to catch the regression.
    - Confirm proof uses public boundaries when the feature is user/API/provider visible.
    - Confirm internal proof is appropriate for internal-only work such as migrations or refactors.
+   - For UI/workflow features, prefer live browser/runtime evidence over static component or source assertions.
+   - For API/provider features, prefer real route, persisted-state, outbound boundary, and read-back evidence where available.
    - Flag tests that only assert implementation details when observable behavior is available.
    - Flag assistant claims, tool-call success, or mocked writes as insufficient when real state is checkable.
    - Check whether proof was weakened after implementation.
@@ -56,7 +61,7 @@ Purpose: act as the done judge, not the doer and not the main test runner. This 
    - Do not make evaluator success depend on running a new broad test suite that the execution phase did not run.
 
 5) Judge
-   - `PASS`: behavior, proof, architecture, gate, and checks are sufficient.
+   - `PASS`: behavior, proof, anti-gaming coverage, architecture, gate, and checks are sufficient.
    - `FAIL`: list concrete blocking issues with file paths and missing checks.
    - `BLOCKED`: missing environment, missing credentials, unavailable service, or unclear product decision prevents a reliable judgment.
 

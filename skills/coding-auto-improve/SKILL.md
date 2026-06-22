@@ -16,6 +16,7 @@ Purpose: self-correct after a failed implementation attempt without introducing 
 2) Run the authoritative checks
    - If a concrete `FEATURE_DIR` is in scope, run the primary proof command from `FEATURE_DIR/PROOF.md`.
    - Run `$HOME/.codex/scripts/gate`.
+   - If checks are green but observed behavior is broken, use `coding-proof-author` to strengthen the proof before changing implementation again.
 
 3) Isolate the smallest failing scope
    - Prefer the narrowest failing test, file, proof step, or validation command.
@@ -37,10 +38,12 @@ Purpose: self-correct after a failed implementation attempt without introducing 
 - Simplicity first: prefer the smallest repair that turns the failing proof green.
 - Surgical changes: do not broaden the repair beyond the failing scope or perform drive-by cleanup.
 - Goal-driven execution: every repair loop must end by re-running the narrowest failing check, then the authoritative proof and gate.
+- Green-but-broken handling: convert credible observed failure into a failing proof before patching code.
 
 ## Rules
 - Keep the loop bounded; do not keep making speculative fixes.
 - Prefer existing skills such as `coding-fix-issue`, `coding-python-backend`, `coding-frontend`, `coding-wordpress`, and `coding-proof-author` for the actual code or proof change.
 - Fix only the smallest failing scope.
 - Do not weaken `PROOF.md`, reduce feature scope, or replace observable proof with assistant claims.
+- Do not patch around a green-but-broken report until the proof package captures the missing behavior.
 - Do not introduce a separate in-repo orchestrator.

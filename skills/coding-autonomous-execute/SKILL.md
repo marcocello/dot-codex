@@ -85,6 +85,15 @@ Use bounded repair when proof, gate, or evaluator judgment fails.
 4. Rerun `coding-feature-evaluator`.
 5. Stop as `BLOCKED` when the same blocker repeats three times.
 
+## Green-But-Broken Handling
+Use this when the primary proof, gate, and evaluator pass but observed product behavior still fails.
+
+1. Treat the result as a proof-system failure, not as completed work.
+2. Read the relevant run output, browser/runtime evidence, or agent trace to identify what the proof missed.
+3. Use `coding-proof-author` to add or strengthen a failing proof for the observed broken behavior.
+4. Repair implementation only after the strengthened proof fails for the right reason.
+5. Rerun the strengthened primary proof, gate, and `coding-feature-evaluator` before marking the item passing.
+
 ## Boundaries
 - Do not use Goals for one-line edits, simple explanations, vague improvement requests, or work without an auditable finish line.
 - Do not run multiple autonomous Codex sessions against the same checkout.
@@ -93,6 +102,7 @@ Use bounded repair when proof, gate, or evaluator judgment fails.
 - Use one primary proof in the handoff. Do not label gate, evaluator, or secondary checks as proof.
 - If secondary feature checks were run, report them under `Safety checks`, not under `Proof`.
 - Do not report legacy feature-check wrappers as proof; name them as secondary checks only.
+- Do not continue treating an item as passing after credible green-but-broken evidence.
 
 ## Handoff Format
 Use this order:

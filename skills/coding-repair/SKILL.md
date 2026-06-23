@@ -14,6 +14,13 @@ Purpose: fix an issue correctly, with the smallest effective change and proper v
 - If the issue or failing check is clear, proceed directly to implementation.
 
 ## Workflow
+Fast path for concrete failures:
+- If the input is a specific proof, gate, typecheck, lint, build, or evaluator failure,
+  reproduce that failure, patch the smallest owning path, rerun the failing check, then
+  rerun the lifecycle checks required by `AGENTS.md`.
+- Use the diagnostic workflow below only when the expected behavior, root cause, or owning
+  area is unclear.
+
 1) Read repo docs if present
    - If `docs/` exists, read `docs/INDEX.md` or `docs/README.md` first.
    - If neither exists, scan `docs/` for the most relevant files.

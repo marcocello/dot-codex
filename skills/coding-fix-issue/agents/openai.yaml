@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | Fix Issue"
-  short_description: "Apply minimal corrective changes with feature proof lookup and regression verification."
-  default_prompt: "Use $coding-fix-issue to fix this issue with existing feature proof lookup, the smallest effective change, and regression verification."
-policy:
-  allow_implicit_invocation: true

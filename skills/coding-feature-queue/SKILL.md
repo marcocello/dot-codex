@@ -23,7 +23,7 @@ Do not use the queue as a workflow engine. It is only a progress index that poin
       "feature_dir": "docs/features/short-feature-id",
       "proof": "docs/features/short-feature-id/PROOF.md",
       "priority": 1,
-      "status": "pending",
+      "status": "draft",
       "notes": ""
     }
   ]
@@ -31,11 +31,15 @@ Do not use the queue as a workflow engine. It is only a progress index that poin
 ```
 
 Allowed `status` values:
-- `pending`: specified but not started.
+- `draft`: feature/proof authoring is incomplete, under review, or being repaired.
+  Autonomous execution must not select this item.
+- `ready`: `FEATURE.md`, `PROOF.md`, an executable proof artifact, and contract review
+  are ready for implementation.
 - `in_progress`: currently being implemented.
-- `failing`: attempted, but proof, gate, or evaluator failed.
+- `repairing`: implementation was attempted, but proof, gate, or evaluator failed and
+  bounded repair can continue.
 - `blocked`: cannot proceed without user input or external state.
-- `passing`: primary proof, gate, and evaluator passed.
+- `done`: primary proof, gate, and evaluator passed.
 
 ## Rules
 - Keep `FEATURE.md` and `PROOF.md` authoritative; never move behavior or proof details into `status.json`.
@@ -43,16 +47,27 @@ Allowed `status` values:
 - Keep `priority` numeric; lower numbers run first.
 - Update the queue whenever `coding-app-to-features` creates a feature series.
 - Update the queue whenever `coding-feature-spec` or `coding-proof-author` materially changes a feature or proof.
+- Mark `draft` while feature/proof authoring is incomplete or contract review is failing
+  but repair can continue.
+- Mark `ready` only after feature/proof authoring has produced `FEATURE.md`, `PROOF.md`,
+  an executable proof artifact, and a passing contract review, or after a minor non-behavior
+  edit to an already-ready item.
 - Mark one item `in_progress` at a time during autonomous execution.
-- Mark `passing` only after primary proof, gate, and `coding-feature-evaluator` pass.
-- Mark `failing` when proof, gate, or evaluator fail but bounded repair can continue.
-- Mark `blocked` only when the same blocker repeats or required input is missing.
+- Mark `repairing` when proof, gate, or evaluator fail but bounded repair can continue.
+- Mark `blocked` when required input, unavailable external state, unreproducible behavior,
+  or a repeated blocker prevents progress.
+- Mark `done` only after primary proof, gate, and `coding-feature-evaluator` pass.
+- If a `done` item's `FEATURE.md`, `PROOF.md`, or executable proof artifacts change in a
+  behaviorally meaningful way, reset it to `draft` while authoring, then `ready` after the
+  updated contract package passes review. Preserve `done` only for clearly non-behavioral
+  metadata, typo, or formatting edits.
 
 ## Next Item Selection
-1. Choose the lowest-priority `failing` item first.
-2. Then choose the lowest-priority `pending` item.
-3. Ignore `passing` items.
-4. Stop when all features are `passing` or all remaining items are `blocked`.
+1. Choose the lowest-priority `repairing` item first.
+2. Then choose the lowest-priority `ready` item.
+3. Ignore `draft`, `blocked`, and `done` items.
+4. Stop when all executable items are `done` or all remaining items are `draft` or
+   `blocked`.
 
 ## Handoff
 When updating the queue, report:
@@ -60,4 +75,4 @@ When updating the queue, report:
 - old status -> new status
 - proof path
 - primary proof command if known
-- reason for `failing` or `blocked`
+- reason for `draft`, `repairing`, or `blocked`

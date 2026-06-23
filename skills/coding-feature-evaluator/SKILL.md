@@ -1,6 +1,6 @@
 ---
 name: coding-feature-evaluator
-description: "Evaluate whether a completed feature or issue fix is actually done using a read-only skeptical review of FEATURE.md, PROOF.md, primary proof results, gate results, architecture fit, and anti-gaming risks. This is the done judge, not the test runner. Use after coding-feature-execute, coding-fix-issue, coding-auto-improve, or coding-autonomous-execute before marking work complete."
+description: "Evaluate whether a completed feature or issue fix is actually done using a read-only skeptical review of FEATURE.md, PROOF.md, primary proof results, gate results, architecture fit, and anti-gaming risks. This is the done judge, not the test runner. Use after coding-feature-execute, coding-repair, or coding-autonomous-execute before marking work complete."
 metadata:
   short-description: Read-only done judge
 ---
@@ -81,6 +81,8 @@ Required next action:
 ```
 
 ## Handoff
-- If `PASS`, the caller may mark the feature queue item as `passing`.
-- If `FAIL`, the caller should use `coding-autonomous-execute` or `coding-auto-improve` for bounded repair.
+- If `PASS`, the caller may mark the feature queue item as `done`.
+- If `FAIL`, the caller should use `coding-repair` for a focused repair, or
+  `coding-autonomous-execute` according to the autonomous escalation policy in
+  `AGENTS.md`.
 - If `BLOCKED`, do not mark done; report the exact blocker.

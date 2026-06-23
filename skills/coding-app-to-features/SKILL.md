@@ -61,7 +61,12 @@ If key details are missing, make reasonable assumptions and state them briefly i
 7) Initialize the feature queue
    - Use `coding-feature-queue` to create or update `docs/features/status.json`.
    - Add every generated feature directory to the queue.
-   - Set initial statuses to `pending`.
+   - Use `draft` while feature/proof authoring is incomplete or contract review still
+     needs repair.
+   - Set initial statuses to `ready` only for features with `FEATURE.md`, `PROOF.md`, an
+     executable proof artifact, and a passing contract review.
+   - Set initial status to `blocked` when proof authoring or contract review is blocked by
+     missing product input, unavailable external state, or an unreproducible requirement.
    - Preserve implementation order with numeric priorities.
    - `FEATURE.md` and `PROOF.md` remain the feature contracts; `docs/features/status.json` is only the machine-readable progress queue.
 

@@ -9,11 +9,21 @@ metadata:
 
 Purpose: deliver one feature inside Codex App without adding a repo-local orchestrator.
 
+## Entry Conditions
+- Use this skill only for one feature implementation, not for rough feature discovery.
+- `FEATURE_DIR` is known, or exactly one matching feature directory can be identified.
+- `FEATURE_DIR/FEATURE.md` describes the expected behavior clearly enough to implement.
+- `FEATURE_DIR/PROOF.md` defines one executable primary proof command.
+- If `FEATURE.md` is missing, vague, or materially incomplete, stop feature execution and use
+  `coding-feature-spec`. For non-trivial features, `coding-feature-spec` will route to
+  `coding-proof-author`.
+- If `FEATURE.md` is ready but `PROOF.md` is missing, stale, vague, static-only, or lacks an
+  executable primary proof artifact, stop feature execution and use `coding-proof-author`.
+
 ## Workflow
-1) Start from the feature and proof contracts
+1) Load the contracts
    - Read `FEATURE_DIR/FEATURE.md`.
    - Read `FEATURE_DIR/PROOF.md`.
-   - If `PROOF.md` is missing, vague, stale, or lacks a primary proof command, use `coding-proof-author` before implementation.
    - If `FEATURE.md` has `## Implementation Routing` or `Required skills`, load those skills before implementation.
 
 2) Load repo-level context when present
@@ -32,7 +42,7 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Use `coding-python-backend` when backend Python work is in scope.
    - Use `coding-frontend` when React or Next.js UI work is in scope.
    - Use `coding-wordpress` when WordPress plugin, theme, full-site, or Bedrock-style work is in scope.
-   - Use `coding-fix-issue` for small corrective changes.
+   - Use `coding-repair` for small corrective changes.
 
 5) Prepare the environment
    - Use `coding-prepare-environment` before running tests, proof commands, gates, package installs, dev servers, or framework CLIs.
@@ -52,32 +62,23 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - Do not change `PROOF.md` after implementation unless the proof was materially wrong; if changed, state why and rerun red/green evidence where possible.
 
 9) Validate
-   - Run the primary proof command from `PROOF.md`.
-   - Run `$HOME/.codex/scripts/gate`.
+   - Run the proof and gate required by the `AGENTS.md` Universal Lifecycle.
 
-10) Evaluate independently
-   - Use `coding-feature-evaluator` after implementation and deterministic checks.
-   - Treat evaluator `PASS` as the condition for marking the feature complete.
-   - Treat evaluator `FAIL` as repair input.
-   - Treat evaluator `BLOCKED` as a real blocker; do not claim done.
-   - If a Codex Goal is active, keep it open until proof, gate, evaluator `PASS`, and queue status prove completion.
-   - If `docs/features/status.json` exists, use `coding-feature-queue` to mark the feature `passing`, `failing`, or `blocked` based on proof, gate, and evaluator result.
+10) Evaluate and update status
+   - Follow the `AGENTS.md` Universal Lifecycle.
+   - If `docs/features/status.json` exists, use `coding-feature-queue` to update status.
    - If proof, gate, and evaluator pass but a human reports the feature still does not work, treat the proof package as insufficient.
    - In that case, use `coding-proof-author` to add a failing proof that captures the real broken behavior before changing production code again.
 
-11) Escalate only on failure
-   - If the primary proof or gate fails, use `coding-auto-improve`.
-   - If `coding-feature-evaluator` returns `FAIL`, use `coding-auto-improve` or `coding-fix-issue` on the concrete findings.
+11) Repair only concrete failures
+   - If the primary proof, gate, or evaluator fails, use `coding-repair` on the concrete
+     failing behavior or check result.
    - Keep fixes within the smallest failing scope.
    - Do not hand off as done while the primary proof is failing.
 
-12) Automatically use `coding-autonomous-execute` for repeated repair
-   - If proof, gate, or evaluator judgment is still failing after the first targeted repair pass, automatically use `coding-autonomous-execute`.
-   - Do not wait for a separate user request.
-   - Use this stop condition: primary proof passes and gate passes, or the same blocker repeats three times.
-   - Default budget: three loop iterations.
-   - Keep `coding-auto-improve` responsible for the smallest failing fix inside each iteration.
-   - Run `coding-feature-evaluator` after each repair pass before marking the feature done.
+12) Escalate only by AGENTS.md policy
+   - If proof, gate, or evaluator judgment is still failing after the first targeted
+     repair pass, follow the autonomous escalation policy in `AGENTS.md`.
 
 ## Behavioral Baseline
 - Think before changing code: state blocking ambiguity, assumptions, and material tradeoffs before implementation.
@@ -91,16 +92,9 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 - Reuse existing code paths before adding new ones.
 - Do not build orchestration infrastructure in this repo.
 - Prefer existing domain skills over inventing new coordination logic.
-- `coding-autonomous-execute` is an automatic bounded escalation path, not a repo-local orchestrator.
+- Follow the autonomous escalation policy in `AGENTS.md`; do not build repo-local
+  orchestration infrastructure.
 - Do not weaken `PROOF.md`, reduce feature scope, or substitute assistant/tool claims for observable proof.
 
 ## Handoff
-- Include `Skills used:` with every skill actually loaded or followed.
-- Report exactly one `Primary proof`: command from `PROOF.md`, red result, and green result.
-- Report gate under `Safety checks` as `Gate: PASS` or `Gate: FAIL`; include detail only when failing.
-- Do not include full passing gate/test counts unless the user asks.
-- Report any extra commands under `Safety checks`, not under `Proof`.
-- Report `Evaluator` separately as `PASS`, `FAIL`, or `BLOCKED`.
-- Report queue status when updated.
-- Report concrete blockers, or `None`.
-- Do not label secondary checks, gate, or evaluator as proof.
+- Report using the `AGENTS.md` handoff format for completed feature or issue work.

@@ -13,6 +13,23 @@ Purpose: turn `FEATURE_DIR/FEATURE.md` into a concrete proof contract and execut
 
 Proof authoring is not complete when only `PROOF.md` exists. A non-trivial feature needs an executable proof artifact and a primary proof command that runs that artifact.
 
+Proof authoring is artifact-authoring work. It proves that the completion contract and
+proof artifacts are serious, executable, and anti-gameable. It does not prove the feature
+implementation is complete unless implementation was also in scope and the primary proof
+has passed against the product.
+
+## Proof Spectrum
+Use the lightest proof package that would catch a fake or incomplete implementation.
+
+- Minimal: one behavioral or regression artifact, one primary command, and one anti-gaming
+  note. Use for small bug fixes, narrow internal invariants, and simple user-visible changes
+  with low blast radius.
+- Standard: one primary behavioral artifact plus fixtures, expected evidence, and an
+  anti-gaming review with the main fake-pass risks. Use for normal features.
+- Full: primary proof plus realistic provider/browser/API state, negative cases, read-back,
+  migration/performance checks, or multiple fixtures. Use for external systems, data loss
+  risk, permissions, billing, security, queues, or high-risk behavior.
+
 ## Workflow
 1) Read the feature contract
    - Read `FEATURE_DIR/FEATURE.md`.
@@ -22,7 +39,8 @@ Proof authoring is not complete when only `PROOF.md` exists. A non-trivial featu
 2) Choose one primary behavioral proof
    - User-visible UI workflow: use a browser E2E proof that renders or drives the app.
    - API behavior: use a black-box HTTP/API proof against the app runtime.
-   - Agent/provider workflow: use `coding-real-user-scenario-tests` and provider read-back.
+   - Agent/provider workflow: use the repo-local scenario/testbed skill when present and
+     require provider read-back when live state is checkable.
    - Messaging/webhook integration: drive the real listener/API/worker boundary with saved provider payload fixtures, assert persisted state, duplicate suppression, and outbound send intent at the external provider-client boundary.
    - Bug fix: use the smallest regression proof that fails before the fix.
    - Migration/database/internal change: use integrity, equivalence, migration, or performance proof.
@@ -43,8 +61,12 @@ Proof authoring is not complete when only `PROOF.md` exists. A non-trivial featu
    - Prefer `FEATURE_DIR/proof/tests/` for pytest-style proof checks.
    - Use `FEATURE_DIR/proof/run.sh` only when a shell runner is clearer than native test tooling.
    - Use repo-native E2E or integration test locations when the repo already has a clear pattern.
-   - For scenario testbeds, keep fixtures in `FEATURE_DIR/proof/fixtures/` unless the repo has an established demo/testbed fixture location.
-   - For scenario testbeds, the proof must include saved prompt/input fixtures, provider payload fixtures, or API/browser scenario fixtures that represent the real workflow.
+   - For scenario testbeds, prefer one scenario artifact under `FEATURE_DIR/proof/`
+     unless the repo has an established feature-proof testbed location.
+   - For scenario testbeds, include scenario artifacts, provider payload fixtures, or
+     API/browser checks that represent the real workflow.
+   - When a repo-local API testbed exists, read its parser/CLI contract before writing
+     the proof runner.
    - For external provider integrations, prefer live-provider read-back in the primary proof when credentials and a safe target are available.
    - Use deterministic provider doubles for local proof only when live credentials, account state, or safe external targets are unavailable.
    - When local doubles replace live-provider verification, record the exact missing live proof as a manual gap in `PROOF.md`; do not silently treat mocks or tool traces as enough.
@@ -74,6 +96,8 @@ Proof authoring is not complete when only `PROOF.md` exists. A non-trivial featu
    - If implementation is not present yet, confirm the primary proof fails or is unmet for the expected reason.
    - Do not make the proof pass by weakening `FEATURE.md` or reducing the claimed behavior.
    - Handoff must list the executable proof files created or changed. If the list is empty, the proof authoring task is not done.
+   - Report implementation proof as `NOT RUN` or expected-red when the task only authored the
+     proof package.
 
 ## PROOF.md Template
 ````md
@@ -130,3 +154,6 @@ $HOME/.codex/scripts/gate
 - For external systems, live proof is preferred; if unavailable, `PROOF.md` must say exactly what live read-back remains blocked and why.
 - A successful tool call or assistant claim is not sufficient proof when external state is checkable.
 - Do not hand off with only a prose `PROOF.md` unless the feature is explicitly documentation-only or blocked.
+- Do not run `coding-feature-evaluator` for proof-authoring-only work; use
+  `coding-feature-quality` when the proof contract itself needs review before
+  implementation.

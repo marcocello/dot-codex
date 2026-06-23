@@ -35,11 +35,16 @@ Purpose: improve a feature and proof contract before implementation while stayin
    - Keep proof detail and executable proof artifacts under `FEATURE_DIR/PROOF.md`, `FEATURE_DIR/proof/`, or the repo's established testbed/E2E location.
 
 ## Output
-- Findings only when there are material gaps.
-- Otherwise a concise statement that the feature and proof contracts are ready for implementation.
+- `Contract review: PASS` when `FEATURE.md` and `PROOF.md` are ready for implementation.
+- `Contract review: FAIL` when material ambiguity, proof weakness, architecture conflict, or
+  testability gaps must be repaired before implementation.
+- `Contract review: BLOCKED` when a missing product decision, environment constraint, or
+  unavailable source prevents a reliable contract review.
+- Include findings only when there are material gaps.
 
 ## Rules
 - Stay within the single `FEATURE_DIR` workflow.
 - `FEATURE.md` remains the behavior description.
 - `PROOF.md` remains the completion authority.
 - Gate remains the repo-health guard, not the feature proof.
+- This is the evaluator for spec/proof readiness, not for completed implementation.

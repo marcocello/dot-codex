@@ -45,8 +45,14 @@ Do not ask architecture questions unless strictly required.
 4) Write behavior, not proof
    - Keep behavior observable and testable.
    - Use bullets or scenarios; Gherkin is optional, not mandatory.
+   - When updating an existing feature, preserve existing desired behavior, constraints,
+     and non-goals unless the user explicitly changes or removes them.
    - Keep implementation details out unless they are real constraints.
    - Put verification commands, fixtures, environment, and evidence in `PROOF.md`, not `FEATURE.md`.
+   - If the repo has a local scenario skill, state the intended user workflow in
+     `FEATURE.md` and let `coding-proof-author` choose the executable proof artifact.
+   - Do not put generated scenario or fixture data in `FEATURE.md`; proof data belongs in
+     `FEATURE_DIR/proof/` unless the user explicitly asked for reusable demo data.
 
 5) Add implementation routing when clear
    - If backend Python application code is in scope, include `- Required skills: coding-python-backend`.
@@ -62,20 +68,42 @@ Do not ask architecture questions unless strictly required.
    - Do not accept a prose-only `PROOF.md` as proof authoring.
    - If executable proof cannot be created because required product/API/provider details are missing, mark the proof blocked and ask only for the missing information.
 
-7) Keep optional notes local
+7) Review the contract package
+   - Use `coding-feature-quality` for non-trivial feature specs before queue update or final
+     handoff.
+   - Treat `coding-feature-quality` as the evaluator for spec/proof readiness, not as proof
+     that the feature is implemented.
+   - Repair material ambiguity, missing edge cases, weak testability, architecture conflict,
+     or proof gaps before handoff.
+   - Do not run `coding-feature-evaluator` unless implementation or issue-fix work was also
+     completed.
+
+8) Keep optional notes local
    - For larger brownfield changes, optionally create `FEATURE_DIR/notes.md` for intent, non-goals, design notes, or task checklist details.
    - `FEATURE.md` remains the behavior description.
 
-8) Update the feature queue
+9) Update the feature queue
    - Use `coding-feature-queue` to create or update `docs/features/status.json`.
    - Add the feature if it is new.
-   - Preserve existing status when refining a feature unless behavior materially changes; then set status to `pending` or `failing` and explain why.
+   - Use `draft` while `FEATURE.md`, `PROOF.md`, executable proof artifacts, or contract
+     review are incomplete or still being repaired.
+   - Set status to `ready` only when `FEATURE.md`, `PROOF.md`, executable proof artifacts,
+     and contract review are ready for implementation.
+   - Set status to `blocked` when proof authoring or contract review is blocked by missing
+     product input, unavailable external state, or an unreproducible requirement.
+   - If an existing `done` feature's behavior, proof contract, or executable proof artifacts
+     change, reset status to `draft` while authoring, then `ready` after the updated contract
+     package passes review.
+   - Preserve `done` only for clearly non-behavioral metadata, typo, or formatting edits.
    - Include the `proof` path in queue entries when the queue schema supports it.
 
-9) Handoff
+10) Handoff
    - State whether `FEATURE_DIR/PROOF.md` exists.
    - List the executable proof files `coding-proof-author` created or changed.
    - Include the primary proof command from `PROOF.md`.
+   - Report `Contract review: PASS`, `FAIL`, or `BLOCKED` from `coding-feature-quality`
+     for non-trivial specs.
+   - Report implementation proof as `NOT RUN` unless implementation was also in scope.
    - Do not call proof authoring complete when only a prose `PROOF.md` was created.
    - Do not report a primary proof command that only runs the repo safety gate or a legacy feature-check wrapper.
 
@@ -111,6 +139,7 @@ Do not ask architecture questions unless strictly required.
 - Keep `FEATURE.md` concise and human-readable.
 - Do not put proof commands in `FEATURE.md`.
 - Do not stop after `FEATURE.md` for non-trivial features; create the proof package in the same feature-spec run.
+- Do not treat feature-spec authoring as feature implementation.
 - Do not make Gherkin mandatory.
 - Do not add architecture decisions unless explicitly provided or already authoritative.
 - Do not add backward compatibility requirements unless explicitly requested.

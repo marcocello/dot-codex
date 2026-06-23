@@ -5,9 +5,10 @@ metadata:
   short-description: Lightweight feature and proof review
 ---
 
-# Feature Quality
+# Contract Readiness Review
 
-Purpose: improve a feature and proof contract before implementation while staying inside the existing single `FEATURE_DIR` workflow.
+Purpose: decide whether a `FEATURE.md` + `PROOF.md` contract package is ready to drive
+implementation.
 
 ## Workflow
 1) Read the contracts
@@ -47,4 +48,4 @@ Purpose: improve a feature and proof contract before implementation while stayin
 - `FEATURE.md` remains the behavior description.
 - `PROOF.md` remains the completion authority.
 - Gate remains the repo-health guard, not the feature proof.
-- This is the evaluator for spec/proof readiness, not for completed implementation.
+- This is the contract-readiness reviewer, not the completed-implementation evaluator.

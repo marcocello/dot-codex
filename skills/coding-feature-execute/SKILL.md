@@ -53,8 +53,11 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
    - If the proof already passes, inspect whether the feature is already done or whether `PROOF.md` is too weak.
    - If the proof is too weak, use `coding-proof-author` to strengthen the anti-gaming review and executable proof before implementation.
 
-7) Review non-trivial feature quality
-   - For non-trivial feature work, use `coding-feature-quality` before implementation to scan ambiguity, edge cases, testability, proof quality, and architecture conflicts.
+7) Trust ready contracts, review stale contracts
+   - If a queue item is already `ready`, do not run `coding-feature-quality` again unless
+     `FEATURE.md` or `PROOF.md` is stale, weak, contradictory, or changed during execution.
+   - If no queue status exists, or the contract looks materially uncertain, use
+     `coding-feature-quality` before implementation.
 
 8) Implement minimally
    - Add lower-level tests only where they reduce implementation risk.

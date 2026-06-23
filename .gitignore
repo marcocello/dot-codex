@@ -24,6 +24,7 @@
 !*.yaml
 !*.sh
 !scripts/gate
+!scripts/lint_harness
 !docs/presentations/*.html
 
 # 4. Block some directories and files

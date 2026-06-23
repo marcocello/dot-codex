@@ -29,10 +29,17 @@
 - Use a Codex Goal only for explicit autonomous execution, queue completion, or "keep going until done" work.
 - A Goal is runtime state. It does not replace `FEATURE.md`, `PROOF.md`, `status.json`, checks, or evaluator judgment.
 - Do not mark a Goal or queue item complete because the implementation looks plausible.
-- Completion requires the primary proof in `PROOF.md`, gate, `coding-feature-evaluator`, and queue progress evidence when a queue exists.
+- Feature or queue-item completion requires the primary proof in `PROOF.md`, gate,
+  `coding-feature-evaluator`, and queue progress evidence when a queue exists.
+- Artifact-authoring work is not the same as feature completion; use the artifact-specific
+  checks named by the active skill before claiming that artifact is done.
 - If proof, gate, and evaluator pass but credible observed behavior is still broken, treat the proof as insufficient and strengthen it before patching implementation again.
-- If `coding-feature-evaluator` returns `FAIL`, repair through `coding-auto-improve`, `coding-fix-issue`, or `coding-autonomous-execute`.
+- If `coding-feature-evaluator` returns `FAIL`, repair through `coding-repair` or
+  `coding-autonomous-execute`.
 - If `coding-feature-evaluator` returns `BLOCKED`, keep the item blocked and report the concrete blocker.
+- Use `coding-autonomous-execute` directly only when the user explicitly asks for
+  autonomous execution, queue completion, repeated repair, or "keep going until done"
+  work. Otherwise, report the repeated failure and recommend autonomous execution.
 
 ## Project Context
 - If `docs/ARCHITECTURE.md` exists, treat it as authoritative and apply it.
@@ -55,9 +62,9 @@ When bootstrapping a greenfield application and no repo architecture overrides i
 - Use `coding-proof-author` to create or refine `PROOF.md` and executable proof artifacts.
 - Use `coding-feature-quality` before non-trivial implementation when `FEATURE.md` has ambiguity, missing edge cases, weak testability, or possible architecture conflicts.
 - Use `coding-feature-execute` to implement a ready feature.
-- Use `coding-fix-issue` for a clear reported defect or runtime bug that needs reproduction and a regression test.
-- Use `coding-auto-improve` for a known failing command, gate, proof check, typecheck, lint result, or evaluator `FAIL`.
-- Use `coding-autonomous-execute` for queue completion or repeated bounded repair.
+- Use `coding-repair` for a clear reported defect, runtime bug, failing command, gate,
+  proof check, typecheck, lint result, or evaluator `FAIL`.
+- Use `coding-autonomous-execute` only by the autonomous policy above.
 - Use `coding-proof-author` when proof coverage is missing, vague, or weak.
 - Use `coding-feature-evaluator` before marking feature or issue work complete.
 - Use `coding-prepare-environment` for local setup, dependencies, `.env`, command prefixes, stack-specific preparation, and `.vscode/tasks.json`.
@@ -74,10 +81,29 @@ When bootstrapping a greenfield application and no repo architecture overrides i
 - Use red/green TDD for implementation and bug fixes.
 - Do not delete, weaken, or bypass tests to get green.
 
-## Verification
-- Target app repo gate: `$HOME/.codex/scripts/gate`.
-- Feature proof: run the primary proof command defined in `FEATURE_DIR/PROOF.md`.
-- When editing this `dot-codex` config repo itself, do not run repo gate or feature proof commands unless explicitly asked.
+## Universal Lifecycle
+- Choose checks by the work product being delivered:
+  - Product implementation or issue fix: run the primary proof from
+    `FEATURE_DIR/PROOF.md`, the target app repo gate at `$HOME/.codex/scripts/gate`, and
+    `coding-feature-evaluator` before calling the feature or fix done.
+  - Contract, proof, fixture, or testbed authoring: run the artifact-specific parser,
+    contract, lint, fixture, or readiness checks. Live app/provider validation is needed
+    only when the task asks for it or claims product behavior now works.
+  - Documentation, config, prompt, research, audit, skill, plugin, or message-only work:
+    run the smallest relevant structural, factual, style, or syntax check when one
+    exists. Do not invent a product proof for non-product artifacts.
+- Use `coding-feature-quality` for `FEATURE.md`/`PROOF.md` readiness before
+  implementation. Use `coding-feature-evaluator` only for completed implementation or
+  issue-fix work.
+- If a broader feature proof or repo gate is blocked by missing live environment,
+  credentials, or unrelated pre-existing failures, report that separately as a
+  live-validation or gate blocker. Do not convert a completed artifact-authoring task into
+  `BLOCKED` unless the requested output was full feature completion.
+- Treat fixable proof, gate, evaluator, and contract-readiness failures as repair work, not
+  blockers. Use `BLOCKED` only for missing input, unavailable external state,
+  unreproducible behavior, or a repeated blocker that prevents further progress.
+- When editing this `dot-codex` config repo itself, do not run repo gate or feature
+  proof commands unless explicitly asked.
 - Do not claim done unless required checks pass or a concrete blocker is reported.
 
 ## Hard Limits
@@ -116,8 +142,19 @@ For completed feature or issue work, report:
 - `Safety checks`: `Gate: PASS` or `Gate: FAIL` plus failure detail only when failing;
 - `Evaluator`: `PASS`, `FAIL`, or `BLOCKED`;
 - queue status when updated;
+- Goal status and usage when a Goal was active;
 - concrete blockers, if any.
 - Do not label gate, evaluator, or secondary checks as proof.
+
+For completed artifact-authoring work, report:
+- `Skills used:` with every skill actually loaded or followed;
+- `Artifact checks:` parser, contract, syntax, fixture, or other narrow checks that prove
+  the delivered artifact;
+- `Live validation:` `PASS`, `NOT RUN`, or `BLOCKED`, only when the artifact is meant to
+  run against a live app/provider;
+- `Safety checks:` relevant gate status when run, or `not run` with the reason;
+- concrete blockers, if any, without implying the artifact itself is incomplete when only
+  live validation is unavailable.
 
 ## Output Token
 - If blocked: `NEED_INPUT: <question>` or `BLOCKED: <reason>`.

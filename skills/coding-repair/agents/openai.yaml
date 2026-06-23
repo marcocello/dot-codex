@@ -1,0 +1,8 @@
+interface:
+  display_name: "CODING | Repair"
+  short_description: "Repair an issue or failing check with regression verification."
+  default_prompt: >-
+    Use $coding-repair to repair this issue or failing check with existing feature proof
+    lookup, the smallest effective change, and regression verification.
+policy:
+  allow_implicit_invocation: true

@@ -13,61 +13,46 @@ When AI writes most of the code, the old pipeline is incomplete. Issues, PRs, hu
 
 ## Core Idea
 
-The repo forces Codex to work like this:
+This repo treats AI coding as a harness problem. The useful control surface is not a
+longer prompt; it is a small set of durable artifacts around the model.
 
-```text
-describe the change
-  -> write what should happen
-  -> PROOF.md + anti-gaming review + executable proof tests
-  -> implement one feature
-  -> run the feature proof
-  -> run the repo safety checks
-  -> read-only done evaluator
-  -> fix only concrete failures
-  -> mark it passing, failing, or blocked
-```
+`FEATURE.md` says what the feature is supposed to do. It is the product and behavior
+contract.
 
-`FEATURE.md` says what the feature is supposed to do. It is the product/behavior contract.
+`PROOF.md` says how the feature earns trust. It keeps proof central by naming evidence,
+runtime checks, and the ways a fake or half-working implementation should be caught.
 
-`PROOF.md` says how we prove the feature works. It must include the command to run, the expected evidence, the test data or environment needed, and the cases that would catch a fake or half-working implementation.
+The repo gate protects general project health. It is useful, but it is not the same thing
+as feature proof.
 
-The proof command executes evidence. The primary proof is the real feature test. For a UI feature, that usually means opening the app and driving it like a user. For an API, it means calling the real route. For an external provider, it means using realistic payloads and checking the state that comes back. For an internal change, it means proving the invariant, migration, equivalence, or performance claim.
+The evaluator is the skeptical read-only judge. It exists because a green command is not
+always enough; the evidence has to match the behavior being claimed.
 
-The gate protects repo health. It checks tests, lint, type checks, build, or whatever the project defines. A passing gate does not prove the feature works.
+A Codex Goal keeps runtime moving during autonomous work. It is coordination state, not
+the source of truth.
 
-The evaluator judges whether the evidence and implementation are enough. It is a read-only judge that looks at the feature, the proof, the code changes, and the command results, then returns `PASS`, `FAIL`, or `BLOCKED`.
+If everything is green but the product is still broken, the harness treats that as a
+proof-system failure. Strengthen the proof first, then fix the implementation.
 
-The Goal only keeps runtime moving. It is not the source of truth. The source of truth is still `FEATURE.md`, `PROOF.md`, the proof result, the gate result, and the evaluator result.
+## Harness Shape
 
-If everything is green but the product is still broken, treat that as a proof-system failure. Strengthen the proof first, then fix the implementation.
+The skills split responsibility instead of repeating one large workflow everywhere.
 
-## Greenfield
+`coding-feature-spec` turns intent into a feature contract.
 
-1. Describe the app.
-2. Use `coding-app-to-features`.
-3. Review the generated `docs/APP.md`, `docs/ARCHITECTURE.md`, feature specs, proof packages, and `docs/features/status.json`.
-4. Use `coding-autonomous-execute` when you want Codex to keep working through the queue.
-5. Codex works one feature at a time until everything is passing or the remaining items are blocked with concrete reasons.
+`coding-proof-author` is central: it turns the contract into executable proof and
+anti-gaming pressure.
 
-## Brownfield
+`coding-feature-execute`, `coding-repair`, and `coding-autonomous-execute` change code
+inside those contracts.
 
-1. Describe the feature or change.
-2. Use `coding-feature-spec` to create or refine one `docs/features/<feature-id>/FEATURE.md`.
-3. Let `coding-proof-author` create or repair `PROOF.md` plus executable proof artifacts.
-4. Use `coding-feature-execute` for one ready feature, or `coding-autonomous-execute` for queue execution.
-5. Completion requires primary proof, gate, and evaluator `PASS`.
-
-## Bug Fixes
-
-1. Bugfixes first look for one clear matching `docs/features/*/FEATURE.md`.
-2. If exactly one feature matches, use that feature's `PROOF.md` and strengthen it with a focused failing regression when the existing proof misses the bug.
-3. If no feature clearly matches, do not create `FEATURE.md` by default. Add the smallest local regression proof near the affected code.
-4. Fix the root cause, rerun the narrow proof, then rerun the relevant broader checks.
-5. Use `coding-feature-evaluator` before calling the fix done.
+`AGENTS.md` owns the operating contract. Skill files own local procedure. README stays
+conceptual.
 
 ## Fundamental References
 
-These references live in Zotero under the `Harness Engineering` collection. They are the main external background for this dot-codex harness.
+These references live in Zotero under the `Harness Engineering` collection. They are the
+main external background for this dot-codex harness.
 
 - Ryan Lopopolo, [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) — OpenAI framing for Codex harnesses as context, tools, checks, and feedback loops around the model.
 - Jiahang Lin et al., [Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](http://arxiv.org/abs/2604.25850) — research framing for harnesses as a first-class determinant of coding-agent performance.

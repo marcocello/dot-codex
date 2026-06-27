@@ -81,6 +81,10 @@ Fast path for concrete failures:
    - Keep changes local to the affected area.
    - Avoid refactors unless required for correctness.
    - Do not change unrelated code.
+   - For semantic or domain behavior, do not repair by adding ad hoc natural-language
+     keyword lists, phrase gates, or by hiding tools based on user wording. Put the
+     invariant at the owning boundary: parser schema, service validation, tool contract,
+     persistence check, provider read-back, or postcondition.
    - Re-run the same test and confirm it passes.
 
 8) Add verification
@@ -92,7 +96,8 @@ Fast path for concrete failures:
 
 9) Finalize safely
    - Use `coding-feature-evaluator` before marking every issue fix complete.
-   - Treat evaluator `FAIL` as repair input and evaluator `BLOCKED` as a blocker.
+   - Treat evaluator `FAIL` as repair input and evaluator `NEED_INPUT` as a request for
+     exact user-owned input after recovery attempts.
    - If a Codex Goal is active, keep it open until the regression test, relevant broader
      check, and evaluator `PASS` prove completion.
    - If a `FEATURE_DIR` is in scope, run the primary proof command from `PROOF.md`.
@@ -103,6 +108,8 @@ Fast path for concrete failures:
    - If the regression test, narrow verification command, or relevant broader check is still
      failing after the first focused fix attempt, follow the autonomous escalation policy
      in `AGENTS.md`.
+   - During explicit autonomous execution, continue through `coding-autonomous-execute`
+     while proof remains unsatisfied instead of returning a terminal failure.
 
 ## Behavioral Baseline
 - Think before changing code: reproduce the issue or name the missing evidence before
@@ -112,6 +119,8 @@ Fast path for concrete failures:
 - Local evidence first: for local app failures, check Docker/runtime logs and browser
   console logs before deciding the fault is understood.
 - Simplicity first: fix the observed issue without speculative cleanup or broader redesign.
+- Invariant first: language-specific synonyms may be fixtures or examples, but they are not
+  the source of truth for product behavior unless the feature is explicitly lexical search.
 - Surgical changes: change only the failing path and remove only artifacts introduced by the fix.
 - Goal-driven execution: connect the fix to the regression test or verification command
   that proves the issue is resolved.
@@ -122,4 +131,5 @@ Fast path for concrete failures:
 - Output final code only unless explanation is explicitly requested.
 - Keep comments minimal; explain WHY, not WHAT.
 - Include relevant Docker/runtime log and browser console evidence, or why each did not apply.
-- Report using the `AGENTS.md` handoff format for completed feature or issue work.
+- Report using the `AGENTS.md` short receipt format for completed feature or issue work.
+- Keep the repair handoff focused on outcome, changed surface, verification, and blockers.

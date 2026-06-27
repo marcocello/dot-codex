@@ -27,8 +27,20 @@ Do not ask architecture questions unless strictly required.
 
 2) Create or update `FEATURE.md`
    - Use `docs/features/<feature-id-slug>/`; create or update only that directory.
+   - Default to the short form: summary, desired behavior, constraints, and routing.
+   - Add extended sections only when they remove ambiguity for implementation or proof.
    - Keep behavior observable, product-facing, and testable.
    - Cover the happy path plus material edge, error, permission, and recovery cases.
+   - For API, CLI, file, event, provider, or UI-boundary features, capture the
+     external contract: inputs, outputs, statuses, states, schemas, or messages that
+     consumers observe.
+   - Capture defaulting, fallback, precedence, version-resolution, and selection rules
+     when more than one behavior could reasonably apply.
+   - For semantic behavior such as duplicate prevention, routing, classification,
+     extraction, permissions, or intent handling, describe the durable invariant and
+     structured decision rule. Do not define correctness as a list of trigger phrases.
+   - Capture operational constraints when runtime, deployment target, storage,
+     credentials, environment variables, or resource limits affect correctness.
    - When updating an existing feature, preserve existing desired behavior, constraints,
      and non-goals unless the user explicitly changes or removes them.
    - Keep proof commands, fixtures, environment, and evidence out of `FEATURE.md`.
@@ -49,8 +61,9 @@ Do not ask architecture questions unless strictly required.
      proof artifacts such as `FEATURE_DIR/proof/run.sh`, `FEATURE_DIR/proof/tests/`,
      `FEATURE_DIR/proof/fixtures/`, or a repo-native E2E/testbed file.
    - Do not accept a prose-only `PROOF.md` as proof authoring.
-   - If executable proof cannot be created, mark the proof blocked and ask only for the
-     missing product, API, provider, or environment detail.
+   - If executable proof cannot be created after readiness scaffolding, report
+     `NEED_INPUT` and ask only for the missing product, API, provider, or environment
+     detail.
 
 5) Review contract readiness
    - Use `coding-feature-quality` for non-trivial feature specs before queue update or final
@@ -65,18 +78,22 @@ Do not ask architecture questions unless strictly required.
    - `draft`: `FEATURE.md`, `PROOF.md`, executable proof artifacts, or contract review are
      incomplete or still being repaired.
    - `ready`: contract package is ready for implementation.
-   - `blocked`: proof authoring or contract review needs missing input or unavailable
-     external state.
+   - `needs_input`: proof authoring or contract review still needs missing input or
+     unavailable external state after local recovery attempts.
    - If an existing `done` feature's behavior, proof contract, or executable proof artifacts
      change, reset status to `draft` while authoring, then `ready` after review passes.
    - Preserve `done` only for clearly non-behavioral metadata, typo, or formatting edits.
 
 7) Handoff
-   - List `FEATURE_DIR`, `PROOF.md`, executable proof files, primary proof command, contract
-     review result, queue status, and `implementation proof: NOT RUN` unless implementation
-     was also in scope.
+   - Use the artifact-authoring receipt from `AGENTS.md`.
+   - Lead with the feature behavior now specified, then list only the created/changed
+     contract files.
+   - Include the primary proof command and queue status only when they help the next
+     implementation step.
+   - Say `implementation proof: NOT RUN` only when the user might otherwise think
+     implementation was completed.
 
-## FEATURE.md Template
+## FEATURE.md Short Template
 ```md
 # <Feature title>
 
@@ -86,6 +103,18 @@ Do not ask architecture questions unless strictly required.
 ## Desired Behavior
 - <Observable behavior that should become true.>
 
+## Constraints
+- <Only constraints that materially affect correctness.>
+
+## Implementation Routing
+- Required skills: <coding-python-backend | coding-frontend | coding-wordpress |
+  coding-proof-author | other relevant skills>
+```
+
+## Extended Sections
+Add these only when the short template would leave implementation or proof ambiguous:
+
+```md
 ## Scope
 - <Included behavior or surfaces.>
 
@@ -96,12 +125,16 @@ Do not ask architecture questions unless strictly required.
 - <Happy path scenario.>
 - <Important edge, error, permission, or recovery scenario.>
 
-## Constraints
-- <Architecture, data, security, UX, compatibility, or operational constraint.>
+## External Contract
+- <Endpoints, commands, file formats, events, provider calls, UI states, request/input
+  shapes, response/output shapes, and error/status behavior that consumers observe.>
 
-## Implementation Routing
-- Required skills: <coding-python-backend | coding-frontend | coding-wordpress |
-  coding-proof-author | other relevant skills>
+## Resolution Rules
+- <Defaults, fallbacks, precedence, version selection, conflict handling, or selection
+  rules that remove ambiguity from implementation.>
+
+## Additional Constraints
+- <Architecture, data, security, UX, compatibility, runtime, or credential constraint.>
 ```
 
 ## Rules

@@ -65,8 +65,9 @@ If key details are missing, make reasonable assumptions and state them briefly i
      needs repair.
    - Set initial statuses to `ready` only for features with `FEATURE.md`, `PROOF.md`, an
      executable proof artifact, and a passing contract review.
-   - Set initial status to `blocked` when proof authoring or contract review is blocked by
-     missing product input, unavailable external state, or an unreproducible requirement.
+   - Set initial status to `needs_input` only after proof authoring or contract review has
+     exhausted local recovery and still needs missing product input, unavailable external
+     state, or an unreproducible requirement.
    - Preserve implementation order with numeric priorities.
    - `FEATURE.md` and `PROOF.md` remain the feature contracts; `docs/features/status.json` is only the machine-readable progress queue.
 
@@ -77,8 +78,10 @@ If key details are missing, make reasonable assumptions and state them briefly i
 
 9) Handoff cleanly
    - Return the improved app brief summary.
-   - List the generated feature directories, proof paths, executable proof files, and primary proof commands in recommended implementation order.
+   - List generated feature ids in recommended implementation order.
    - Point to `docs/features/status.json` as the queue for autonomous execution.
+   - Do not list every proof path or executable artifact by default; include the next
+     primary proof command only when it is immediately actionable.
 
 ## Rules
 - Do not add an in-repo orchestration layer.

@@ -15,6 +15,10 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 - Never print secret values. When reporting `.env` work, mention filenames and missing keys only.
 - Prefer repo-provided setup scripts, Make targets, package scripts, Docker files, and documented commands.
 - If setup requires missing credentials or external services, stop with the exact blocker and continue with any checks that do not require those services.
+- Discover available local CLIs, package managers, containers, browser/app automation, MCP
+  tools, and repo scripts before reporting that setup cannot continue.
+- Suggest the exact install or enablement action when a useful tool is missing, explain why
+  it is needed, and continue with any lower-fidelity local check that remains honest.
 
 ## Workflow
 
@@ -27,11 +31,14 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
    - PHP/Laravel: `composer.json`, `artisan`, `phpunit.xml`, `pest.php`, `.php-version`.
    - WordPress: `wp-config.php`, `wp-config-sample.php`, `wp-content/`, or WordPress Composer packages.
    - Other: Docker, devcontainer, Nix, direnv, mise, asdf, language lockfiles, or custom scripts.
-3. Load only the relevant sections of [stack-reference.md](references/stack-reference.md).
-4. Prepare the minimum environment needed for the current task.
-5. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
-6. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
-7. Run the narrowest setup verification available, then report:
+3. Inspect tool availability relevant to the proof: PATH, repo scripts, Makefiles, package
+   scripts, Docker files, local apps/connectors, browser automation, database clients, and
+   cloud CLIs named by docs or proof.
+4. Load only the relevant sections of [stack-reference.md](references/stack-reference.md).
+5. Prepare the minimum environment needed for the current task.
+6. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
+7. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
+8. Run the narrowest setup verification available, then report:
    - stacks detected
    - files created or changed
    - `.gitignore` status and whether it follows the whitelist pattern

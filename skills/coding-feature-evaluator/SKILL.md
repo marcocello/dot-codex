@@ -39,50 +39,74 @@ Purpose: act as the done judge, not the doer and not the main test runner. This 
    - Flag unrelated edits, broad refactors, duplicated logic, and hidden compatibility assumptions.
 
 3) Evaluate proof quality
-   - Confirm `PROOF.md` actually proves the behavior in `FEATURE.md`.
-   - Confirm the primary proof command is explicit and runnable.
-   - Confirm `PROOF.md` includes an anti-gaming review for non-trivial feature work.
-   - Check whether a broken implementation could still pass the primary proof.
-   - Return `FAIL` when the proof can pass while the feature is visibly, externally, or behaviorally broken.
-   - For issue fixes attached to a `FEATURE_DIR`, confirm the proof package catches or was strengthened to catch the regression.
-   - Confirm proof uses public boundaries when the feature is user/API/provider visible.
-   - Confirm internal proof is appropriate for internal-only work such as migrations or refactors.
-   - For UI/workflow features, prefer live browser/runtime evidence over static component or source assertions.
-   - For API/provider features, prefer real route, persisted-state, outbound boundary, and read-back evidence where available.
-   - Flag tests that only assert implementation details when observable behavior is available.
-   - Flag assistant claims, tool-call success, or mocked writes as insufficient when real state is checkable.
-   - Check whether proof was weakened after implementation.
+   - Behavior coverage: confirm `PROOF.md` actually proves the behavior in `FEATURE.md`.
+     For issue fixes, confirm the proof catches or was strengthened to catch the regression.
+   - Proof integrity: confirm the primary proof command is explicit, runnable, anti-gameable,
+     and not weakened after implementation. Check whether a broken implementation could
+     still pass the primary proof. Return `FAIL` when the proof can pass while the feature
+     is visibly, externally, or behaviorally broken.
+   - Contract freeze: return `FAIL` when implementation code changes and `FEATURE.md`,
+     `PROOF.md`, or proof artifacts were edited in the same implementation pass. Contract
+     repair must happen before implementation restarts, not during code repair.
+   - Boundary fit: public behavior should use public boundaries. For UI/workflow features,
+     prefer live browser/runtime evidence over static component or source assertions. For
+     API/provider features, prefer real route, persisted-state, outbound boundary, and
+     read-back evidence where available.
+   - Semantic fit: Flag phrase-locked fixes, hardcoded natural-language keyword lists,
+     language-specific gates, or tool removal based on user wording when domain validation
+     is required. Return `FAIL` when semantic behavior should survive paraphrases or other
+     languages but proof only covers exact terms.
+   - Proof Change Guard: return `FAIL` when contract repair changes `FEATURE.md`,
+     `PROOF.md`, or proof artifacts without explaining why the original contract was wrong
+     or incomplete, which fake implementation the changed proof catches, red/green evidence
+     when practical, and why behavior scope was not reduced.
 
 4) Verify results
-   - Prefer existing command output when it is current.
-   - If needed and allowed, rerun only the narrowest read-only verification command.
-   - For target app repos, expect the primary proof command from `PROOF.md`.
-   - For target app repos, expect `$HOME/.codex/scripts/gate`.
-   - Do not make evaluator success depend on running a new broad test suite that the execution phase did not run.
+   - Execution evidence: prefer current command output. Rerun only the narrowest read-only
+     verification command when needed and allowed.
+   - For target app repos, expect the primary proof command from `PROOF.md` and
+     `$HOME/.codex/scripts/gate`.
+   - Do not require a broad new suite that execution did not run.
+   - Return `FAIL` when `NEED_INPUT` was reported before recovery, available tools, repo
+     scripts, browser/app automation, MCP/app connectors, local CLIs, or readiness checks
+     were tried where relevant.
+   - Return `FAIL` when a destructive or external primary proof was marked `NEED_INPUT` or
+     blocked even though approval was available to request for the exact command, target
+     resource, expected effect, and proof reason.
+   - Return `FAIL` when a destructive primary proof was marked `NEED_INPUT` even though
+     `.codex/approvals/destructive-proof-allowlist.json` had an enabled, unexpired entry
+     matching the current `cwd`, full `command`, and `target`.
 
 5) Judge
    - `PASS`: behavior, proof, anti-gaming coverage, architecture, gate, and checks are sufficient.
    - `FAIL`: list concrete blocking issues with file paths and missing checks.
-   - `BLOCKED`: missing environment, missing credentials, unavailable service, or unclear product decision prevents a reliable judgment.
+   - `NEED_INPUT`: a missing environment, credential, safe external target, unavailable
+     service, or unclear product decision still prevents judgment after documented
+     recovery attempts.
+   - Return `FAIL` when recovery was skipped and the executor could still inspect, set up,
+     repair, add readiness checks, or retry with available local tools.
 
 ## Output Format
 ```text
-Result: PASS | FAIL | BLOCKED
-Contract coverage:
-- ...
-Proof quality:
-- ...
-Verification:
-- ...
+Result: PASS | FAIL | NEED_INPUT
+Summary:
+- <one or two lines>
 Findings:
-- ...
+- <only blocking issues or "none">
+Verification:
+- Primary proof: <PASS|FAIL|NOT RUN>
+- Gate: <PASS|FAIL|NOT RUN>
 Required next action:
-- ...
+- <one concrete action or "none">
 ```
+
+Keep evaluator output concise. Do not repeat long logs, file lists, skill lists, token
+usage, run IDs, prompt text, or implementation summaries unless they are the direct reason
+for `FAIL` or `NEED_INPUT`.
 
 ## Handoff
 - If `PASS`, the caller may mark the feature queue item as `done`.
 - If `FAIL`, the caller should use `coding-repair` for a focused repair, or
   `coding-autonomous-execute` according to the autonomous escalation policy in
   `AGENTS.md`.
-- If `BLOCKED`, do not mark done; report the exact blocker.
+- If `NEED_INPUT`, do not mark done; report the exact user-owned input or external action.

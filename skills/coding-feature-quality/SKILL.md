@@ -20,6 +20,15 @@ implementation.
    - Ambiguity: unclear actors, terms, outcomes, constraints, or unresolved assumptions.
    - Edge cases: missing error, empty, boundary, permission, concurrency, and recovery cases.
    - Testability: behavior that cannot be checked through public boundaries or deterministic tests.
+   - External contract: missing API, CLI, file, event, provider, or UI-boundary contract
+     where consumers need stable inputs, outputs, statuses, states, schemas, or messages.
+   - Resolution rules: missing defaults, fallbacks, precedence, version-selection,
+     conflict-handling, or selection logic where multiple interpretations are plausible.
+   - Semantic invariants: duplicate prevention, routing, classification, extraction,
+     permissions, intent handling, or similar behavior defined only by example phrases
+     instead of structured decision rules.
+   - Operational constraints: missing runtime, deployment target, storage, credentials,
+     environment, or resource assumptions that affect implementation correctness.
    - Proof quality: missing primary proof command, weak evidence, mock-only proof for user-visible behavior, or provider writes without read-back.
    - Architecture conflicts: behavior that violates authoritative repo architecture or layer rules.
 
@@ -39,8 +48,8 @@ implementation.
 - `Contract review: PASS` when `FEATURE.md` and `PROOF.md` are ready for implementation.
 - `Contract review: FAIL` when material ambiguity, proof weakness, architecture conflict, or
   testability gaps must be repaired before implementation.
-- `Contract review: BLOCKED` when a missing product decision, environment constraint, or
-  unavailable source prevents a reliable contract review.
+- `Contract review: NEED_INPUT` when a missing product decision, environment constraint,
+  or unavailable source prevents a reliable contract review after local recovery attempts.
 - Include findings only when there are material gaps.
 
 ## Rules

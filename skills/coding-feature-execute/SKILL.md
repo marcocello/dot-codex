@@ -55,14 +55,22 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 
 7) Trust ready contracts, review stale contracts
    - If a queue item is already `ready`, do not run `coding-feature-quality` again unless
-     `FEATURE.md` or `PROOF.md` is stale, weak, contradictory, or changed during execution.
+     `FEATURE.md` or `PROOF.md` is stale, weak, contradictory, or changed before
+     implementation starts.
    - If no queue status exists, or the contract looks materially uncertain, use
      `coding-feature-quality` before implementation.
+   - Once implementation code changes begin, treat `FEATURE.md`, `PROOF.md`, and proof
+     artifacts as frozen for this implementation pass.
 
 8) Implement minimally
    - Add lower-level tests only where they reduce implementation risk.
    - Make the smallest code change that satisfies `FEATURE.md` and `PROOF.md`.
-   - Do not change `PROOF.md` after implementation unless the proof was materially wrong; if changed, state why and rerun red/green evidence where possible.
+   - For semantic behavior, implement the invariant at the owning domain boundary; do not
+     substitute prompt wording checks, hardcoded natural-language phrase lists, or tool
+     removal for validation of the actual object, state, permission, or provider result.
+   - Do not change `FEATURE.md`, `PROOF.md`, or proof artifacts after implementation code
+     changes begin. If the contract is materially wrong, stop implementation, move the item
+     back to contract repair, apply the Proof Change Guard there, then restart from red proof.
 
 9) Validate
    - Run the proof and gate required by the `AGENTS.md` Universal Lifecycle.
@@ -70,25 +78,32 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 10) Evaluate and update status
    - Follow the `AGENTS.md` Universal Lifecycle.
    - If `docs/features/status.json` exists, use `coding-feature-queue` to update status.
-   - If proof, gate, and evaluator pass but a human reports the feature still does not work, treat the proof package as insufficient.
-   - In that case, use `coding-proof-author` to add a failing proof that captures the real broken behavior before changing production code again.
+   - If proof, gate, and evaluator pass but a human reports the feature still does not work,
+     treat the proof package as insufficient.
+   - In that case, stop implementation and use contract repair to add a failing proof that
+     captures the real broken behavior before changing production code again.
 
 11) Repair only concrete failures
    - If the primary proof, gate, or evaluator fails, use `coding-repair` on the concrete
      failing behavior or check result.
    - Keep fixes within the smallest failing scope.
    - Do not hand off as done while the primary proof is failing.
+   - If the failure is missing live credentials, a safe external target, or service
+     reachability, follow `AGENTS.md` Recovery Before Need Input before asking the user.
 
 12) Escalate only by AGENTS.md policy
    - If proof, gate, or evaluator judgment is still failing after the first targeted
      repair pass, follow the autonomous escalation policy in `AGENTS.md`.
+   - When an autonomous Goal is active, continue through `coding-autonomous-execute`
+     instead of handing off while the proof remains unsatisfied.
 
 ## Behavioral Baseline
 - Think before changing code: state blocking ambiguity, assumptions, and material tradeoffs before implementation.
 - Simplicity first: implement the smallest design that satisfies `FEATURE.md` and `PROOF.md`.
 - Surgical changes: touch only files and lines needed for the feature, and clean up only dead code introduced by the current change.
 - Goal-driven execution: tie each implementation step to the primary proof or a narrower check that supports it.
-- Green-but-broken handling: when passing proof contradicts observed behavior, improve the proof contract before repairing code.
+- Green-but-broken handling: when passing proof contradicts observed behavior, stop code
+  repair and improve the proof contract in a separate contract-repair phase.
 
 ## Rules
 - Keep changes local.
@@ -98,6 +113,11 @@ Purpose: deliver one feature inside Codex App without adding a repo-local orches
 - Follow the autonomous escalation policy in `AGENTS.md`; do not build repo-local
   orchestration infrastructure.
 - Do not weaken `PROOF.md`, reduce feature scope, or substitute assistant/tool claims for observable proof.
+- Do not mix implementation code edits with `FEATURE.md`, `PROOF.md`, or proof-artifact
+  edits in the same implementation pass.
 
 ## Handoff
-- Report using the `AGENTS.md` handoff format for completed feature or issue work.
+- Report using the `AGENTS.md` short receipt format for completed feature or issue work.
+- Start with the outcome, then changed surfaces, then verification.
+- Keep file paths and implementation detail brief; use a technical appendix only when the
+  user asks or the result needs audit/debug detail.

@@ -38,7 +38,8 @@ Allowed `status` values:
 - `in_progress`: currently being implemented.
 - `repairing`: implementation was attempted, but proof, gate, or evaluator failed and
   bounded repair can continue.
-- `blocked`: cannot proceed without user input or external state.
+- `needs_input`: active recovery has been exhausted and the remaining prerequisite is
+  user-owned or external.
 - `done`: primary proof, gate, and evaluator passed.
 
 ## Rules
@@ -54,8 +55,10 @@ Allowed `status` values:
   edit to an already-ready item.
 - Mark one item `in_progress` at a time during autonomous execution.
 - Mark `repairing` when proof, gate, or evaluator fail but bounded repair can continue.
-- Mark `blocked` when required input, unavailable external state, unreproducible behavior,
-  or a repeated blocker prevents progress.
+- Mark `needs_input` only after autonomous recovery attempts have inspected available
+  proof, logs, setup commands, diagnostics, and repair paths.
+- Use `needs_input` for credentials, safe external target, approval, or product decision
+  requirements that cannot be satisfied honestly from local tools.
 - Mark `done` only after primary proof, gate, and `coding-feature-evaluator` pass.
 - If a `done` item's `FEATURE.md`, `PROOF.md`, or executable proof artifacts change in a
   behaviorally meaningful way, reset it to `draft` while authoring, then `ready` after the
@@ -65,14 +68,14 @@ Allowed `status` values:
 ## Next Item Selection
 1. Choose the lowest-priority `repairing` item first.
 2. Then choose the lowest-priority `ready` item.
-3. Ignore `draft`, `blocked`, and `done` items.
+3. Ignore `draft`, `needs_input`, and `done` items.
 4. Stop when all executable items are `done` or all remaining items are `draft` or
-   `blocked`.
+   `needs_input`.
 
 ## Handoff
-When updating the queue, report:
-- selected feature id
-- old status -> new status
-- proof path
-- primary proof command if known
-- reason for `draft`, `repairing`, or `blocked`
+When updating the queue, report only what changes the next action:
+- `<feature-id>: <old status> -> <new status>`
+- one-line reason for `draft`, `repairing`, or `needs_input`
+- primary proof command only when it is the next command to run
+
+Do not dump the whole queue, proof paths, or priority list unless the user asks.

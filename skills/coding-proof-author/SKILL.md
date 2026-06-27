@@ -7,153 +7,131 @@ metadata:
 
 # Proof Author
 
-Purpose: turn `FEATURE_DIR/FEATURE.md` into a concrete proof contract and executable evidence.
+Purpose: turn `FEATURE_DIR/FEATURE.md` into one clear proof contract plus executable
+evidence.
 
 `FEATURE.md` describes what to build. `PROOF.md` defines how completion is proven.
 
-Proof authoring is not complete when only `PROOF.md` exists. A non-trivial feature needs an executable proof artifact and a primary proof command that runs that artifact.
+Proof authoring is not complete when only `PROOF.md` exists. A non-trivial feature needs
+an executable proof artifact and a primary proof command that runs that artifact.
 
-Proof authoring is artifact-authoring work. It proves that the completion contract and
-proof artifacts are serious, executable, and anti-gameable. It does not prove the feature
-implementation is complete unless implementation was also in scope and the primary proof
-has passed against the product.
+Plain version: one realistic command should prove the behavior through the public
+boundary. Add complexity only when it catches a real fake-pass risk.
 
-## Proof Spectrum
-Use the lightest proof package that would catch a fake or incomplete implementation.
+## Proof Profiles
+Choose the smallest profile that would catch a fake, incomplete implementation, or other
+high-risk behavior.
 
-- Minimal: one behavioral or regression artifact, one primary command, and one anti-gaming
-  note. Use for small bug fixes, narrow internal invariants, and simple user-visible changes
-  with low blast radius.
-- Standard: one primary behavioral artifact plus fixtures, expected evidence, and an
-  anti-gaming review with the main fake-pass risks. Use for normal features.
-- Full: primary proof plus realistic provider/browser/API state, negative cases, read-back,
-  migration/performance checks, or multiple fixtures. Use for external systems, data loss
-  risk, permissions, billing, security, queues, or high-risk behavior.
+- Bug fix profile: use the smallest regression proof that fails before the fix.
+- API profile: call the real route or app client and verify response, persistence, and
+  relevant side effects.
+- UI profile: render the component/page or drive the browser and verify visible state or
+  interaction.
+- Provider/live profile: submit realistic payloads or use the repo-local testbed, patch
+  only the outermost external provider/client boundary locally, and prefer live-provider
+  read-back in the primary proof when credentials and a safe target exist.
+- Migration/internal profile: prove integrity, equivalence, migration result, or the
+  internal invariant through the narrowest executable check.
+
+Static source/file/term checks are not valid as the primary proof for user-visible, API,
+provider, or workflow features. They may be secondary guards only.
 
 ## Workflow
-1) Read the feature contract
-   - Read `FEATURE_DIR/FEATURE.md`.
-   - Read `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present.
-   - Treat user-visible behavior, internal invariants, constraints, and non-goals as proof inputs.
+1. Read `FEATURE_DIR/FEATURE.md` and relevant repo docs.
+2. Choose one primary behavioral proof from the profiles above.
+3. Run an adversarial proof review before writing artifacts:
+   - List at least three plausible fake or incomplete implementations.
+   - Explain how the proof would catch each fake implementation through observable
+     behavior.
+   - Strengthen weak proof before implementation begins.
+4. Create or repair executable artifacts under `FEATURE_DIR/proof/` or the repo-native
+   testbed/E2E location.
+5. Write `FEATURE_DIR/PROOF.md`, then run the narrowest parser/test when practical.
 
-2) Choose one primary behavioral proof
-   - User-visible UI workflow: use a browser E2E proof that renders or drives the app.
-   - API behavior: use a black-box HTTP/API proof against the app runtime.
-   - Agent/provider workflow: use the repo-local scenario/testbed skill when present and
-     require provider read-back when live state is checkable.
-   - Messaging/webhook integration: drive the real listener/API/worker boundary with saved provider payload fixtures, assert persisted state, duplicate suppression, and outbound send intent at the external provider-client boundary.
-   - Bug fix: use the smallest regression proof that fails before the fix.
-   - Migration/database/internal change: use integrity, equivalence, migration, or performance proof.
-   - Refactor: use existing behavior suites plus a targeted regression or contract proof.
-   - Static source/file/term checks are not valid as the primary proof for user-visible, API, provider, or workflow features. They may be secondary architecture guards only.
+## Proof Details
+- Prefer `FEATURE_DIR/proof/tests/` for pytest-style checks.
+- Use `FEATURE_DIR/proof/run.sh` when a shell runner is clearer.
+- When a repo-local API testbed exists, read its parser/CLI contract before writing the
+  proof runner.
+- For messaging/webhook features, submit realistic payload fixtures to the
+  listener/API boundary and assert state changes plus outbound provider-client calls.
+- For idempotency or retry behavior, submit the same provider/event ID twice and assert
+  exactly one persisted interaction/run/outbound send.
+- For semantic behavior, include paraphrase cases and at least one non-English or
+  wording-shifted case when practical. Treat hardcoded natural-language keyword lists as
+  fake-pass risks, and prove the structured outcome instead of matching response phrases
+  alone.
+- Do not import application internals for black-box user/API/provider proof.
+- Do not use mocks or monkeypatching for black-box user/API/provider proof.
 
-3) Run an adversarial proof review before writing artifacts
-   - List at least three plausible fake or incomplete implementations that could appear done.
-   - Ask whether the planned proof would catch each fake implementation through observable behavior.
-   - Strengthen the proof plan until the important fake implementations fail for concrete reasons.
-   - Prefer live app, browser, API, provider, persistence, or migration boundaries over source inspection.
-   - For UI/workflow features, include at least one interaction that proves the workflow works after the first render.
-   - For internal-only changes, prove the invariant, equivalence, migration result, or performance condition that would fail if the change were wrong.
-   - Do not continue when the only evidence is that the code path exists, a function was called, or an assistant/tool reported success.
+## External Readiness
+- Live proof is preferred when real provider state is the behavior being claimed.
+- If live proof needs credentials or external state, write a readiness artifact that checks
+  exact prerequisites and exits with a clear `NEED_INPUT` message.
+- Prefer `FEATURE_DIR/proof/readiness.sh` for shell-based external readiness checks unless
+  the repo has a native readiness/testbed convention.
+- External readiness artifacts may depend on local CLIs, apps, MCP tools, browser
+  automation, database clients, cloud CLIs, or repo scripts when those observe real state
+  needed by the proof.
+- When local doubles replace live-provider verification, record the exact missing live
+  proof as a manual gap in `PROOF.md`; do not silently treat mocks or tool traces as enough.
+- For external integrations, name the live provider, safe test account/object, read-back
+  command or API check, and the concrete credential or environment blocker.
 
-4) Create or repair executable proof artifacts
-   - Create or update at least one executable proof artifact before claiming proof authoring is complete.
-   - Prefer `FEATURE_DIR/proof/tests/` for pytest-style proof checks.
-   - Use `FEATURE_DIR/proof/run.sh` only when a shell runner is clearer than native test tooling.
-   - Use repo-native E2E or integration test locations when the repo already has a clear pattern.
-   - For scenario testbeds, prefer one scenario artifact under `FEATURE_DIR/proof/`
-     unless the repo has an established feature-proof testbed location.
-   - For scenario testbeds, include scenario artifacts, provider payload fixtures, or
-     API/browser checks that represent the real workflow.
-   - When a repo-local API testbed exists, read its parser/CLI contract before writing
-     the proof runner.
-   - For external provider integrations, prefer live-provider read-back in the primary proof when credentials and a safe target are available.
-   - Use deterministic provider doubles for local proof only when live credentials, account state, or safe external targets are unavailable.
-   - When local doubles replace live-provider verification, record the exact missing live proof as a manual gap in `PROOF.md`; do not silently treat mocks or tool traces as enough.
-   - For API features, call the real route or app client and assert response status, response body, persistence, and relevant side effects.
-   - For UI features, render the component/page or drive the browser and assert visible user-facing state or interactions.
-   - For messaging/webhook features, submit realistic payload fixtures to the listener/API boundary and assert state changes plus outbound provider-client calls.
-   - For idempotency or retry behavior, submit the same provider/event ID twice and assert exactly one persisted interaction/run/outbound send.
-   - Patch or fake only the outermost external provider/client boundary. Do not replace the route, worker, service, sender gateway, persistence, or orchestrator path being proven.
-   - Do not import application internals for feature proof unless the chosen proof type is explicitly an internal contract, migration, or equivalence proof.
-   - Do not use mocks or monkeypatching for black-box user/API/provider proof.
-
-5) Write `FEATURE_DIR/PROOF.md`
-   - Include definition of done.
-   - Include proof type.
-   - Include the primary proof command that runs the executable artifact created above.
-   - Include expected evidence and observable state.
-   - Include required environment, fixtures, credentials, or provider setup.
-   - Include anti-gaming constraints such as no mocks, no internal imports, or no weakened coverage when those constraints matter.
-   - Include an `## Anti-Gaming Review` section that names the fake implementations the proof is meant to catch.
-   - Include manual gaps only when automation is not currently possible, with the reason.
-   - For external integrations, name the live provider, safe test account/object, read-back command or API check, and the concrete credential or environment blocker when live proof cannot run.
-   - Do not set the primary proof command to the repo safety gate, a legacy feature-check wrapper, or a static source contract test. Those may be listed as secondary guards only.
-   - If no executable proof artifact can be created, mark the proof `BLOCKED` and report the missing input or environment requirement instead of claiming a proof contract exists.
-
-6) Validate the proof surface
-   - Run the narrowest proof parser/test when practical.
-   - If implementation is not present yet, confirm the primary proof fails or is unmet for the expected reason.
-   - Do not make the proof pass by weakening `FEATURE.md` or reducing the claimed behavior.
-   - Handoff must list the executable proof files created or changed. If the list is empty, the proof authoring task is not done.
-   - Report implementation proof as `NOT RUN` or expected-red when the task only authored the
-     proof package.
+## Proof Change Guard
+When `PROOF.md` changes after implementation starts, record:
+- why the original proof was wrong or incomplete;
+- which fake implementation the changed proof catches;
+- red and green results when practical;
+- why behavior scope was not reduced.
 
 ## PROOF.md Template
 ````md
 # Proof Plan
 
 ## Definition Of Done
-- <observable condition required for completion>
-- <safety or regression condition>
+- <observable behavior required for completion>
 
 ## Primary Proof
-Type: <e2e | api | scenario-testbed | integration | regression | migration | existing-suite>
+Type: <bug-fix | api | ui | provider-live | migration-internal | existing-suite>
 
 Command:
 ```bash
-<command that runs FEATURE_DIR/proof/... or the repo-native E2E/testbed artifact>
+<command that runs FEATURE_DIR/proof/... or the repo-native proof artifact>
 ```
 
 Expected evidence:
-- <specific output, persisted state, provider read-back, file content, or invariant>
+- <response, UI state, persisted state, provider read-back, or invariant>
 
-Secondary guards:
-- <optional static architecture/source checks, type checks, or contract checks>
+## Secondary Guards
+- <optional lint, typecheck, unit tests, static architecture checks>
 
 ## Environment And Data
-- <runtime services, fixtures, accounts, seeded records, credentials, or provider state>
-
-## Anti-Gaming Constraints
-- <what must not be mocked, bypassed, weakened, or asserted only through model claims>
+- <fixtures, services, accounts, credentials, safe targets, or readiness command>
 
 ## Anti-Gaming Review
 - Fake pass risk: <incomplete implementation that might look done>.
-- Proof catch: <specific proof step that fails if that fake implementation exists>.
-
-## Repo Safety Gate
-Command:
-```bash
-$HOME/.codex/scripts/gate
-```
+- Proof catch: <specific proof step that fails if that fake exists>.
 
 ## Manual Gaps
-- None, or <manual verification that remains and why it cannot be automated yet>
+- None, or <live verification that still needs user-owned input and why>
 ````
 
 ## Rules
 - Keep `FEATURE.md` product-facing; put verification detail in `PROOF.md`.
 - Every non-trivial feature gets one primary proof command.
 - Every non-trivial feature gets at least one executable proof artifact.
-- The primary proof command is the feature completion authority and must run a behavioral artifact.
+- The primary proof command is the feature completion authority and must run a behavioral
+  artifact.
 - Gate is only the repo-health guard; it does not prove feature completion.
-- Static source/file/term checks cannot be the primary proof for user-visible, API, provider, or workflow features.
+- Static source/file/term checks cannot be the primary proof for user-visible, API,
+  provider, or workflow features.
 - `PROOF.md` must include an anti-gaming review for every non-trivial feature.
 - The anti-gaming review must connect fake pass risks to concrete proof steps.
-- For provider writes, require read-back from the provider when the runtime can verify it.
-- For external systems, live proof is preferred; if unavailable, `PROOF.md` must say exactly what live read-back remains blocked and why.
-- A successful tool call or assistant claim is not sufficient proof when external state is checkable.
-- Do not hand off with only a prose `PROOF.md` unless the feature is explicitly documentation-only or blocked.
+- A successful tool call or assistant claim is not sufficient proof when external state is
+  checkable.
+- Do not hand off with only a prose `PROOF.md` unless the feature is explicitly
+  documentation-only or awaiting `NEED_INPUT`.
 - Do not run `coding-feature-evaluator` for proof-authoring-only work; use
   `coding-feature-quality` when the proof contract itself needs review before
   implementation.

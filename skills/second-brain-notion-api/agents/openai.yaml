@@ -1,0 +1,4 @@
+interface:
+  display_name: "SECOND BRAIN | Notion API"
+  short_description: "Read and write Second Brain via Notion API"
+  default_prompt: "Use $second-brain-notion-api to read or write Second Brain records."

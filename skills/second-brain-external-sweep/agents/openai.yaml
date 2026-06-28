@@ -1,0 +1,4 @@
+interface:
+  display_name: "SECOND BRAIN | External Sweep"
+  short_description: "Inspect native sources for updates"
+  default_prompt: "Use $second-brain-external-sweep to inspect native sources."

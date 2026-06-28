@@ -1,0 +1,4 @@
+interface:
+  display_name: "SECOND BRAIN | Capture Raw Input"
+  short_description: "Capture raw notes into Notion"
+  default_prompt: "Use $second-brain-capture-raw-input to capture this note."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SECOND BRAIN | Activity Brief"
+  short_description: "Brief current tasks deals and ideas"
+  default_prompt: "Use $second-brain-activity-brief for a concise Second Brain brief."

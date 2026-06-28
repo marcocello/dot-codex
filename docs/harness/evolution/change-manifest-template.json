@@ -1,0 +1,11 @@
+{
+  "change": "<short harness change>",
+  "component": "<AGENTS.md|skill|script|docs|test|config|memory>",
+  "evidence": "<failure, repeated behavior, or observed gap that motivated the change>",
+  "root_cause": "<why the old harness produced the failure>",
+  "targeted_fix": "<what this change is expected to make the agent do differently>",
+  "expected_fix": "<future behavior or check expected to improve>",
+  "regression_risk": "<behavior that may get worse>",
+  "verification": "<test, lint, rollout, or review evidence>",
+  "verdict": "pending"
+}

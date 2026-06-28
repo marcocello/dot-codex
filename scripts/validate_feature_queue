@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+
+PASS_STATUSES = {"PASS", "pass", "passed", True}
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    with path.open(encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError("status file must contain a JSON object")
+    return data
+
+
+def is_pass(value: Any) -> bool:
+    return value in PASS_STATUSES
+
+
+def validate_evidence(root: Path, item: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    completion = item.get("completion")
+    feature_id = item.get("id", "<unknown>")
+    if not isinstance(completion, dict):
+        return [f"{feature_id}: done item missing completion object"]
+
+    for key in ["primary_proof", "gate", "evaluator"]:
+        if not is_pass(completion.get(key)):
+            errors.append(f"{feature_id}: completion.{key} must be PASS")
+
+    evidence = completion.get("latest_evidence")
+    if not isinstance(evidence, str) or not evidence:
+        errors.append(f"{feature_id}: completion.latest_evidence is required")
+        return errors
+
+    evidence_path = root / evidence
+    result_path = evidence_path / "result.json"
+    if not result_path.is_file():
+        errors.append(f"{feature_id}: latest_evidence missing result.json")
+        return errors
+
+    try:
+        result = load_json(result_path)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        errors.append(f"{feature_id}: latest_evidence result.json invalid: {exc}")
+        return errors
+
+    if not is_pass(result.get("status")):
+        errors.append(f"{feature_id}: latest_evidence result status must be PASS")
+    return errors
+
+
+def validate_queue(root: Path, status_path: Path) -> list[str]:
+    data = load_json(status_path)
+    features = data.get("features")
+    if not isinstance(features, list):
+        return ["status file must contain a features array"]
+
+    errors: list[str] = []
+    for item in features:
+        if not isinstance(item, dict):
+            errors.append("feature entries must be objects")
+            continue
+        if item.get("status") == "done":
+            errors.extend(validate_evidence(root, item))
+    return errors
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Validate docs/features/status.json done items.")
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--status", type=Path, default=Path("docs/features/status.json"))
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    status_path = args.status if args.status.is_absolute() else args.root / args.status
+    if not status_path.exists():
+        print("validate_feature_queue: no status file")
+        return 0
+    errors = validate_queue(args.root, status_path)
+    if errors:
+        for error in errors:
+            print(f"validate_feature_queue: {error}", file=sys.stderr)
+        return 1
+    print("validate_feature_queue: ok")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

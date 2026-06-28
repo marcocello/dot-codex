@@ -1,0 +1,4 @@
+interface:
+  display_name: "SECOND BRAIN | Weekly Review"
+  short_description: "Review tasks deals and ideas"
+  default_prompt: "Use $second-brain-weekly-review to review my Second Brain."

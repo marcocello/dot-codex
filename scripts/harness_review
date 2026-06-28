@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+def load_json(path: Path) -> dict[str, Any] | None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def proof_results(root: Path) -> list[tuple[Path, str]]:
+    results: list[tuple[Path, str]] = []
+    for result_path in sorted(root.glob("docs/features/*/proof/runs/*/result.json")):
+        data = load_json(result_path) or {}
+        status = str(data.get("status", "UNKNOWN"))
+        results.append((result_path.parent.relative_to(root), status))
+    return results
+
+
+def manifest_results(root: Path) -> list[tuple[Path, str]]:
+    manifests: list[tuple[Path, str]] = []
+    base = root / "docs" / "harness" / "evolution" / "manifests"
+    for manifest_path in sorted(base.glob("*.json")):
+        data = load_json(manifest_path) or {}
+        verdict = str(data.get("verdict", "unknown"))
+        manifests.append((manifest_path.relative_to(root), verdict))
+    return manifests
+
+
+def build_report(root: Path) -> str:
+    proofs = proof_results(root)
+    manifests = manifest_results(root)
+    pass_count = sum(1 for _, status in proofs if status.upper() == "PASS")
+    fail_count = sum(1 for _, status in proofs if status.upper() == "FAIL")
+
+    lines = [
+        "# Harness Review",
+        "",
+        f"- Created: {datetime.now(timezone.utc).isoformat()}",
+        f"- Proof bundles: {len(proofs)} total, {pass_count} PASS, {fail_count} FAIL",
+        f"- Change manifests: {len(manifests)}",
+        "",
+        "## Failed Proof Bundles",
+    ]
+    failed = [(path, status) for path, status in proofs if status.upper() != "PASS"]
+    lines.extend(f"- `{path}`: {status}" for path, status in failed)
+    if not failed:
+        lines.append("- none")
+
+    lines.extend(["", "## Pending Change Manifests"])
+    pending = [(path, verdict) for path, verdict in manifests if verdict == "pending"]
+    lines.extend(f"- `{path}`: {verdict}" for path, verdict in pending)
+    if not pending:
+        lines.append("- none")
+    return "\n".join(lines) + "\n"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Summarize proof bundles and harness manifests.")
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--write", action="store_true")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    report = build_report(args.root)
+    if args.write:
+        target = args.root / "docs" / "harness" / "evolution" / "latest-review.md"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(report, encoding="utf-8")
+        print(f"harness_review: wrote {target}")
+    else:
+        print(report, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

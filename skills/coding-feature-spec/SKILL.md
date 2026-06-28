@@ -7,104 +7,96 @@ metadata:
 
 # Feature Spec
 
-Purpose: produce a concise, product-facing `FEATURE.md` inside `docs/features/<feature-id-slug>/`, then make the feature provable through `coding-proof-author`.
+Purpose: concise product-facing `FEATURE.md`, then provable package via
+`coding-proof-author`.
 
-`FEATURE.md` describes what to build. It does not own verification commands or executable proof. For non-trivial features, this skill must call `coding-proof-author` after `FEATURE.md` is written so the same feature-spec run produces `PROOF.md` plus executable proof artifacts.
+`FEATURE.md` describes what to build. It does not own proof commands or executable proof.
+For non-trivial features, this skill must call `coding-proof-author` after `FEATURE.md` is written
+so the same run produces `PROOF.md` plus executable proof artifacts.
 
 ## Inputs
-If missing, ask only for blocking details:
-- short title
-- user persona or core job-to-be-done
-- desired behavior or core workflow
-- key constraints or must-avoid behavior
+Ask only for blockers:
+- title
+- persona/job
+- desired behavior/workflow
+- constraints/must-avoid behavior
 
-Do not ask architecture questions unless strictly required.
+No architecture questions unless required.
 
 ## Pipeline
-1) Load context
-   - Read `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and
-     `docs/TESTING.md` when present.
+1. Load context
+   - Read `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`
+     when present.
 
-2) Create or update `FEATURE.md`
-   - Use `docs/features/<feature-id-slug>/`; create or update only that directory.
+2. Write `FEATURE.md`
+   - Use only `docs/features/<feature-id-slug>/`.
    - Default to the short form: summary, desired behavior, constraints, and routing.
    - Add extended sections only when they remove ambiguity for implementation or proof.
-   - Keep behavior observable, product-facing, and testable.
-   - Cover the happy path plus material edge, error, permission, and recovery cases.
-   - For API, CLI, file, event, provider, or UI-boundary features, capture the
-     external contract: inputs, outputs, statuses, states, schemas, or messages that
-     consumers observe.
-   - Capture defaulting, fallback, precedence, version-resolution, and selection rules
-     when more than one behavior could reasonably apply.
+   - Keep behavior observable, product-facing, testable.
+   - Cover happy path plus material edge/error/permission/recovery cases.
+   - For API, CLI, file, event, provider, or UI-boundary features, capture the external
+     contract: inputs, outputs, statuses, states, schemas, messages.
+   - Capture defaulting, fallback, precedence, version-resolution, selection rules when
+     multiple behaviors could apply.
    - For semantic behavior such as duplicate prevention, routing, classification,
-     extraction, permissions, or intent handling, describe the durable invariant and
-     structured decision rule. Do not define correctness as a list of trigger phrases.
-   - Capture operational constraints when runtime, deployment target, storage,
-     credentials, environment variables, or resource limits affect correctness.
-   - When updating an existing feature, preserve existing desired behavior, constraints,
-     and non-goals unless the user explicitly changes or removes them.
-   - Keep proof commands, fixtures, environment, and evidence out of `FEATURE.md`.
+     extraction, permissions, or intent handling, describe durable invariant and structured
+     decision rule. Do not define correctness as a list of trigger phrases.
+   - Capture operational constraints when runtime, deployment target, storage, credentials,
+     env vars, or resource limits affect correctness.
+   - When updating, preserve existing desired behavior, constraints, non-goals unless user
+     changes them.
+   - Keep proof commands, fixtures, environment, evidence out of `FEATURE.md`.
    - If the repo has a local scenario skill, describe the workflow in `FEATURE.md` and let
      `coding-proof-author` choose the executable proof artifact.
-   - Use `coding-research` when important assumptions depend on external APIs, domain
-     rules, or framework behavior.
+   - Use `coding-research` when assumptions depend on external APIs/domain/framework rules.
 
-3) Add routing
-   - Add `Required skills` only when clear: backend, frontend, WordPress, proof, or another
-     relevant local skill.
-   - Keep framework, starter, and folder details inside the owning domain skills.
+3. Add routing
+   - Add `Required skills` only when clear.
+   - Keep framework/starter/folder detail inside owning domain skills.
 
-4) Create the proof package
-   - Use `coding-proof-author` for every non-trivial feature before queue update or final
-     handoff.
-   - `coding-proof-author` must create or repair `FEATURE_DIR/PROOF.md` and executable
-     proof artifacts such as `FEATURE_DIR/proof/run.sh`, `FEATURE_DIR/proof/tests/`,
-     `FEATURE_DIR/proof/fixtures/`, or a repo-native E2E/testbed file.
+4. Create proof package
+   - Use `coding-proof-author` for every non-trivial feature before queue update or handoff.
+   - It must create/repair `FEATURE_DIR/PROOF.md` plus executable proof artifacts:
+     `FEATURE_DIR/proof/run.sh`, `proof/tests/`, `proof/fixtures/`, or repo-native E2E.
    - Do not accept a prose-only `PROOF.md` as proof authoring.
-   - If executable proof cannot be created after readiness scaffolding, report
-     `NEED_INPUT` and ask only for the missing product, API, provider, or environment
-     detail.
+   - If executable proof cannot be created after readiness scaffolding, report `NEED_INPUT`
+     with only missing product/API/provider/environment detail.
 
-5) Review contract readiness
-   - Use `coding-feature-quality` for non-trivial feature specs before queue update or final
-     handoff.
-   - Repair material ambiguity, missing edge cases, weak testability, architecture conflict,
-     or proof gaps before marking the item `ready`.
+5. Review readiness
+   - Use `coding-feature-quality` for non-trivial feature specs before queue update/handoff.
+   - Repair material ambiguity, missing edges, weak testability, architecture conflict, proof
+     gaps before `ready`.
    - Do not run `coding-feature-evaluator` unless implementation or issue-fix work was also
      completed.
 
-6) Update `status.json`
-   - Use `coding-feature-queue` to add or update the item.
+6. Update queue
+   - Use `coding-feature-queue`.
    - `draft`: `FEATURE.md`, `PROOF.md`, executable proof artifacts, or contract review are
      incomplete or still being repaired.
    - `ready`: contract package is ready for implementation.
-   - `needs_input`: proof authoring or contract review still needs missing input or
-     unavailable external state after local recovery attempts.
-   - If an existing `done` feature's behavior, proof contract, or executable proof artifacts
-     change, reset status to `draft` while authoring, then `ready` after review passes.
-   - Preserve `done` only for clearly non-behavioral metadata, typo, or formatting edits.
+   - `needs_input`: proof authoring or contract review still needs missing input/external
+     state after recovery.
+   - Behavior/proof changes to existing `done`: reset status to `draft` while authoring, then `ready` after review.
+   - Preserve `done` only for clearly non-behavioral metadata, typo, formatting edits.
 
-7) Handoff
-   - Use the artifact-authoring receipt from `AGENTS.md`.
-   - Lead with the feature behavior now specified, then list only the created/changed
-     contract files.
-   - Include the primary proof command and queue status only when they help the next
-     implementation step.
-   - Say `implementation proof: NOT RUN` only when the user might otherwise think
-     implementation was completed.
+7. Handoff
+   - Artifact-authoring receipt from `AGENTS.md`.
+   - Feature behavior first; only created/changed contract files.
+   - Include primary proof command and queue status only when useful next.
+   - Say `implementation proof: NOT RUN` only if confusion likely.
 
 ## FEATURE.md Short Template
 ```md
 # <Feature title>
 
 ## Summary
-<Short description of the change.>
+<Short description.>
 
 ## Desired Behavior
-- <Observable behavior that should become true.>
+- <Observable behavior.>
 
 ## Constraints
-- <Only constraints that materially affect correctness.>
+- <Correctness-affecting constraints.>
 
 ## Implementation Routing
 - Required skills: <coding-python-backend | coding-frontend | coding-wordpress |
@@ -112,36 +104,35 @@ Do not ask architecture questions unless strictly required.
 ```
 
 ## Extended Sections
-Add these only when the short template would leave implementation or proof ambiguous:
+Add only when short template leaves implementation/proof ambiguous:
 
 ```md
 ## Scope
-- <Included behavior or surfaces.>
+- <Included behavior/surfaces.>
 
 ## Non-Goals
-- <Explicitly excluded behavior.>
+- <Excluded behavior.>
 
 ## Scenarios
-- <Happy path scenario.>
-- <Important edge, error, permission, or recovery scenario.>
+- <Happy path.>
+- <Important edge/error/permission/recovery case.>
 
 ## External Contract
-- <Endpoints, commands, file formats, events, provider calls, UI states, request/input
-  shapes, response/output shapes, and error/status behavior that consumers observe.>
+- <Endpoints, commands, file formats, events, provider calls, UI states, input/output
+  shapes, statuses, errors.>
 
 ## Resolution Rules
-- <Defaults, fallbacks, precedence, version selection, conflict handling, or selection
-  rules that remove ambiguity from implementation.>
+- <Defaults, fallbacks, precedence, version selection, conflict handling.>
 
 ## Additional Constraints
-- <Architecture, data, security, UX, compatibility, runtime, or credential constraint.>
+- <Architecture, data, security, UX, runtime, credential constraint.>
 ```
 
 ## Rules
-- Keep `FEATURE.md` concise and human-readable.
-- Do not put proof commands in `FEATURE.md`.
-- Do not stop after `FEATURE.md` for non-trivial features; create the proof package in the same feature-spec run.
-- Do not treat feature-spec authoring as feature implementation.
-- Do not make Gherkin mandatory.
-- Do not add architecture decisions unless explicitly provided or already authoritative.
-- Do not add backward compatibility requirements unless explicitly requested.
+- Concise human-readable `FEATURE.md`.
+- No proof commands in `FEATURE.md`.
+- Do not stop after `FEATURE.md` for non-trivial features; create proof package same run.
+- Non-trivial feature: create proof package same run.
+- Feature-spec authoring is not implementation.
+- No mandatory Gherkin.
+- No new architecture/backward compatibility unless explicit or authoritative.

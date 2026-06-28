@@ -7,117 +7,90 @@ metadata:
 
 # Feature Execute
 
-Purpose: deliver one feature inside Codex App without adding a repo-local orchestrator.
+Purpose: deliver one feature. No repo-local orchestrator.
 
-## Entry Conditions
-- Use this skill only for one feature implementation, not for rough feature discovery.
-- `FEATURE_DIR` is known, or exactly one matching feature directory can be identified.
-- `FEATURE_DIR/FEATURE.md` describes the expected behavior clearly enough to implement.
-- `FEATURE_DIR/PROOF.md` defines one executable primary proof command.
-- If `FEATURE.md` is missing, vague, or materially incomplete, stop feature execution and use
-  `coding-feature-spec`. For non-trivial features, `coding-feature-spec` will route to
-  `coding-proof-author`.
-- If `FEATURE.md` is ready but `PROOF.md` is missing, stale, vague, static-only, or lacks an
-  executable primary proof artifact, stop feature execution and use `coding-proof-author`.
+## Entry
+- One `FEATURE_DIR`.
+- `FEATURE_DIR/FEATURE.md` ready enough to implement.
+- `FEATURE_DIR/PROOF.md` defines executable primary proof.
+- If `FEATURE.md` is missing, vague, or materially incomplete, stop and use
+  `coding-feature-spec`.
+  For non-trivial features, `coding-feature-spec` will route to `coding-proof-author`.
+- If `FEATURE.md` is ready but `PROOF.md` is missing, stale, vague, static-only, or lacks
+  executable proof, stop and use `coding-proof-author`.
+- Missing/weak/static `PROOF.md`: stop, use `coding-proof-author`.
 
 ## Workflow
-1) Load the contracts
-   - Read `FEATURE_DIR/FEATURE.md`.
-   - Read `FEATURE_DIR/PROOF.md`.
-   - If `FEATURE.md` has `## Implementation Routing` or `Required skills`, load those skills before implementation.
+1. Load contracts
+   - Read `FEATURE.md`, `PROOF.md`.
+   - Load `Required skills` / `Implementation Routing` if present.
 
-2) Load repo-level context when present
-   - Read `docs/ARCHITECTURE.md` if it exists.
-   - Read `docs/CONVENTIONS.md` if it exists.
-   - Read `docs/TESTING.md` if it exists.
+2. Load repo context
+   - Read `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md` when present.
 
-3) Ensure the software project baseline
-   - For software projects, initialize a Git repository with `git init` when the current project directory is not already inside a Git worktree.
-   - Do not overwrite existing Git history or reinitialize a repository that already has `.git`.
-   - Use `coding-prepare-environment` to create or update `.vscode/tasks.json` when selected domain skills call for local run tasks.
+3. Ensure baseline
+   - If software project lacks Git, `git init`.
+   - Do not overwrite existing Git history.
+   - Use `coding-prepare-environment` when setup/tasks are needed.
 
-4) Choose the right implementation skill
-   - Mandatory domain handoff: when a feature touches backend, frontend, or WordPress application code, explicitly use the matching domain skill before creating files, installing packages, or choosing a starter.
-   - Obey skill routing declared in `FEATURE.md`; missing routing is a fallback case, not permission to skip domain skills.
-   - Use `coding-python-backend` when backend Python work is in scope.
-   - Use `coding-frontend` when React or Next.js UI work is in scope.
-   - Use `coding-wordpress` when WordPress plugin, theme, full-site, or Bedrock-style work is in scope.
-   - Use `coding-repair` for small corrective changes.
+4. Route implementation
+   - Backend Python: `coding-python-backend`.
+   - React/Next UI: `coding-frontend`.
+   - WordPress: `coding-wordpress`.
+   - Small corrective change: `coding-repair`.
+   - Domain handoff before starters, folders, packages.
 
-5) Prepare the environment
-   - Use `coding-prepare-environment` before running tests, proof commands, gates, package installs, dev servers, or framework CLIs.
+5. Establish red proof
+   - Run primary proof before implementation when practical.
+   - Confirm expected failure/unmet behavior.
+   - If already green, inspect whether done or `PROOF.md` too weak.
+   - Weak proof: strengthen via `coding-proof-author` before code.
 
-6) Establish red proof
-   - Run the primary proof command from `PROOF.md` before implementation when practical.
-   - Confirm the proof fails or is unmet for the expected missing behavior.
-   - If the proof already passes, inspect whether the feature is already done or whether `PROOF.md` is too weak.
-   - If the proof is too weak, use `coding-proof-author` to strengthen the anti-gaming review and executable proof before implementation.
-
-7) Trust ready contracts, review stale contracts
+6. Trust ready contracts, review stale contracts
    - If a queue item is already `ready`, do not run `coding-feature-quality` again unless
      `FEATURE.md` or `PROOF.md` is stale, weak, contradictory, or changed before
      implementation starts.
-   - If no queue status exists, or the contract looks materially uncertain, use
-     `coding-feature-quality` before implementation.
-   - Once implementation code changes begin, treat `FEATURE.md`, `PROOF.md`, and proof
-     artifacts as frozen for this implementation pass.
+   - Otherwise use `coding-feature-quality` when uncertainty is material.
+   - Once implementation code changes begin, freeze `FEATURE.md`, `PROOF.md`, proof
+     artifacts.
 
-8) Implement minimally
-   - Add lower-level tests only where they reduce implementation risk.
-   - Make the smallest code change that satisfies `FEATURE.md` and `PROOF.md`.
-   - For semantic behavior, implement the invariant at the owning domain boundary; do not
-     substitute prompt wording checks, hardcoded natural-language phrase lists, or tool
-     removal for validation of the actual object, state, permission, or provider result.
-   - Do not change `FEATURE.md`, `PROOF.md`, or proof artifacts after implementation code
-     changes begin. If the contract is materially wrong, stop implementation, move the item
-     back to contract repair, apply the Proof Change Guard there, then restart from red proof.
+7. Implement
+   - Smallest change satisfying `FEATURE.md` and `PROOF.md`.
+   - Add lower-level tests only when they reduce risk.
+   - Semantic behavior: implement invariant at owning boundary; no hardcoded natural-language phrase lists, wording gates, or tool hiding as substitute for
+     state/object/provider validation.
+   - Once implementation code changes begin, do not change contracts/proof artifacts. If
+     contract is wrong, stop, move to contract repair, apply the Proof Change Guard there,
+     restart from red proof.
 
-9) Validate
-   - Run the proof and gate required by the `AGENTS.md` Universal Lifecycle.
+8. Validate
+   - Run proof and gate required by `AGENTS.md` Universal Lifecycle.
+   - If proof/gate/evaluator fails, use `coding-repair` on the concrete failing behavior or
+     check result.
+   - Do not hand off as done while primary proof fails.
 
-10) Evaluate and update status
-   - Follow the `AGENTS.md` Universal Lifecycle.
-   - If `docs/features/status.json` exists, use `coding-feature-queue` to update status.
-   - If proof, gate, and evaluator pass but a human reports the feature still does not work,
-     treat the proof package as insufficient.
-   - In that case, stop implementation and use contract repair to add a failing proof that
-     captures the real broken behavior before changing production code again.
+9. Evaluate/status
+   - Run `coding-feature-evaluator`.
+   - If `docs/features/status.json` exists, update via `coding-feature-queue`.
+   - If proof, gate, evaluator pass but human-visible behavior fails, treat the proof package as insufficient.
+     Stop implementation; repair contract with failing proof before changing production code again.
 
-11) Repair only concrete failures
-   - If the primary proof, gate, or evaluator fails, use `coding-repair` on the concrete
-     failing behavior or check result.
-   - Keep fixes within the smallest failing scope.
-   - Do not hand off as done while the primary proof is failing.
-   - If the failure is missing live credentials, a safe external target, or service
-     reachability, follow `AGENTS.md` Recovery Before Need Input before asking the user.
-
-12) Escalate only by AGENTS.md policy
-   - If proof, gate, or evaluator judgment is still failing after the first targeted
-     repair pass, follow the autonomous escalation policy in `AGENTS.md`.
-   - When an autonomous Goal is active, continue through `coding-autonomous-execute`
-     instead of handing off while the proof remains unsatisfied.
-
-## Behavioral Baseline
-- Think before changing code: state blocking ambiguity, assumptions, and material tradeoffs before implementation.
-- Simplicity first: implement the smallest design that satisfies `FEATURE.md` and `PROOF.md`.
-- Surgical changes: touch only files and lines needed for the feature, and clean up only dead code introduced by the current change.
-- Goal-driven execution: tie each implementation step to the primary proof or a narrower check that supports it.
-- Green-but-broken handling: when passing proof contradicts observed behavior, stop code
-  repair and improve the proof contract in a separate contract-repair phase.
+10. Escalate
+   - If proof/gate/evaluator still fails after first targeted repair, follow the autonomous escalation policy in `AGENTS.md`.
+   - Active Goal: continue through `coding-autonomous-execute` while proof remains
+     unsatisfied.
 
 ## Rules
+- Think before code when ambiguity blocks correctness.
+- Reuse existing paths.
 - Keep changes local.
-- Reuse existing code paths before adding new ones.
-- Do not build orchestration infrastructure in this repo.
-- Prefer existing domain skills over inventing new coordination logic.
-- Follow the autonomous escalation policy in `AGENTS.md`; do not build repo-local
-  orchestration infrastructure.
-- Do not weaken `PROOF.md`, reduce feature scope, or substitute assistant/tool claims for observable proof.
+- No orchestration infrastructure.
+- Do not weaken `PROOF.md`, reduce scope, or substitute assistant/tool claims for
+  observable proof.
 - Do not mix implementation code edits with `FEATURE.md`, `PROOF.md`, or proof-artifact
   edits in the same implementation pass.
 
 ## Handoff
 - Report using the `AGENTS.md` short receipt format for completed feature or issue work.
-- Start with the outcome, then changed surfaces, then verification.
-- Keep file paths and implementation detail brief; use a technical appendix only when the
-  user asks or the result needs audit/debug detail.
+- Outcome, changed surface, verification.
+- Technical appendix only when asked or needed for audit/debug.

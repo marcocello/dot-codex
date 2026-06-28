@@ -19,6 +19,12 @@ writable_roots = [
 [features]
 multi_agent = false
 js_repl = false
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = false
 
 [mcp_servers.shadcn]
 command = "npx"
@@ -27,6 +33,10 @@ args = ["shadcn@latest", "mcp"]
 [mcp_servers.context7]
 command = "npx"
 args = ["-y", "@upstash/context7-mcp", "--api-key", "your-context7-api-key"]
+
+[mcp_servers.langsmith]
+url = "https://api.smith.langchain.com/mcp"
+oauth_resource = "https://api.smith.langchain.com/mcp"
 
 [mcp_servers.node_repl]
 args = ["/path/to/node-repl-server.js"]

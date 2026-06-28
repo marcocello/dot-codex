@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(pwd)"
+
+fail() {
+  echo "GATE_CONFIG: FAIL: $1" >&2
+  exit 1
+}
+
+if [[ ! -f "AGENTS.md" || ! -d "skills" || ! -d "tests/unit" ]]; then
+  fail "run from the dot-codex repo root"
+fi
+
+if [[ ! -x ".venv/bin/python" ]]; then
+  fail ".venv/bin/python missing; run scripts/ensure_venv"
+fi
+
+PY=".venv/bin/python"
+
+echo "== gate_config: repo=$ROOT =="
+
+"$PY" -m pytest tests/unit -q
+"$PY" scripts/lint_harness
+"$PY" scripts/validate_feature_queue
+
+if [[ -f "skills/.system/skill-creator/scripts/quick_validate.py" ]]; then
+  while IFS= read -r skill_file; do
+    [[ -n "$skill_file" ]] || continue
+    "$PY" skills/.system/skill-creator/scripts/quick_validate.py "$(dirname "$skill_file")"
+  done < <(
+    {
+      git diff --name-only -- 'skills/**/SKILL.md' 2>/dev/null || true
+      git ls-files --others --exclude-standard -- 'skills/**/SKILL.md' 2>/dev/null || true
+    } | sort -u
+  )
+fi
+
+git diff --check
+
+echo "GATE_CONFIG: PASS"

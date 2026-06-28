@@ -24,7 +24,12 @@
 !*.yaml
 !*.sh
 !scripts/gate
+!scripts/gate_config
+!scripts/harness_review
 !scripts/lint_harness
+!scripts/proof_run_capture
+!scripts/validate_feature_queue
+!docs/harness/evolution/*.json
 !docs/presentations/*.html
 
 # 4. Block some directories and files

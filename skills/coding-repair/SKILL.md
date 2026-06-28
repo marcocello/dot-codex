@@ -7,129 +7,103 @@ metadata:
 
 # Repair
 
-Purpose: fix an issue correctly, with the smallest effective change and proper verification.
+Purpose: smallest correct fix, verified.
 
-## Default behavior
-- If the issue description or expected behavior is unclear, ask for clarification before coding.
-- If the issue or failing check is clear, proceed directly to implementation.
+## Default
+- Clear issue/failing check: proceed.
+- Unclear expected behavior: ask before coding.
+
+## Fast path for concrete failures
+- For a specific proof, gate, typecheck, lint, build, or evaluator failure: reproduce,
+  patch smallest owning path, rerun failing check, then lifecycle checks from `AGENTS.md`.
+- Use the diagnostic workflow below only when behavior, root cause, or owner is unclear.
+- Use full diagnostic flow only when behavior/root cause/owner is unclear.
 
 ## Workflow
-Fast path for concrete failures:
-- If the input is a specific proof, gate, typecheck, lint, build, or evaluator failure,
-  reproduce that failure, patch the smallest owning path, rerun the failing check, then
-  rerun the lifecycle checks required by `AGENTS.md`.
-- Use the diagnostic workflow below only when the expected behavior, root cause, or owning
-  area is unclear.
+1. Read context
+   - Read `docs/INDEX.md` or `docs/README.md` if present.
+   - Otherwise scan relevant `docs/`.
 
-1) Read repo docs if present
-   - If `docs/` exists, read `docs/INDEX.md` or `docs/README.md` first.
-   - If neither exists, scan `docs/` for the most relevant files.
-
-2) Route through existing feature proof when possible
+2. Route through feature proof when possible
    - Before fixing, inspect `docs/features/*/FEATURE.md` for one clear matching feature
-     unless the user supplied an explicit `FEATURE_DIR`.
-   - If exactly one feature matches, treat that `FEATURE_DIR` as in scope, read its
-     `FEATURE.md` and `PROOF.md`, and run the existing primary proof when practical
-     before editing.
-   - If the existing primary proof misses the bug, extend that feature proof package with
-     a focused failing regression before implementation.
-   - Use `coding-proof-author` when the matching `FEATURE_DIR/PROOF.md` is missing,
-     vague, stale, or cannot host the regression cleanly.
-   - If multiple features plausibly match and the choice materially changes scope, ask
-     before attaching the bug to a feature.
-   - If no feature clearly matches, do not create `FEATURE.md` by default; create the
-     smallest local regression test or proof near the affected code.
-   - Create or update `FEATURE.md` and `PROOF.md` only when the expected behavior itself
-     needs durable definition or changes product behavior.
+     unless user supplied `FEATURE_DIR`.
+   - If exactly one feature matches, treat that `FEATURE_DIR` as in scope; read
+     `FEATURE.md` and `PROOF.md`; run existing primary proof when practical.
+   - If proof misses the bug, extend that feature proof package with a focused failing regression before implementation.
+   - Use `coding-proof-author` when matching `PROOF.md` is missing, vague, stale, or cannot
+     host the regression cleanly.
+   - Multiple material matches: ask.
+   - If no feature clearly matches, do not create `FEATURE.md` by default; create smallest
+     local regression test/proof near affected code.
+   - Create/update `FEATURE.md` and `PROOF.md` only when expected behavior itself needs
+     durable definition or product behavior changes.
 
-3) Understand and reproduce the issue
-   - Quote exact error messages or failing tests when available.
-   - Identify the owning area (backend route/service/domain, or frontend component/hook).
-   - Follow the real call path before deciding the fix: entrypoint, validation/parsing,
-     routing or dispatch, owner module, shared helper, persistence, network, or runtime
-     boundary.
-   - Identify the root cause and state confidence as `clear`, `likely`, or `unknown`.
-   - If root cause is `unknown`, create the smallest diagnostic or reproduction that would
-     make the next step concrete before editing production code.
-   - Prefer current source, executable proof, and runtime evidence over stale comments,
-     assumptions, or old CI output.
+3. Reproduce/root cause
+   - Quote exact errors/failing tests when available.
+   - Follow the real call path before deciding the fix: entrypoint, parsing, routing,
+     owner module, persistence, network, runtime boundary.
+   - Identify the root cause and state confidence: `clear`, `likely`, `unknown`.
+   - Unknown root cause: add smallest diagnostic/repro before production edit.
+   - Prefer current source, executable proof, runtime evidence.
 
-4) Gather local runtime evidence before editing
-   - When the issue is reproducible locally, check app/runtime logs before changing code.
-   - If Docker or Docker Compose is present, inspect bounded recent container logs, such as
-     `docker compose logs --tail=200` or `docker logs --tail=200 <container>`.
-   - If a dev server or test runner is already running, inspect its terminal output.
-   - For browser-facing issues, use the Browser/in-app browser when available and inspect
-     browser console errors plus failed network requests for the local page.
-   - Capture only relevant error lines, stack frames, status codes, and timestamps.
-   - Redact secrets and do not print raw environment values, tokens, cookies, or full log dumps.
-   - If Docker logs or browser console logs are not applicable, state why before coding.
+4. Runtime evidence
+   - Reproducible local issue: check app/runtime logs before code.
+   - Docker: bounded recent logs.
+   - Running dev/test server: inspect terminal output.
+   - Browser issue: use Browser/in-app browser when available; inspect console/network.
+   - Capture relevant lines only. Redact secrets.
 
-5) Locate existing logic
-   - Search for existing functions/components that already implement similar behavior.
-   - Reuse or extend existing code; do not duplicate logic.
-   - Read adjacent tests and ownership-boundary code, not only the first file that
-     mentions the error.
+5. Locate existing logic
+   - Search existing functions/components.
+   - Reuse/extend; avoid duplicate logic.
+   - Read adjacent tests and ownership-boundary code.
 
-6) Red phase (test first)
-   - Add or update the smallest regression test for the issue.
-   - If the issue is attached to a `FEATURE_DIR`, make sure `PROOF.md` covers the
-     regression or use `coding-proof-author` to repair it before implementation.
-   - Run the narrowest relevant test command and confirm failure.
+6. Red
+   - Add/update smallest regression.
+   - If `FEATURE_DIR` in scope, ensure `PROOF.md` covers regression or use
+     `coding-proof-author`.
+   - Run narrow command; confirm failure.
 
-7) Green phase (minimal fix)
-   - Keep changes local to the affected area.
-   - Avoid refactors unless required for correctness.
-   - Do not change unrelated code.
-   - For semantic or domain behavior, do not repair by adding ad hoc natural-language
-     keyword lists, phrase gates, or by hiding tools based on user wording. Put the
-     invariant at the owning boundary: parser schema, service validation, tool contract,
-     persistence check, provider read-back, or postcondition.
-   - Re-run the same test and confirm it passes.
+7. Green
+   - Local fix only.
+   - Avoid refactor unless required for correctness.
+   - No unrelated code.
+   - Semantic/domain behavior: do not repair by adding ad hoc natural-language keyword lists,
+     phrase gates, or tool hiding. Put invariant at owning boundary: parser schema, service
+     validation, tool contract, persistence check, provider read-back, postcondition.
+   - Rerun same test; confirm pass.
 
-8) Add verification
-   - Backend: add or update the smallest regression test that would have caught the issue.
-   - Frontend: add or update a minimal test if the repo uses frontend testing.
-   - For local runtime or UI bugs, re-check the same app logs, Docker logs, browser
-     console, and failed requests that exposed the issue.
-   - Run relevant tests, or state explicitly if they cannot be run here and list exact commands.
-
-9) Finalize safely
+8. Verify/finalize
+   - Add verification appropriate to touched surface.
+   - Re-check logs/browser signals that exposed issue.
+   - Run relevant checks or list exact unrun commands.
    - Use `coding-feature-evaluator` before marking every issue fix complete.
-   - Treat evaluator `FAIL` as repair input and evaluator `NEED_INPUT` as a request for
-     exact user-owned input after recovery attempts.
-   - If a Codex Goal is active, keep it open until the regression test, relevant broader
-     check, and evaluator `PASS` prove completion.
-   - If a `FEATURE_DIR` is in scope, run the primary proof command from `PROOF.md`.
-   - Do not commit unless explicitly instructed by the user.
-   - Do not push, open PRs, update changelogs, or close issues unless explicitly instructed.
+   - Evaluator `FAIL`: repair input. Evaluator `NEED_INPUT`: exact user-owned input after
+     recovery.
+   - If a Codex Goal is active, keep it open until regression, broader check, and evaluator
+     `PASS` prove completion.
+   - The regression, broader check, and evaluator `PASS` prove completion.
+   - If `FEATURE_DIR` in scope, run primary proof command from `PROOF.md`.
+   - Do not commit/push/open PR/update changelog/close issues unless explicitly asked.
 
-10) Escalate only by AGENTS.md policy
-   - If the regression test, narrow verification command, or relevant broader check is still
-     failing after the first focused fix attempt, follow the autonomous escalation policy
-     in `AGENTS.md`.
+9. Escalate
+   - If regression/narrow/broader check still fails after first focused fix, follow
+     autonomous escalation policy in `AGENTS.md`.
    - During explicit autonomous execution, continue through `coding-autonomous-execute`
-     while proof remains unsatisfied instead of returning a terminal failure.
+     while proof remains unsatisfied instead of returning terminal failure.
 
-## Behavioral Baseline
-- Think before changing code: reproduce the issue or name the missing evidence before
-  editing.
-- Root cause first: trace the owning call path and explain why the failing behavior
-  occurs before choosing a patch.
-- Local evidence first: for local app failures, check Docker/runtime logs and browser
-  console logs before deciding the fault is understood.
-- Simplicity first: fix the observed issue without speculative cleanup or broader redesign.
-- Invariant first: language-specific synonyms may be fixtures or examples, but they are not
-  the source of truth for product behavior unless the feature is explicitly lexical search.
-- Surgical changes: change only the failing path and remove only artifacts introduced by the fix.
-- Goal-driven execution: connect the fix to the regression test or verification command
-  that proves the issue is resolved.
-- Follow the autonomous escalation policy in `AGENTS.md`; do not broaden scope or
-  introduce a repo-local orchestrator.
+## Rules
+- Reproduce or name missing evidence before editing.
+- Root cause first.
+- Root cause before patch.
+- Local evidence before local app fixes.
+- No speculative cleanup.
+- Invariant first; examples are not behavior source of truth unless lexical search.
+- Surgical change only.
+- Connect fix to regression/proof.
+- Follow autonomous escalation policy in `AGENTS.md`; no scope broadening, no orchestrator.
 
 ## Output
-- Output final code only unless explanation is explicitly requested.
-- Keep comments minimal; explain WHY, not WHAT.
-- Include relevant Docker/runtime log and browser console evidence, or why each did not apply.
 - Report using the `AGENTS.md` short receipt format for completed feature or issue work.
-- Keep the repair handoff focused on outcome, changed surface, verification, and blockers.
+- Outcome, changed surface, verification, blockers.
+- Include relevant Docker/runtime/browser evidence, or why not applicable.

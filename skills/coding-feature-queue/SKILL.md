@@ -68,7 +68,9 @@ Allowed `status` values:
 - Mark `done` only after primary proof, gate, and `coding-feature-evaluator` pass.
 - For `done` items, record `completion.primary_proof`, `completion.gate`, and
   `completion.evaluator` as `PASS`, and point `completion.latest_evidence` to the latest
-  proof evidence bundle. Validate this with `scripts/validate_feature_queue` when available.
+  serious proof evidence bundle with command, result, notes, run metadata, and proof scope.
+  Repeated repair evidence must include `attempts.json`. Validate this with
+  `scripts/validate_feature_queue` when available.
 - If a `done` item's `FEATURE.md`, `PROOF.md`, or executable proof artifacts change in a
   behaviorally meaningful way, reset it to `draft` while authoring, then `ready` after the
   updated contract package passes review. Preserve `done` only for clearly non-behavioral

@@ -3,7 +3,11 @@
 These references live in Zotero under the `Harness Engineering` collection. They are the main external background for this dot-codex harness.
 
 - Ryan Lopopolo, [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) - OpenAI framing for Codex harnesses as context, tools, checks, and feedback loops around the model.
+- Xuying Ning et al., `Code as Agent Harness` - survey framing for code as executable, inspectable, stateful harness substrate across interface, mechanisms, and multi-agent coordination.
 - Jiahang Lin et al., [Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](http://arxiv.org/abs/2604.25850) - research framing for harnesses as a first-class determinant of coding-agent performance.
+- Jiawei Gu et al., `A Survey on LLM-as-a-Judge` - evaluator reliability, bias, calibration, and the need to judge against explicit criteria rather than model confidence.
+- Wanqin Ma et al., `(Why) Is My Prompt Getting Worse? Rethinking Regression Testing for Evolving LLM APIs` - prompt/API drift, slice-level regression, nondeterminism, and why harness rules need held-out checks.
+- Lei Wang et al., `A survey on large language model based autonomous agents` - autonomous-agent architecture patterns around profiling, memory, planning, action, and evaluation.
 - Anthropic engineers, via Anatoli Kopadze, [Planner/generator/evaluator loop for full-app builds](https://x.com/AnatoliKopadze/status/2068690663919530207) - practical generator/evaluator separation, live app judging, and contract-driven iteration.
 - dominik kundel, [A guide to /goal](https://x.com/dkundel/status/2062650378089594955) - Codex Goal as runtime state and durable objective control, not a replacement for repo truth.
 - Anatoli Kopadze, [Loops explained: Claude, GPT, Mira and what actually works](https://x.com/AnatoliKopadze/status/2068328135611822149) - comparison of autonomous loop patterns and where persistent state matters.

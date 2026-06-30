@@ -21,6 +21,16 @@ FEATURE.md -> PROOF.md -> realistic proof -> evidence bundle -> repair loop -> g
 
 For explicit autonomous work, a Codex Goal keeps the run moving, but the Goal is only runtime state. It does not replace `FEATURE.md`, `PROOF.md`, the queue, proof output, gate results, or evaluator judgment.
 
+## Target Repo Autonomy
+
+Autofixing, autosuggestions, and auto-improving are primarily target-repo capabilities:
+
+- Autofix: repair one concrete target-repo failure, rerun the failed check, then rerun the proof lifecycle.
+- Autosuggest: turn failed proof bundles, weak proof-scope classifications, evaluator failures, missing readiness, or user corrections into concrete target-repo next steps.
+- Auto-improve: convert accepted suggestions into ordinary repo work: feature/spec repair, proof repair, implementation repair, readiness checks, diagnostics, or queued product improvements.
+
+Harness self-improvement is separate. Use `$coding-project-improvement-review` when you want Codex to manually inspect features, proofs, evidence, successful checks, and user corrections, then suggest project improvements or harness lessons. Promote a target-repo failure to harness evolution only when repeated evidence shows the harness instruction, proof policy, script, test, or config allowed the same failure pattern.
+
 ## Harness Shape
 
 The skills split responsibility instead of repeating one large workflow everywhere.
@@ -36,18 +46,22 @@ The skills split responsibility instead of repeating one large workflow everywhe
 ## Harness Docs
 
 - Proof lifecycle and run evidence bundles: [`docs/harness/proof-lifecycle.md`](proof-lifecycle.md).
+- Proof scope and false-green risk: [`docs/harness/oracle-scope.md`](oracle-scope.md).
+- Target repo autofix, autosuggestions, and auto-improve: [`docs/harness/repo-autonomy.md`](repo-autonomy.md).
 - Autonomous execution and recovery before `NEED_INPUT`: [`docs/harness/autonomous-execution.md`](autonomous-execution.md).
 - Destructive-proof allowlists: [`docs/harness/destructive-proof-allowlist.md`](destructive-proof-allowlist.md).
 - Concise handoffs: [`docs/harness/handoff.md`](handoff.md).
 - Memory policy: [`docs/harness/memory-policy.md`](memory-policy.md).
-- Harness evolution notes and change manifests: [`docs/harness/evolution`](evolution).
+- Harness evolution notes and change manifests: [`docs/harness/evolution`](evolution), especially [`docs/harness/evolution/evolution-loop.md`](evolution/evolution-loop.md).
 
 ## Repo Helpers
 
 - `scripts/proof_run_capture` wraps a proof command and writes a run evidence bundle.
+- `scripts/validate_proof_bundle` checks the minimum proof bundle shape and serious proof-scope metadata.
 - `scripts/validate_feature_queue` rejects `done` queue items without recorded proof, gate, evaluator, and latest evidence.
-- `scripts/harness_review` summarizes proof bundles and harness change manifests.
+- `scripts/harness_review` summarizes proof bundles, missing run evidence, agent risk signals, and harness change manifests; `--check` validates manifest shape.
 - `scripts/gate_config` runs the dot-codex harness checks.
+- `docs/harness/evaluator-fixtures.json` calibrates evaluator judgment examples; it is not runtime feature evidence.
 
 ## Proof Evidence
 
@@ -59,6 +73,12 @@ FEATURE_DIR/proof/runs/<timestamp>/
   stdout.txt
   stderr.txt
   result.json
+  run-metadata.json
+  oracle-scope.md
+  attempts.json
+  repair-notes.md
+  agent-observation.md
+  agent-observation.json
   screenshots/
   logs/
   provider-readback.json
@@ -70,7 +90,13 @@ Only real evidence belongs in that folder. Empty screenshots, invented logs, and
 For local proof commands, use:
 
 ```bash
-scripts/proof_run_capture --feature-dir FEATURE_DIR -- <primary proof command>
+scripts/proof_run_capture \
+  --serious \
+  --feature-dir FEATURE_DIR \
+  --behavior-boundary "<producer -> activation -> consumer -> read-back>" \
+  --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" \
+  --notes "<short proof result summary>" \
+  -- <primary proof command>
 ```
 
 The helper exits with the wrapped command's status, so it can be used directly as the primary proof command or inside a proof runner.
@@ -93,6 +119,7 @@ A queue item should be marked `done` only when it records:
 ```
 
 `scripts/validate_feature_queue` enforces this shape for `done` items when a status file exists.
+It also requires the referenced evidence to include serious proof metadata and concrete proof scope, and rejects repeated repair evidence without `attempts.json`.
 
 ## Harness Evolution
 
@@ -102,7 +129,15 @@ The harness should improve when repeated failures expose a weak instruction, wea
 observed failure -> failure pattern -> change manifest -> harness change -> verification -> accepted or rejected pattern
 ```
 
-This is intentionally lighter than a workflow engine. It is meant to stop random prompt tweaks and make harness changes explainable.
+The inner loop is feature proof satisfaction. The outer loop is harness improvement from repeated evidence.
+
+Target-repo autosuggestions sit between those loops. They recommend the next repo-level fix; they do not automatically rewrite harness policy.
+
+The project improvement review skill is the manual analysis point between those loops. A recurring pattern can become a harness-evolution candidate only after repeated evidence, not from one failed proof or one model opinion.
+
+Every harness change manifest should name before evidence, predicted fixes, predicted regressions, held-out checks, after evidence, and verdict basis. `scripts/harness_review --check` rejects manifests that cannot support that before/after claim.
+
+This is intentionally lighter than a workflow engine. It is meant to stop random prompt tweaks and make harness changes explainable, falsifiable, and rollbackable.
 
 ## Safety And Handoff
 
@@ -129,7 +164,7 @@ This config is strong enough to force contract-first, proof-first coding behavio
 
 - Proof evidence capture exists, but app-specific proof runners still need to use it.
 - Browser, provider, video, and log capture are supported by convention, but not yet automatically generated for every stack.
-- `scripts/harness_review` summarizes evidence and manifests; it does not yet create or judge harness changes by itself.
+- `scripts/harness_review` summarizes proof evidence and manifests; it does not create, apply, suggest, or judge harness changes by itself.
 - Queue completion validation applies when repos use `docs/features/status.json` with the completion shape above.
 - Live validation still depends on credentials, safe targets, external services, and user approval for risky actions.
 

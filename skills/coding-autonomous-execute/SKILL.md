@@ -85,6 +85,15 @@ The loop must continue until the primary proof, gate, and evaluator pass.
 8. Contract/proof wrong: stop the implementation pass. Return the item to contract repair
    (`draft` when queue exists), update contract, restart from preflight.
 
+## Agent Observation
+Write or update `FEATURE_DIR/proof/runs/<timestamp>/agent-observation.md` when a current proof bundle exists and one of these happens: proof fails more than once, tactic changes, `NEED_INPUT` is reported, evaluator returns `FAIL`, green-but-broken handling starts, or contract repair is needed after implementation started.
+
+Also write `agent-observation.json` when the observation exposes a reusable signal: asked user too early, skipped local recovery, fake proof attempted, repeated same tactic, ignored repo architecture, or contract changed after code. Use schema version 1 from `docs/harness/proof-lifecycle.md`.
+
+If there is no current proof bundle, put the same short note in queue notes or handoff.
+
+Keep it concise, not a transcript. Include: context loaded, routing decision, failure pattern, repairs attempted, tactic change, contract status, and remaining risk. Do not include prompts, token counts, exhaustive file lists, or long logs.
+
 ## Green-But-Broken Handling
 Use this when primary proof, gate, evaluator pass but observed product behavior still fails.
 
@@ -97,6 +106,7 @@ Use this when primary proof, gate, evaluator pass but observed product behavior 
    proof for the observed broken behavior.
 6. Restart only after strengthened proof fails for right reason.
 7. Rerun `AGENTS.md` Universal Lifecycle before done.
+8. Record the proof-system failure and contract status in `agent-observation.md` or queue notes.
 
 ## Boundaries
 - No Goals for one-line edits, simple explanations, vague improvement requests, no finish line.

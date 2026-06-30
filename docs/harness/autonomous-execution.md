@@ -28,6 +28,18 @@ A Codex Goal is runtime continuation state. It does not replace:
 Failed proof, gate, or evaluator output is the next work item. It is not a reason to call the
 feature done.
 
+## Target Repo Autofix And Suggestions
+
+For another software repo, the autonomous loop provides repo-facing behavior:
+
+- Autofix is the normal repair loop for a concrete failing proof, gate, runtime check, or evaluator result.
+- Autosuggestions are proposed next steps from captured evidence when immediate repair is not the right move.
+- Auto-improve means turning an accepted suggestion into normal repo work with its own proof lifecycle.
+
+Prefer target-repo autofix over harness changes. Prefer target-repo autosuggestions when the evidence shows a broader improvement but not a single safe code patch. Use harness evolution only when repeated evidence shows the harness itself caused or allowed the failure pattern.
+
+Use `$coding-project-improvement-review` for target-repo suggestions. `scripts/harness_review` can summarize proof bundles first, but suggestions are planning artifacts, not permission to silently broaden scope or skip proof.
+
 When a queue exists, `done` entries should include a `completion` object with:
 
 ```json
@@ -40,6 +52,8 @@ When a queue exists, `done` entries should include a `completion` object with:
 ```
 
 `scripts/validate_feature_queue` checks this shape.
+
+The referenced `latest_evidence` must be a serious proof bundle. Bare `result.json` evidence is not enough for `done`; repeated repair attempts must include attempt metadata and `attempts.json`.
 
 ## Recovery Before NEED_INPUT
 

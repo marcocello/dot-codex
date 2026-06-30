@@ -49,6 +49,8 @@
 
 ## Harness Docs
 - Proof lifecycle and evidence bundles: `docs/harness/proof-lifecycle.md`; use `scripts/proof_run_capture` when command-wrappable.
+- Proof scope and false-green risk: `docs/harness/oracle-scope.md` (compat filename).
+- Target repo autofix, autosuggestions, and auto-improve: `docs/harness/repo-autonomy.md`.
 - Autonomous execution and recovery: `docs/harness/autonomous-execution.md`.
 - Destructive proof allowlist: `docs/harness/destructive-proof-allowlist.md`.
 - Handoff receipt: `docs/harness/handoff.md`.

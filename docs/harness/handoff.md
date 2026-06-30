@@ -14,6 +14,7 @@ Verification:
 - Primary proof: <command> -> PASS|FAIL|NOT RUN
 - Gate: PASS|FAIL|NOT RUN
 - Evaluator: PASS|FAIL|NEED_INPUT
+Proof scope: strong | partial | live gap | weak
 Blockers: none | <exact user-owned input/action>
 ```
 

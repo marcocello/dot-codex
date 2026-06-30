@@ -9,6 +9,8 @@ metadata:
 
 Purpose: act as the done judge, not the doer and not the main test runner.
 
+Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as examples of expected `PASS`, `FAIL`, and `NEED_INPUT` judgment shape; do not treat them as evidence for the current feature.
+
 ## Rules
 - Read-only by default.
 - Do not edit files.
@@ -22,6 +24,8 @@ Purpose: act as the done judge, not the doer and not the main test runner.
 - Final diff/changed files.
 - Latest proof, gate, build, browser, runtime results.
 - Latest `FEATURE_DIR/proof/runs/<timestamp>/` evidence bundle when one exists.
+- `agent-observation.md` when present in the evidence bundle.
+- `agent-observation.json` when present in the evidence bundle.
 - Issue fix without `FEATURE_DIR`: regression proof + observed bug.
 - Issue fix: evidence feature lookup happened, or clear reason it did not apply.
 
@@ -41,8 +45,14 @@ Purpose: act as the done judge, not the doer and not the main test runner.
 3. Evaluate proof quality
    - Behavior coverage: confirm `PROOF.md` proves behavior in `FEATURE.md`; for issues,
      proof catches or was strengthened to catch regression.
+   - Proof adequacy: inspect `Proof Scope` when present. Return `FAIL` when a non-trivial
+     feature has no proof scope, when false-green risks are not declared, when evidence
+     strength is overstated, or when the evaluator is being asked to substitute judgment for
+     missing executable evidence.
    - Proof integrity: primary proof explicit, runnable, anti-gameable, not weakened. Check
      whether a broken implementation could still pass the primary proof. Return `FAIL` when the proof can pass while feature is visibly/externally/behaviorally broken.
+   - Green but weak: return `FAIL` when proof passes but its proof scope is obviously too narrow
+     for the claimed behavior, even if no visible break has been reproduced yet.
    - Contract freeze: return `FAIL` when implementation code and `FEATURE.md`, `PROOF.md`,
      or proof artifacts were edited in the same implementation pass.
    - Boundary fit: public behavior should use public boundaries. UI/workflow: prefer live browser/runtime evidence. API/provider: prefer route, persisted state, outbound
@@ -59,6 +69,15 @@ Purpose: act as the done judge, not the doer and not the main test runner.
      needed and allowed.
    - Evidence bundle: inspect its `command.txt`, `result.json`, bounded output, logs,
      screenshots, provider read-back, `notes.md`.
+   - Agent observation: when `agent-observation.md` exists, inspect context loaded, routing
+     decision, failure pattern, repairs attempted, tactic change, contract status, and remaining
+     risk. Do not require this file for simple one-shot success. Return `FAIL` when it shows
+     skipped recovery, repeated same tactic without change, contract mutation during
+     implementation, or a remaining risk that invalidates the claimed done state.
+   - Structured agent observation: when `agent-observation.json` exists, inspect the signal booleans.
+     Return `FAIL` when `skipped_local_recovery`, `fake_proof_attempted`, `ignored_repo_architecture`,
+     or `contract_changed_after_code` is true and the final evidence does not show the issue was
+     corrected before claiming done.
    - Target app repo: expect primary proof from `PROOF.md` and `$HOME/.codex/scripts/gate`.
    - Do not require broad new suite execution did not run.
    - Return `FAIL` when `NEED_INPUT` was reported before recovery, available tools, repo

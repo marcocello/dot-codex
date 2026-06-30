@@ -9,6 +9,9 @@ from typing import Any
 
 
 PASS_STATUSES = {"PASS", "pass", "passed", True}
+SERIOUS_EVIDENCE_FILES = ["command.txt", "notes.md", "run-metadata.json", "oracle-scope.md"]
+ORACLE_HEADINGS = ["Proves:", "Does not prove:", "False-green risks:", "Evidence strength:"]
+PLACEHOLDERS = {"", "-", "none", "n/a", "na", "todo", "tbd", "<placeholder>"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -21,6 +24,102 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def is_pass(value: Any) -> bool:
     return value in PASS_STATUSES
+
+
+def oracle_sections(text: str) -> dict[str, list[str]]:
+    sections: dict[str, list[str]] = {heading: [] for heading in ORACLE_HEADINGS}
+    current: str | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        matched = next((heading for heading in ORACLE_HEADINGS if line == heading), None)
+        if matched:
+            current = matched
+            continue
+        if current:
+            sections[current].append(line)
+    return sections
+
+
+def has_real_section_content(lines: list[str]) -> bool:
+    content = " ".join(line.strip("- ").strip() for line in lines).strip()
+    if content.lower() in PLACEHOLDERS:
+        return False
+    return bool(content) and "<" not in content and ">" not in content
+
+
+def validate_oracle_scope(evidence_path: Path, feature_id: str) -> list[str]:
+    path = evidence_path / "oracle-scope.md"
+    if not path.is_file():
+        return []
+    text = path.read_text(encoding="utf-8")
+    errors: list[str] = []
+    sections = oracle_sections(text)
+    for heading in ORACLE_HEADINGS:
+        if heading not in text:
+            errors.append(f"{feature_id}: latest_evidence oracle-scope.md missing {heading}")
+            continue
+        if not has_real_section_content(sections[heading]):
+            errors.append(
+                f"{feature_id}: latest_evidence oracle-scope.md {heading} has no concrete content"
+            )
+    return errors
+
+
+def validate_serious_evidence(evidence_path: Path, feature_id: str) -> list[str]:
+    errors: list[str] = []
+    for name in SERIOUS_EVIDENCE_FILES:
+        if not (evidence_path / name).is_file():
+            errors.append(f"{feature_id}: latest_evidence missing {name}")
+
+    metadata_path = evidence_path / "run-metadata.json"
+    if not metadata_path.is_file():
+        return errors
+
+    try:
+        metadata = load_json(metadata_path)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        errors.append(f"{feature_id}: latest_evidence run-metadata.json invalid: {exc}")
+        return errors
+
+    if not metadata.get("behavior_boundary"):
+        errors.append(f"{feature_id}: latest_evidence run-metadata.json missing behavior_boundary")
+    if not metadata.get("oracle_scope"):
+        errors.append(f"{feature_id}: latest_evidence run-metadata.json missing oracle_scope")
+
+    attempt = metadata.get("attempt", 1)
+    if not isinstance(attempt, int) or attempt < 1:
+        errors.append(f"{feature_id}: latest_evidence run-metadata.json attempt must be a positive integer")
+        return errors
+    errors.extend(validate_attempt_log(evidence_path, feature_id, metadata, attempt))
+    errors.extend(validate_oracle_scope(evidence_path, feature_id))
+    return errors
+
+
+def validate_attempt_log(
+    evidence_path: Path,
+    feature_id: str,
+    metadata: dict[str, Any],
+    attempt: int,
+) -> list[str]:
+    if attempt == 1 and not metadata.get("failure_class") and not metadata.get("repair_action"):
+        return []
+
+    attempts_path = evidence_path / "attempts.json"
+    if not attempts_path.is_file():
+        return [f"{feature_id}: latest_evidence missing attempts.json for repeated repair"]
+    try:
+        attempts = json.loads(attempts_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"{feature_id}: latest_evidence attempts.json invalid: {exc}"]
+    if not isinstance(attempts, list) or not all(isinstance(item, dict) for item in attempts):
+        return [f"{feature_id}: latest_evidence attempts.json must contain attempt objects"]
+    if not any(item.get("attempt") == attempt for item in attempts):
+        return [f"{feature_id}: latest_evidence attempts.json missing attempt {attempt}"]
+    if attempt > 1 and not metadata.get("failure_class"):
+        return [f"{feature_id}: latest_evidence missing failure_class for repeated attempt"]
+    if attempt > 1 and not metadata.get("repair_action"):
+        return [f"{feature_id}: latest_evidence missing repair_action for repeated attempt"]
+    return []
 
 
 def validate_evidence(root: Path, item: dict[str, Any]) -> list[str]:
@@ -53,6 +152,7 @@ def validate_evidence(root: Path, item: dict[str, Any]) -> list[str]:
 
     if not is_pass(result.get("status")):
         errors.append(f"{feature_id}: latest_evidence result status must be PASS")
+    errors.extend(validate_serious_evidence(evidence_path, feature_id))
     return errors
 
 

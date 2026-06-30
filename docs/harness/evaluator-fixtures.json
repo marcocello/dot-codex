@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "purpose": "Calibration cases for coding-feature-evaluator decisions. These fixtures are not proof evidence; they are known evaluator examples used to guard judgment drift.",
+  "cases": [
+    {
+      "id": "real-boundary-pass",
+      "expected_result": "PASS",
+      "summary": "Feature behavior is covered by a realistic API proof with durable read-back evidence, serious metadata, gate pass, and evaluator-safe scope.",
+      "inputs": {
+        "feature": "User can update contact status through the public API.",
+        "proof": "Run API scenario, persist update, read back through public route.",
+        "primary_proof": "PASS",
+        "gate": "PASS",
+        "evidence_bundle": {
+          "has_result": true,
+          "has_run_metadata": true,
+          "has_oracle_scope": true,
+          "oracle_strength": "public API plus durable read-back"
+        }
+      },
+      "expected_findings": [],
+      "required_next_action": "none"
+    },
+    {
+      "id": "green-but-weak-proof",
+      "expected_result": "FAIL",
+      "summary": "Primary proof passes but only checks that a report file exists, while the feature claims correct rendered report contents.",
+      "inputs": {
+        "feature": "User receives a rendered report with correct totals.",
+        "proof": "Check that output.pdf exists.",
+        "primary_proof": "PASS",
+        "gate": "PASS",
+        "evidence_bundle": {
+          "has_result": true,
+          "has_run_metadata": true,
+          "has_oracle_scope": true,
+          "oracle_strength": "file existence only"
+        }
+      },
+      "expected_findings": [
+        "Green but weak: proof can pass while report contents are wrong."
+      ],
+      "required_next_action": "repair proof before more implementation"
+    },
+    {
+      "id": "skipped-recovery-need-input",
+      "expected_result": "FAIL",
+      "summary": "Executor reports NEED_INPUT for a missing local CLI without checking package scripts, setup docs, or local readiness commands.",
+      "inputs": {
+        "feature": "Worker job completes after queue command runs.",
+        "proof": "Run queue proof command.",
+        "primary_proof": "NOT RUN",
+        "gate": "NOT RUN",
+        "reported_blocker": "missing queue CLI",
+        "recovery_attempts": []
+      },
+      "expected_findings": [
+        "Recovery was skipped before NEED_INPUT."
+      ],
+      "required_next_action": "run local recovery diagnostics"
+    },
+    {
+      "id": "external-credential-need-input",
+      "expected_result": "NEED_INPUT",
+      "summary": "Safe provider proof needs a credential that is not available after local docs, env examples, readiness checks, and safe fake target options were inspected.",
+      "inputs": {
+        "feature": "OAuth refresh works against a provider sandbox.",
+        "proof": "Run provider sandbox refresh proof.",
+        "primary_proof": "NOT RUN",
+        "gate": "PASS",
+        "reported_blocker": "missing provider sandbox credential",
+        "recovery_attempts": [
+          "checked setup docs",
+          "checked env examples",
+          "checked safe fake target option",
+          "checked local readiness command"
+        ]
+      },
+      "expected_findings": [
+        "Credential is user-owned or external after documented recovery."
+      ],
+      "required_next_action": "ask for credential or safe external target"
+    }
+  ]
+}

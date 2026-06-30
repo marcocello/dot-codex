@@ -8,6 +8,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 
 def timestamp() -> str:
@@ -31,10 +32,24 @@ def parse_args() -> argparse.Namespace:
         description="Run a proof command and write FEATURE_DIR/proof/runs evidence."
     )
     parser.add_argument("--feature-dir", required=True, type=Path)
+    parser.add_argument(
+        "--serious",
+        action="store_true",
+        help="Require behavior boundary, proof scope, and notes for serious proof evidence.",
+    )
     parser.add_argument("--notes", default="", help="Short note for notes.md")
+    parser.add_argument("--behavior-boundary", default="")
+    parser.add_argument("--oracle-scope", default="", help="Proof scope content written to oracle-scope.md.")
+    parser.add_argument("--failure-class", default="")
+    parser.add_argument("--attempt", type=int, default=1)
+    parser.add_argument("--repair-action", default="")
+    parser.add_argument("--changed-file", action="append", default=[])
+    parser.add_argument("--check", action="append", default=[])
     parser.add_argument("--log", action="append", default=[], type=Path)
     parser.add_argument("--screenshot", action="append", default=[], type=Path)
     parser.add_argument("--provider-readback", type=Path)
+    parser.add_argument("--agent-observation", type=Path)
+    parser.add_argument("--agent-observation-json", type=Path)
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     if not args.command or args.command[0] != "--":
@@ -42,7 +57,76 @@ def parse_args() -> argparse.Namespace:
     args.command = args.command[1:]
     if not args.command:
         parser.error("missing proof command")
+    if args.attempt < 1:
+        parser.error("--attempt must be a positive integer")
+    if args.attempt > 1 and not args.failure_class:
+        parser.error("--failure-class is required when --attempt is greater than 1")
+    if args.attempt > 1 and not args.repair_action:
+        parser.error("--repair-action is required when --attempt is greater than 1")
+    if args.serious:
+        if not args.behavior_boundary.strip():
+            parser.error("--behavior-boundary is required with --serious")
+        if not args.oracle_scope.strip():
+            parser.error("--oracle-scope is required with --serious")
+        if not args.notes.strip():
+            parser.error("--notes is required with --serious")
     return args
+
+
+def metadata_from_args(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "behavior_boundary": args.behavior_boundary,
+        "oracle_scope": args.oracle_scope,
+        "serious": args.serious,
+        "attempt": args.attempt,
+        "failure_class": args.failure_class,
+        "repair_action": args.repair_action,
+        "changed_files": args.changed_file,
+        "checks": args.check,
+    }
+
+
+def write_optional_metadata(run_dir: Path, args: argparse.Namespace) -> dict[str, str | None]:
+    metadata = metadata_from_args(args)
+    metadata_path = run_dir / "run-metadata.json"
+    metadata_path.write_text(
+        json.dumps(metadata, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    oracle_path = None
+    if args.oracle_scope:
+        oracle_path = run_dir / "oracle-scope.md"
+        oracle_path.write_text(args.oracle_scope.rstrip() + "\n", encoding="utf-8")
+
+    attempts_path = run_dir / "attempts.json"
+    attempts_path.write_text(
+        json.dumps(
+            [
+                {
+                    "attempt": args.attempt,
+                    "failure_class": args.failure_class,
+                    "repair_action": args.repair_action,
+                }
+            ],
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    repair_notes_path = None
+    if args.repair_action:
+        repair_notes_path = run_dir / "repair-notes.md"
+        repair_notes_path.write_text(args.repair_action.rstrip() + "\n", encoding="utf-8")
+
+    return {
+        "run_metadata": str(metadata_path),
+        "oracle_scope": str(oracle_path) if oracle_path else None,
+        "attempts": str(attempts_path),
+        "repair_notes": str(repair_notes_path) if repair_notes_path else None,
+    }
 
 
 def write_bundle(args: argparse.Namespace, result: subprocess.CompletedProcess[str]) -> Path:
@@ -61,8 +145,19 @@ def write_bundle(args: argparse.Namespace, result: subprocess.CompletedProcess[s
         destination = run_dir / "provider-readback.json"
         shutil.copy2(args.provider_readback, destination)
         provider_readback = str(destination)
+    agent_observation = None
+    if args.agent_observation and args.agent_observation.exists():
+        destination = run_dir / "agent-observation.md"
+        shutil.copy2(args.agent_observation, destination)
+        agent_observation = str(destination)
+    agent_observation_json = None
+    if args.agent_observation_json and args.agent_observation_json.exists():
+        destination = run_dir / "agent-observation.json"
+        shutil.copy2(args.agent_observation_json, destination)
+        agent_observation_json = str(destination)
 
     status = "PASS" if result.returncode == 0 else "FAIL"
+    metadata_paths = write_optional_metadata(run_dir, args)
     metadata = {
         "status": status,
         "returncode": result.returncode,
@@ -73,6 +168,9 @@ def write_bundle(args: argparse.Namespace, result: subprocess.CompletedProcess[s
         "logs": copied_logs,
         "screenshots": copied_screenshots,
         "provider_readback": provider_readback,
+        "agent_observation": agent_observation,
+        "agent_observation_json": agent_observation_json,
+        **metadata_paths,
     }
     (run_dir / "result.json").write_text(
         json.dumps(metadata, indent=2, sort_keys=True) + "\n",

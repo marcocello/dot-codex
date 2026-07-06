@@ -29,9 +29,9 @@ implementation.
      instead of structured decision rules.
    - Operational constraints: missing runtime, deployment target, storage, credentials,
      environment, or resource assumptions that affect implementation correctness.
-   - Proof quality: missing primary proof command, missing proof scope, weak evidence,
-     mock-only proof for user-visible behavior, undeclared false-green risks, or provider
-     writes without read-back.
+   - Proof quality: missing primary proof command, primary proof not wrapped with
+     `scripts/proof_run_capture`, missing proof scope, weak evidence, mock-only proof for
+     user-visible behavior, undeclared false-green risks, or provider writes without read-back.
    - Boundary mismatch: proof calls an inner worker, service, or helper while the behavior is
      really triggered by persisted state, queue polling, scheduler pickup, webhook delivery,
      CLI invocation, API routing, or another public activation path.

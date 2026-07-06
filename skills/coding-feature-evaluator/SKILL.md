@@ -69,6 +69,9 @@ Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as
      needed and allowed.
    - Evidence bundle: inspect its `command.txt`, `result.json`, bounded output, logs,
      screenshots, provider read-back, `notes.md`.
+   - Captured primary proof: for completed `FEATURE_DIR` work, return `FAIL` when the primary
+     proof result is only raw command output and no `FEATURE_DIR/proof/runs/<timestamp>/`
+     bundle from `scripts/proof_run_capture` exists.
    - Agent observation: when `agent-observation.md` exists, inspect context loaded, routing
      decision, failure pattern, repairs attempted, tactic change, contract status, and remaining
      risk. Do not require this file for simple one-shot success. Return `FAIL` when it shows

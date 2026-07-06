@@ -28,6 +28,7 @@ echo "== gate_config: repo=$ROOT =="
 if [[ -f "skills/.system/skill-creator/scripts/quick_validate.py" ]]; then
   while IFS= read -r skill_file; do
     [[ -n "$skill_file" ]] || continue
+    [[ -f "$skill_file" ]] || continue
     "$PY" skills/.system/skill-creator/scripts/quick_validate.py "$(dirname "$skill_file")"
   done < <(
     {

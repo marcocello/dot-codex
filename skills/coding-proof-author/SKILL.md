@@ -13,7 +13,9 @@ Purpose: turn `FEATURE_DIR/FEATURE.md` into one proof contract plus executable e
 
 Proof authoring is not complete when only `PROOF.md` exists. Non-trivial feature:
 executable proof artifact + primary proof command that runs that artifact. One realistic
-command through public boundary unless extra checks catch real fake-pass risk.
+command through public boundary unless extra checks catch real fake-pass risk. The primary
+proof command must call `scripts/proof_run_capture` so every feature proof run leaves
+`FEATURE_DIR/proof/runs/<timestamp>/` evidence.
 
 Default stance: the primary proof is not a unit test, source assertion, serializer assertion, mocked service return, or assistant-text assertion. Those checks can be secondary guards. The primary proof should look like a real user, provider, webhook, scheduled worker, API client, browser, CLI process, or report consumer caused the behavior, and then it should read back durable state or user-visible output.
 
@@ -114,7 +116,8 @@ scripts/proof_run_capture \
   -- <primary proof command>
 ```
 
-Helper exits with wrapped command status and writes bundle.
+Helper exits with wrapped command status and writes bundle. Do not mark proof authoring
+complete when the primary proof is only a raw test command.
 
 ## Proof Details
 - Prefer `FEATURE_DIR/proof/tests/` for pytest-style checks.
@@ -213,7 +216,7 @@ Evidence strength:
 ## Rules
 - Keep behavior in `FEATURE.md`; verification in `PROOF.md`.
 - Every non-trivial feature gets at least one executable proof artifact.
-- The primary proof command is the feature completion authority and must run a behavioral artifact.
+- The primary proof command is the feature completion authority, must run a behavioral artifact, and must be wrapped with `scripts/proof_run_capture`.
 - `PROOF.md` must include `Proof Scope` for every non-trivial feature.
 - Oracle scope must name what the proof proves, what it does not prove, false-green risks,
   and evidence strength.

@@ -55,6 +55,7 @@ If key details are missing, make reasonable assumptions and state them briefly i
    - For each selected feature, use `coding-feature-spec` to create `docs/features/<slug>/FEATURE.md`.
    - Ensure `coding-feature-spec` invokes `coding-proof-author` for each non-trivial feature.
    - Require `docs/features/<slug>/PROOF.md` plus executable proof artifacts for each non-trivial feature.
+   - Require each non-trivial primary proof command to call `scripts/proof_run_capture`.
    - Do not count a feature as materialized when it only has `FEATURE.md` and a prose `PROOF.md`.
    - After bootstrap completes, return to the normal feature execution workflow.
 
@@ -64,7 +65,8 @@ If key details are missing, make reasonable assumptions and state them briefly i
    - Use `draft` while feature/proof authoring is incomplete or contract review still
      needs repair.
    - Set initial statuses to `ready` only for features with `FEATURE.md`, `PROOF.md`, an
-     executable proof artifact, and a passing contract review.
+     executable proof artifact, a primary proof command wrapped with `scripts/proof_run_capture`,
+     and a passing contract review.
    - Set initial status to `needs_input` only after proof authoring or contract review has
      exhausted local recovery and still needs missing product input, unavailable external
      state, or an unreproducible requirement.

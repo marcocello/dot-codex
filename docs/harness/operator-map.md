@@ -7,7 +7,7 @@ The normal coding workflow is:
 1. Turn intent into one `FEATURE.md`.
 2. Turn that feature contract into one `PROOF.md` plus executable proof artifacts.
 3. Run the primary proof through the real boundary that matters: UI, API, provider, database, CLI, migration, or workflow.
-4. Capture the proof result in `FEATURE_DIR/proof/runs/<timestamp>/` when practical.
+4. Capture the feature proof result in `FEATURE_DIR/proof/runs/<timestamp>/` through `scripts/proof_run_capture`.
 5. Repair implementation, setup, fixtures, or diagnostics until the primary proof passes.
 6. Run the target repo gate.
 7. Run `coding-feature-evaluator` as the skeptical done judge.
@@ -29,7 +29,7 @@ Autofixing, autosuggestions, and auto-improving are primarily target-repo capabi
 - Autosuggest: turn failed proof bundles, weak proof-scope classifications, evaluator failures, missing readiness, or user corrections into concrete target-repo next steps.
 - Auto-improve: convert accepted suggestions into ordinary repo work: feature/spec repair, proof repair, implementation repair, readiness checks, diagnostics, or queued product improvements.
 
-Harness self-improvement is separate. Use `$coding-project-improvement-review` when you want Codex to manually inspect features, proofs, evidence, successful checks, and user corrections, then suggest project improvements or harness lessons. Promote a target-repo failure to harness evolution only when repeated evidence shows the harness instruction, proof policy, script, test, or config allowed the same failure pattern.
+Harness self-improvement is separate. Use `$coding-app-improvement-review` when you want Codex to manually inspect features, proofs, evidence, successful checks, and user corrections, then suggest app/project improvements or harness lessons. Promote a target-repo failure to harness evolution only when repeated evidence shows the harness instruction, proof policy, script, test, or config allowed the same failure pattern.
 
 ## Harness Shape
 
@@ -58,7 +58,7 @@ The skills split responsibility instead of repeating one large workflow everywhe
 
 - `scripts/proof_run_capture` wraps a proof command and writes a run evidence bundle.
 - `scripts/validate_proof_bundle` checks the minimum proof bundle shape and serious proof-scope metadata.
-- `scripts/validate_feature_queue` rejects `done` queue items without recorded proof, gate, evaluator, and latest evidence.
+- `scripts/validate_feature_queue` rejects executable queue items whose `PROOF.md` does not call `scripts/proof_run_capture`, and rejects `done` items without recorded proof, gate, evaluator, and latest evidence.
 - `scripts/harness_review` summarizes proof bundles, missing run evidence, agent risk signals, and harness change manifests; `--check` validates manifest shape.
 - `scripts/gate_config` runs the dot-codex harness checks.
 - `docs/harness/evaluator-fixtures.json` calibrates evaluator judgment examples; it is not runtime feature evidence.
@@ -118,8 +118,8 @@ A queue item should be marked `done` only when it records:
 }
 ```
 
-`scripts/validate_feature_queue` enforces this shape for `done` items when a status file exists.
-It also requires the referenced evidence to include serious proof metadata and concrete proof scope, and rejects repeated repair evidence without `attempts.json`.
+`scripts/validate_feature_queue` requires queued `ready`, `in_progress`, `repairing`, and `done` items to use `scripts/proof_run_capture` in `PROOF.md`.
+For `done` items, it also enforces the completion shape above, requires the referenced evidence to include serious proof metadata and concrete proof scope, and rejects repeated repair evidence without `attempts.json`.
 
 ## Harness Evolution
 
@@ -133,7 +133,7 @@ The inner loop is feature proof satisfaction. The outer loop is harness improvem
 
 Target-repo autosuggestions sit between those loops. They recommend the next repo-level fix; they do not automatically rewrite harness policy.
 
-The project improvement review skill is the manual analysis point between those loops. A recurring pattern can become a harness-evolution candidate only after repeated evidence, not from one failed proof or one model opinion.
+The app improvement review skill is the manual analysis point between those loops. A recurring pattern can become a harness-evolution candidate only after repeated evidence, not from one failed proof or one model opinion.
 
 Every harness change manifest should name before evidence, predicted fixes, predicted regressions, held-out checks, after evidence, and verdict basis. `scripts/harness_review --check` rejects manifests that cannot support that before/after claim.
 
@@ -162,7 +162,7 @@ The final answer should summarize the real result, not dump the whole execution 
 
 This config is strong enough to force contract-first, proof-first coding behavior. It is not yet a fully automatic harness-evolution system.
 
-- Proof evidence capture exists, but app-specific proof runners still need to use it.
+- Proof evidence capture is required for `FEATURE_DIR` work, but app-specific proof runners may still need richer screenshots, provider read-back, logs, or domain artifacts.
 - Browser, provider, video, and log capture are supported by convention, but not yet automatically generated for every stack.
 - `scripts/harness_review` summarizes proof evidence and manifests; it does not create, apply, suggest, or judge harness changes by itself.
 - Queue completion validation applies when repos use `docs/features/status.json` with the completion shape above.

@@ -10,6 +10,7 @@ from typing import Any
 
 PASS_STATUSES = {"PASS", "pass", "passed", True}
 SERIOUS_EVIDENCE_FILES = ["command.txt", "notes.md", "run-metadata.json", "oracle-scope.md"]
+EXECUTABLE_STATUSES = {"ready", "in_progress", "repairing", "done"}
 ORACLE_HEADINGS = ["Proves:", "Does not prove:", "False-green risks:", "Evidence strength:"]
 PLACEHOLDERS = {"", "-", "none", "n/a", "na", "todo", "tbd", "<placeholder>"}
 
@@ -156,6 +157,26 @@ def validate_evidence(root: Path, item: dict[str, Any]) -> list[str]:
     return errors
 
 
+def validate_proof_capture(root: Path, item: dict[str, Any]) -> list[str]:
+    status = item.get("status")
+    if status not in EXECUTABLE_STATUSES:
+        return []
+
+    feature_id = item.get("id", "<unknown>")
+    proof = item.get("proof")
+    if not isinstance(proof, str) or not proof:
+        return [f"{feature_id}: executable item missing proof path"]
+
+    proof_path = root / proof
+    if not proof_path.is_file():
+        return [f"{feature_id}: proof path missing: {proof}"]
+
+    text = proof_path.read_text(encoding="utf-8")
+    if "proof_run_capture" not in text:
+        return [f"{feature_id}: PROOF.md primary proof must use scripts/proof_run_capture"]
+    return []
+
+
 def validate_queue(root: Path, status_path: Path) -> list[str]:
     data = load_json(status_path)
     features = data.get("features")
@@ -167,6 +188,7 @@ def validate_queue(root: Path, status_path: Path) -> list[str]:
         if not isinstance(item, dict):
             errors.append("feature entries must be objects")
             continue
+        errors.extend(validate_proof_capture(root, item))
         if item.get("status") == "done":
             errors.extend(validate_evidence(root, item))
     return errors

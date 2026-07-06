@@ -18,6 +18,7 @@ A Codex Goal is runtime continuation state. It does not replace:
 
 1. Select exactly one ready or repairing feature.
 2. Preflight `FEATURE.md`, `PROOF.md`, and the executable proof artifact.
+   `PROOF.md` must define a primary proof command that calls `scripts/proof_run_capture`.
 3. Mark the item `in_progress` only when the contract is implementable.
 4. Freeze contract files after implementation begins.
 5. Run the primary proof.
@@ -38,7 +39,7 @@ For another software repo, the autonomous loop provides repo-facing behavior:
 
 Prefer target-repo autofix over harness changes. Prefer target-repo autosuggestions when the evidence shows a broader improvement but not a single safe code patch. Use harness evolution only when repeated evidence shows the harness itself caused or allowed the failure pattern.
 
-Use `$coding-project-improvement-review` for target-repo suggestions. `scripts/harness_review` can summarize proof bundles first, but suggestions are planning artifacts, not permission to silently broaden scope or skip proof.
+Use `$coding-app-improvement-review` for target-repo suggestions. `scripts/harness_review` can summarize proof bundles first, but suggestions are planning artifacts, not permission to silently broaden scope or skip proof.
 
 When a queue exists, `done` entries should include a `completion` object with:
 
@@ -53,7 +54,7 @@ When a queue exists, `done` entries should include a `completion` object with:
 
 `scripts/validate_feature_queue` checks this shape.
 
-The referenced `latest_evidence` must be a serious proof bundle. Bare `result.json` evidence is not enough for `done`; repeated repair attempts must include attempt metadata and `attempts.json`.
+The referenced `latest_evidence` must be a serious proof bundle created by `scripts/proof_run_capture`. Bare `result.json` evidence is not enough for `done`; repeated repair attempts must include attempt metadata and `attempts.json`.
 
 ## Recovery Before NEED_INPUT
 

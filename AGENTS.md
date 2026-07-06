@@ -17,9 +17,13 @@
 - Exactly one match: use that `FEATURE_DIR`; strengthen proof with a focused failing regression if current proof misses the bug.
 - No clear match: do not create `FEATURE.md` by default; use smallest local regression proof unless behavior needs durable definition.
 - Missing `FEATURE_DIR`: inspect existing features; use one clear match; otherwise create `docs/features/<request-slug>/FEATURE.md` and `PROOF.md`.
+- Lightweight lane: for isolated small edits and small bug fixes that are low-risk and do not need durable behavior definition, make the smallest change and run the narrowest relevant check without creating `FEATURE_DIR` or invoking the full harness.
+- Semantic or natural-language behavior must be fixed by defining the invariant and owning decision boundary, not by adding open-ended keyword, phrase, or language-specific lists. Hardcoded lists are acceptable only for closed vocabularies from a protocol, enum, provider contract, product taxonomy, or explicit spec. For lightweight semantic fixes, add paraphrase or non-English regression pressure, or promote to the repair harness.
+- Promote lightweight work to the normal feature or repair harness when it touches behavior contracts, queues, safety, data, migrations, external services, multiple modules, or repeated failures.
 
 ## Completion Kernel
 - Product work is complete only after the primary proof, gate, and `coding-feature-evaluator` pass.
+- If a `FEATURE_DIR` exists, its primary proof must create a captured evidence bundle with `scripts/proof_run_capture`; do not treat raw test output as the feature proof.
 - Queue work also needs `docs/features/status.json` completion evidence; validate with `scripts/validate_feature_queue`.
 - Artifact work uses artifact-specific parser, contract, fixture, lint, syntax, or readiness checks.
 - Autonomous Proof Loop: while proof is unsatisfied, keep repairing code, setup, fixtures, diagnostics, or contract owner routing.
@@ -55,7 +59,7 @@
 - Destructive proof allowlist: `docs/harness/destructive-proof-allowlist.md`.
 - Handoff receipt: `docs/harness/handoff.md`.
 - Memory policy: `docs/harness/memory-policy.md`.
-- Harness references and optional evolution notes: `docs/harness/references.md`, `docs/harness/evolution/*`.
+- Reference background lives in `README.md`; optional evolution notes live in `docs/harness/evolution/*`.
 
 ## Safety And Style
 - Approval-risk action requires explicit approval: installing global tools, dependencies, paid/external services, destructive commands, deployments, force pushes, secret edits, credential entry, external account changes.
@@ -69,6 +73,7 @@
 ## Handoff
 - Default to a short human receipt, not an audit log.
 - For product work, include primary proof, gate, evaluator, and blockers.
+- For lightweight-lane work, include the narrow check and state that the full proof, gate, and evaluator path is available if the user wants stronger assurance.
 - For artifact work, include created/changed files, narrow checks, live validation only when relevant, and blockers.
 - Do not label gate, evaluator, or secondary checks as proof.
 - If remaining requirement is user-owned after recovery: `NEED_INPUT: <question>`.

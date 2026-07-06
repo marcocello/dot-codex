@@ -58,6 +58,7 @@ No architecture questions unless required.
    - Use `coding-proof-author` for every non-trivial feature before queue update or handoff.
    - It must create/repair `FEATURE_DIR/PROOF.md` plus executable proof artifacts:
      `FEATURE_DIR/proof/run.sh`, `proof/tests/`, `proof/fixtures/`, or repo-native E2E.
+   - The primary proof command in `PROOF.md` must call `scripts/proof_run_capture`.
    - Do not accept a prose-only `PROOF.md` as proof authoring.
    - If executable proof cannot be created after readiness scaffolding, report `NEED_INPUT`
      with only missing product/API/provider/environment detail.

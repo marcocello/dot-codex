@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | App Improvement Review"
+  short_description: "Review proofs and suggest app improvements"
+  default_prompt: "Use $coding-app-improvement-review to inspect this repo's features, proofs, and successful evidence, then suggest app/project and harness improvements without applying changes."
+policy:
+  allow_implicit_invocation: true

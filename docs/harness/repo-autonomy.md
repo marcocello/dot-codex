@@ -28,7 +28,7 @@ Useful inputs:
 - missing readiness checks;
 - user corrections after a claimed pass.
 
-Use `$coding-project-improvement-review` from a target repo to produce suggestions. `scripts/harness_review` can summarize proof bundles and missing run evidence before the review, but it does not decide improvements.
+Use `$coding-app-improvement-review` from a target repo to produce suggestions. `scripts/harness_review` can summarize proof bundles and missing run evidence before the review, but it does not decide improvements.
 
 Autosuggestions should route to one of these owners:
 

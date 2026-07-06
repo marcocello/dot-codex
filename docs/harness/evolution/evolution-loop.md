@@ -9,7 +9,7 @@ For other software repos, do not confuse target-repo auto-improve with harness e
 ## Loop
 
 ```text
-run evidence -> failure pattern -> project improvement review -> component choice -> change manifest -> harness edit -> held-out regression -> accept/reject
+run evidence -> failure pattern -> app improvement review -> component choice -> change manifest -> harness edit -> held-out regression -> accept/reject
 ```
 
 ## Component Choice
@@ -46,9 +46,9 @@ Every harness change should declare:
 
 The manifest is a falsifiable prediction, not a rationale essay.
 
-## Project Improvement Review
+## App Improvement Review
 
-Use `$coding-project-improvement-review` when you want Codex to manually inspect feature specs, proof plans, proof evidence, successful checks, evaluator output, and user corrections, then suggest project improvements or harness lessons.
+Use `$coding-app-improvement-review` when you want Codex to manually inspect feature specs, proof plans, proof evidence, successful checks, evaluator output, and user corrections, then suggest app/project improvements or harness lessons.
 
 This review is not an auto-editor. Use it to see repeated target-repo failure patterns before changing skills, scripts, docs, tests, config, or memory.
 

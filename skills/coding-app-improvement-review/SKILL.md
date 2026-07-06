@@ -1,9 +1,9 @@
 ---
-name: coding-project-improvement-review
-description: "Review a target project's feature specs, proof plans, proof evidence, successful tests, evaluator results, and user corrections to suggest project-specific improvements, new features, proof hardening, and reusable harness lessons without applying changes. Use when Codex should manually analyze whether features, proofs, and successful checks make sense and produce suggestions for the project or for dot-codex harness evolution."
+name: coding-app-improvement-review
+description: "Review a target app or project's feature specs, proof plans, proof evidence, successful tests, evaluator results, and user corrections to suggest app-specific improvements, new features, proof hardening, and reusable harness lessons without applying changes. Use when Codex should manually analyze whether features, proofs, and successful checks make sense and produce suggestions for the app/project or for dot-codex harness evolution."
 ---
 
-# Project Improvement Review
+# App Improvement Review
 
 Purpose: read existing feature/proof/evidence history and produce suggestions only. Do not edit project code, proof contracts, queue status, or harness policy unless the user explicitly asks for implementation.
 
@@ -43,12 +43,12 @@ During review, suggest the destination for accepted learning but do not write it
 ## Output
 
 ```text
-Project improvement review: PASS|SUGGESTIONS|NEED_INPUT
+App improvement review: PASS|SUGGESTIONS|NEED_INPUT
 Scope: <repo/feature dirs/evidence inspected>
 Strong signals:
 - <what is already sound>
 Suggestions:
-- [project|spec|proof|logic|readiness|harness] <specific change> - evidence: <file/run/check>
+- [app|spec|proof|logic|readiness|harness] <specific change> - evidence: <file/run/check>
 Missing evidence:
 - <only material gaps>
 Harness lessons:

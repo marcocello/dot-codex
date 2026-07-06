@@ -78,7 +78,7 @@ For browser proof, include screenshots or video paths when the browser tool can 
 For provider proof, include read-back output or a clear manual gap when live state is unavailable.
 For local app proof, include relevant recent logs, not full noisy logs.
 
-When the proof can be executed as a local command, serious non-trivial proof should use captured evidence:
+When a `FEATURE_DIR` exists, the primary proof must use captured evidence. The default and expected path is:
 
 ```bash
 scripts/proof_run_capture \
@@ -92,9 +92,10 @@ scripts/proof_run_capture \
 
 The helper writes the evidence bundle and exits with the wrapped command's exit code. Proof
 runners may still write richer browser, provider, or app-specific files into the same bundle
-when the helper is too small for the whole scenario.
+when the helper is too small for the whole scenario. Do not mark a contract `ready` when its
+primary proof is only a raw command; wrap it in `proof_run_capture` first.
 
-Queue items marked `done` must point `completion.latest_evidence` at a serious proof bundle: command, result, notes, run metadata, and proof scope. Repeated or repaired attempts must also have `attempts.json` with the current attempt number plus failure class and repair action.
+Queue items marked `ready`, `in_progress`, `repairing`, or `done` must have `PROOF.md` that calls `scripts/proof_run_capture` for the primary proof. Queue items marked `done` must also point `completion.latest_evidence` at a serious proof bundle: command, result, notes, run metadata, and proof scope. Repeated or repaired attempts must also have `attempts.json` with the current attempt number plus failure class and repair action.
 
 ## Agent Observation
 

@@ -18,7 +18,9 @@ Purpose: deliver one feature. No repo-local orchestrator.
   For non-trivial features, `coding-feature-spec` will route to `coding-proof-author`.
 - If `FEATURE.md` is ready but `PROOF.md` is missing, stale, vague, static-only, or lacks
   executable proof, stop and use `coding-proof-author`.
-- Missing/weak/static `PROOF.md`: stop, use `coding-proof-author`.
+- If `PROOF.md` defines a raw primary proof command that does not call
+  `scripts/proof_run_capture`, stop before implementation and use `coding-proof-author`.
+- Missing/weak/static/uncaptured `PROOF.md`: stop, use `coding-proof-author`.
 
 ## Workflow
 1. Load contracts
@@ -41,10 +43,11 @@ Purpose: deliver one feature. No repo-local orchestrator.
    - Domain handoff before starters, folders, packages.
 
 5. Establish red proof
-   - Run primary proof before implementation when practical.
+   - Run primary proof before implementation when practical; for any `FEATURE_DIR`, this
+     must be the captured command from `PROOF.md` using `scripts/proof_run_capture`.
    - Confirm expected failure/unmet behavior.
    - If already green, inspect whether done or `PROOF.md` too weak.
-   - Weak proof: strengthen via `coding-proof-author` before code.
+   - Weak or uncaptured proof: strengthen via `coding-proof-author` before code.
 
 6. Trust ready contracts, review stale contracts
    - If a queue item is already `ready`, do not run `coding-feature-quality` again unless

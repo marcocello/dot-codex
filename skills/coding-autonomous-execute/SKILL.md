@@ -60,8 +60,10 @@ Do not mark a queue item `needs_input` until available recovery paths have been 
 ## Queue Execution
 - Read `docs/features/status.json`.
 - Select the next repairing or ready item with `coding-feature-queue`.
-- Preflight the selected item's `FEATURE.md`, `PROOF.md`, primary proof command, executable proof artifact before marking it `in_progress`.
+- Preflight the selected item's `FEATURE.md`, `PROOF.md`, primary proof command, executable proof artifact, and `scripts/proof_run_capture` wrapper before marking it `in_progress`.
 - Missing/stale/weak/live-blocked contract: use Recovery Ladder; mark `draft` or `needs_input` only after recorded recovery; do not mark it `in_progress`.
+- Raw primary proof command without `scripts/proof_run_capture`: use `coding-proof-author`
+  before implementation; do not mark it `in_progress`.
 - Mark the item `in_progress` only after the preflight shows it is implementable.
 - Then freeze `FEATURE.md`, `PROOF.md`, and proof artifacts.
 - Work exactly one `FEATURE_DIR`.

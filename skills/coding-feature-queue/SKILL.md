@@ -57,8 +57,8 @@ Allowed `status` values:
 - Mark `draft` while feature/proof authoring is incomplete or contract review is failing
   but repair can continue.
 - Mark `ready` only after feature/proof authoring has produced `FEATURE.md`, `PROOF.md`,
-  an executable proof artifact, and a passing contract review, or after a minor non-behavior
-  edit to an already-ready item.
+  an executable proof artifact, a primary proof command wrapped with `scripts/proof_run_capture`,
+  and a passing contract review, or after a minor non-behavior edit to an already-ready item.
 - Mark one item `in_progress` at a time during autonomous execution.
 - Mark `repairing` when proof, gate, or evaluator fail but bounded repair can continue.
 - Mark `needs_input` only after autonomous recovery attempts have inspected available

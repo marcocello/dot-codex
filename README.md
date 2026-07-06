@@ -1,8 +1,8 @@
 ## dot-codex
 
-Around December 2025, I stopped writing code. I also stopped reading generated code or HTML as the primary way to decide whether the work was done.
+Around December 2025, I stopped writing code. I also stopped reading generated code as the primary way to decide whether the work was done.
 
-The product still matters. The code still matters. The rendered output still matters. What changed is the control point: instead of manually inspecting every generated source file or HTML fragment, I shape the work before generation and make the AI produce proof that its work matches the intended behavior.
+The product still matters. The code still matters. The rendered output still matters. What changed is the control point: instead of manually inspecting every generated source file, I shape the work before generation and make the AI produce proof that its work matches the intended behavior.
 
 This repo is my current Codex configuration. It is tuned for Codex App, Codex Goals, local skills, and a harness that refuses to call plausible output done.
 

@@ -42,6 +42,10 @@ Purpose: smallest correct fix, verified.
    - Quote exact errors/failing tests when available.
    - Follow the real call path before deciding the fix: entrypoint, parsing, routing,
      owner module, persistence, network, runtime boundary.
+   - Missing credentials, secrets, tokens, provider setup, deployment mounts, or required
+     configuration are root-cause configuration failures; do not convert them into
+     success, skipped, fallback, or no-op behavior unless the feature contract explicitly
+     defines that state as optional.
    - Identify the root cause and state confidence: `clear`, `likely`, `unknown`.
    - Unknown root cause: add smallest diagnostic/repro before production edit.
    - Prefer current source, executable proof, runtime evidence.
@@ -68,6 +72,9 @@ Purpose: smallest correct fix, verified.
    - Local fix only.
    - Avoid refactor unless required for correctness.
    - No unrelated code.
+   - Do not hide required-runtime failures by catching and downgrading them. Fix the
+     missing credential/configuration supply path, fail fast with a clearer diagnostic,
+     or report the exact user-owned requirement.
    - Semantic/domain behavior: do not repair by adding ad hoc natural-language keyword lists,
      phrase gates, or tool hiding. Put invariant at owning boundary: parser schema, service
      validation, tool contract, persistence check, provider read-back, postcondition.

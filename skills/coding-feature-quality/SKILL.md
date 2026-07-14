@@ -30,11 +30,18 @@ implementation.
    - Operational constraints: missing runtime, deployment target, storage, credentials,
      environment, or resource assumptions that affect implementation correctness.
    - Proof quality: missing primary proof command, primary proof not wrapped with
-     `scripts/proof_run_capture`, missing proof scope, weak evidence, mock-only proof for
+     `scripts/proof_run_capture`, missing declared `--source-path` inputs whose freshness authorizes completion, missing proof scope, weak evidence, mock-only proof for
      user-visible behavior, undeclared false-green risks, or provider writes without read-back.
    - Boundary mismatch: proof calls an inner worker, service, or helper while the behavior is
      really triggered by persisted state, queue polling, scheduler pickup, webhook delivery,
      CLI invocation, API routing, or another public activation path.
+   - Activation coverage mismatch: `FEATURE.md` claims multiple producer classes or real
+     system paths, but `PROOF.md` exercises only the new inner component, service, executor,
+     or helper. Contract review must fail unless the feature is explicitly scoped to that
+     inner boundary or the uncovered producer class is recorded as a manual gap/readiness blocker.
+   - Fake boundary ambiguity: missing `Claimed Behavior Coverage` or unclear fake boundary
+     ledger for non-trivial proofs that use mocks, fakes, monkeypatches, fake subprocesses,
+     fake providers, or fake browser/API clients.
    - Architecture conflicts: behavior that violates authoritative repo architecture or layer rules.
 
 3) Decide what to do

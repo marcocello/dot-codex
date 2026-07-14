@@ -19,12 +19,14 @@
 - Missing `FEATURE_DIR`: inspect existing features; use one clear match; otherwise create `docs/features/<request-slug>/FEATURE.md` and `PROOF.md`.
 - Lightweight lane: for isolated small edits and small bug fixes that are low-risk and do not need durable behavior definition, make the smallest change and run the narrowest relevant check without creating `FEATURE_DIR` or invoking the full harness.
 - Semantic or natural-language behavior must be fixed by defining the invariant and owning decision boundary, not by adding open-ended keyword, phrase, or language-specific lists. Hardcoded lists are acceptable only for closed vocabularies from a protocol, enum, provider contract, product taxonomy, or explicit spec. For lightweight semantic fixes, add paraphrase or non-English regression pressure, or promote to the repair harness.
+- Ambiguity checkpoint: before editing, when a request has multiple plausible implementation strategies, touches auth/secrets/deployment/runtime/data, asks to use an exact file/path/source, or follows a user correction of the current direction, state the concrete behavior you are about to implement, the main alternative you are not implementing, and the material consequence or tradeoff. If any part is unclear or high-risk, ask one targeted question before editing.
+- Correction checkpoint: if the user corrects the agent's approach once, pause further edits and restate the new intended behavior plus the rejected previous approach before changing more files.
 - Promote lightweight work to the normal feature or repair harness when it touches behavior contracts, queues, safety, data, migrations, external services, multiple modules, or repeated failures.
 
 ## Completion Kernel
 - Product work is complete only after the primary proof, gate, and `coding-feature-evaluator` pass.
 - If a `FEATURE_DIR` exists, its primary proof must create a captured evidence bundle with `scripts/proof_run_capture`; do not treat raw test output as the feature proof.
-- Queue work also needs `docs/features/status.json` completion evidence; validate with `scripts/validate_feature_queue`.
+- Queue work also needs `docs/features/status.json` completion evidence; validate the active item with `scripts/validate_feature_queue --feature <id>`, while the repo gate audits all items.
 - Artifact work uses artifact-specific parser, contract, fixture, lint, syntax, or readiness checks.
 - Autonomous Proof Loop: while proof is unsatisfied, keep repairing code, setup, fixtures, diagnostics, or contract owner routing.
 - `NEED_INPUT` only after local recovery is exhausted and the remaining requirement is user-owned or external.
@@ -62,8 +64,10 @@
 - Reference background lives in `README.md`; optional evolution notes live in `docs/harness/evolution/*`.
 
 ## Safety And Style
-- Approval-risk action requires explicit approval: installing global tools, dependencies, paid/external services, destructive commands, deployments, force pushes, secret edits, credential entry, external account changes.
-- No force push, deploy, destructive command, dependency install, secret edit, or external account mutation unless requested and approved.
+- Approval-risk action requires explicit approval: installing global tools or global dependencies, paid resource creation, destructive commands, deployments, force pushes, secret edits, credential entry, and external account or service mutations.
+- Repo-local setup is pre-authorized when required by the user's requested coding task: `git init` in a new project, cloning a skill-prescribed starter or reference into the workspace, creating a local virtual environment, and installing project-declared dependencies into repo-local `.venv`, `node_modules`, or `vendor` directories. Do not ask the user for approval for these actions.
+- Runtime or platform sandbox approval requirements still take precedence; request only the platform escalation that cannot be performed inside the current workspace permissions.
+- No force push, deploy, destructive command, global dependency install, secret edit, credential entry, paid resource creation, or external account mutation unless requested and approved.
 - Reuse existing code; make the smallest effective change; keep changes local; avoid unrelated refactors.
 - Explicit over clever; red/green TDD for implementation and bugs; do not delete, weaken, or bypass tests for green.
 - Code limits: function <=100 lines; cyclomatic complexity <=8 where tooling exists; positional params <=5.

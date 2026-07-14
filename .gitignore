@@ -28,6 +28,7 @@
 !scripts/harness_review
 !scripts/lint_harness
 !scripts/proof_run_capture
+!scripts/record_completion_evidence
 !scripts/validate_feature_queue
 !scripts/validate_proof_bundle
 !docs/harness/evaluator-fixtures.json

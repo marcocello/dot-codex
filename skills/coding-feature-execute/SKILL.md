@@ -68,6 +68,9 @@ Purpose: deliver one feature. No repo-local orchestrator.
 
 8. Validate
    - Run proof and gate required by `AGENTS.md` Universal Lifecycle.
+   - For `FEATURE_DIR` work, run the gate through
+     `scripts/record_completion_evidence gate --evidence-dir <latest-run-dir> -- <gate-command>`
+     so the gate verdict is stored beside the primary proof.
    - If proof/gate/evaluator fails, use `coding-repair` on the concrete failing behavior or
      check result.
    - Do not hand off as done while primary proof fails.
@@ -75,6 +78,7 @@ Purpose: deliver one feature. No repo-local orchestrator.
 9. Evaluate/status
    - Run `coding-feature-evaluator`.
    - If `docs/features/status.json` exists, update via `coding-feature-queue`.
+   - Validate only the active queue item with `scripts/validate_feature_queue --feature <id>`; unrelated legacy queue debt belongs to the separate `--all` audit.
    - If proof, gate, evaluator pass but human-visible behavior fails, treat the proof package as insufficient.
      Stop implementation; repair contract with failing proof before changing production code again.
 

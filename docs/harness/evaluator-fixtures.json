@@ -43,6 +43,31 @@
       "required_next_action": "repair proof before more implementation"
     },
     {
+      "id": "runtime-readiness-proxy-proof",
+      "expected_result": "FAIL",
+      "summary": "Source assertions, mocked readiness checks, and unit tests pass, but the configured runtime subprocess and protocol handshake central to the production-readiness claim are never activated.",
+      "inputs": {
+        "feature": "The configured CLI and MCP child are usable and production traffic is ready.",
+        "proof": "Inspect Docker and deployment source, mock readiness helpers, and simulate subprocess error formatting without starting the configured child process.",
+        "primary_proof": "PASS",
+        "gate": "PASS",
+        "central_runtime_activated": false,
+        "central_manual_gap": "The real configured child process and protocol handshake are not proven.",
+        "broken_implementation_can_pass": true,
+        "evidence_bundle": {
+          "has_result": true,
+          "has_run_metadata": true,
+          "has_oracle_scope": true,
+          "oracle_strength": "source shape, monkeypatched readiness, and simulated subprocess errors"
+        }
+      },
+      "expected_findings": [
+        "Central runtime activation is unproven even though proxy checks are green.",
+        "The proof admits a broken implementation can pass, so evaluator PASS is forbidden."
+      ],
+      "required_next_action": "repair proof to start the configured runtime boundary and read back its protocol result"
+    },
+    {
       "id": "skipped-recovery-need-input",
       "expected_result": "FAIL",
       "summary": "Executor reports NEED_INPUT for a missing local CLI without checking package scripts, setup docs, or local readiness commands.",

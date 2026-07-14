@@ -74,6 +74,8 @@ Minimum useful bundle:
 - `agent-observation.json`: optional structured version of the same signal for harness review.
 - `notes.md`: short human summary of what was proven and what remained unavailable.
 
+Serious completion evidence uses schema version `3`. `run-metadata.json` records safe Git context plus hashes for `FEATURE.md`, `PROOF.md`, the proof runner, and explicitly declared source paths, while `contracts/` stores the exact non-secret contracts evaluated. Raw Git diffs and arbitrary source contents are not copied into evidence.
+
 For browser proof, include screenshots or video paths when the browser tool can capture them.
 For provider proof, include read-back output or a clear manual gap when live state is unavailable.
 For local app proof, include relevant recent logs, not full noisy logs.
@@ -84,6 +86,7 @@ When a `FEATURE_DIR` exists, the primary proof must use captured evidence. The d
 scripts/proof_run_capture \
   --serious \
   --feature-dir FEATURE_DIR \
+  --source-path <implementation-or-proof-input> \
   --behavior-boundary "<producer -> activation -> consumer -> read-back>" \
   --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" \
   --notes "<short proof result summary>" \
@@ -95,11 +98,13 @@ runners may still write richer browser, provider, or app-specific files into the
 when the helper is too small for the whole scenario. Do not mark a contract `ready` when its
 primary proof is only a raw command; wrap it in `proof_run_capture` first.
 
-Queue items marked `ready`, `in_progress`, `repairing`, or `done` must have `PROOF.md` that calls `scripts/proof_run_capture` for the primary proof. Queue items marked `done` must also point `completion.latest_evidence` at a serious proof bundle: command, result, notes, run metadata, and proof scope. Repeated or repaired attempts must also have `attempts.json` with the current attempt number plus failure class and repair action.
+After the primary proof, capture the gate with `scripts/record_completion_evidence gate --evidence-dir <run-dir> -- <gate-command>`. The done evaluator records its structured verdict with `scripts/record_completion_evidence evaluation --evidence-dir <run-dir> ...`.
+
+Queue items marked `ready`, `in_progress`, `repairing`, or `done` must have `PROOF.md` that calls `scripts/proof_run_capture` and declares at least one `--source-path` for the primary proof. Queue items marked `done` store only `completion.latest_evidence`, pointing at one serious proof bundle containing command, result, notes, run metadata, proof scope, contract snapshots, declared source identity, `gate.json`, and `evaluation.json`. `docs/features/status.json` is only an index: `scripts/validate_feature_queue --feature <id>` derives completion validity from these artifacts and current contract, runner, and declared-source hashes without scanning unrelated items. `scripts/validate_feature_queue --all` is the strict whole-queue audit. Repeated or repaired attempts must also have `attempts.json` with the current attempt number plus failure class and repair action.
 
 ## Agent Observation
 
-For serious autonomous runs, proof evidence should observe the agent loop as well as the app result when the loop behavior matters. Write `agent-observation.md` only when one of these happens:
+For serious autonomous runs, proof evidence should observe the agent loop as well as the app result when the loop behavior matters. `agent-observation.md` is required for repeated or repaired proof evidence, and should be written when one of these happens:
 
 - primary proof fails more than once;
 - Codex changes tactic;

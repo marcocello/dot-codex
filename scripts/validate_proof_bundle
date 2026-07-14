@@ -199,6 +199,19 @@ def validate_attempt_log(bundle: Path, metadata: dict[str, Any], attempt: int) -
     return []
 
 
+def observation_required(metadata: dict[str, Any], attempt: int) -> bool:
+    return attempt > 1 or bool(metadata.get("failure_class")) or bool(metadata.get("repair_action"))
+
+
+def validate_observation_requirement(bundle: Path, metadata: dict[str, Any]) -> list[str]:
+    attempt = metadata.get("attempt", 1)
+    if not isinstance(attempt, int) or attempt < 1:
+        return []
+    if observation_required(metadata, attempt) and not (bundle / "agent-observation.md").is_file():
+        return ["agent-observation.md required for repeated or repaired proof attempts"]
+    return []
+
+
 def validate_bundle(bundle: Path, *, serious: bool) -> list[str]:
     errors: list[str] = []
     if not bundle.is_dir():
@@ -222,6 +235,13 @@ def validate_bundle(bundle: Path, *, serious: bool) -> list[str]:
     if serious:
         errors.extend(validate_metadata(bundle))
         errors.extend(validate_oracle_scope(bundle))
+        metadata_path = bundle / "run-metadata.json"
+        if metadata_path.is_file():
+            try:
+                metadata = load_json(metadata_path)
+            except (OSError, ValueError, json.JSONDecodeError):
+                metadata = {}
+            errors.extend(validate_observation_requirement(bundle, metadata))
     errors.extend(validate_agent_observation_md(bundle))
     errors.extend(validate_agent_observation_json(bundle))
     return errors

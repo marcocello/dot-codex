@@ -43,6 +43,16 @@ RISK_SIGNALS = [
 ]
 
 
+def observation_required(metadata: dict[str, Any]) -> bool:
+    attempt = metadata.get("attempt", 1)
+    return (
+        isinstance(attempt, int)
+        and attempt > 1
+        or bool(metadata.get("failure_class"))
+        or bool(metadata.get("repair_action"))
+    )
+
+
 def load_json(path: Path) -> dict[str, Any] | None:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -137,6 +147,16 @@ def agent_observation_results(root: Path) -> tuple[list[Path], list[str]]:
     return sorted(set(observations)), risk_lines
 
 
+def agent_observation_gaps(root: Path) -> list[Path]:
+    gaps: list[Path] = []
+    for metadata_path in sorted(root.glob("docs/features/*/proof/runs/*/run-metadata.json")):
+        data = load_json(metadata_path) or {}
+        run_path = metadata_path.parent
+        if observation_required(data) and not (run_path / "agent-observation.md").is_file():
+            gaps.append(run_path.relative_to(root))
+    return gaps
+
+
 def feature_dirs(root: Path) -> list[Path]:
     paths: set[Path] = set()
     for proof_path in root.glob("docs/features/*/PROOF.md"):
@@ -169,6 +189,7 @@ def build_report(root: Path) -> str:
     manifests = manifest_results(root)
     manifest_errors = all_manifest_errors(root)
     observations, risk_lines = agent_observation_results(root)
+    observation_gaps = agent_observation_gaps(root)
     pass_count = sum(1 for _, status in proofs if status.upper() == "PASS")
     fail_count = sum(1 for _, status in proofs if status.upper() == "FAIL")
 
@@ -210,6 +231,15 @@ def build_report(root: Path) -> str:
     lines.extend(["", "## Agent Risk Signals"])
     if risk_lines:
         lines.extend(risk_lines)
+    else:
+        lines.append("- none")
+
+    lines.extend(["", "## Agent Observation Gaps"])
+    if observation_gaps:
+        lines.extend(
+            f"- `{path}`: repeated or repaired proof attempt without agent-observation.md"
+            for path in observation_gaps
+        )
     else:
         lines.append("- none")
     return "\n".join(lines) + "\n"

@@ -1,6 +1,6 @@
 ---
 name: coding-feature-spec
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, then use coding-proof-author to create PROOF.md and executable proof artifacts for non-trivial features. Use when the task is feature-spec authoring or refinement."
+description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, resolving material ambiguity with focused clarification before committing to a contract, then use coding-proof-author to create PROOF.md and executable proof artifacts for non-trivial features. Use when the task is feature-spec authoring or refinement."
 metadata:
   short-description: Define product-facing FEATURE.md
 ---
@@ -15,18 +15,27 @@ For non-trivial features, this skill must call `coding-proof-author` after `FEAT
 so the same run produces `PROOF.md` plus executable proof artifacts.
 
 ## Inputs
-Ask only for blockers:
+Derive these from the request and repo context first. Ask only for unresolved blockers:
 - title
 - persona/job
 - desired behavior/workflow
 - constraints/must-avoid behavior
+- ambiguity or decision boundary only when multiple implementation strategies, exact files/paths/sources, auth/secrets/deployment/runtime/data, or a prior user correction makes intent materially uncertain
 
-No architecture questions unless required.
+Before writing, identify unanswered choices that could materially change observable behavior, scope, non-goals, external contracts, data handling, permissions, runtime ownership, or proof strategy. Ask at most two high-leverage questions in one message. Each question must name the decision and briefly explain the materially different outcomes; do not ask broad discovery questions such as "anything else?"
+
+Stop and wait for the answers instead of drafting one branch as fact. If more than two blockers remain, ask the two that collapse the most downstream ambiguity first, then ask a later follow-up only if still necessary.
+
+Do not ask when authoritative repo context already answers the choice, when the choice is implementation-only and reversible without changing the feature contract, or when a clearly stated assumption preserves rather than narrows the requested behavior. No architecture questions unless architecture changes the product contract.
 
 ## Pipeline
 1. Load context
    - Read `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`
      when present.
+   - Read an existing `FEATURE.md` and `PROOF.md` before refining that feature.
+   - If the request has multiple plausible meanings or a high-risk tradeoff, make a lightweight ambiguity checkpoint before writing: intended behavior, plausible alternative, and material consequence.
+   - When local context cannot resolve a contract-changing decision, ask up to two focused questions and pause artifact changes until answered. If the request is clear, proceed without ceremony.
+   - After a user correction, restate the accepted behavior and rejected prior direction before asking only about any ambiguity that still remains.
 
 2. Write `FEATURE.md`
    - Use only `docs/features/<feature-id-slug>/`.
@@ -127,10 +136,15 @@ Add only when short template leaves implementation/proof ambiguous:
 
 ## Additional Constraints
 - <Architecture, data, security, UX, runtime, credential constraint.>
+
+## Ambiguity Check
+- <Only when useful: selected interpretation, rejected alternatives, and known tradeoff.>
 ```
 
 ## Rules
 - Concise human-readable `FEATURE.md`.
+- Resolve material ambiguity before authoring; never invent product behavior merely to keep the workflow moving.
+- Ask at most two focused clarification questions per turn, and only when their answers can change the contract.
 - No proof commands in `FEATURE.md`.
 - Do not stop after `FEATURE.md` for non-trivial features; create proof package same run.
 - Non-trivial feature: create proof package same run.

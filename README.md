@@ -8,17 +8,19 @@ This repo is my current Codex configuration. It is tuned for Codex App, Codex Go
 
 ## Pillars
 
-- Feature spec: `FEATURE.md` is the behavior source of truth before implementation.
-- Proof contract: `PROOF.md` defines how done will be proven.
-- Real-boundary proof: primary proof must cross the relevant API, UI, DB, queue, provider, CLI, report, or workflow boundary.
-- Captured evidence: feature proof runs must leave `FEATURE_DIR/proof/runs/<timestamp>/` evidence through `scripts/proof_run_capture`.
-- Autonomous repair: Codex keeps repairing code, setup, fixtures, diagnostics, or proof ownership until proof, gate, and evaluator pass or a true blocker remains.
-- Contract freeze: after implementation starts, Codex must not change `FEATURE.md`, `PROOF.md`, or proof artifacts to make the result green.
-- Proof scope: every non-trivial proof states what it proves, what it does not prove, false-green risks, and evidence strength.
-- Done evaluator: `coding-feature-evaluator` is the skeptical read-only judge before completion.
-- Green-but-broken: a green command with broken behavior means the proof is insufficient and must be repaired first.
-- App improvement review: `coding-app-improvement-review` suggests app, proof, readiness, and harness improvements from evidence without applying them automatically.
-- Harness evolution: harness changes need repeated evidence, before/after expectations, held-out checks, and a rollbackable manifest.
+The harness is designed for agents doing most implementation work and humans steering, judging, and correcting the system. These are the public pillar names in the README; the presentation groups them into the compact seven-pillar model.
+
+- Feature spec: `FEATURE.md` is the agent-native behavior source of truth before implementation, including expected outcome, constraints, architecture boundaries, and user-visible result. Why it matters: the agent works from a stable contract instead of guessing from a prompt.
+- Proof contract: `PROOF.md` defines the command, scenario, proof scope, anti-gaming pressure, and evidence needed to prove done. Why it matters: done becomes testable before code exists.
+- Real-boundary proof: primary proof must cross the relevant API, UI, DB, queue, provider, CLI, report, or workflow boundary. Why it matters: the harness proves behavior where the product can actually fail.
+- Captured evidence: feature proof runs must leave `FEATURE_DIR/proof/runs/<timestamp>/` evidence through `scripts/proof_run_capture`, with enough structure for another agent or human to inspect the run. Why it matters: later review can audit what happened without trusting the assistant's summary.
+- Autonomous repair: Codex keeps repairing code, setup, fixtures, diagnostics, or proof ownership until proof, gate, and evaluator pass or a true blocker remains. Why it matters: failures become the next input, not a reason to stop early.
+- Contract freeze: after implementation starts, Codex must not change `FEATURE.md`, `PROOF.md`, or proof artifacts to make the result green. Why it matters: the agent cannot move the goalposts after seeing the answer.
+- Proof scope: every non-trivial proof states what it proves, what it does not prove, false-green risks, and evidence strength. Why it matters: humans can see the remaining risk instead of reading a vague pass/fail.
+- Done evaluator: `coding-feature-evaluator` is the skeptical read-only judge before completion, and the final handoff must be precise, clear, actionable, and grounded in proof, gate, evaluator, blockers, and changed surface. Why it matters: completion is judged separately from the agent that produced the work.
+- Green-but-broken: a green command with broken behavior means the proof is insufficient and must be repaired first. Why it matters: the harness optimizes for real behavior, not green output.
+- App improvement review: `coding-app-improvement-review` suggests app, proof, readiness, and harness improvements from proof history and human-agent interaction, including corrections, repeated questions, scope misses, and unclear handoffs. Why it matters: useful lessons are captured without automatically broadening scope.
+- Harness evolution: harness changes need repeated evidence, before/after expectations, held-out checks, and a rollbackable manifest, with accepted learning routed to the smallest durable owner. Why it matters: the harness improves deliberately instead of accumulating random prompt tweaks.
 
 ## References
 

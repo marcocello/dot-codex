@@ -19,6 +19,19 @@ Compact version:
 FEATURE.md -> PROOF.md -> realistic proof -> evidence bundle -> repair loop -> gate -> evaluator -> queue done
 ```
 
+## Plain Inner And Outer Loops
+
+Inner loop means Codex is doing the actual feature or issue work and recording what happened. For serious work, the output is not only changed code; it is a proof run with evidence: command, result, proof scope, metadata, notes, and when repair was needed, agent observation.
+
+Outer loop means Codex reviews those evidence records later and asks what should be learned. The review separates local project lessons from reusable harness lessons before suggesting an owner.
+
+Example: if a PDF feature passes because the proof only checked that `invoice.pdf` exists, the inner loop records the proof and its evidence. The outer loop can later say the project needs a stronger PDF proof that reads totals from the rendered file, and only if this pattern repeats should dot-codex strengthen a skill, evaluator fixture, script, test, or harness doc.
+
+```text
+Inner loop: do the work -> prove it -> record useful evidence.
+Outer loop: read the evidence -> find repeated patterns -> route the lesson to the right owner.
+```
+
 For explicit autonomous work, a Codex Goal keeps the run moving, but the Goal is only runtime state. It does not replace `FEATURE.md`, `PROOF.md`, the queue, proof output, gate results, or evaluator judgment.
 
 ## Target Repo Autonomy
@@ -58,7 +71,7 @@ The skills split responsibility instead of repeating one large workflow everywhe
 
 - `scripts/proof_run_capture` wraps a proof command and writes a run evidence bundle.
 - `scripts/validate_proof_bundle` checks the minimum proof bundle shape and serious proof-scope metadata.
-- `scripts/validate_feature_queue` rejects executable queue items whose `PROOF.md` does not call `scripts/proof_run_capture`, and rejects `done` items without recorded proof, gate, evaluator, and latest evidence.
+- `scripts/validate_feature_queue --feature <id>` rejects the selected executable item when `PROOF.md` lacks `scripts/proof_run_capture` or declared source inputs, and rejects `done` without artifact-backed proof, gate, evaluator, and latest evidence. `--all` applies the same rules to the full queue.
 - `scripts/harness_review` summarizes proof bundles, missing run evidence, agent risk signals, and harness change manifests; `--check` validates manifest shape.
 - `scripts/gate_config` runs the dot-codex harness checks.
 - `docs/harness/evaluator-fixtures.json` calibrates evaluator judgment examples; it is not runtime feature evidence.
@@ -93,6 +106,7 @@ For local proof commands, use:
 scripts/proof_run_capture \
   --serious \
   --feature-dir FEATURE_DIR \
+  --source-path <implementation-or-proof-input> \
   --behavior-boundary "<producer -> activation -> consumer -> read-back>" \
   --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" \
   --notes "<short proof result summary>" \
@@ -110,16 +124,13 @@ A queue item should be marked `done` only when it records:
 ```json
 {
   "completion": {
-    "primary_proof": "PASS",
-    "gate": "PASS",
-    "evaluator": "PASS",
     "latest_evidence": "docs/features/<feature>/proof/runs/<timestamp>"
   }
 }
 ```
 
-`scripts/validate_feature_queue` requires queued `ready`, `in_progress`, `repairing`, and `done` items to use `scripts/proof_run_capture` in `PROOF.md`.
-For `done` items, it also enforces the completion shape above, requires the referenced evidence to include serious proof metadata and concrete proof scope, and rejects repeated repair evidence without `attempts.json`.
+`scripts/validate_feature_queue --feature <id>` requires the selected queued item to use `scripts/proof_run_capture` plus at least one `--source-path` in `PROOF.md`; unrelated queue items are out of scope. `scripts/validate_feature_queue --all` performs the strict whole-queue audit.
+For `done` items, validation derives proof, gate, and evaluator success from the referenced bundle, requires serious proof metadata and concrete proof scope, and rejects repeated repair evidence without `attempts.json`.
 
 ## Harness Evolution
 

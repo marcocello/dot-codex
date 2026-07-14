@@ -45,14 +45,11 @@ When a queue exists, `done` entries should include a `completion` object with:
 
 ```json
 {
-  "primary_proof": "PASS",
-  "gate": "PASS",
-  "evaluator": "PASS",
   "latest_evidence": "docs/features/<feature>/proof/runs/<timestamp>"
 }
 ```
 
-`scripts/validate_feature_queue` checks this shape.
+`scripts/validate_feature_queue --feature <id>` checks this shape and derives proof, gate, and evaluator status from the referenced bundle. `scripts/validate_feature_queue --all` performs the strict whole-queue audit.
 
 The referenced `latest_evidence` must be a serious proof bundle created by `scripts/proof_run_capture`. Bare `result.json` evidence is not enough for `done`; repeated repair attempts must include attempt metadata and `attempts.json`.
 

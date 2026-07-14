@@ -22,7 +22,7 @@ echo "== gate_config: repo=$ROOT =="
 
 "$PY" -m pytest tests/unit -q
 "$PY" scripts/lint_harness
-"$PY" scripts/validate_feature_queue
+"$PY" scripts/validate_feature_queue --all
 "$PY" scripts/harness_review --check
 
 if [[ -f "skills/.system/skill-creator/scripts/quick_validate.py" ]]; then

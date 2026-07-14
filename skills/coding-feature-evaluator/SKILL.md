@@ -12,8 +12,9 @@ Purpose: act as the done judge, not the doer and not the main test runner.
 Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as examples of expected `PASS`, `FAIL`, and `NEED_INPUT` judgment shape; do not treat them as evidence for the current feature.
 
 ## Rules
-- Read-only by default.
-- Do not edit files.
+- Read-only for implementation, feature contracts, proof contracts, fixtures, and queue state.
+- For completed `FEATURE_DIR` evaluation, the only permitted write is `evaluation.json` in the inspected evidence bundle through `scripts/record_completion_evidence evaluation`.
+- Do not edit any other files.
 - Do not repair failures.
 - Do not replace the primary proof command or gate.
 - Do not loosen tests, proof, or scope.
@@ -51,8 +52,20 @@ Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as
      missing executable evidence.
    - Proof integrity: primary proof explicit, runnable, anti-gameable, not weakened. Check
      whether a broken implementation could still pass the primary proof. Return `FAIL` when the proof can pass while feature is visibly/externally/behaviorally broken.
+   - Activation coverage: inspect `Claimed Behavior Coverage` when present, and infer it when
+     absent. Return `FAIL` when the feature claims reactive, worker, scheduler, webhook, CLI,
+     API, browser, or provider behavior but the primary proof drives only a new inner service,
+     executor, helper, or component instead of at least one real production entrypoint for each
+     central producer class.
    - Green but weak: return `FAIL` when proof passes but its proof scope is obviously too narrow
      for the claimed behavior, even if no visible break has been reproduced yet.
+   - Central manual gap: return `FAIL` when `PROOF.md` lists an unproven behavior as a manual
+     gap or "does not prove" item and that behavior is central to the `FEATURE.md` claim. Manual
+     gaps are acceptable only for live/external/scale conditions that do not invalidate the
+     local completion claim.
+   - Explicit broken-pass admission: if the proof says a broken implementation can still pass
+     and that break affects a central feature claim, return `FAIL`; a passing proof or gate cannot
+     override that admission.
    - Contract freeze: return `FAIL` when implementation code and `FEATURE.md`, `PROOF.md`,
      or proof artifacts were edited in the same implementation pass.
    - Boundary fit: public behavior should use public boundaries. UI/workflow: prefer live browser/runtime evidence. API/provider: prefer route, persisted state, outbound
@@ -99,8 +112,22 @@ Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as
    - Return `FAIL` when recovery was skipped and executor could inspect/setup/repair/add
      readiness/retry with local tools.
 
+6. Persist the verdict
+   - For completed `FEATURE_DIR` work with a captured evidence bundle, record the judgment with
+     `scripts/record_completion_evidence evaluation --evidence-dir <run-dir> ...`.
+   - A `PASS` receipt must name no central behavior gaps, set broken-implementation-can-pass to
+     false, set contract/evidence revision match to `PASS`, and record both primary proof and gate
+     as `PASS`; the receipt command rejects inconsistent `PASS` claims.
+   - Do not edit `docs/features/status.json`; the caller updates queue state only after the receipt
+     exists and `scripts/validate_feature_queue --feature <id>` accepts it.
+   - If a completed feature verdict cannot be persisted, do not return `PASS` for queue completion.
+
 ## Output Format
 ```text
+Evaluated evidence bundle: <FEATURE_DIR/proof/runs/timestamp path or none>
+Central behavior gaps: <none or concise list>
+Broken implementation could still pass: yes | no
+Contract/evidence revision match: PASS | FAIL
 Result: PASS | FAIL | NEED_INPUT
 Summary:
 - <one or two lines>
@@ -118,7 +145,7 @@ usage, run IDs, prompt text, or implementation summaries unless direct reason fo
 or `NEED_INPUT`.
 
 ## Handoff
-- `PASS`: caller may mark queue item `done`.
+- `PASS`: caller may mark queue item `done` only after the structured evaluation receipt exists.
 - `FAIL`: caller should use `coding-repair` for a focused repair, or
   `coding-autonomous-execute` by `AGENTS.md` policy.
 - `NEED_INPUT`: do not mark done; report exact user-owned input or external action.

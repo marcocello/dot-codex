@@ -24,13 +24,7 @@ Do not use the queue as a workflow engine. It is only a progress index that poin
       "proof": "docs/features/short-feature-id/PROOF.md",
       "priority": 1,
       "status": "draft",
-      "notes": "",
-      "completion": {
-        "primary_proof": "NOT RUN",
-        "gate": "NOT RUN",
-        "evaluator": "NOT RUN",
-        "latest_evidence": ""
-      }
+      "notes": ""
     }
   ]
 }
@@ -66,11 +60,7 @@ Allowed `status` values:
 - Use `needs_input` for credentials, safe external target, approval, or product decision
   requirements that cannot be satisfied honestly from local tools.
 - Mark `done` only after primary proof, gate, and `coding-feature-evaluator` pass.
-- For `done` items, record `completion.primary_proof`, `completion.gate`, and
-  `completion.evaluator` as `PASS`, and point `completion.latest_evidence` to the latest
-  serious proof evidence bundle with command, result, notes, run metadata, and proof scope.
-  Repeated repair evidence must include `attempts.json`. Validate this with
-  `scripts/validate_feature_queue` when available.
+- For `done` items, record only `completion.latest_evidence`, pointing to the latest serious proof evidence bundle with command, result, notes, run metadata, proof scope, contract snapshots, declared source identity, `gate.json`, and `evaluation.json`. Proof, gate, and evaluator status are derived from those artifacts, not mirrored into queue fields. Repeated repair evidence must include `attempts.json`. Validate the active item with `scripts/validate_feature_queue --feature <id>` when available; legacy or prose-only evidence cannot authorize that item's `done` state. Use `--all` only for a strict whole-queue audit.
 - If a `done` item's `FEATURE.md`, `PROOF.md`, or executable proof artifacts change in a
   behaviorally meaningful way, reset it to `draft` while authoring, then `ready` after the
   updated contract package passes review. Preserve `done` only for clearly non-behavioral

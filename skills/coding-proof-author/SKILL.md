@@ -32,6 +32,18 @@ Before choosing a proof profile, name the real boundary:
 
 If this boundary cannot be named, the proof contract is not ready.
 
+## Activation Coverage
+For non-trivial features, add a coverage matrix before implementation:
+
+```md
+## Claimed Behavior Coverage
+| FEATURE claim | Real production entrypoint proof drives | Fake boundary used | Read-back |
+| --- | --- | --- | --- |
+| <claim> | <route/listener/worker pickup/scheduler/browser/CLI/API> | <none or outer unsafe edge> | <state/output/provider read-back> |
+```
+
+If `FEATURE.md` claims reactive, worker, scheduler, webhook, CLI, API, browser, or provider behavior, the primary proof must drive at least one real production entrypoint for each claimed producer class. Direct service, executor, helper, or new-component calls are secondary guards unless `FEATURE.md` explicitly scopes the feature to that inner boundary only. If a producer class cannot be exercised locally, mark it as a manual gap or readiness blocker; do not let an inner-boundary test stand in for it.
+
 ## Proof Profiles
 Choose smallest profile that catches fake/incomplete implementation or high-risk behavior.
 
@@ -70,6 +82,7 @@ provider, messaging, frontend, worker, or workflow features. Unit tests and sour
 4. Run an adversarial proof review before writing artifacts:
    - List at least three plausible fake or incomplete implementations.
    - Explain how the proof would catch each fake implementation through observable behavior.
+   - Name at least one broken implementation that would still pass the current proof; if any is plausible and central to the feature, strengthen the proof before implementation.
    - Strengthen weak proof before implementation begins.
 5. Create/repair executable artifacts under `FEATURE_DIR/proof/` or repo-native testbed/E2E.
 6. Write `FEATURE_DIR/PROOF.md`; run narrowest parser/test when practical.
@@ -110,6 +123,7 @@ Local command wrapper for serious non-trivial proof:
 scripts/proof_run_capture \
   --serious \
   --feature-dir FEATURE_DIR \
+  --source-path <implementation-or-proof-input> \
   --behavior-boundary "<producer -> activation -> consumer -> read-back>" \
   --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" \
   --notes "<short proof result summary>" \
@@ -179,11 +193,21 @@ Boundary:
 
 Command:
 ```bash
-scripts/proof_run_capture --serious --feature-dir FEATURE_DIR --behavior-boundary "<producer -> activation -> consumer -> read-back>" --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" --notes "<short proof result summary>" -- <command that runs FEATURE_DIR/proof/... or repo-native proof>
+scripts/proof_run_capture --serious --feature-dir FEATURE_DIR --source-path <implementation-or-proof-input> --behavior-boundary "<producer -> activation -> consumer -> read-back>" --oracle-scope "$(cat FEATURE_DIR/PROOF.md)" --notes "<short proof result summary>" -- <command that runs FEATURE_DIR/proof/... or repo-native proof>
 ```
 
 Expected evidence:
 - <response, UI state, persisted state, provider read-back, invariant>
+
+## Claimed Behavior Coverage
+| FEATURE claim | Real production entrypoint proof drives | Fake boundary used | Read-back |
+| --- | --- | --- | --- |
+| <claim> | <activation path> | <none or unsafe outer edge> | <durable/user-visible evidence> |
+
+## Fake Boundary Ledger
+- Fake: <subprocess/provider/network/browser edge replaced, or none>
+- Allowed because: <why this is outside the claimed behavior boundary>
+- Not faked: <producer, activation path, consumer, durable state transition, read-back>
 
 ## Proof Scope
 Proves:
@@ -208,6 +232,7 @@ Evidence strength:
 - Fake pass risk: <incomplete implementation that might look done>.
 - Proof catch: <specific proof step that fails if that fake exists>.
 - Boundary: <real trigger/input path the proof drives, and why direct inner calls are enough or not enough>.
+- Broken implementation that would still pass: <one plausible green-but-broken implementation, or "none after proof strengthening">.
 
 ## Manual Gaps
 - None, or <live verification still needing user-owned input and why>
@@ -217,6 +242,7 @@ Evidence strength:
 - Keep behavior in `FEATURE.md`; verification in `PROOF.md`.
 - Every non-trivial feature gets at least one executable proof artifact.
 - The primary proof command is the feature completion authority, must run a behavioral artifact, and must be wrapped with `scripts/proof_run_capture`.
+- The primary proof command must declare every implementation or proof input whose freshness authorizes completion through repeatable `--source-path` arguments; unrelated repository files stay outside that feature identity.
 - `PROOF.md` must include `Proof Scope` for every non-trivial feature.
 - Oracle scope must name what the proof proves, what it does not prove, false-green risks,
   and evidence strength.

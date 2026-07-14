@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+RECEIPT_SCHEMA_VERSION = 1
+PROOF_STATUSES = {"PASS", "FAIL", "NOT RUN"}
+EVALUATOR_RESULTS = {"PASS", "FAIL", "NEED_INPUT"}
+
+
+def now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def existing_evidence_dir(path: Path) -> Path:
+    resolved = path.resolve()
+    if not resolved.is_dir():
+        raise ValueError(f"evidence directory does not exist: {path}")
+    return resolved
+
+
+def parse_bool(value: str) -> bool:
+    lowered = value.lower()
+    if lowered not in {"true", "false"}:
+        raise argparse.ArgumentTypeError("expected true or false")
+    return lowered == "true"
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Record gate or evaluator evidence in a proof bundle.")
+    subparsers = parser.add_subparsers(dest="receipt_kind", required=True)
+
+    gate = subparsers.add_parser("gate", help="Run and capture a gate command.")
+    gate.add_argument("--evidence-dir", required=True, type=Path)
+    gate.add_argument("command", nargs=argparse.REMAINDER)
+
+    evaluation = subparsers.add_parser("evaluation", help="Record a structured evaluator verdict.")
+    evaluation.add_argument("--evidence-dir", required=True, type=Path)
+    evaluation.add_argument("--result", required=True, choices=sorted(EVALUATOR_RESULTS))
+    evaluation.add_argument("--summary", required=True)
+    evaluation.add_argument("--finding", action="append", default=[])
+    evaluation.add_argument("--central-behavior-gap", action="append", default=[])
+    evaluation.add_argument("--broken-implementation-can-pass", required=True, type=parse_bool)
+    evaluation.add_argument("--contract-evidence-revision-match", required=True, choices=["PASS", "FAIL"])
+    evaluation.add_argument("--primary-proof", required=True, choices=sorted(PROOF_STATUSES))
+    evaluation.add_argument("--gate", required=True, choices=sorted(PROOF_STATUSES))
+    evaluation.add_argument("--required-next-action", required=True)
+    return parser
+
+
+def gate_command(args: argparse.Namespace) -> list[str]:
+    command = list(args.command)
+    if command and command[0] == "--":
+        command = command[1:]
+    if not command:
+        raise ValueError("gate command is required after --")
+    return command
+
+
+def record_gate(args: argparse.Namespace) -> int:
+    evidence_dir = existing_evidence_dir(args.evidence_dir)
+    command = gate_command(args)
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    stdout_path = evidence_dir / "gate.stdout.txt"
+    stderr_path = evidence_dir / "gate.stderr.txt"
+    stdout_path.write_text(result.stdout, encoding="utf-8")
+    stderr_path.write_text(result.stderr, encoding="utf-8")
+    payload = {
+        "schema_version": RECEIPT_SCHEMA_VERSION,
+        "status": "PASS" if result.returncode == 0 else "FAIL",
+        "returncode": result.returncode,
+        "command": command,
+        "created_at": now(),
+        "stdout": stdout_path.name,
+        "stderr": stderr_path.name,
+    }
+    (evidence_dir / "gate.json").write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    if result.stdout:
+        print(result.stdout, end="")
+    if result.stderr:
+        print(result.stderr, end="", file=sys.stderr)
+    return result.returncode
+
+
+def validate_pass_evaluation(args: argparse.Namespace) -> None:
+    if args.result != "PASS":
+        return
+    invalid = (
+        args.central_behavior_gap
+        or args.broken_implementation_can_pass
+        or args.contract_evidence_revision_match != "PASS"
+        or args.primary_proof != "PASS"
+        or args.gate != "PASS"
+    )
+    if invalid:
+        raise ValueError(
+            "cannot record evaluator PASS with central gaps, a passing broken implementation, "
+            "revision mismatch, or non-passing proof/gate"
+        )
+
+
+def evaluation_payload(args: argparse.Namespace, evidence_dir: Path) -> dict[str, Any]:
+    return {
+        "schema_version": RECEIPT_SCHEMA_VERSION,
+        "result": args.result,
+        "summary": args.summary,
+        "findings": args.finding,
+        "central_behavior_gaps": args.central_behavior_gap,
+        "broken_implementation_can_pass": args.broken_implementation_can_pass,
+        "contract_evidence_revision_match": args.contract_evidence_revision_match,
+        "primary_proof": args.primary_proof,
+        "gate": args.gate,
+        "required_next_action": args.required_next_action,
+        "evidence_bundle": str(evidence_dir),
+        "created_at": now(),
+    }
+
+
+def record_evaluation(args: argparse.Namespace) -> int:
+    evidence_dir = existing_evidence_dir(args.evidence_dir)
+    validate_pass_evaluation(args)
+    payload = evaluation_payload(args, evidence_dir)
+    (evidence_dir / "evaluation.json").write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    print(f"record_completion_evidence: {evidence_dir / 'evaluation.json'}")
+    return 0
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    try:
+        if args.receipt_kind == "gate":
+            return record_gate(args)
+        return record_evaluation(args)
+    except ValueError as exc:
+        print(f"record_completion_evidence: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Customer Tech Requirements"
+  short_description: "Draft concise customer technical asks"
+  default_prompt: "Use $customer-tech-requirements to draft customer-facing technical requirements from project context."

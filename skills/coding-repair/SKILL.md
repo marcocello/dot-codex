@@ -1,6 +1,6 @@
 ---
 name: coding-repair
-description: "Repair a clear issue or failing check with the smallest effective code change, local runtime evidence, existing feature proof lookup, regression tests, and verification. Use when the user asks to debug/fix an existing problem or repair a concrete proof, gate, typecheck, lint, build, or evaluator failure."
+description: "Repair a clear defect or failing proof, gate, test, typecheck, lint, build, or evaluator result with the smallest verified change."
 metadata:
   short-description: Disciplined issue and failing-check repair workflow
 ---
@@ -12,12 +12,12 @@ Purpose: smallest correct fix, verified.
 ## Default
 - Clear issue/failing check: proceed.
 - Unclear expected behavior: ask before coding.
+- Inherit the assurance lane selected under `AGENTS.md`; finding one matching `FEATURE_DIR` promotes the repair to `tracked`.
 
 ## Fast path for concrete failures
 - For a specific proof, gate, typecheck, lint, build, or evaluator failure: reproduce,
   patch smallest owning path, rerun failing check, then lifecycle checks from `AGENTS.md`.
 - Use the diagnostic workflow below only when behavior, root cause, or owner is unclear.
-- Use full diagnostic flow only when behavior/root cause/owner is unclear.
 
 ## Workflow
 1. Read context
@@ -84,12 +84,12 @@ Purpose: smallest correct fix, verified.
    - Add verification appropriate to touched surface.
    - Re-check logs/browser signals that exposed issue.
    - Run relevant checks or list exact unrun commands.
-   - Use `coding-feature-evaluator` before marking every issue fix complete.
+   - `lightweight`: require the focused regression or narrow check; do not require the evaluator or full repo gate unless the touched surface makes them relevant.
+   - `tracked` or `autonomous`: require the primary proof, gate, and `coding-feature-evaluator` before completion.
    - Evaluator `FAIL`: repair input. Evaluator `NEED_INPUT`: exact user-owned input after
      recovery.
    - If a Codex Goal is active, keep it open until regression, broader check, and evaluator
      `PASS` prove completion.
-   - The regression, broader check, and evaluator `PASS` prove completion.
    - If `FEATURE_DIR` in scope, run primary proof command from `PROOF.md`.
    - Do not commit/push/open PR/update changelog/close issues unless explicitly asked.
 
@@ -102,7 +102,6 @@ Purpose: smallest correct fix, verified.
 ## Rules
 - Reproduce or name missing evidence before editing.
 - Root cause first.
-- Root cause before patch.
 - Local evidence before local app fixes.
 - No speculative cleanup.
 - Invariant first; examples are not behavior source of truth unless lexical search.

@@ -1,6 +1,6 @@
 ---
 name: coding-feature-evaluator
-description: "Evaluate whether a completed feature or issue fix is actually done using a read-only skeptical review of FEATURE.md, PROOF.md, primary proof results, gate results, architecture fit, and anti-gaming risks. This is the done judge, not the test runner. Use after coding-feature-execute, coding-repair, or coding-autonomous-execute before marking work complete."
+description: "Judge tracked or autonomous feature and issue work against its contract, proof, gate, evidence integrity, architecture fit, and false-green risk."
 metadata:
   short-description: Read-only done judge
 ---
@@ -66,8 +66,7 @@ Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as
    - Explicit broken-pass admission: if the proof says a broken implementation can still pass
      and that break affects a central feature claim, return `FAIL`; a passing proof or gate cannot
      override that admission.
-   - Contract freeze: return `FAIL` when implementation code and `FEATURE.md`, `PROOF.md`,
-     or proof artifacts were edited in the same implementation pass.
+   - Contract revision: return `FAIL` when a post-implementation contract change lacks an explicit repair reason, strengthened proof, red evidence when practical, or final evidence bound to the revised contract and declared sources.
    - Boundary fit: public behavior should use public boundaries. UI/workflow: prefer live browser/runtime evidence. API/provider: prefer route, persisted state, outbound
      boundary, read-back evidence.
    - Semantic fit: Flag phrase-locked fixes, hardcoded natural-language keyword lists,
@@ -95,7 +94,7 @@ Calibration fixtures live in `docs/harness/evaluator-fixtures.json`. Use them as
      or `contract_changed_after_code` is true and the final evidence does not show the issue was
      corrected before claiming done.
    - Target app repo: expect primary proof from `PROOF.md` and `$HOME/.codex/scripts/gate`.
-   - Do not require broad new suite execution did not run.
+   - Do not require a broad new suite when the contract and touched surface justify narrower checks.
    - Return `FAIL` when `NEED_INPUT` was reported before recovery, available tools, repo
      scripts, browser/app automation, MCP/app connectors, local CLIs, or readiness checks
      were tried where relevant.

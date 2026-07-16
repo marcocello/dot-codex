@@ -1,9 +1,6 @@
 ---
 name: second-brain-activity-brief
-description: >-
-  Produce a concise operating brief from the user's Notion Second Brain. Use
-  when the user says SECOND BRAIN | Activity Brief, asks what to focus on, asks
-  for an update on activities, tasks, deals, waiting items, stale work, or ideas.
+description: Produce a concise Notion Second Brain operating brief covering focus, activities, tasks, deals, waiting items, stale work, and ideas.
 ---
 
 # Second Brain Activity Brief

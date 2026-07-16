@@ -1,6 +1,6 @@
 ---
 name: coding-commit
-description: Stage selected local changes and create a local Conventional Commit with a clear subject and compact body. Use when the user wants to commit, stage and commit, create a local commit, or draft a commit message for staged, unstaged, or recent changes. Never push.
+description: Stage an explicit coherent change set and create a local Conventional Commit, or draft its message. Never push.
 metadata:
   short-description: Stage and create a local conventional commit
 ---

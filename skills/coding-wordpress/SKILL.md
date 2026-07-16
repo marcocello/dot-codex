@@ -1,6 +1,6 @@
 ---
 name: coding-wordpress
-description: "Implement, bootstrap, or maintain WordPress plugins, themes, full-site installs, and Bedrock-style applications with a forced greenfield wordpress/app, wordpress/deployments, and wordpress/pipelines structure, WordPress-safe boundaries, and appropriate PHP/JS tests. Use when a task mentions WordPress, wp-content, plugins, themes, Bedrock, wp-cli, Gutenberg blocks, WooCommerce extensions, or WordPress-specific PHP code."
+description: "Implement, bootstrap, or maintain WordPress plugins, themes, Bedrock apps, Gutenberg blocks, WooCommerce extensions, deployment structure, and PHP or JavaScript tests."
 ---
 
 # WordPress

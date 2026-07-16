@@ -1,9 +1,6 @@
 ---
 name: second-brain-weekly-review
-description: >-
-  Run a weekly review of the user's Notion Second Brain. Use when the user says
-  SECOND BRAIN | Weekly Review, asks for a weekly review, wants stale
-  tasks/deals/ideas reviewed, or wants Codex to summarize open loops.
+description: Review the Notion Second Brain weekly, surfacing stale tasks, deals, ideas, open loops, priorities, and follow-up decisions.
 ---
 
 # Second Brain Weekly Review

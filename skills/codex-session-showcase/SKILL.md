@@ -1,6 +1,6 @@
 ---
 name: codex-session-showcase
-description: "Create concise, grounded showcase recaps from Codex chat work, including Codex skills used, serious technical outcomes, work snapshot summaries, and optional real screenshots or chat snapshot references. Start by capturing the current Codex desktop app when screenshot tooling is available. Use when the user wants to show how they use Codex, summarize a completed Codex session, write a proof-of-work post, or package a Codex chat into a polished public or semi-public narrative."
+description: "Turn completed Codex work into a grounded showcase recap with technical outcomes, optional screenshots, and concise proof-of-work framing."
 ---
 
 # Codex Session Showcase

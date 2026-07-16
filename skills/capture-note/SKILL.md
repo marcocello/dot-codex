@@ -1,6 +1,6 @@
 ---
 name: capture-note
-description: "Add raw, dictated, transcribed, or loosely structured material to a user's markdown notes, diary, journal, or second-brain collection. Use when Codex needs to create or append a dated markdown note, choose the proper destination folder by inspecting existing notes, preserve local filename/frontmatter conventions, or turn messy note input into a concise dated entry without inventing facts."
+description: "Capture raw or loosely structured material into dated markdown notes while preserving the collection's filename, frontmatter, and organization conventions."
 ---
 
 # Capture Note

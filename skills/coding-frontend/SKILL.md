@@ -1,6 +1,6 @@
 ---
 name: coding-frontend
-description: "Implement, bootstrap, or refactor user-facing React/Next.js UI with strong layout, interaction, and visual quality while preserving repo conventions. Use for frontend surface changes, greenfield frontend skeleton creation, missing frontend/app setup, or new React/Next.js app work even when no existing frontend is detected. Do not use for backend-only or infrastructure tasks."
+description: "Implement, bootstrap, or refactor React and Next.js interfaces with strong layout, interaction, responsive behavior, and visual quality while preserving repo conventions."
 metadata:
   short-description: React and Next.js frontend implementation
 ---

@@ -1,6 +1,6 @@
 ---
 name: coding-app-to-features
-description: "Turn an overall app description into a sharper app brief, bootstrap repo-level docs, create a series of features, executable proof packages, and the feature queue. Use for greenfield work when the user has an app idea and wants Codex to initialize the project before returning to feature execution. Use the `research` skill when assumptions need external evidence."
+description: "Turn a greenfield app idea into repo documentation, feature contracts, executable proof packages, and a prioritized feature queue ready for implementation."
 metadata:
   short-description: Greenfield app idea to feature series
 ---

@@ -1,6 +1,6 @@
 ---
 name: coding-feature-execute
-description: "Implement one feature end-to-end in Codex App using FEATURE.md for desired behavior, PROOF.md for done criteria, existing repo skills, red/green proof-first work, deterministic validation, mandatory backend/frontend/WordPress domain-skill handoff, and bounded repair. Use when a feature contract and proof contract are ready or need to be made ready before delivery."
+description: "Implement one ready FEATURE_DIR end to end through behavioral proof, the target repo gate, evaluator judgment, and bounded repair."
 metadata:
   short-description: Codex-native proof-driven feature execution
 ---
@@ -54,20 +54,18 @@ Purpose: deliver one feature. No repo-local orchestrator.
      `FEATURE.md` or `PROOF.md` is stale, weak, contradictory, or changed before
      implementation starts.
    - Otherwise use `coding-feature-quality` when uncertainty is material.
-   - Once implementation code changes begin, freeze `FEATURE.md`, `PROOF.md`, proof
-     artifacts.
+   - Once implementation begins, treat the current contracts as the active revision.
 
 7. Implement
    - Smallest change satisfying `FEATURE.md` and `PROOF.md`.
    - Add lower-level tests only when they reduce risk.
    - Semantic behavior: implement invariant at owning boundary; no hardcoded natural-language phrase lists, wording gates, or tool hiding as substitute for
      state/object/provider validation.
-   - Once implementation code changes begin, do not change contracts/proof artifacts. If
-     contract is wrong, stop, move to contract repair, apply the Proof Change Guard there,
-     restart from red proof.
+   - If the contract is wrong, enter contract repair, apply the Proof Change Guard, establish
+     the strengthened red proof when practical, then resume against the new revision.
 
 8. Validate
-   - Run proof and gate required by `AGENTS.md` Universal Lifecycle.
+   - Run the tracked Completion Kernel from `AGENTS.md`.
    - For `FEATURE_DIR` work, run the gate through
      `scripts/record_completion_evidence gate --evidence-dir <latest-run-dir> -- <gate-command>`
      so the gate verdict is stored beside the primary proof.
@@ -79,8 +77,7 @@ Purpose: deliver one feature. No repo-local orchestrator.
    - Run `coding-feature-evaluator`.
    - If `docs/features/status.json` exists, update via `coding-feature-queue`.
    - Validate only the active queue item with `scripts/validate_feature_queue --feature <id>`; unrelated legacy queue debt belongs to the separate `--all` audit.
-   - If proof, gate, evaluator pass but human-visible behavior fails, treat the proof package as insufficient.
-     Stop implementation; repair contract with failing proof before changing production code again.
+   - If proof, gate, evaluator pass but human-visible behavior fails, treat the proof package as insufficient and enter contract repair before resuming implementation.
 
 10. Escalate
    - If proof/gate/evaluator still fails after first targeted repair, follow the autonomous escalation policy in `AGENTS.md`.
@@ -94,8 +91,7 @@ Purpose: deliver one feature. No repo-local orchestrator.
 - No orchestration infrastructure.
 - Do not weaken `PROOF.md`, reduce scope, or substitute assistant/tool claims for
   observable proof.
-- Do not mix implementation code edits with `FEATURE.md`, `PROOF.md`, or proof-artifact
-  edits in the same implementation pass.
+- Contract revisions after implementation starts require the explicit Proof Change Guard and final evidence bound to the revised artifacts.
 
 ## Handoff
 - Report using the `AGENTS.md` short receipt format for completed feature or issue work.

@@ -1,6 +1,6 @@
 ---
 name: html-presentations
-description: Create, edit, amend, restyle, and validate presentation decks implemented as standalone HTML/CSS/JavaScript files. Use when Codex needs to build or revise browser-native slide decks, keynote-style HTML presentations, scroll-snap decks, speaker/demo decks, or presentation-like HTML artifacts using the bundled thariqs.github.io reference patterns.
+description: Create, edit, restyle, and validate standalone HTML, CSS, and JavaScript presentation decks, including keynote-style, scroll-snap, speaker, and demo formats.
 ---
 
 # HTML Presentations

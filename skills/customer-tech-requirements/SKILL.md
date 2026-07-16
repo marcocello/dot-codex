@@ -1,6 +1,6 @@
 ---
 name: customer-tech-requirements
-description: Create concise customer-facing technical requirement documents, customer IT asks, deployment prerequisites, on-prem/cloud responsibility splits, and separate internal implementation-risk notes. Use when Codex needs to turn transcripts, decks, repo context, infrastructure code, or rough user dictation into practical requirements for a customer-managed deployment or integration.
+description: Turn transcripts, decks, repo context, or dictation into customer-facing technical requirements, deployment prerequisites, responsibility splits, and separate internal risk notes.
 ---
 
 # Customer Tech Requirements

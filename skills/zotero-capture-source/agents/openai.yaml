@@ -1,0 +1,4 @@
+interface:
+  display_name: "Zotero Source Capture"
+  short_description: "Extract source insights and archive them in Zotero"
+  default_prompt: "Use $zotero-capture-source to analyze this video or article and save its source material and highlights to Zotero."

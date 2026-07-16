@@ -1,6 +1,6 @@
 ---
 name: coding-maintainability-review
-description: Review a full codebase for verbosity, tangled responsibilities, weak module boundaries, and readability debt; produce prioritized improvements that make code lean and clear for humans. Use when users ask for maintainability audits, code simplification, structure review, refactor planning, or “make this codebase cleaner/less intertwined.”
+description: Review a codebase for verbosity, tangled responsibilities, weak boundaries, and readability debt; prioritize maintainability improvements without applying them.
 ---
 
 # Maintainability Review

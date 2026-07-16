@@ -191,11 +191,14 @@ Serious evidence validation rejects missing proof-scope headings and placeholder
 
 ## Proof Change Guard
 
-After implementation code changes begin, do not edit `FEATURE.md`, `PROOF.md`, or proof
-artifacts in the same pass. If the proof is wrong:
+After implementation begins, treat `FEATURE.md`, `PROOF.md`, and proof artifacts as one active contract revision. If that revision is wrong:
 
 1. Stop implementation.
-2. Return to contract repair.
+2. Enter an explicit contract-repair state.
 3. Record why the old proof was wrong.
 4. Add the new failing proof or evidence requirement.
-5. Restart implementation only after the strengthened proof fails for the right reason.
+5. Demonstrate that the strengthened proof fails against the current implementation when practical.
+6. Resume implementation against the new revision.
+7. Capture final evidence whose contract, proof runner, and declared source identities match that revision.
+
+The guard prevents retrofitting proof to already-written code. It is evaluated from recorded revision reasoning, red evidence, and final artifact identity, not from whether contract and implementation files appear in one diff.

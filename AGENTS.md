@@ -10,6 +10,10 @@
 
 ## Work Kernel
 - Work on one feature or issue, and one `FEATURE_DIR`, at a time.
+- Select one assurance lane before editing and keep every downstream skill aligned with it.
+- `lightweight`: isolated, low-risk edit or bug fix with no durable behavior contract; use the smallest regression or narrow check, and do not require `FEATURE_DIR`, captured proof, the repo gate, or the evaluator.
+- `tracked`: feature work, behavior-contract work, or repairs involving queues, safety, data, migrations, external services, multiple modules, or repeated failures; require the normal feature proof lifecycle.
+- `autonomous`: explicit keep-going, queue, or repeated-repair work; use the tracked lifecycle plus persistent recovery and queue state.
 - `FEATURE_DIR/FEATURE.md`: behavior contract.
 - `FEATURE_DIR/PROOF.md`: proof contract.
 - Do not claim done from plausibility, source shape, assistant claims, or tool-call success.
@@ -17,21 +21,21 @@
 - Exactly one match: use that `FEATURE_DIR`; strengthen proof with a focused failing regression if current proof misses the bug.
 - No clear match: do not create `FEATURE.md` by default; use smallest local regression proof unless behavior needs durable definition.
 - Missing `FEATURE_DIR`: inspect existing features; use one clear match; otherwise create `docs/features/<request-slug>/FEATURE.md` and `PROOF.md`.
-- Lightweight lane: for isolated small edits and small bug fixes that are low-risk and do not need durable behavior definition, make the smallest change and run the narrowest relevant check without creating `FEATURE_DIR` or invoking the full harness.
 - Semantic or natural-language behavior must be fixed by defining the invariant and owning decision boundary, not by adding open-ended keyword, phrase, or language-specific lists. Hardcoded lists are acceptable only for closed vocabularies from a protocol, enum, provider contract, product taxonomy, or explicit spec. For lightweight semantic fixes, add paraphrase or non-English regression pressure, or promote to the repair harness.
 - Ambiguity checkpoint: before editing, when a request has multiple plausible implementation strategies, touches auth/secrets/deployment/runtime/data, asks to use an exact file/path/source, or follows a user correction of the current direction, state the concrete behavior you are about to implement, the main alternative you are not implementing, and the material consequence or tradeoff. If any part is unclear or high-risk, ask one targeted question before editing.
 - Correction checkpoint: if the user corrects the agent's approach once, pause further edits and restate the new intended behavior plus the rejected previous approach before changing more files.
 - Promote lightweight work to the normal feature or repair harness when it touches behavior contracts, queues, safety, data, migrations, external services, multiple modules, or repeated failures.
 
 ## Completion Kernel
-- Product work is complete only after the primary proof, gate, and `coding-feature-evaluator` pass.
+- Lightweight work is complete after its focused regression or narrow check passes; use stronger checks only when the touched surface makes them relevant.
+- Tracked and autonomous work is complete only after the primary proof, gate, and `coding-feature-evaluator` pass.
 - If a `FEATURE_DIR` exists, its primary proof must create a captured evidence bundle with `scripts/proof_run_capture`; do not treat raw test output as the feature proof.
 - Queue work also needs `docs/features/status.json` completion evidence; validate the active item with `scripts/validate_feature_queue --feature <id>`, while the repo gate audits all items.
 - Artifact work uses artifact-specific parser, contract, fixture, lint, syntax, or readiness checks.
 - Autonomous Proof Loop: while proof is unsatisfied, keep repairing code, setup, fixtures, diagnostics, or contract owner routing.
 - `NEED_INPUT` only after local recovery is exhausted and the remaining requirement is user-owned or external.
 - Green-but-broken means proof is insufficient; return to contract repair before more implementation.
-- Contract freeze: after implementation code changes begin, do not edit that feature's `FEATURE.md`, `PROOF.md`, or proof artifacts in the same pass.
+- Contract revision guard: after implementation begins, a wrong or incomplete contract must enter an explicit contract-repair state. Record why it changed, strengthen the proof, demonstrate the new proof fails against the current implementation when practical, then resume implementation. Final evidence must match the final contract, proof runner, and declared source revisions.
 
 ## Routing
 - App idea -> `coding-app-to-features`.

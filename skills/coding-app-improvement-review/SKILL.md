@@ -1,6 +1,6 @@
 ---
 name: coding-app-improvement-review
-description: "Review a target app or project's feature specs, proof plans, proof evidence, successful tests, evaluator results, and user corrections to suggest app-specific improvements, new features, proof hardening, and reusable harness lessons without applying changes. Use when Codex should manually analyze whether features, proofs, and successful checks make sense and produce suggestions for the app/project or for dot-codex harness evolution."
+description: "Review feature contracts, evidence, evaluator results, and user corrections to suggest project improvements, proof hardening, or reusable harness lessons without applying changes."
 ---
 
 # App Improvement Review

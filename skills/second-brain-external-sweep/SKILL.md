@@ -1,10 +1,6 @@
 ---
 name: second-brain-external-sweep
-description: >-
-  Inspect external native sources for Notion Second Brain updates without
-  bulk-copying them. Use when the user says SECOND BRAIN | External Sweep, asks
-  Codex to review Gmail, Zotero, Git repos, Granola, Codex work, or other native
-  systems and create concise Notion task, deal, or idea rows.
+description: Review Gmail, Zotero, Git, Granola, Codex work, or other native sources and create concise Notion Second Brain task, deal, or idea updates.
 ---
 
 # Second Brain External Sweep

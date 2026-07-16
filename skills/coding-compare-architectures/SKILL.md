@@ -1,6 +1,6 @@
 ---
 name: coding-compare-architectures
-description: "Compare an existing architecture/solution against a specific reference and decide KEEP, PARTIAL ADOPT, or REPLACE with explicit migration steps. Use only when both current-state material and a concrete reference are provided."
+description: "Compare an existing architecture with a concrete reference and decide KEEP, PARTIAL ADOPT, or REPLACE with migration steps."
 metadata:
   short-description: Compare current architecture with a reference
 ---

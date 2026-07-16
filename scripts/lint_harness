@@ -19,6 +19,7 @@ NON_SKILL_TERMS = {
     "coding-agents",
     "coding-oriented",
 }
+MAX_LOCAL_SKILL_DESCRIPTION_WORDS = 32
 
 
 SECRET_PATTERNS = [
@@ -168,6 +169,30 @@ def check_duplicate_descriptions(root: Path, skills: list[Skill]) -> list[Findin
     return findings
 
 
+def check_local_description_length(root: Path, skills: list[Skill]) -> list[Finding]:
+    local_root = (root / "skills").resolve()
+    findings: list[Finding] = []
+    for skill in skills:
+        try:
+            relative = skill.path.resolve().relative_to(local_root)
+        except ValueError:
+            continue
+        if relative.parts and relative.parts[0].startswith("."):
+            continue
+        word_count = len(skill.description.split())
+        if word_count <= MAX_LOCAL_SKILL_DESCRIPTION_WORDS:
+            continue
+        findings.append(
+            Finding(
+                "verbose-skill-description",
+                skill.path,
+                f"description has {word_count} words; keep routing metadata at or below "
+                f"{MAX_LOCAL_SKILL_DESCRIPTION_WORDS}",
+            )
+        )
+    return findings
+
+
 def config_files(root: Path, include_local_config: bool) -> list[Path]:
     files = [root / "config.template.toml"]
     if include_local_config:
@@ -298,6 +323,7 @@ def main() -> int:
     files = operational_text_files(root, args.include_local_config)
 
     findings.extend(check_stale_references(root, skills, files))
+    findings.extend(check_local_description_length(root, skills))
     findings.extend(check_duplicate_descriptions(root, skills))
     findings.extend(check_inline_secrets(root, args.include_local_config))
     findings.extend(check_missing_agent_self_reference(skills))

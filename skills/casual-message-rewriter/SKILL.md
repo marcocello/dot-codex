@@ -1,6 +1,6 @@
 ---
 name: casual-message-rewriter
-description: Rewrite text into casual, natural, human-sounding messages for chat, DMs, email snippets, social replies, or spoken-style notes. Use when the user asks to make wording less formal, less polished, more casual, more natural, less verbose, less punctuated, less capitalized, more like phone typing, more like a real person, or similar, regardless of topic.
+description: Rewrite chat, DMs, email snippets, replies, or spoken notes to sound shorter, more casual, natural, and human without changing their meaning.
 ---
 
 # Casual Message Rewriter

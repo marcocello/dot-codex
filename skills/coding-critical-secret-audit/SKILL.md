@@ -1,6 +1,6 @@
 ---
 name: coding-critical-secret-audit
-description: Audit the current git checkout for critical hardcoded secrets with GitGuardian ggmcp. Use when the user asks Codex to scan local tracked, staged, modified, or untracked non-ignored files for leaked credentials, API keys, tokens, passwords, private keys, or other critical secrets before commit, publish, deploy, or handoff.
+description: Audit tracked, staged, modified, and non-ignored untracked files for critical hardcoded secrets with GitGuardian before commit, publish, deploy, or handoff.
 ---
 
 # Critical Secret Audit

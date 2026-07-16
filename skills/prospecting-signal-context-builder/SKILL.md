@@ -1,6 +1,6 @@
 ---
 name: prospecting-signal-context-builder
-description: Build product-agnostic GTM signal context files for signal detection. Use when Codex needs to turn user-provided text or files into a normalized `signal-context.md` containing product context, sector context, ICP, competitors, alternatives, pain points, trigger events, disqualification rules, signal criteria, search seeds, and engagement constraints for use by the prospecting-signal-detector skill.
+description: Normalize product, market, ICP, competitor, pain, trigger, disqualification, search, and engagement context into signal-context.md for GTM detection.
 ---
 
 # Signal Context Builder

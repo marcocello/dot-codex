@@ -1,6 +1,6 @@
 ---
 name: coding-prepare-environment
-description: "Prepare local project environments before coding, tests, gates, feature proof commands, dependency/tooling work, or VS Code run-task generation. Use when Codex or another skill needs the shared setup step for Python, React/Node, PHP, Laravel, WordPress, or mixed/unknown stacks, including environment discovery, safe .env handling, whitelist-pattern .gitignore setup, virtualenv/node_modules/vendor setup, validation command selection, and `.vscode/tasks.json` for local dev loops."
+description: "Prepare repo-local Python, Node, PHP, Laravel, WordPress, or mixed environments for coding, tests, proof, gates, dependencies, and VS Code tasks."
 ---
 
 # Prepare Environment

@@ -1,6 +1,6 @@
 ---
 name: coding-autonomous-execute
-description: "Execute a feature queue, one feature, or a stubborn issue fix through a Codex Goal with explicit PROOF.md verification, evaluator judgment, bounded repair, and queue progress updates. Use when the user asks for autonomous execution, keep-going-until-done behavior, queue completion, or repeated repair after coding-feature-execute or coding-repair."
+description: "Continue one feature, queue, or stubborn repair autonomously until tracked proof, gate, evaluator, and queue requirements pass or user-owned input remains."
 ---
 
 # Autonomous Execute
@@ -18,11 +18,10 @@ Queue:
 ```text
 /goal Complete all ready or repairing items in docs/features/status.json one feature at a time.
 For each feature, ensure FEATURE.md and PROOF.md exist, run coding-feature-execute, apply the
-AGENTS.md Universal Lifecycle, and keep working until the primary proof, gate, and evaluator
+AGENTS.md tracked Completion Kernel, and keep working until the primary proof, gate, and evaluator
 pass. Repair failures, prepare environment, and retry the narrow failing command after each
-change. Freeze FEATURE.md, PROOF.md, and proof artifacts once implementation code changes
-begin. If the contract is wrong, stop implementation, reset the item to contract repair, and
-restart only after the contract is ready. Mark the item done only after the lifecycle passes.
+change. If the contract is wrong, enter contract repair, record the revision, establish the
+strengthened red proof when practical, and resume against that revision. Mark the item done only after the lifecycle passes.
 Skip draft and needs_input items. Stop when no ready or repairing items remain, and report any
 draft or needs_input items with concrete next input. Do not weaken proof, reduce scope, or
 substitute assistant/tool claims for observable evidence.
@@ -65,10 +64,10 @@ Do not mark a queue item `needs_input` until available recovery paths have been 
 - Raw primary proof command without `scripts/proof_run_capture`: use `coding-proof-author`
   before implementation; do not mark it `in_progress`.
 - Mark the item `in_progress` only after the preflight shows it is implementable.
-- Then freeze `FEATURE.md`, `PROOF.md`, and proof artifacts.
+- Treat the preflighted contracts as the active revision.
 - Work exactly one `FEATURE_DIR`.
 - Use `coding-feature-execute`.
-- Apply `AGENTS.md` Universal Lifecycle.
+- Apply the tracked Completion Kernel from `AGENTS.md`.
 
 ## Persistent Repair Loop
 Use when proof, gate, or evaluator judgment fails.
@@ -84,8 +83,7 @@ The loop must continue until the primary proof, gate, and evaluator pass.
 6. Do not ask `NEED_INPUT` because the same non-external failure repeated. Ask only when
    remaining prerequisite is user-owned/external and no honest local recovery path remains.
 7. Continue until the primary proof, gate, and evaluator pass.
-8. Contract/proof wrong: stop the implementation pass. Return the item to contract repair
-   (`draft` when queue exists), update contract, restart from preflight.
+8. Contract/proof wrong: enter contract repair (`draft` when queue exists), record the revision reason and strengthened red proof when practical, then restart from preflight.
 
 ## Agent Observation
 Write or update `FEATURE_DIR/proof/runs/<timestamp>/agent-observation.md` when a current proof bundle exists and one of these happens: proof fails more than once, tactic changes, `NEED_INPUT` is reported, evaluator returns `FAIL`, green-but-broken handling starts, or contract repair is needed after implementation started.
@@ -101,13 +99,12 @@ Use this when primary proof, gate, evaluator pass but observed product behavior 
 
 1. Treat as proof-system failure.
 2. Inspect run output, browser/runtime evidence, or trace; identify what proof missed.
-3. Do not edit `FEATURE.md`, `PROOF.md`, or proof artifacts while implementation pass has
-   code changes.
-4. Stop implementation. Return the item to contract repair.
+3. Stop implementation and enter explicit contract repair.
+4. Record why the active contract revision missed the behavior.
 5. Use `coding-proof-author` in that contract-repair phase to add or strengthen a failing
    proof for the observed broken behavior.
-6. Restart only after strengthened proof fails for right reason.
-7. Rerun `AGENTS.md` Universal Lifecycle before done.
+6. Resume only after the strengthened proof fails for the right reason when practical.
+7. Rerun the tracked Completion Kernel before done and bind final evidence to the revised artifacts.
 8. Record the proof-system failure and contract status in `agent-observation.md` or queue notes.
 
 ## Boundaries

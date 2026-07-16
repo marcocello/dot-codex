@@ -1,6 +1,6 @@
 ---
 name: coding-feature-spec
-description: "Create or update docs/features/{feature-id-slug}/FEATURE.md from a rough or incomplete idea, resolving material ambiguity with focused clarification before committing to a contract, then use coding-proof-author to create PROOF.md and executable proof artifacts for non-trivial features. Use when the task is feature-spec authoring or refinement."
+description: "Create or refine one FEATURE.md from an idea, resolve contract-changing ambiguity, then route non-trivial work to executable proof authoring."
 metadata:
   short-description: Define product-facing FEATURE.md
 ---

@@ -1,6 +1,6 @@
 ---
 name: coding-antipattern-review
-description: Review a codebase or bounded component for recurring software anti-patterns and code smells across code and design, architecture and runtime behavior, and tests and proof. Use when users explicitly ask to find anti-patterns, smell patterns, recurring failure-prone structures, or systemic bad practices and want evidence-backed findings with false-positive checks rather than a general maintainability review or immediate implementation.
+description: Review a codebase for recurring anti-patterns and failure-prone smells across design, runtime behavior, tests, and proof, with evidence and false-positive checks.
 ---
 
 # Anti-pattern Review

@@ -1,10 +1,6 @@
 ---
 name: second-brain-notion-api
-description: >-
-  Read and write the user's Notion Second Brain through the Notion API instead
-  of MCP. Use when the user says SECOND BRAIN | Notion API, asks to read or
-  write SB - Tasks, SB - Deals, or SB - Ideas with local API access,
-  or when the Notion MCP connector is unavailable, indirect, or plan-gated.
+description: Read or write Notion Second Brain tasks, deals, and ideas through the local Notion API when direct access is requested or MCP is unavailable.
 ---
 
 # Second Brain Notion API

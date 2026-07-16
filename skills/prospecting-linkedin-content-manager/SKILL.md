@@ -1,6 +1,6 @@
 ---
 name: prospecting-linkedin-content-manager
-description: Product-agnostic LinkedIn content management converted from the Claude LinkedIn Content Manager plugin. Use when Codex needs to initialize a LinkedIn content knowledge base, analyze a profile or posts, define LinkedIn strategy, generate topics, research topics, craft LinkedIn posts, build campaign calendars, review campaign results, or maintain a LinkedIn content learning loop for any product, project, sector, or personal brand using user-provided context from text or files.
+description: Manage LinkedIn strategy, profiles, topics, posts, campaign calendars, results, and learning loops for any product, sector, project, or personal brand.
 ---
 
 # LinkedIn Content Manager

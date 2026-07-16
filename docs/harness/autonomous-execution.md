@@ -20,7 +20,7 @@ A Codex Goal is runtime continuation state. It does not replace:
 2. Preflight `FEATURE.md`, `PROOF.md`, and the executable proof artifact.
    `PROOF.md` must define a primary proof command that calls `scripts/proof_run_capture`.
 3. Mark the item `in_progress` only when the contract is implementable.
-4. Freeze contract files after implementation begins.
+4. Treat the preflighted contracts as the active revision.
 5. Run the primary proof.
 6. Repair the narrowest concrete failure.
 7. Rerun the failed check, then lifecycle checks.
@@ -71,5 +71,4 @@ safe external target, approval, unavailable service, or product decision.
 If proof, gate, and evaluator pass but observed behavior is still broken, treat that as a
 proof-system failure.
 
-Do not keep repairing code against a weak proof. Return to contract repair, strengthen the
-proof to catch the observed broken behavior, then restart implementation.
+Do not keep repairing code against a weak proof. Enter contract repair, record why the active revision missed the behavior, strengthen the proof until it fails against the current implementation when practical, then resume and bind final evidence to the revised contract.

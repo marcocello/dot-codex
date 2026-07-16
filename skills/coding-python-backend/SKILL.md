@@ -1,6 +1,6 @@
 ---
 name: coding-python-backend
-description: "Implement or bootstrap backend API/application changes with clear route/service/domain boundaries and pytest coverage. Use for backend-focused tasks, greenfield API layer creation, missing backend/app setup, API endpoints, routes, service logic, data persistence, FastAPI/service-layer projects, or Python application code even when no existing backend is detected."
+description: "Implement or bootstrap Python backend APIs and applications with clear route, service, domain, persistence, and pytest boundaries."
 metadata:
   short-description: Python backend API implementation
 ---

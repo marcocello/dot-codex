@@ -1,6 +1,6 @@
 ---
 name: prospecting-signal-detector
-description: Product-agnostic GTM signal detection workflow converted from the Claude Signal Detector plugin. Use when Codex needs to scan LinkedIn, Reddit, or industry discussions for buying signals for any product, project, sector, or ICP; classify opportunities from user-provided signal criteria; maintain signals-database.json; generate signal reports; draft engagement actions; or safely execute LinkedIn engagement with explicit approval.
+description: Detect and classify GTM buying signals across LinkedIn, Reddit, and industry discussions; maintain signal records, reports, and approval-gated engagement actions.
 ---
 
 # Signal Detector

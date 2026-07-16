@@ -1,6 +1,6 @@
 ---
 name: coding-architecture-deep-dive
-description: "Review the architecture of a specific codebase component with a state-of-the-art deep-dive method: analyze architectural, logical, and implementation choices to identify weaknesses, flaws, limitations, and performance bottlenecks. Use when precise, evidence-based component assessment is requested before refactoring or scaling decisions."
+description: "Assess one component's architecture, logic, implementation, risks, and bottlenecks before refactoring, reliability, performance, or scaling decisions."
 metadata:
   short-description: Deep component architecture and performance analysis
 ---

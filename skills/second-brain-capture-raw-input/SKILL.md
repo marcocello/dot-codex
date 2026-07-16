@@ -1,10 +1,6 @@
 ---
 name: second-brain-capture-raw-input
-description: >-
-  Capture raw material into the user's Notion Second Brain by classifying it
-  directly as a task, deal, or idea. Use when the user says SECOND BRAIN |
-  Capture Raw Input, asks to log/capture/track a manual note, pasted Granola
-  excerpt, dictated thought, screenshot text, copied snippet, or Codex note.
+description: Classify manual notes, Granola excerpts, dictation, screenshot text, snippets, or Codex notes directly into Notion Second Brain tasks, deals, or ideas.
 ---
 
 # Second Brain Capture Raw Input

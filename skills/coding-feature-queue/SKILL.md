@@ -1,6 +1,6 @@
 ---
 name: coding-feature-queue
-description: "Maintain docs/features/status.json as a lightweight machine-readable feature queue for greenfield and brownfield autonomy. Use when creating multiple features, selecting the next feature, marking feature progress, or running coding-autonomous-execute across all features."
+description: "Maintain docs/features/status.json when creating multiple features, selecting the next item, recording progress, or executing a feature queue autonomously."
 metadata:
   short-description: Feature status queue for autonomous runs
 ---

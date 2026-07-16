@@ -1,6 +1,6 @@
 ---
 name: no-bullshit-technical-writing
-description: "Write and revise direct, useful website content that demonstrates technical competence without assuming specialist readers. Use when Codex needs to draft or edit technical blog posts, engineering essays, service pages, project writeups, founder notes, newsletter pieces, or website copy that should sound specific, clear, evidence-based, and human instead of generic AI prose."
+description: "Write or revise technical website copy, essays, project writeups, founder notes, and newsletters to be specific, clear, evidence-based, and human."
 ---
 
 # No-Bullshit Technical Writing

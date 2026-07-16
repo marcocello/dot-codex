@@ -1,11 +1,6 @@
 ---
 name: coding-operational-issue-diagnostics
-description: >
-  Diagnose operational bugs and runtime issues using read-only checks across local files and
-  processes, virtualenvs, Docker, PostgreSQL/psql, Azure CLI, AKS/Kubernetes via kubectl, and
-  Azure Static Web Apps. Use when the user asks to investigate outages, failing deployments, bad
-  pods, missing logs, container problems, database connectivity issues, or unclear
-  local-versus-cloud regressions.
+description: Diagnose runtime and operational failures with read-only checks across local processes, Docker, PostgreSQL, Azure, Kubernetes, deployments, logs, and environment boundaries.
 ---
 
 # Operational Issue Diagnostics

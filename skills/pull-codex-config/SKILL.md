@@ -1,6 +1,6 @@
 ---
 name: pull-codex-config
-description: Safely pull the local Codex configuration checkout from https://github.com/marcocello/dot-codex. Use when the user asks to pull, update, refresh, or get the latest dot-codex repo, Codex skills, scripts, AGENTS.md discipline, or local Codex configuration from marcocello/dot-codex.
+description: Safely pull or refresh the local dot-codex checkout, including Codex skills, scripts, AGENTS.md rules, and configuration from marcocello/dot-codex.
 ---
 
 # Pull Codex Config

@@ -1,6 +1,6 @@
 ---
 name: coding-research
-description: "Gather external evidence for product, domain, library, or API questions before feature or app planning commits to assumptions. Use when `coding-app-to-features` or `coding-feature-spec` needs grounded facts, official docs, or comparable examples, especially when web search or Context7 is required."
+description: "Gather authoritative external evidence for product, domain, library, or API assumptions before app planning or feature contracts commit to them."
 metadata:
   short-description: External evidence gathering for planning
 ---

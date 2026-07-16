@@ -1,0 +1,4 @@
+interface:
+  display_name: "Anti-pattern Review"
+  short_description: "Find evidence-backed software anti-patterns"
+  default_prompt: "Use $coding-antipattern-review to identify and prioritize evidence-backed anti-patterns in this codebase."

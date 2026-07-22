@@ -1,81 +1,105 @@
 ---
 name: coding-app-improvement-review
-description: "Review feature contracts, evidence, evaluator results, and user corrections to suggest project improvements, proof hardening, or reusable harness lessons without applying changes."
+description: "Review completed feature evidence and corrections to propose grounded project or harness improvements."
 ---
 
 # App Improvement Review
 
-Purpose: read existing feature/proof/evidence history and produce suggestions only. Do not edit project code, proof contracts, queue status, or harness policy unless the user explicitly asks for implementation. Use the review for both project improvement and dot-codex harness improvement, but keep those lessons separated.
+Purpose: extract high-confidence improvement suggestions from actual feature history. Keep project-specific fixes, proof improvements, harness lessons, and personal preferences separate.
+
+Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or update memory unless the user explicitly asks.
 
 ## Inputs
+- Target repository and optional feature scope.
+- Current `FEATURE.md`, `PROOF.md`, proof runner, implementation.
+- Relevant retained attempts: contract/runner copies, `attempt-start.json`, `result.json`, notes, stdout, stderr.
+- Plain per-attempt `completion.md` with gate outcome, evaluator output, and material correction or repair context when that stage was reached.
+- Gate result or skip reason.
+- Evaluator findings when available in the current conversation or supplied material.
+- User corrections, rejected directions, or repair history when available.
+- Repository context: app, architecture, conventions, testing.
+- Optional `interactions/index.json` and only the interaction records relevant to the explicit repository, feature, path, time, or task scope.
 
-- Target repo or current checkout.
-- Optional scope: one `FEATURE_DIR`, all `docs/features`, recent proof runs, or one suspected weak area.
-- Optional conversation context: current chat, pasted transcript, rollout summary, or a short user-provided correction history.
+If conversation/evaluator context is unavailable, say so. Do not reconstruct user intent from code alone.
 
 ## Review
+1. Load current truth
+   - Read repository context and active contracts.
+   - Treat current source as authority for what exists; retained copies show what changed.
+   - When `interactions/index.json` exists, establish relevance before loading a record. Do not bulk-load unrelated project interactions.
+   - Treat user-authored interaction messages as historical evidence of intent, corrections, and rejected directions. Treat prior assistant messages as historical proposals and claims, not current truth or proof.
+   - Report relevant partial or unavailable history. Current source, accepted contracts, runtime state, and proof remain authoritative.
 
-1. Load current repo context: `AGENTS.md`, `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present.
-2. Inspect feature contracts: `docs/features/*/FEATURE.md`; check behavior is the source of truth, observable, realistic, and detailed enough. Ask the user only when product intent is genuinely missing.
-3. Inspect proof contracts: `PROOF.md` and proof artifacts; verify public or real boundary coverage, DB/API/provider/UI/read-back evidence, proof scope, anti-gaming pressure, and no fake/source-only checks for user-visible behavior.
-4. Inspect evidence: latest `proof/runs`, `result.json`, `command.txt`, `stdout.txt`, `stderr.txt`, `oracle-scope.md`, `agent-observation.md`, `agent-observation.json`, notes, screenshots, logs, and provider read-back when present. Treat missing evidence as a suggestion, not a verdict.
-5. Inspect successful tests, gates, and evaluator output; ask whether success proves the actual behavior or only a proxy.
-6. Inspect user corrections and repeated repair attempts from available conversation context, proof notes, commit history, and run evidence. Identify whether the agent misunderstood intent, overrode user constraints, changed strategy repeatedly, or proved the wrong thing. If no conversation context is available, say that explicitly instead of inferring it from source alone.
-7. Generate suggestions, grouped by owner:
-   - project feature suggestion;
-   - spec clarification;
-   - proof hardening;
-   - implementation/design logic;
-   - readiness/diagnostic;
-   - harness lesson.
-8. Classify each material lesson before suggesting a destination:
-   - `project-specific`: behavior, architecture, style, setup, or proof detail owned by the target repo.
-   - `proof-specific`: a concrete `FEATURE_DIR/PROOF.md`, proof runner, fixture, or evidence bundle needs repair.
-   - `harness-level`: repeated cross-project or cross-feature evidence shows a dot-codex skill, doc, script, test, evaluator fixture, or `AGENTS.md` rule allowed the failure.
-   - `personal-preference`: stable user preference; suggest memory only when the user explicitly asks to preserve it.
-   - `no-reusable-lesson`: one-off failure that should stay local.
-9. Promote a harness lesson only when repeated evidence across features, runs, or repos shows a harness instruction, skill, doc, script, or test allowed the same failure.
-10. When suggesting a harness lesson, name the reusable observation signal: weak proof scope, skipped recovery, fake proof, repeated same tactic, ignored architecture, contract drift, missing readiness, or evaluator overreach.
+2. Inspect behavior contract
+   - Check whether user outcome, scenarios, errors, constraints, and non-goals were clear enough.
+   - Identify misunderstandings that originated in spec discovery rather than implementation.
 
-## Accepted Learning Placement
+3. Inspect proof contract
+   - Check activation, consumer path, durable/visible read-back, fake boundaries, false-green pressure, environment, gaps, and timeout.
+   - Ask whether a central broken implementation could have passed.
 
-During review, suggest the destination for accepted learning but do not write it unless the user asks for implementation.
+4. Inspect attempts
+   - Compare failed and passing output, notes, saved contracts, runner copies, and `completion.md` when present.
+   - Identify repeated failures, tactic changes, setup friction, weak diagnostics, proof changes, or recovery that worked.
+   - Do not require every historical attempt when the latest evidence is sufficient.
 
-- Project-specific behavior, architecture, or style rule: target repo `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, or `docs/TESTING.md`.
-- Proof or evidence pattern: target repo `docs/TESTING.md`, feature proof template, or the relevant `FEATURE_DIR/PROOF.md` when a concrete feature owns it.
-- New product capability: `docs/features/status.json` queue item or a new `FEATURE.md`/`PROOF.md` pair only after the user accepts the suggestion.
-- Repeated cross-project harness lesson: dot-codex skill, harness doc, evaluator fixture, or narrow script/test.
-- Stable personal preference: memory only when the user explicitly asks to preserve it.
+5. Inspect implementation and evaluation
+   - Check whether the implementation solved the owning problem without unrelated complexity.
+   - Use evaluator findings as semantic feedback, not a recorded mechanical authority.
+   - Distinguish a product defect from proof weakness or harness friction.
+
+6. Inspect user corrections
+   - Capture accepted behavior, rejected direction, and why the previous path failed.
+   - Prefer correction patterns with reusable value over one-off wording differences.
+
+7. Classify each lesson
+   - Use Classification below.
+   - Suggest the smallest owner and next action.
+
+## Classification
+- `project`: behavior, architecture, implementation, setup, convention, or testing owned by the target repository.
+- `proof`: scenario, activation, fake, fixture, readiness, read-back, false-green risk, or known gap owned by one feature/repository.
+- `harness`: repeated cross-feature or cross-repository evidence that a reusable skill, harness doc, script, or regression should change.
+- `preference`: stable user preference; memory candidate only when the user explicitly asks to preserve it.
+- `one-off`: keep local; no reusable policy.
+
+Promote a harness lesson only after recurring evidence. One failure in one repository remains local unless it exposes a direct harness defect.
+
+## Learning Placement
+Suggest, but do not write, the destination:
+
+- Product behavior -> `FEATURE.md` or new accepted feature package.
+- Architecture/convention -> repository architecture/convention docs.
+- Proof gap -> owning `PROOF.md`, runner, fixture, readiness check, or testing doc.
+- Setup friction -> repository setup scripts/docs/tasks.
+- Cross-feature harness gap -> smallest relevant skill, harness doc, script, or regression.
+- Stable preference -> memory only on explicit request.
+
+Reject changes that create more ceremony than useful feedback.
 
 ## Output
-
 ```text
-App improvement review: PASS|SUGGESTIONS|NEED_INPUT
-Scope: <repo/feature dirs/evidence inspected>
+Review: PASS|SUGGESTIONS|NEED_INPUT
+Scope: <repo/features/attempts inspected>
 Strong signals:
-- <what is already sound>
-Conversation signals:
-- <none|material|unavailable> - user corrections: <short count/summary> - rejected approaches: <short list> - final understood intent: <one sentence> - review impact: <how this changes suggestions>
+- <what worked>
 Suggestions:
-- [app|spec|proof|logic|readiness|harness] <specific change> - classification: <project-specific|proof-specific|harness-level|personal-preference|no-reusable-lesson> - evidence: <file/run/check>
+- <classification> | <owner> | <smallest change> | <evidence>
 Missing evidence:
-- <only material gaps>
-Harness lessons:
-- <candidate dot-codex rule/skill/doc/script/test/evaluator-fixture change, or none>
-Project-specific lessons:
-- <target-repo behavior/doc/proof/test/readiness change, or none>
-Accepted learning placement:
-- <where an accepted suggestion should live, or none>
-Next action:
-- <one concrete action>
+- <material only>
+Harness candidates:
+- <none|recurring lesson>
+Next: <one action>
 ```
 
 ## Rules
-
-- Suggest only; do not auto-apply.
+- Suggestions only; no auto-apply.
 - Current source beats memory.
-- Conversation context is evidence for intent drift and correction handling; current source remains the authority for what was actually implemented.
-- Successful tests are evidence only if the proof check matches the behavior.
-- Prefer fewer high-confidence suggestions over broad roadmaps.
-- Do not create a new feature by default; suggest one when evidence shows real product value or repeated pain.
-- Do not turn one repo-specific issue into harness policy without recurrence.
+- Passing command != realistic proof.
+- Missing evidence is not automatically a defect; explain why it matters.
+- Prefer a few high-confidence improvements over a broad roadmap.
+- No new feature by default; suggest one only when accepted behavior needs durable ownership.
+- No evaluator receipt, progress score, or evidence schema recommendation unless the user changes the threat model.
+
+## Handoff
+Lead with the strongest signal and highest-value suggestion. Separate project changes from harness candidates. State unavailable conversation/evaluator context explicitly. Do not include exhaustive run ids or logs.

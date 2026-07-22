@@ -1,0 +1,6 @@
+interface:
+  display_name: "SECOND BRAIN | Capture Interactions"
+  short_description: "Save Codex dialogue into Second Brain records"
+  default_prompt: "Use $second-brain-capture-interactions to save completed dialogue from this task."
+policy:
+  allow_implicit_invocation: false

@@ -1,8 +1,6 @@
 interface:
   display_name: "CODING | Feature Spec"
-  short_description: "Create FEATURE.md plus executable proof package."
-  default_prompt: >-
-    Use $coding-feature-spec to create or update FEATURE.md under docs/features/todo-api, then use
-    $coding-proof-author to create PROOF.md and executable proof artifacts.
+  short_description: "Decide behavior, then invoke proof author."
+  default_prompt: "Use $coding-feature-spec, then $coding-proof-author in the same run. Ask focused material feature questions, show the feature decision summary, write FEATURE.md, complete the separate proof-decision round, and produce PROOF.md plus executable proof/run.sh without approval pauses."
 policy:
   allow_implicit_invocation: true

@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import os
 import subprocess
 import sys
-import urllib.error
-import urllib.request
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
@@ -78,22 +78,52 @@ def call_ggmcp_scan(
     documents: list[dict[str, str]],
     timeout: float,
 ) -> list[dict[str, Any]]:
-    endpoint = url.rstrip("/") + "/tools/call"
-    payload = json.dumps({"name": "scan_secrets", "arguments": {"documents": documents}}).encode(
-        "utf-8"
-    )
-    headers = {"Content-Type": "application/json"}
+    endpoint = url.rstrip("/")
+    if not endpoint.endswith("/mcp"):
+        endpoint += "/mcp"
+    payload = json.dumps(
+        {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": "scan_secrets",
+                "arguments": {"params": {"documents": documents}},
+            },
+        }
+    ).encode("utf-8")
+    headers = {
+        "Accept": "application/json, text/event-stream",
+        "Content-Type": "application/json",
+    }
     if token:
         headers["Authorization"] = f"Bearer {token}"
 
-    request = urllib.request.Request(endpoint, data=payload, headers=headers, method="POST")
+    parsed = urllib.parse.urlsplit(endpoint)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise RuntimeError("GitGuardian ggmcp URL must use http or https")
+    connection_type = (
+        http.client.HTTPSConnection
+        if parsed.scheme == "https"
+        else http.client.HTTPConnection
+    )
+    connection = connection_type(parsed.hostname, parsed.port, timeout=timeout)
+    target = urllib.parse.urlunsplit(("", "", parsed.path or "/", parsed.query, ""))
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            body = response.read().decode("utf-8")
-    except urllib.error.URLError as exc:
+        connection.request("POST", target, body=payload, headers=headers)
+        response = connection.getresponse()
+        body = response.read().decode("utf-8")
+        if not 200 <= response.status < 300:
+            raise RuntimeError(
+                f"GitGuardian ggmcp scan failed: HTTP {response.status}"
+            )
+    except (OSError, http.client.HTTPException) as exc:
         raise RuntimeError(f"GitGuardian ggmcp scan failed: {exc}") from exc
+    finally:
+        connection.close()
 
-    return extract_scan_results(json.loads(body))
+    response = json.loads(body)
+    return validate_scan_response(response, expected_count=len(documents))
 
 
 def extract_scan_results(response: Any) -> list[dict[str, Any]]:
@@ -115,6 +145,49 @@ def extract_scan_results(response: Any) -> list[dict[str, Any]]:
                 except json.JSONDecodeError:
                     continue
     return []
+
+
+def response_has_tool_error(response: Any) -> bool:
+    if not isinstance(response, dict):
+        return False
+    if response.get("isError") is True:
+        return True
+    if "error" in response and response["error"] is not None:
+        return True
+    return any(
+        response_has_tool_error(response.get(key))
+        for key in ("result", "structuredContent")
+        if key in response
+    )
+
+
+def validate_scan_response(response: Any, expected_count: int) -> list[dict[str, Any]]:
+    if response_has_tool_error(response):
+        raise RuntimeError("GitGuardian ggmcp returned a tool error")
+    scan_results = extract_scan_results(response)
+    if len(scan_results) != expected_count:
+        raise RuntimeError(
+            "GitGuardian ggmcp returned an incomplete scan response: "
+            f"expected {expected_count} results, received {len(scan_results)}"
+        )
+    for result in scan_results:
+        if not isinstance(result, dict):
+            raise RuntimeError("GitGuardian ggmcp returned an unrecognized scan result")
+        policy_breaks = result.get("policy_breaks")
+        if not isinstance(policy_breaks, list) or any(
+            not isinstance(policy_break, dict) for policy_break in policy_breaks
+        ):
+            raise RuntimeError("GitGuardian ggmcp returned an unrecognized scan result")
+        if "policy_break_count" in result:
+            policy_break_count = result["policy_break_count"]
+            if (
+                isinstance(policy_break_count, bool)
+                or not isinstance(policy_break_count, int)
+                or policy_break_count < 0
+                or policy_break_count != len(policy_breaks)
+            ):
+                raise RuntimeError("GitGuardian ggmcp returned an unrecognized scan result")
+    return scan_results
 
 
 def redact(value: Any) -> Any:
@@ -166,7 +239,9 @@ def format_scan_report(
             severity = normalize_severity(policy_break.get("severity"))
             critical = severity in {"critical", "high", "unknown"}
             raw_matches = policy_break.get("matches")
-            matches: list[Any] = raw_matches if isinstance(raw_matches, list) else [{}]
+            matches: list[Any] = (
+                raw_matches if isinstance(raw_matches, list) and raw_matches else [{}]
+            )
             for match in matches:
                 match_data = match if isinstance(match, dict) else {}
                 findings.append(

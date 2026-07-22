@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path, PurePosixPath
+from typing import Any
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Move done features to revalidate when an active change prefix overlaps a completed "
+            "feature's declared proof dependency; writes status.json only for a real overlap."
+        ),
+        epilog=(
+            "Output: prints each invalidated feature or confirms no overlap. Exit status: "
+            "0 after a valid check, or 2 for invalid input or queue data."
+        ),
+    )
+    parser.add_argument(
+        "--feature",
+        required=True,
+        help="Existing feature id whose declared repository-relative paths may change.",
+    )
+    return parser.parse_args()
+
+
+def repository_root(cwd: Path) -> Path:
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return Path(result.stdout.strip()).resolve() if result.returncode == 0 else cwd.resolve()
+
+
+def normalized_path(value: object, feature_id: str, field: str) -> PurePosixPath:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"feature {feature_id} has an empty {field} path")
+    candidate = PurePosixPath(value.strip())
+    if candidate.is_absolute() or ".." in candidate.parts or candidate.as_posix() == ".":
+        raise ValueError(
+            f"feature {feature_id} path must be a safe repository-relative file or directory prefix: {value}"
+        )
+    return candidate
+
+
+def declared_paths(item: dict[str, Any], field: str) -> list[PurePosixPath]:
+    values = item.get(field)
+    if not isinstance(values, list):
+        raise ValueError(f"feature {item.get('id', '<unknown>')} {field} must be a list")
+    feature_id = str(item.get("id", "<unknown>"))
+    return [normalized_path(value, feature_id, field) for value in values]
+
+
+def overlaps(left: PurePosixPath, right: PurePosixPath) -> bool:
+    return left == right or left in right.parents or right in left.parents
+
+
+def write_queue(path: Path, queue: dict[str, Any]) -> None:
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        dir=path.parent,
+        prefix="status.",
+        suffix=".tmp",
+        delete=False,
+    ) as handle:
+        json.dump(queue, handle, indent=2)
+        handle.write("\n")
+        temporary = Path(handle.name)
+    os.replace(temporary, path)
+
+
+def main() -> int:
+    args = parse_args()
+    root = repository_root(Path.cwd())
+    queue_path = root / "docs/features/status.json"
+    try:
+        queue = json.loads(queue_path.read_text(encoding="utf-8"))
+        features = queue.get("features")
+        if not isinstance(features, list):
+            raise ValueError("queue features must be a list")
+        matches = [
+            item for item in features if isinstance(item, dict) and item.get("id") == args.feature
+        ]
+        if len(matches) != 1:
+            raise ValueError(f"feature {args.feature} must exist exactly once")
+        active = matches[0]
+        active_paths = declared_paths(active, "files")
+        invalidated: list[tuple[str, str, str]] = []
+        for item in features:
+            if not isinstance(item, dict) or item is active or item.get("status") != "done":
+                continue
+            proof_dependencies = declared_paths(item, "revalidate_on")
+            if not proof_dependencies:
+                raise ValueError(
+                    f"done feature {item.get('id', '<unknown>')} revalidate_on must not be empty"
+                )
+            for active_path in active_paths:
+                related = next(
+                    (path for path in proof_dependencies if overlaps(active_path, path)), None
+                )
+                if related is None:
+                    continue
+                feature_id = str(item.get("id", "<unknown>"))
+                item["status"] = "revalidate"
+                item["notes"] = (
+                    f"Invalidated by {args.feature}: active change {active_path} overlaps proof "
+                    f"dependency {related}; rerun proof separately before trusting done; do not "
+                    "enter the normal build loop unless revalidation fails."
+                )
+                invalidated.append((feature_id, active_path.as_posix(), related.as_posix()))
+                break
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        print(f"invalidate_feature_status: {exc}", file=sys.stderr)
+        return 2
+
+    if invalidated:
+        write_queue(queue_path, queue)
+        for feature_id, active_path, related_path in invalidated:
+            print(f"invalidated {feature_id}: {active_path} overlaps {related_path}")
+    else:
+        print(f"no done features overlap {args.feature}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

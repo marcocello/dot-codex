@@ -1,74 +1,27 @@
 # Autonomous Execution
 
-Autonomous work is proof-satisfaction work. The loop exists to finish one feature or issue
-honestly, not to keep generating code.
+Owner: `coding-autonomous-execute`.
 
-## Runtime State
+This layer selects queue work and continues it. Per-feature procedure belongs only to `coding-feature-execute`.
 
-A Codex Goal is runtime continuation state. It does not replace:
+- One ready item per autonomous parent. One accountable parent per active feature. The default build loop ignores `revalidate` items.
+- Multiple feature parents and supporting agents may edit the same checkout concurrently. They preserve unrelated work, keep ownership prefixes narrow, and do not run competing proofs for one feature.
+- Delegate the whole item to feature execution.
+- Continue to next ready item after completion.
+- Continue local recovery while safe progress exists.
+- Block only on an exact user/external dependency.
+- Goal runtime owns continuation. Retained attempts own history.
 
-- `FEATURE.md`
-- `PROOF.md`
-- `docs/features/status.json`
-- the primary proof command
-- the target repo gate
-- `coding-feature-evaluator`
+## Separate Revalidation
 
-## Execution Loop
+Revalidation runs only when explicitly requested. Select one `revalidate` item and rerun its existing captured proof without changing implementation, setup, `FEATURE.md`, `PROOF.md`, or `proof/run.sh`. These lane-specific rules override the normal repair loop for that item.
 
-1. Select exactly one ready or repairing feature.
-2. Preflight `FEATURE.md`, `PROOF.md`, and the executable proof artifact.
-   `PROOF.md` must define a primary proof command that calls `scripts/proof_run_capture`.
-3. Mark the item `in_progress` only when the contract is implementable.
-4. Treat the preflighted contracts as the active revision.
-5. Run the primary proof.
-6. Repair the narrowest concrete failure.
-7. Rerun the failed check, then lifecycle checks.
-8. Use the evaluator before marking done.
+If proof passes, run a fresh managed evaluator. Evaluator `PASS` returns the feature to `done`. Proof or evaluator failure moves it to `ready`, where a later normal build loop may repair it. Revalidation itself does not repair, run the repository gate, consume newly ready work, or recursively revalidate overlapping features.
 
-Failed proof, gate, or evaluator output is the next work item. It is not a reason to call the
-feature done.
+On resume:
 
-## Target Repo Autofix And Suggestions
-
-For another software repo, the autonomous loop provides repo-facing behavior:
-
-- Autofix is the normal repair loop for a concrete failing proof, gate, runtime check, or evaluator result.
-- Autosuggestions are proposed next steps from captured evidence when immediate repair is not the right move.
-- Auto-improve means turning an accepted suggestion into normal repo work with its own proof lifecycle.
-
-Prefer target-repo autofix over harness changes. Prefer target-repo autosuggestions when the evidence shows a broader improvement but not a single safe code patch. Use harness evolution only when repeated evidence shows the harness itself caused or allowed the failure pattern.
-
-Use `$coding-app-improvement-review` for target-repo suggestions. `scripts/harness_review` can summarize proof bundles first, but suggestions are planning artifacts, not permission to silently broaden scope or skip proof.
-
-When a queue exists, `done` entries should include a `completion` object with:
-
-```json
-{
-  "latest_evidence": "docs/features/<feature>/proof/runs/<timestamp>"
-}
-```
-
-`scripts/validate_feature_queue --feature <id>` checks this shape and derives proof, gate, and evaluator status from the referenced bundle. `scripts/validate_feature_queue --all` performs the strict whole-queue audit.
-
-The referenced `latest_evidence` must be a serious proof bundle created by `scripts/proof_run_capture`. Bare `result.json` evidence is not enough for `done`; repeated repair attempts must include attempt metadata and `attempts.json`.
-
-## Recovery Before NEED_INPUT
-
-Before reporting `NEED_INPUT`, Codex should inspect available local paths:
-
-- proof artifacts and recent run output
-- setup docs, package scripts, Makefiles, Docker files, and repo scripts
-- browser/app automation and local app state
-- MCP/app connectors and local CLIs
-- readiness checks and diagnostics
-
-Use `NEED_INPUT` only when the remaining requirement is user-owned or external: credentials,
-safe external target, approval, unavailable service, or product decision.
-
-## Green But Broken
-
-If proof, gate, and evaluator pass but observed behavior is still broken, treat that as a
-proof-system failure.
-
-Do not keep repairing code against a weak proof. Enter contract repair, record why the active revision missed the behavior, strengthen the proof until it fails against the current implementation when practical, then resume and bind final evidence to the revised contract.
+1. Inspect the newest run directory, not merely the newest `result.json`.
+2. `attempt-start.json` without `result.json` is incomplete. Check whether the recorded capture or runner process is still active.
+3. Active process: wait or diagnose it; do not start a competing proof.
+4. Dead process: retain the incomplete attempt, treat it as interrupted, diagnose available output, and create a new captured attempt.
+5. Never fall back to an older PASS while the newer attempt is unresolved.

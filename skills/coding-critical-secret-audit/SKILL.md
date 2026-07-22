@@ -12,41 +12,46 @@ Purpose: scan the current checkout for exposed credentials without putting raw s
 1. Confirm the working directory is the repository to audit:
    - `git rev-parse --show-toplevel`
    - `git status --short`
-2. Prefer the bundled helper:
-   - `python skills/coding-critical-secret-audit/scripts/scan_current_checkout.py --root <repo-root>`
-3. If the helper cannot be used, reproduce its file-selection rule exactly:
+2. Prefer the bundled lifecycle runner:
+   - `python skills/coding-critical-secret-audit/scripts/run_gitguardian_audit.py --root <repo-root>`
+   - It uses `GGMCP_URL` when explicitly configured; otherwise it provisions an ephemeral loopback server through `uvx`.
+   - It requires `GITGUARDIAN_PERSONAL_ACCESS_TOKEN`. Missing authentication blocks the explicit audit; it is never reported as a skip or gate result.
+3. If a native GitGuardian MCP tool is already callable, invoke `scan_secrets` directly with the same scope and redaction rules.
+4. If neither path can be used, reproduce the bundled scanner's file-selection rule exactly:
    - `git ls-files --cached --others --exclude-standard -z`
    - Include tracked and untracked non-ignored files from the current checkout.
    - Skip ignored files, deleted paths, directories, binary files, and oversized files.
-4. Send file contents to GitGuardian ggmcp `scan_secrets`, not to the user-facing answer.
-5. Report only redacted metadata:
+5. Send file contents to GitGuardian ggmcp `scan_secrets`, not to the user-facing answer.
+6. Report only redacted metadata:
    - file path
    - detector or policy-break type
    - line range
    - severity or `unknown`
    - remediation action
-6. Do not print raw secret values, matched substrings, request payloads, or file contents.
+7. Do not print raw secret values, matched substrings, request payloads, or file contents.
 
 ## GitGuardian ggmcp
 
-Use GitGuardian/ggmcp as the scanner. The current ggmcp server exposes `scan_secrets`, whose arguments are:
+Use GitGuardian/ggmcp as the scanner. The current Streamable HTTP server exposes `scan_secrets` through JSON-RPC `tools/call` at `/mcp`, whose tool arguments are:
 
 ```json
 {
-  "documents": [
-    {"document": "<file content>", "filename": "path/from/repo"}
-  ]
+  "params": {
+    "documents": [
+      {"document": "<file content>", "filename": "path/from/repo"}
+    ]
+  }
 }
 ```
 
-The helper calls the HTTP tool endpoint:
+The skill-owned runner installs or reuses ggmcp through the official uvx distribution path, starts a managed loopback Streamable HTTP server when `GGMCP_URL` is unset, calls the checkout scanner, and terminates the server. `scripts/gate` never invokes this workflow.
 
 ```bash
-ENABLE_LOCAL_OAUTH=false MCP_PORT=8000 MCP_HOST=127.0.0.1 \
+ENABLE_LOCAL_OAUTH=false MULTI_TENANCY_ENABLED=true MCP_PORT=8000 MCP_HOST=127.0.0.1 \
   uvx --from git+https://github.com/GitGuardian/ggmcp.git gg-mcp-server
 ```
 
-Then, in another shell:
+An explicitly managed service remains supported:
 
 ```bash
 GGMCP_URL=http://127.0.0.1:8000 \
@@ -54,7 +59,7 @@ GGMCP_URL=http://127.0.0.1:8000 \
   python skills/coding-critical-secret-audit/scripts/scan_current_checkout.py --root <repo-root>
 ```
 
-If a native GitGuardian MCP tool is already callable in the active Codex session, it is acceptable to call `scan_secrets` directly. Keep the same file-selection and redaction rules.
+The runner prints controlled provisioning, readiness, and audit status only. It suppresses raw installer/server output and never passes the PAT to the managed server environment or process arguments.
 
 ## Severity Rules
 
@@ -75,7 +80,7 @@ Do not edit files automatically unless the user asked for remediation, because r
 
 ## Failure Handling
 
-- If ggmcp is unavailable, say the scan is blocked and provide the exact server command above.
-- If authentication is missing, say a GitGuardian token or OAuth-authenticated ggmcp session is required.
+- If ggmcp or `uvx` is unavailable, say the explicit audit is blocked and report the runner's actionable error.
+- If authentication is missing, return `NEED_INPUT` for a GitGuardian PAT or use an already authenticated native MCP session. Do not downgrade the requested audit to success or skip.
 - If the scan fails for size or rate limits, reduce `--batch-size` or `--max-bytes` and retry.
 - If findings are present, do not claim the checkout is safe.

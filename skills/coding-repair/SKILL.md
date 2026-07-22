@@ -1,115 +1,78 @@
 ---
 name: coding-repair
-description: "Repair a clear defect or failing proof, gate, test, typecheck, lint, build, or evaluator result with the smallest verified change."
-metadata:
-  short-description: Disciplined issue and failing-check repair workflow
+description: "Fix a known defect or concrete failure with the smallest verified change."
 ---
 
 # Repair
 
-Purpose: smallest correct fix, verified.
+Purpose: identify the owning failure quickly, make the smallest correct change, and verify it at the narrow boundary before returning to the applicable completion lane.
 
-## Default
-- Clear issue/failing check: proceed.
-- Unclear expected behavior: ask before coding.
-- Inherit the assurance lane selected under `AGENTS.md`; finding one matching `FEATURE_DIR` promotes the repair to `tracked`.
+## Entry
+- Clear issue, failing command, or evaluator finding: proceed.
+- Unclear expected behavior: use `coding-feature-spec`; ask the user only when a material choice cannot be inferred safely.
+- Inherit the assurance lane from `AGENTS.md`.
+- Exactly one owning `FEATURE_DIR`: read its contracts and use the tracked lifecycle.
+- Multiple plausible owners: ask one focused ownership question.
+- No owner for an isolated defect: use a focused local regression rather than creating ceremony.
 
-## Fast path for concrete failures
-- For a specific proof, gate, typecheck, lint, build, or evaluator failure: reproduce,
-  patch smallest owning path, rerun failing check, then lifecycle checks from `AGENTS.md`.
-- Use the diagnostic workflow below only when behavior, root cause, or owner is unclear.
+## Fast Path
+For a concrete failure, diagnose in this order:
+
+1. Read the latest `result.json` or exact failing command result.
+2. Read the relevant tail of `stderr.txt`; inspect stdout only when it carries the useful signal.
+3. Classify the owner: implementation, proof, setup/environment, gate/tooling, or external dependency.
+4. Reproduce the narrow failure when cheap and safe.
+5. Inspect the owning code/configuration and adjacent tests only.
+6. Make the smallest effective repair without weakening accepted behavior or proof.
+7. Rerun the narrow check.
+8. For tracked/autonomous work, rerun the full proof through capture and retain the attempt.
+
+Same failure twice: change tactic or widen inspection. Do not repeat the same patch/retry loop without new evidence.
 
 ## Workflow
-1. Read context
-   - Read `docs/INDEX.md` or `docs/README.md` if present.
-   - Otherwise scan relevant `docs/`.
+1. Establish root cause
+   - Follow the real call path: entrypoint, parsing, routing, owner module, persistence, network, runtime boundary.
+   - Quote exact evidence and state confidence: `clear`, `likely`, or `unknown`.
+   - Unknown cause: add the smallest diagnostic before production edits.
+   - Missing credentials, mounts, services, provider setup, or required configuration are failures; do not silently convert them into success or no-op behavior.
 
-2. Route through feature proof when possible
-   - Before fixing, inspect `docs/features/*/FEATURE.md` for one clear matching feature
-     unless user supplied `FEATURE_DIR`.
-   - If exactly one feature matches, treat that `FEATURE_DIR` as in scope; read
-     `FEATURE.md` and `PROOF.md`; run existing primary proof when practical.
-   - If proof misses the bug, extend that feature proof package with a focused failing regression before implementation.
-   - Use `coding-proof-author` when matching `PROOF.md` is missing, vague, stale, or cannot
-     host the regression cleanly.
-   - Multiple material matches: ask.
-   - If no feature clearly matches, do not create `FEATURE.md` by default; create smallest
-     local regression test/proof near affected code.
-   - Create/update `FEATURE.md` and `PROOF.md` only when expected behavior itself needs
-     durable definition or product behavior changes.
+2. Locate existing logic
+   - Search for the owning function/component before adding code.
+   - Reuse and extend existing logic; avoid parallel helpers or duplicated policy.
+   - Read adjacent tests and architecture constraints.
 
-3. Reproduce/root cause
-   - Quote exact errors/failing tests when available.
-   - Follow the real call path before deciding the fix: entrypoint, parsing, routing,
-     owner module, persistence, network, runtime boundary.
-   - Missing credentials, secrets, tokens, provider setup, deployment mounts, or required
-     configuration are root-cause configuration failures; do not convert them into
-     success, skipped, fallback, or no-op behavior unless the feature contract explicitly
-     defines that state as optional.
-   - Identify the root cause and state confidence: `clear`, `likely`, `unknown`.
-   - Unknown root cause: add smallest diagnostic/repro before production edit.
-   - Prefer current source, executable proof, runtime evidence.
+3. Establish red
+   - Add or update the smallest regression that proves the defect.
+   - Confirm it fails for the intended reason when practical.
+   - Do not use an exact source string assertion for runtime behavior unless source shape is the contract.
 
-4. Runtime evidence
-   - Reproducible local issue: check app/runtime logs before code.
-   - Docker: bounded recent logs.
-   - Running dev/test server: inspect terminal output.
-   - Browser issue: use Browser/in-app browser when available; inspect console/network.
-   - Capture relevant lines only. Redact secrets.
+4. Implement green
+   - Keep the edit local.
+   - Avoid refactoring unrelated paths.
+   - Do not catch and downgrade required-runtime failures.
+   - For semantic behavior, repair the structured invariant at the owning boundary rather than adding phrases, language gates, or tool hiding.
 
-5. Locate existing logic
-   - Search existing functions/components.
-   - Reuse/extend; avoid duplicate logic.
-   - Read adjacent tests and ownership-boundary code.
+## Runtime Evidence
+- Local application issue: inspect bounded recent runtime output before code.
+- Docker/service issue: inspect relevant container/service state and recent logs.
+- Browser issue: inspect visible behavior, console, and network when available.
+- Database/provider issue: inspect persisted or provider read-back safely.
+- Environment issue: use repository readiness/setup commands and `coding-prepare-environment`.
+- Capture relevant lines only; redact secrets and customer data.
 
-6. Red
-   - Add/update smallest regression.
-   - If `FEATURE_DIR` in scope, ensure `PROOF.md` covers regression or use
-     `coding-proof-author`.
-   - Run narrow command; confirm failure.
+## Contract Boundary
+- Missing behavior or changed goal: stop coding against the old contract; return to the feature decision flow.
+- Changed proof strength, fake boundary, or known gap: stop coding against the old proof; return to the proof decision flow.
+- Mechanical runner, fixture, or setup repair with unchanged proof meaning: note why and rerun.
 
-7. Green
-   - Local fix only.
-   - Avoid refactor unless required for correctness.
-   - No unrelated code.
-   - Do not hide required-runtime failures by catching and downgrading them. Fix the
-     missing credential/configuration supply path, fail fast with a clearer diagnostic,
-     or report the exact user-owned requirement.
-   - Semantic/domain behavior: do not repair by adding ad hoc natural-language keyword lists,
-     phrase gates, or tool hiding. Put invariant at owning boundary: parser schema, service
-     validation, tool contract, persistence check, provider read-back, postcondition.
-   - Rerun same test; confirm pass.
+## Verification
+- `lightweight`: focused regression or narrow check; add broader checks only when risk warrants.
+- `tracked`: captured realistic proof, useful gate or skip reason, fresh evaluator.
+- `autonomous`: same tracked checks plus queue continuation.
+- Re-check the runtime/browser/provider signal that exposed the issue when relevant.
+- Evaluator `FAIL`: repair the specific finding, rerun full proof/gate, then use a new evaluator.
+- Evaluator `NEED_INPUT`: ask only for the exact dependency after local recovery.
+- During autonomous work, return control to `coding-autonomous-execute` until proof passes or its terminal condition is met.
 
-8. Verify/finalize
-   - Add verification appropriate to touched surface.
-   - Re-check logs/browser signals that exposed issue.
-   - Run relevant checks or list exact unrun commands.
-   - `lightweight`: require the focused regression or narrow check; do not require the evaluator or full repo gate unless the touched surface makes them relevant.
-   - `tracked` or `autonomous`: require the primary proof, gate, and `coding-feature-evaluator` before completion.
-   - Evaluator `FAIL`: repair input. Evaluator `NEED_INPUT`: exact user-owned input after
-     recovery.
-   - If a Codex Goal is active, keep it open until regression, broader check, and evaluator
-     `PASS` prove completion.
-   - If `FEATURE_DIR` in scope, run primary proof command from `PROOF.md`.
-   - Do not commit/push/open PR/update changelog/close issues unless explicitly asked.
-
-9. Escalate
-   - If regression/narrow/broader check still fails after first focused fix, follow
-     autonomous escalation policy in `AGENTS.md`.
-   - During explicit autonomous execution, continue through `coding-autonomous-execute`
-     while proof remains unsatisfied instead of returning terminal failure.
-
-## Rules
-- Reproduce or name missing evidence before editing.
-- Root cause first.
-- Local evidence before local app fixes.
-- No speculative cleanup.
-- Invariant first; examples are not behavior source of truth unless lexical search.
-- Surgical change only.
-- Connect fix to regression/proof.
-- Follow autonomous escalation policy in `AGENTS.md`; no scope broadening, no orchestrator.
-
-## Output
-- Report using the `AGENTS.md` short receipt format for completed feature or issue work.
-- Outcome, changed surface, verification, blockers.
-- Include relevant Docker/runtime/browser evidence, or why not applicable.
+## Handoff
+Report outcome, root cause, changed surface, focused regression, broader proof/gate/evaluator when applicable, and blockers. Keep raw logs and internal attempts out unless needed for diagnosis or audit.

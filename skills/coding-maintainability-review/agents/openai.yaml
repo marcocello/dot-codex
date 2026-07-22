@@ -1,4 +1,0 @@
-interface:
-  display_name: "CODING | Maintainability Review"
-  short_description: "Deep audit of function quality, verbosity, and maintainability"
-  default_prompt: "Use $coding-maintainability-review to assess this codebase for verbosity, tangled responsibilities, and prioritized lean refactors."

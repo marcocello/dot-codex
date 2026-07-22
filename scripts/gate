@@ -1,134 +1,330 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+from __future__ import annotations
 
-ROOT="$(pwd)"
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path, PurePosixPath
 
-fail() {
-  local msg="$1"
-  echo "GATE: FAIL: $msg" >&2
-  exit 1
-}
 
-pass() {
-  echo "GATE: PASS"
-}
+PROFILES = ("python", "react", "wordpress", "harness", "other")
+LOCAL_DIRS = {".venv", "node_modules", "vendor", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+SKILL_KEYS = {"name", "description", "license", "allowed-tools", "metadata"}
+SKILL_NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+SKILL_REF = re.compile(r"(?<![A-Za-z0-9_-])((?:coding|prospecting)-[a-z0-9-]+)")
+SECRET_PATTERNS = tuple(
+    re.compile(value)
+    for value in (
+        r"\bctx7sk-[A-Za-z0-9._-]+\b",
+        r"\bsk-[A-Za-z0-9][A-Za-z0-9_-]{20,}\b",
+        r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b",
+        r"\bAKIA[0-9A-Z]{16}\b",
+    )
+)
+class Gate:
+    def __init__(self, root: Path) -> None:
+        self.root = root.resolve()
+        self.failures: list[tuple[str, str, str, str]] = []
 
-# Deterministic single-line SHA (informational only)
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  HEAD_SHA="$(git rev-parse --verify HEAD 2>/dev/null || echo "no-git")"
-else
-  HEAD_SHA="no-git"
-fi
+    def fail(self, code: str, message: str, fix: str, details: str = "") -> None:
+        self.failures.append((code, message, fix, details.strip()))
 
-echo "== gate: repo=$ROOT sha=$HEAD_SHA =="
+    def run(self, command: list[str], code: str, label: str, fix: str, env: dict[str, str] | None = None) -> bool:
+        result = subprocess.run(command, cwd=self.root, env=env, capture_output=True, text=True, check=False)
+        output = "\n".join(part.strip() for part in (result.stdout, result.stderr) if part.strip())
+        if result.returncode:
+            self.fail(code, f"{label} failed with exit {result.returncode}", fix, "\n".join(output.splitlines()[-20:]))
+            return False
+        if output:
+            print(output)
+        print(f"{label}: PASS")
+        return True
 
-# Detect python anywhere (monorepo-ish)
-HAS_PY=0
-if find . -maxdepth 6 \
-  \( -name "pyproject.toml" -o -name "requirements.txt" -o -name "requirements-dev.txt" -o -name "poetry.lock" \) \
-  2>/dev/null | head -n 1 | grep -q .; then
-  HAS_PY=1
-fi
+    def profile(self, name: str, check) -> None:
+        before = len(self.failures)
+        check(self)
+        if len(self.failures) == before:
+            print(f"PROFILE {name}: PASS")
 
-if [[ "$HAS_PY" -eq 1 ]]; then
-  echo "== gate: python detected =="
 
-  APP_DIR=""
-  for candidate in app backend/app; do
-    if [[ -d "$candidate" ]]; then
-      APP_DIR="$candidate"
-      break
-    fi
-  done
-  [[ -n "$APP_DIR" ]] || fail "Expected backend code under ./app or ./backend/app (missing directory)"
+def arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run read-only repository checks and report actionable failures.",
+        epilog="Exit status: 0 when checks pass, 1 for check failures, or 2 for an invalid repository root.",
+    )
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=Path.cwd(),
+        help="Repository root to inspect; defaults to the current directory.",
+    )
+    parser.add_argument(
+        "--profile",
+        action="append",
+        choices=PROFILES,
+        default=[],
+        help="Check profile to run; repeat for multiple profiles. Auto-detected when omitted.",
+    )
+    return parser.parse_args()
 
-  # Catch common failure: pip installed packages into repo root (fastapi/, pytest/, etc.)
-  if [[ -d "fastapi" || -d "pytest" ]]; then
-    fail "Detected top-level package directories (e.g., fastapi/, pytest/). Dependencies must be installed inside .venv only."
-  fi
 
-  if [[ ! -x ".venv/bin/python" ]]; then
-    fail "Python detected but .venv/bin/python missing at repo root. Run: $HOME/.codex/scripts/ensure_venv (do NOT delete .venv)."
-  fi
+def git(gate: Gate, *args: str) -> subprocess.CompletedProcess[str] | None:
+    probe = subprocess.run(["git", "rev-parse", "--is-inside-work-tree"], cwd=gate.root, capture_output=True, text=True, check=False)
+    if probe.returncode:
+        return None
+    return subprocess.run(["git", *args], cwd=gate.root, capture_output=True, text=True, check=False)
 
-  PY=".venv/bin/python"
 
-  "$PY" -c "import ruff" >/dev/null 2>&1 || fail "ruff not installed in .venv. Run: $HOME/.codex/scripts/ensure_venv"
-  "$PY" -m ruff format --check .
-  "$PY" -m ruff check .
+def common(gate: Gate) -> None:
+    for name in ("AGENTS.md", ".gitignore"):
+        if not (gate.root / name).is_file():
+            gate.fail("common.structure", f"missing {name}", f"Create {name} at the repository root.")
+    if not any(path.is_file() for path in gate.root.glob("README*")):
+        gate.fail("common.structure", "missing README", "Create README.md at the repository root.")
+    tracked = git(gate, "ls-files", "-z")
+    if tracked is None or tracked.returncode:
+        return
+    forbidden: list[str] = []
+    for value in filter(None, tracked.stdout.split("\0")):
+        path = PurePosixPath(value)
+        secret = path.name == ".env" or (
+            path.name.startswith(".env.") and not path.name.endswith((".example", ".sample", ".template"))
+        )
+        if secret or any(part in LOCAL_DIRS for part in path.parts):
+            forbidden.append(value)
+    if forbidden:
+        gate.fail(
+            "common.tracked",
+            f"tracked local or secret-bearing artifacts: {', '.join(sorted(forbidden))}",
+            "Untrack these paths and keep them ignored; do not delete required local data.",
+        )
 
-  "$PY" -c "import mypy" >/dev/null 2>&1 || fail "mypy not installed in .venv. Install with: .venv/bin/python -m pip install mypy"
-  MYPY_TARGETS=()
-  for target in "$APP_DIR" scripts tests lovejoy.py press.py; do
-    if [[ -f "$target" ]]; then
-      MYPY_TARGETS+=("$target")
-      continue
-    fi
-    if [[ -d "$target" ]] && find "$target" -type f \( -name "*.py" -o -name "*.pyi" \) | head -n 1 | grep -q .; then
-      MYPY_TARGETS+=("$target")
-    fi
-  done
-  [[ "${#MYPY_TARGETS[@]}" -gt 0 ]] || fail "mypy target set is empty; expected python files under app/ or backend/app, scripts/, tests/, or top-level tools."
-  "$PY" -m mypy "${MYPY_TARGETS[@]}"
 
-  "$PY" -c "import pytest" >/dev/null 2>&1 || fail "pytest not installed in .venv"
-  # Ignore embedded worktrees/snapshots that may contain unrelated repos and dependencies.
-  "$PY" -m pytest -q \
-    --ignore=worktrees \
-    --ignore=archived_sessions \
-    --ignore=.venv \
-    --ignore=vendor_imports \
-    --ignore=tmp
+def diff_hygiene(gate: Gate) -> None:
+    if git(gate, "status", "--porcelain") is None:
+        print("GIT diff: SKIPPED (not a Git repository)")
+        return
+    before = len(gate.failures)
+    for label, args in (("unstaged", ("diff", "--check")), ("staged", ("diff", "--cached", "--check"))):
+        result = git(gate, *args)
+        if result is not None and result.returncode:
+            gate.fail(
+                "git.diff",
+                f"{label} diff has whitespace errors",
+                "Remove the reported whitespace errors and rerun scripts/gate.",
+                result.stdout + result.stderr,
+            )
+    if len(gate.failures) == before:
+        print("GIT diff: PASS")
 
-  # Run dependency audit only when python dependency manifests changed.
-  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    CHANGED_FILES="$(
-      {
-        git diff --name-only HEAD
-        git ls-files --others --exclude-standard
-      } | sort -u
-    )"
-  else
-    CHANGED_FILES=""
-  fi
 
-  if echo "$CHANGED_FILES" | grep -Eq '^(app/requirements(-dev)?\.txt|backend/app/requirements(-dev)?\.txt|requirements(-dev)?\.txt|poetry\.lock|uv\.lock)$'; then
-    "$PY" -c "import pip_audit" >/dev/null 2>&1 || fail "pip-audit not installed in .venv. Install with: .venv/bin/python -m pip install pip-audit"
-    echo "== gate: pip-audit =="
-    # Audit current environment because manifest changes imply dependency risk changes.
-    "$PY" -m pip_audit
-  else
-    echo "INFO: no python dependency manifest changes; skipping pip-audit"
-  fi
-fi
+def python_manifests(root: Path) -> list[Path]:
+    names = (
+        "pyproject.toml",
+        "requirements.txt",
+        "requirements-dev.txt",
+        "backend/pyproject.toml",
+        "backend/requirements.txt",
+        "backend/app/requirements.txt",
+    )
+    return [root / name for name in names if (root / name).is_file()]
 
-# --- Node (repo root package.json only; deterministic) ---
-if [[ -f "package.json" ]]; then
-  echo "== gate: node =="
-  command -v node >/dev/null || fail "node not found but package.json exists"
 
-  PM="npm"
-  command -v pnpm >/dev/null && PM="pnpm"
-  command -v yarn >/dev/null && PM="yarn"
+def python_profile(gate: Gate) -> None:
+    if not python_manifests(gate.root):
+        gate.fail("python.structure", "no Python project manifest found", "Add the repository-owned pyproject.toml or requirements file.")
+    roots = [gate.root / name for name in ("src", "app", "backend", "scripts", "tests")]
+    if not any(path.is_dir() and next(path.rglob("*.py"), None) for path in roots):
+        gate.fail("python.structure", "no Python source found", "Add source under src/, app/, backend/, scripts/, or tests/.")
+    python = gate.root / ".venv/bin/python"
+    if not python.is_file() or not os.access(python, os.X_OK):
+        gate.fail(
+            "python.environment",
+            ".venv/bin/python is missing or not executable",
+            "Run python3 -m venv .venv, then install the repository-declared dependencies.",
+        )
+    else:
+        gate.run([str(python), "--version"], "python.environment", "PYTHON runtime", "Repair the repo-local .venv.")
 
-  $PM -s run lint
 
-  # Only run tests if the script exists; if it exists, failure is a gate failure.
-  if node -e "const p=require('./package.json'); process.exit(p.scripts && p.scripts.test ? 0 : 1)"; then
-    $PM -s run test
-  else
-    echo "INFO: no test script in package.json; skipping node tests"
-  fi
+def node_manifests(root: Path) -> list[Path]:
+    candidates = (root / "package.json", root / "frontend/package.json", root / "frontend/app/package.json")
+    return [path for path in candidates if path.is_file()]
 
-  $PM -s run build
-fi
 
-# Terraform (simple)
-if ls *.tf >/dev/null 2>&1 || [[ -d "infra" ]] || [[ -d "terraform" ]]; then
-  echo "== gate: terraform detected =="
-  command -v terraform >/dev/null || fail "terraform not found"
-  terraform fmt -check -recursive
-  terraform validate
-fi
+def react_profile(gate: Gate) -> None:
+    manifests = node_manifests(gate.root)
+    if not manifests:
+        gate.fail("react.structure", "package.json is missing", "Add the project-owned package.json.")
+        return
+    root_manifest = gate.root / "package.json"
+    if root_manifest in manifests:
+        try:
+            if json.loads(root_manifest.read_text(encoding="utf-8")).get("workspaces"):
+                manifests = [root_manifest]
+        except (OSError, json.JSONDecodeError, AttributeError):
+            pass
+    locks = {"package-lock.json": "npm", "pnpm-lock.yaml": "pnpm", "yarn.lock": "yarn", "bun.lock": "bun", "bun.lockb": "bun"}
+    for manifest in manifests:
+        present = [name for name in locks if (manifest.parent / name).is_file()]
+        if len(present) != 1:
+            gate.fail("react.lockfile", f"{manifest.parent} has {len(present)} supported lockfiles", "Keep exactly one package-manager lockfile.")
+            continue
+        try:
+            package = json.loads(manifest.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            gate.fail("react.manifest", f"cannot parse {manifest}: {exc}", "Repair package.json JSON syntax.")
+            continue
+        declared = str(package.get("packageManager", "")).split("@", 1)[0]
+        if declared and declared != locks[present[0]]:
+            gate.fail("react.lockfile", f"packageManager {declared} conflicts with {present[0]}", "Use the matching lockfile.")
+        if not (manifest.parent / "node_modules").is_dir():
+            gate.fail("react.environment", f"node_modules is missing beside {manifest}", f"Run the repository {locks[present[0]]} install command.")
+    node = shutil.which("node")
+    if node:
+        gate.run([node, "--version"], "react.environment", "NODE runtime", "Repair the selected Node runtime.")
+    else:
+        gate.fail("react.environment", "node is unavailable on PATH", "Enable the repository-required Node runtime.")
 
-pass
+
+def wordpress_profile(gate: Gate) -> None:
+    if not (gate.root / "wp-config.php").exists() and not (gate.root / "wp-content").exists():
+        gate.fail("wordpress.structure", "no WordPress project markers found", "Use this profile only for WordPress repositories.")
+    if (gate.root / "composer.json").is_file():
+        if not (gate.root / "composer.lock").is_file():
+            gate.fail("wordpress.lockfile", "composer.lock is missing", "Generate and commit the Composer lockfile.")
+        if not (gate.root / "vendor").is_dir():
+            gate.fail("wordpress.environment", "vendor is missing", "Run the repository Composer install command.")
+    php = shutil.which("php")
+    if php:
+        gate.run([php, "--version"], "wordpress.environment", "PHP runtime", "Repair the selected PHP runtime.")
+    else:
+        gate.fail("wordpress.environment", "php is unavailable on PATH", "Enable the repository-required PHP runtime.")
+
+
+def skill_data(gate: Gate, path: Path, yaml):
+    text = path.read_text(encoding="utf-8")
+    match = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+    if match is None:
+        gate.fail("harness.skill", f"{path.relative_to(gate.root)} has invalid frontmatter", "Add valid YAML frontmatter.")
+        return None
+    try:
+        data = yaml.safe_load(match.group(1))
+    except yaml.YAMLError as exc:
+        gate.fail("harness.skill", f"{path.relative_to(gate.root)} YAML is invalid: {exc}", "Repair the skill frontmatter.")
+        return None
+    if not isinstance(data, dict):
+        gate.fail("harness.skill", f"{path.relative_to(gate.root)} frontmatter is not a mapping", "Use a YAML mapping.")
+        return None
+    return data
+
+
+def harness_lint(gate: Gate) -> None:
+    try:
+        import yaml  # type: ignore[import-untyped]
+    except ImportError:
+        gate.fail("harness.environment", "PyYAML is unavailable", "Install PyYAML for the Python running scripts/gate.")
+        return
+    skills = sorted((gate.root / "skills").rglob("SKILL.md"))
+    names: set[str] = set()
+    operational = [gate.root / "AGENTS.md", gate.root / "README.md", gate.root / "config.template.toml"]
+    for path in skills:
+        data = skill_data(gate, path, yaml)
+        if data is None:
+            continue
+        local = not path.relative_to(gate.root / "skills").parts[0].startswith(".")
+        unexpected = set(data) - SKILL_KEYS
+        name, description = data.get("name"), data.get("description")
+        if unexpected:
+            gate.fail("harness.skill", f"{path.relative_to(gate.root)} has unexpected keys: {sorted(unexpected)}", "Keep supported frontmatter fields only.")
+        if not isinstance(name, str) or not SKILL_NAME.fullmatch(name) or len(name) > 64 or name != path.parent.name:
+            gate.fail("harness.skill", f"{path.relative_to(gate.root)} has invalid name {name!r}", "Use the hyphen-case directory name.")
+            continue
+        names.add(name)
+        if not isinstance(description, str) or not description.strip() or (local and len(description.split()) > 32):
+            gate.fail("harness.skill", f"{path.relative_to(gate.root)} has an invalid description", "Use 1-32 descriptive words.")
+        agent = path.parent / "agents/openai.yaml"
+        if agent.is_file():
+            operational.append(agent)
+            try:
+                prompt = yaml.safe_load(agent.read_text(encoding="utf-8")).get("interface", {}).get("default_prompt", "")
+            except (OSError, yaml.YAMLError, AttributeError) as exc:
+                gate.fail("harness.agent", f"{agent.relative_to(gate.root)} is invalid: {exc}", "Repair agents/openai.yaml.")
+            else:
+                if local and f"${name}" not in str(prompt):
+                    gate.fail("harness.agent", f"{agent.relative_to(gate.root)} does not reference ${name}", "Reference the owning skill.")
+        operational.append(path)
+    for path in operational:
+        if path.is_file():
+            for reference in SKILL_REF.findall(path.read_text(encoding="utf-8")):
+                if reference not in names and reference not in {"coding-agent", "coding-agents", "coding-oriented"}:
+                    gate.fail("harness.reference", f"{path.relative_to(gate.root)} references unknown skill {reference}", "Repair the stale reference.")
+    template = gate.root / "config.template.toml"
+    if template.is_file() and any(pattern.search(template.read_text(encoding="utf-8")) for pattern in SECRET_PATTERNS):
+        gate.fail("harness.secret", "config.template.toml contains a possible secret", "Use a non-secret placeholder.")
+
+
+def harness_profile(gate: Gate) -> None:
+    for name in ("skills", "tests/unit"):
+        if not (gate.root / name).is_dir():
+            gate.fail("harness.structure", f"missing {name}", f"Restore {name}.")
+    if not (gate.root / "config.template.toml").is_file():
+        gate.fail("harness.structure", "missing config.template.toml", "Restore the checked template.")
+    before = len(gate.failures)
+    harness_lint(gate)
+    if len(gate.failures) == before:
+        print("HARNESS lint: PASS")
+    python = gate.root / ".venv/bin/python"
+    if not python.is_file() or not os.access(python, os.X_OK):
+        gate.fail("harness.environment", ".venv/bin/python is missing", "Prepare the repo-local Python environment.")
+    elif len(gate.failures) == before:
+        env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
+        gate.run(
+            [str(python), "-m", "pytest", "tests/unit", "-q", "-p", "no:cacheprovider"],
+            "harness.tests",
+            "HARNESS tests",
+            "Repair the failing unit test.",
+            env,
+        )
+
+
+def discover(root: Path) -> list[str]:
+    profiles: list[str] = []
+    profiles += ["python"] if python_manifests(root) else []
+    profiles += ["react"] if node_manifests(root) else []
+    profiles += ["wordpress"] if (root / "wp-config.php").exists() or (root / "wp-content").exists() else []
+    profiles += ["harness"] if all((root / name).exists() for name in ("skills", "tests/unit", "config.template.toml")) else []
+    return profiles or ["other"]
+
+
+def main() -> int:
+    args = arguments()
+    gate = Gate(args.root)
+    if not gate.root.is_dir():
+        print(f"GATE: FAIL: repository root does not exist: {gate.root}", file=sys.stderr)
+        return 2
+    profiles = list(dict.fromkeys(args.profile or discover(gate.root)))
+    print(f"== gate: repo={gate.root} profiles={','.join(profiles)} ==")
+    gate.profile("common", common)
+    checks = {"python": python_profile, "react": react_profile, "wordpress": wordpress_profile, "harness": harness_profile, "other": lambda gate: None}
+    for profile in profiles:
+        gate.profile(profile, checks[profile])
+    diff_hygiene(gate)
+    if not gate.failures:
+        print("GATE: PASS")
+        return 0
+    for code, message, fix, details in gate.failures:
+        print(f"FAIL [{code}]: {message}", file=sys.stderr)
+        if details:
+            print(details, file=sys.stderr)
+        print(f"Fix: {fix}", file=sys.stderr)
+    print(f"GATE: FAIL ({len(gate.failures)} issue(s))", file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

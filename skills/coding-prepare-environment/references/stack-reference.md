@@ -107,10 +107,9 @@ Setup:
 
 1. Ensure `.venv/` exists at repo root when Python is detected.
 2. Never delete `.venv/`. Repair incrementally.
-3. If `$HOME/.codex/scripts/ensure_venv` exists, run it first.
-4. Otherwise create the venv with `python3 -m venv .venv`.
-5. Upgrade packaging only when needed by the repo: `.venv/bin/python -m pip install -U pip`.
-6. Install dependencies with the repo's chosen mechanism:
+3. Create the venv with `python3 -m venv .venv` when missing.
+4. Upgrade packaging only when needed by the repo: `.venv/bin/python -m pip install -U pip`.
+5. Install dependencies with the repo's chosen mechanism:
    - `backend/requirements.txt`: `.venv/bin/python -m pip install -r backend/requirements.txt`
    - `backend/app/requirements.txt`: `.venv/bin/python -m pip install -r backend/app/requirements.txt`
    - `requirements.txt`: `.venv/bin/python -m pip install -r requirements.txt`

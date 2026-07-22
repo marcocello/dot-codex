@@ -1,9 +1,6 @@
 interface:
   display_name: "CODING | Feature Queue"
-  short_description: "Maintain docs/features/status.json for autonomous feature progress."
-  default_prompt: >-
-    Use the $coding-feature-queue skill to create, update, or inspect docs/features/status.json. Keep
-    FEATURE.md authoritative, select the next repairing or ready feature by priority, and mark
-    progress only after checks, recovery attempts, and evaluator results justify it.
+  short_description: "Maintain the small feature queue."
+  default_prompt: "Use $coding-feature-queue. Keep draft, ready, revalidate, blocked, and done distinct; default builds select ready while explicit proof-only revalidation handles revalidate."
 policy:
   allow_implicit_invocation: true

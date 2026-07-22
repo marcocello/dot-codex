@@ -38,13 +38,15 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 5. Prepare the minimum environment needed for the current task.
 6. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
 7. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
-8. Run the narrowest setup verification available, then report:
+8. Run `scripts/gate` with the applicable explicit profiles when the repository provides it. When diagnosing an incomplete environment, it may run before setup and must rerun after each materially different setup or repair attempt. Treat its output as read-only diagnosis; never repeat an unchanged failing command.
+9. Run the narrowest repository-native dependency or smoke check available; gate presence checks alone do not prove dependency health. Then report:
    - stacks detected
    - files created or changed
    - `.gitignore` status and whether it follows the whitelist pattern
    - commands run
    - remaining blockers
    - exact command prefix future skills should use
+   - gate profiles used and remaining gate failures
    - dev server command future run-task skills should use, when obvious
 
 ## Selection Rules

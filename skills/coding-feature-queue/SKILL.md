@@ -1,18 +1,16 @@
 ---
 name: coding-feature-queue
-description: "Maintain docs/features/status.json when creating multiple features, selecting the next item, recording progress, or executing a feature queue autonomously."
-metadata:
-  short-description: Feature status queue for autonomous runs
+description: "Maintain readiness, overlap revalidation, blocking, and completion in docs/features/status.json."
 ---
 
 # Feature Queue
 
-Purpose: provide durable progress for autonomous feature execution without creating a workflow engine. `FEATURE.md` and `PROOF.md` remain the authoritative feature contracts.
+Purpose: provide a durable progress index for feature work. `FEATURE.md` and `PROOF.md` remain authoritative; the queue never stores behavior, proof details, receipts, or progress calculations.
 
 ## File
-Use `docs/features/status.json`.
+Use `docs/features/status.json` at the repository root.
 
-Do not use the queue as a workflow engine. It is only a progress index that points to authoritative feature directories.
+Create it only when the repository has multiple tracked features, autonomous queue work, or a durable need to distinguish draft/ready/revalidate/blocked/done. Do not create a queue for one isolated lightweight fix.
 
 ## Schema
 ```json
@@ -21,62 +19,82 @@ Do not use the queue as a workflow engine. It is only a progress index that poin
     {
       "id": "short-feature-id",
       "feature_dir": "docs/features/short-feature-id",
-      "proof": "docs/features/short-feature-id/PROOF.md",
       "priority": 1,
       "status": "draft",
-      "notes": ""
+      "notes": "",
+      "files": ["app/change-boundary"],
+      "revalidate_on": ["app/proof-dependency"]
     }
   ]
 }
 ```
 
-Allowed `status` values:
-- `draft`: feature/proof authoring is incomplete, under review, or being repaired.
-  Autonomous execution must not select this item.
-- `ready`: `FEATURE.md`, `PROOF.md`, an executable proof artifact, and contract review
-  are ready for implementation.
-- `in_progress`: currently being implemented.
-- `repairing`: implementation was attempted, but proof, gate, or evaluator failed and
-  bounded repair can continue.
-- `needs_input`: active recovery has been exhausted and the remaining prerequisite is
-  user-owned or external.
-- `done`: primary proof, gate, and evaluator passed.
+Allowed fields only:
+
+- `id`: stable short identifier.
+- `feature_dir`: repository-relative directory containing contracts and proof.
+- `priority`: numeric; lower number runs first.
+- `status`: one of the five values below.
+- `notes`: short next-action or blocker context.
+- `files`: repository-relative prefixes the active feature may change, including implementation, contract, proof, configuration, documentation, and lifecycle output when applicable.
+- `revalidate_on`: repository-relative implementation, contract, proof, configuration, or oracle-input prefixes whose change can invalidate this feature's completed proof. A `done` item must declare a non-empty list. Exclude queue state, retained runs, completion notes, and other administrative output unless their content actually participates in the claimed behavior or proof.
+
+No globs, hashes, evaluator fields, phase counters, dependency graphs, or nested evidence state.
+
+## Status
+- `draft`: feature discovery, proof decisions, or executable proof package is incomplete.
+- `ready`: `FEATURE.md` and `PROOF.md` are decision-complete, material user-owned questions are resolved, and executable `proof/run.sh` exists; implementation may start.
+- `revalidate`: previously completed behavior overlaps newer work; rerun its existing proof and fresh evaluation separately before trusting `done`. This is not implementation or repair work.
+- `blocked`: safe local recovery is exhausted and one exact user-owned or external dependency remains.
+- `done`: current realistic proof passed, useful gate passed or was proportionately skipped, and fresh managed evaluator returned `PASS`.
+
+There is no `in_progress` or `repairing` status. The active Codex task owns transient execution state; retained attempts and notes preserve history.
 
 ## Rules
-- Keep `FEATURE.md` and `PROOF.md` authoritative; never move behavior or proof details into `status.json`.
-- Keep `feature_dir` and `proof` relative to the repo root.
-- Keep `priority` numeric; lower numbers run first.
-- Update the queue whenever `coding-app-to-features` creates a feature series.
-- Update the queue whenever `coding-feature-spec` or `coding-proof-author` materially changes a feature or proof.
-- Mark `draft` while feature/proof authoring is incomplete or contract review is failing
-  but repair can continue.
-- Mark `ready` only after feature/proof authoring has produced `FEATURE.md`, `PROOF.md`,
-  an executable proof artifact, a primary proof command wrapped with `scripts/proof_run_capture`,
-  and a passing contract review, or after a minor non-behavior edit to an already-ready item.
-- Mark one item `in_progress` at a time during autonomous execution.
-- Mark `repairing` when proof, gate, or evaluator fail but bounded repair can continue.
-- Mark `needs_input` only after autonomous recovery attempts have inspected available
-  proof, logs, setup commands, diagnostics, and repair paths.
-- Use `needs_input` for credentials, safe external target, approval, or product decision
-  requirements that cannot be satisfied honestly from local tools.
-- Mark `done` only after primary proof, gate, and `coding-feature-evaluator` pass.
-- For `done` items, record only `completion.latest_evidence`, pointing to the latest serious proof evidence bundle with command, result, notes, run metadata, proof scope, contract snapshots, declared source identity, `gate.json`, and `evaluation.json`. Proof, gate, and evaluator status are derived from those artifacts, not mirrored into queue fields. Repeated repair evidence must include `attempts.json`. Validate the active item with `scripts/validate_feature_queue --feature <id>` when available; legacy or prose-only evidence cannot authorize that item's `done` state. Use `--all` only for a strict whole-queue audit.
-- If a `done` item's `FEATURE.md`, `PROOF.md`, or executable proof artifacts change in a
-  behaviorally meaningful way, reset it to `draft` while authoring, then `ready` after the
-  updated contract package passes review. Preserve `done` only for clearly non-behavioral
-  metadata, typo, or formatting edits.
+- Keep contracts authoritative. Queue notes summarize state, not requirements.
+- Keep all paths repository-relative and safe: no absolute paths, `..`, or repository root prefix.
+- Before implementation, declare likely `files` change prefixes and `revalidate_on` proof dependencies, then run `scripts/invalidate_feature_status --feature <id>`.
+- Run the invalidator again whenever the active feature’s prefixes broaden.
+- Run it once more immediately before managed evaluation to catch overlapping features that became `done` while the active work was running.
+- The invalidator compares active `files` only with each `done` feature's `revalidate_on` prefixes. It has no administrative-filename allowlist or denylist, moves only real change-to-dependency overlaps to `revalidate`, and never marks anything complete.
+- One accountable parent per active feature applies that feature's queue transitions. Other feature parents may update the same queue concurrently, so re-read current state before a narrow write and preserve unrelated entries. Evaluator remains read-only.
+- Mark `ready` only after both question/challenge/decision rounds and executable proof authoring finish; no separate contract approval is required.
+- Mark `blocked` only after available setup, diagnostics, tools, proof repair, and local recovery have been tried.
+- Mark `done` only after `coding-feature-execute` receives evaluator `PASS` for the current passing attempt.
+- On resumed `done` work, rerun final proof before relying on completion. Do not calculate source freshness.
+- Behavior or proof-strength change to a `done` item returns it to `draft` while decisions are revised, then `ready` when the updated package is decision-complete.
+- A new feature whose `files` overlap an old completed feature's `revalidate_on` prefixes should add the old item to the separate revalidation backlog before implementation, not place it in the normal build loop.
 
 ## Next Item Selection
-1. Choose the lowest-priority `repairing` item first.
-2. Then choose the lowest-priority `ready` item.
-3. Ignore `draft`, `needs_input`, and `done` items.
-4. Stop when all executable items are `done` or all remaining items are `draft` or
-   `needs_input`.
+1. Select the lowest-priority-number `ready` item.
+2. Work one item and one `FEATURE_DIR` at a time.
+3. Ignore `draft`, `revalidate`, `blocked`, and `done` for autonomous implementation.
+4. After one item reaches `done`, select the next `ready` item.
+5. Stop when no ready item remains; report drafts and blockers only when they affect next action.
+
+## Explicit Revalidation
+1. Enter this mode only when revalidation is explicitly requested; default autonomous implementation never selects it.
+2. Select the lowest-priority-number `revalidate` item and keep the pass bounded to that activity.
+3. Rerun the existing proof through `proof_run_capture` without changing implementation, setup, `FEATURE.md`, `PROOF.md`, or `proof/run.sh`.
+4. Proof `PASS`: run a fresh read-only evaluator. Evaluator `PASS` returns the item to `done`.
+5. Proof failure or evaluator `FAIL`: move the item to `ready` for a later normal repair lifecycle.
+6. A genuinely external or user-owned proof blocker may move it to `blocked` with the exact reason.
+7. Do not repair, consume the newly `ready` item, or recursively select another invalidated feature during the revalidation pass.
+
+## Validation
+- Parse JSON before writing.
+- Require unique feature ids.
+- Require exactly one existing `feature_dir` for the active item.
+- Require `files` and `revalidate_on` lists with safe repository-relative prefixes; a `done` item may not have an empty `revalidate_on` list.
+- Use `scripts/invalidate_feature_status` for overlap effects; do not reproduce its path logic in prompts or queue prose.
 
 ## Handoff
-When updating the queue, report only what changes the next action:
-- `<feature-id>: <old status> -> <new status>`
-- one-line reason for `draft`, `repairing`, or `needs_input`
-- primary proof command only when it is the next command to run
+Report only meaningful transitions:
 
-Do not dump the whole queue, proof paths, or priority list unless the user asks.
+```text
+<feature-id>: <old status> -> <new status>
+Reason: <one line>
+Next: <one action or none>
+```
+
+Do not dump the full queue unless asked.

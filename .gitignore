@@ -24,19 +24,14 @@
 !*.yaml
 !*.sh
 !scripts/gate
-!scripts/gate_config
-!scripts/harness_review
-!scripts/lint_harness
+!scripts/invalidate_feature_status
 !scripts/proof_run_capture
-!scripts/record_completion_evidence
-!scripts/validate_feature_queue
-!scripts/validate_proof_bundle
-!docs/harness/evaluator-fixtures.json
-!docs/harness/evolution/*.json
 !docs/presentations/*.html
+!docs/features/status.json
 
 # 4. Block some directories and files
 *.git
 **/.venv/
 skills/.system/
 config.toml
+docs/features/**/proof/runs/**

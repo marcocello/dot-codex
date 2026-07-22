@@ -1,8 +1,6 @@
 interface:
   display_name: "CODING | Proof Author"
-  short_description: "Create PROOF.md and behavioral proof artifacts"
-  default_prompt: >-
-    Use $coding-proof-author to create or repair PROOF.md and behavioral proof artifacts for
-    docs/features/todo-api.
+  short_description: "Decide realistic proof, then write artifacts."
+  default_prompt: "Use $coding-proof-author. Ask material proof questions, show activation/read-back/fakes/gaps as decisions, then write PROOF.md and proof/run.sh without an approval gate."
 policy:
   allow_implicit_invocation: true

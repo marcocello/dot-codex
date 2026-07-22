@@ -1,92 +1,97 @@
 ---
 name: coding-app-to-features
-description: "Turn a greenfield app idea into repo documentation, feature contracts, executable proof packages, and a prioritized feature queue ready for implementation."
-metadata:
-  short-description: Greenfield app idea to feature series
+description: "Turn one app idea into decided context, feature contracts, executable proofs, and a prioritized queue."
 ---
 
 # App To Features
 
-Purpose: take an overall app description, improve it into a sharper app brief, bootstrap repo-level docs, and create a series of features with executable proof packages before returning to the normal single-`FEATURE_DIR` workflow.
+Purpose: shape an app with the user, create only the repository context that will guide implementation, and materialize a small sequence of independently valuable, realistically provable features.
+
+This skill prepares work. It does not implement the application.
 
 ## Inputs
-- overall app description
-- optional constraints, stack preferences, target users, or scope cuts
+- Raw app idea or problem statement.
+- Target users and core job.
+- Desired first useful outcome.
+- Constraints, non-goals, compliance, data, external services.
+- Stack or architecture preferences when the user has them.
+- Existing repository, prototype, research, or reference product when present.
 
-If key details are missing, make reasonable assumptions and state them briefly instead of blocking. If important product, domain, or technical assumptions are uncertain, use `research` before locking them into repo docs.
+Derive facts from the repository and authoritative sources before asking. Ask grouped questions that materially change the product shape, architecture boundary, data ownership, external contract, or first vertical slice.
+
+## App Discovery
+1. Clarify who uses the product, what triggers use, and what complete outcome matters.
+2. Challenge scope: empty state, permissions, errors, data lifecycle, recovery, multi-user behavior, external effects, and explicit exclusions.
+3. Distinguish product requirements from speculative implementation preferences.
+4. Show the proposed app shape, assumptions, architecture boundary, and major non-goals.
+5. Ask for material missing input once, then show the decided app shape and write authoritative context without a separate approval request. Pause only when an unresolved user-owned choice cannot be inferred safely.
+
+Use `coding-research` when external APIs, framework limits, provider contracts, domain rules, or current product facts would otherwise be guessed.
 
 ## Workflow
-1) Initialize the software project baseline
-   - For greenfield software projects, initialize a Git repository with `git init` when the current project directory is not already inside a Git worktree.
-   - Do not overwrite existing Git history or reinitialize a repository that already has `.git`.
-   - Use `coding-prepare-environment` to create or update `.vscode/tasks.json` for the standard backend/frontend/fullstack local run workflow.
+1. Inspect repository baseline
+   - Detect existing Git, stack, docs, code, package/runtime conventions, and architecture.
+   - Initialize Git only for a genuinely new project without history.
+   - Use `coding-prepare-environment` for repo-local runtimes/tasks when requested work needs them.
 
-2) Improve the app brief
-   - Rewrite the raw idea into a concise, sharper app description.
-   - Focus on target user, core outcome, product shape, and obvious scope cuts.
-   - Create or update `docs/APP.md`.
+2. Write app context
+   - Create or update `docs/APP.md` with user, problem, outcome, scope, and non-goals.
+   - Create `docs/ARCHITECTURE.md` only when architecture is accepted or sufficiently authoritative to guide features.
+   - Create `docs/CONVENTIONS.md` and `docs/TESTING.md` only when they prevent repeated decisions.
+   - Do not impose a default stack, folder tree, architecture, feature count, or compatibility policy.
 
-3) Bootstrap repo-level architecture context
-   - Create or update `docs/ARCHITECTURE.md` only when the architecture is explicit, requested, stable enough to be treated as authoritative guidance, or covered by the default greenfield architecture below.
-   - Default greenfield architecture: when a new app has no explicit architecture, make `docs/ARCHITECTURE.md` authoritative with backend APIs, a React frontend, and frontend communication with the backend through APIs.
-   - Do not define the application folder tree in this skill. Architecture docs may name the selected stack and boundaries, but stack/domain skills own concrete directories and bootstrap structure.
-   - For backend framework, service layering, API implementation details, and backend tree structure, delegate to the `coding-python-backend` skill.
-   - For frontend starter, component system, UI baseline choices, and frontend tree structure, delegate to the `coding-frontend` skill.
-   - For WordPress plugin, theme, full-site, or Bedrock-style app structure, delegate to the `coding-wordpress` skill.
-   - If useful, also create or update `docs/CONVENTIONS.md` and `docs/TESTING.md`.
+3. Derive vertical features
+   - Prefer end-to-end user value over foundation-only slices.
+   - Create the smallest sequence that makes the app implementable and useful.
+   - Each feature must have one coherent user/system outcome and one provable boundary.
+   - Merge overlapping ideas; leave speculative roadmap items out.
+   - Order by dependencies and value, not a universal backend/frontend/data sequence.
 
-4) Research before guessing when needed
-   - Use `research` for framework choices, domain uncertainty, external APIs, or comparable product expectations that would otherwise become speculative assumptions.
-   - Fold durable findings back into `docs/APP.md` or repo docs instead of leaving them as loose notes.
+4. Decide each selected feature
+   - Use `coding-feature-spec` for focused feature questions, challenge, and a visible decision summary.
+   - Use `coding-proof-author` for focused proof questions, boundary challenge, and a visible decision summary.
+   - Do not create all artifacts from one unexplained bulk interpretation.
+   - A feature package is materialized only when decision-complete `FEATURE.md`, decision-complete `PROOF.md`, and executable `proof/run.sh` exist.
 
-5) Derive a small feature series
-   - Split the app into 3 to 7 implementable features.
-   - Order features from foundation to highest user-visible value.
-   - Keep each feature independently specifiable and provable.
-   - For greenfield apps with no user-specified implementation order, make the first generated features technical foundation features based on the selected stack. For the default React/API architecture, use this order:
-     1. `Build API layer` - use the `coding-python-backend` skill for backend framework and API implementation specifics.
-     2. `Build frontend skeleton` - use the `coding-frontend` skill for starter and UI baseline specifics.
-     3. `Build data model` - create the SQLite database model, migrations/schema, and persistence boundary.
-   - For WordPress apps, start with a foundation feature routed to `coding-wordpress` before product-facing WordPress behavior.
-   - After those foundations, add the smallest product-facing features needed for a shippable first slice.
+5. Create queue
+   - Use `coding-feature-queue` to create/update `docs/features/status.json`.
+   - `ready`: complete decision-ready package.
+   - `draft`: discovery/proof/artifacts incomplete.
+   - `blocked`: exact external/user dependency after recovery.
+   - Preserve numeric priority and realistic `files` prefixes.
 
-6) Materialize features and proof packages
-   - This skill is the explicit exception to the single FEATURE_DIR rule during greenfield bootstrap.
-   - For each selected feature, use `coding-feature-spec` to create `docs/features/<slug>/FEATURE.md`.
-   - Ensure `coding-feature-spec` invokes `coding-proof-author` for each non-trivial feature.
-   - Require `docs/features/<slug>/PROOF.md` plus executable proof artifacts for each non-trivial feature.
-   - Require each non-trivial primary proof command to call `scripts/proof_run_capture`.
-   - Do not count a feature as materialized when it only has `FEATURE.md` and a prose `PROOF.md`.
-   - After bootstrap completes, return to the normal feature execution workflow.
+6. Return to single-feature work
+   - After preparation, select one ready item.
+   - Hand implementation to `coding-feature-execute`.
+   - Do not build an in-repo orchestrator or start implementing multiple features concurrently.
 
-7) Initialize the feature queue
-   - Use `coding-feature-queue` to create or update `docs/features/status.json`.
-   - Add every generated feature directory to the queue.
-   - Use `draft` while feature/proof authoring is incomplete or contract review still
-     needs repair.
-   - Set initial statuses to `ready` only for features with `FEATURE.md`, `PROOF.md`, an
-     executable proof artifact, a primary proof command wrapped with `scripts/proof_run_capture`,
-     and a passing contract review.
-   - Set initial status to `needs_input` only after proof authoring or contract review has
-     exhausted local recovery and still needs missing product input, unavailable external
-     state, or an unreproducible requirement.
-   - Preserve implementation order with numeric priorities.
-   - `FEATURE.md` and `PROOF.md` remain the feature contracts; `docs/features/status.json` is only the machine-readable progress queue.
+## App Documents
+Keep documents small and authoritative:
 
-8) Keep the series pragmatic
-   - Prefer a shippable first slice over exhaustive roadmap coverage.
-   - Merge overlapping ideas instead of producing thin or redundant features.
-   - Leave clearly out-of-scope ideas out of the first series.
+- `docs/APP.md`: product intent, users, outcomes, scope, non-goals.
+- `docs/ARCHITECTURE.md`: accepted components, boundaries, data flow, external dependencies, constraints.
+- `docs/CONVENTIONS.md`: decisions likely to recur across features.
+- `docs/TESTING.md`: repository-native test/proof/gate guidance.
 
-9) Handoff cleanly
-   - Return the improved app brief summary.
-   - List generated feature ids in recommended implementation order.
-   - Point to `docs/features/status.json` as the queue for autonomous execution.
-   - Do not list every proof path or executable artifact by default; include the next
-     primary proof command only when it is immediately actionable.
+Omit a document when it would contain only generic advice.
+
+## Feature Quality
+- Observable behavior, not component inventory.
+- Material edge/error/recovery cases.
+- Explicit external contract where needed.
+- Realistic proof boundary available.
+- Small enough for one parent/feature lifecycle.
+- No duplicate owner with another feature.
+- No hidden architecture commitment that the user did not accept.
 
 ## Rules
-- Do not add an in-repo orchestration layer.
-- Do not create a planning daemon, router, or local workflow engine.
-- Reuse `coding-feature-spec` for final feature descriptions and `coding-proof-author` for proof packages rather than inventing another format.
-- Keep outputs concise. Avoid unnecessary implementation commitments and leave concrete folder structure to the owning stack/domain skill.
+- User input shapes app and proof; the agent records decisions and proceeds without contract-approval gates.
+- No default stack, count, tree, or foundation-first sequence.
+- No speculative backlog.
+- No prose-only proof package for non-trivial behavior.
+- No local workflow engine, daemon, or planning router.
+- Stack/domain skills own concrete implementation structure.
+- App preparation ends by returning to one `FEATURE_DIR`.
+
+## Handoff
+Report the decided app shape, created/updated context docs, feature ids in recommended order, queue path/status summary, first ready item, and material unresolved input. Do not dump every proof file or start implementation unless asked.

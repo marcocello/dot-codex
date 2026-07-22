@@ -1,4 +1,4 @@
 interface:
   display_name: "CODING | Autonomous Execute"
-  short_description: "Run Goal-based feature queue execution."
-  default_prompt: "Use $coding-autonomous-execute to complete this feature queue with a Codex Goal and evaluator-backed verification."
+  short_description: "Build ready features or revalidate separately."
+  default_prompt: "Use $coding-autonomous-execute. Default work selects ready items through repair and completion; explicit revalidation reruns unchanged proof without repair and returns failures to ready."

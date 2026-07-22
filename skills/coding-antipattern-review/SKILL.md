@@ -1,66 +1,108 @@
 ---
 name: coding-antipattern-review
-description: Review a codebase for recurring anti-patterns and failure-prone smells across design, runtime behavior, tests, and proof, with evidence and false-positive checks.
+description: "Review code, architecture, runtime, tests, proof, and function maintainability for evidence-backed anti-patterns. Use for recurring smells, fragile boundaries, false confidence, readability problems, or suspected practices needing false-positive checks."
 ---
 
 # Anti-pattern Review
 
-Perform a read-only, evidence-first review. Treat every catalog match or tool alert as a candidate until repository evidence establishes the violated invariant, concrete failure mode, and affected scope.
+Purpose: identify harmful recurring practices without turning a catalog match, scanner alert, or style preference into a finding.
+
+Read-only unless the user separately requests remediation.
+
+## Inputs
+- Repository, component, paths, or review question.
+- Optional suspected patterns, incidents, failing behavior, performance concern, or test/proof weakness.
+- Repository architecture, conventions, testing rules, and native analysis tools.
+
+Determine the requested depth before scanning broadly. Review the smallest surface that can answer the question.
 
 ## Workflow
+1. Bound the review
+   - Read `AGENTS.md` and relevant app/architecture/convention/testing docs.
+   - Map only the modules, state owners, I/O boundaries, runtime paths, and proof surfaces needed.
+   - Confirm review-only versus requested implementation.
 
-1. Bound the review.
-   - Identify the requested repository, component, paths, and review goal.
-   - Read `AGENTS.md` and available app, architecture, convention, and testing docs.
-   - Determine whether the user wants review-only output. Do not implement remediation unless explicitly asked.
+2. Select relevant lenses
+   - Do not load every catalog by default.
+   - Use Lens Routing below.
 
-2. Build the system map needed for the review.
-   - Identify major modules, dependency directions, state owners, I/O boundaries, runtime paths, and proof surfaces.
-   - Inspect repository-native linters, analyzers, tests, metrics, and operational evidence before proposing new tooling.
+3. Generate candidates
+   - Use repository-native linters, analyzers, tests, metrics, history, and runtime evidence before proposing new tooling.
+   - Treat scanner/catalog output as candidate generation only.
 
-3. Select only relevant lenses.
-   - Read `references/code-and-design.md` for module, function, dependency, state, and error-handling candidates.
-   - Read `references/architecture-and-runtime.md` for distributed-system, persistence, reliability, and performance candidates.
-   - Read `references/tests-and-proof.md` for test-suite and verification candidates.
-   - Read `references/sources.md` when grounding a candidate in an upstream catalog or executable rule corpus.
+4. Challenge each candidate
+   - Trace callers, state, configuration, tests, runtime behavior, and ownership.
+   - Search for the strongest counterexample or intentional constraint.
+   - Reject candidates that are bounded composition roots, generated code, adapters, trust-boundary duplication, protocol requirements, or deliberate isolation.
 
-4. Gather and challenge evidence.
-   - Trace each candidate across callers, tests, configuration, runtime behavior, and ownership boundaries.
-   - Search for the strongest counterexample or design constraint that would make the apparent smell intentional.
-   - Use static-analysis output as candidate-generation evidence only. Confirm the behavior in the reviewed repository.
-   - Do not infer systemic impact from one isolated example unless the example crosses a critical boundary.
+5. Classify
+   - `Confirmed`: evidence establishes the violated invariant and credible consequence.
+   - `Suspected`: shape exists, but one material fact is missing.
+   - `Rejected`: context or counter-evidence makes it intentional or harmless.
 
-5. Classify the candidate.
-   - `Confirmed`: repository evidence establishes the invariant violation and credible failure mode.
-   - `Suspected`: the shape is present, but runtime, ownership, or intent evidence is incomplete.
-   - `Rejected`: counter-evidence or context shows the pattern is intentional, bounded, or harmless.
-   - Report confirmed findings first. Include suspected candidates only when the missing evidence is material and actionable.
+6. Prioritize
+   - Rank by user/system impact, likelihood, breadth, and remediation risk.
+   - Explain consequence before naming the pattern.
+   - Recommend the smallest correction that restores the invariant.
 
-6. Prioritize and route.
-   - Rank by user/system impact, likelihood, breadth, and remediation risk, not by famous pattern name.
-   - Prefer the smallest remediation that restores the violated invariant.
-   - Route implementation to `coding-maintainability-review` for clarity and boundary refactors, `coding-architecture-deep-dive` for structural or performance analysis, `coding-operational-issue-diagnostics` for live runtime investigation, or `coding-repair` for a clear defect.
+## Lens Routing
+Read only what the request needs:
+
+- Code, responsibility, state, error handling, abstractions -> [code-and-design.md](references/code-and-design.md).
+- Distributed/runtime/persistence/reliability/performance -> [architecture-and-runtime.md](references/architecture-and-runtime.md).
+- Tests, mocks, fixtures, and proof false confidence -> [tests-and-proof.md](references/tests-and-proof.md).
+- External catalogs and maintained sources -> [sources.md](references/sources.md) when attribution matters.
+- Detailed finding records -> [finding-schema.md](references/finding-schema.md) for broad or formal reviews.
+
+## Function Maintainability Lens
+Use when the request concerns readability, verbosity, tangled functions, or safe refactoring.
+
+1. Select critical, high-churn, high-defect, or high-fan-in/out functions. Do not inventory every function by default.
+2. Inspect:
+   - intent clarity from name/signature;
+   - single responsibility and abstraction level;
+   - nesting, branch count, guard clarity;
+   - hidden mutation and side effects;
+   - argument shape, boolean modes, primitive policy;
+   - error semantics and broad catches;
+   - duplicated setup or control-flow skeletons;
+   - focused testability.
+3. Classify verbosity:
+   - `Lean`: each block serves behavior or explicit safety.
+   - `Acceptable`: some ceremony, still predictable and readable.
+   - `Bloated`: repeated scaffolding, unjustified defense, mixed concerns, or indirection obscures behavior.
+4. Report only functions whose shape creates a concrete defect risk, delivery cost, or unsafe change boundary.
 
 ## Evidence Rules
+- Require an exact file, component, command, trace, metric, test, history, or data-flow path.
+- Distinguish observed fact, inference, and unknown.
+- Static-analysis hit does not prove exploitability, runtime impact, or architectural intent.
+- Famous pattern name does not prove harm.
+- Style preference, framework disagreement, or hypothetical scale is not a finding without consequence.
+- Check false-positive pressure explicitly: what evidence would make this pattern acceptable here?
+- Preserve behavior unless the user requested a behavior change.
 
-- Require an exact file, component, command output, trace, metric, test, or data-flow path for every finding.
-- Explain the behavior or maintenance consequence before naming the anti-pattern.
-- Distinguish observed fact, supported inference, and unknown.
-- Do not report style preference, framework convention disagreement, or theoretical scale risk as an anti-pattern without a concrete consequence.
-- Do not claim that a scanner proves exploitability, runtime impact, or architectural intent.
-- Do not prescribe a pattern merely to replace an anti-pattern; show why the proposed direction fits this repository.
-- Use `references/finding-schema.md` for evidence records and final output.
+## Output
+For compact reviews:
 
-## Review Boundaries
+```text
+Findings:
+- P1|P2|P3 | Confirmed|Suspected | evidence | consequence | counter-evidence | smallest correction | confidence
+Rejected candidates:
+- <candidate + why rejected>
+Validation: <checks needed before/after repair>
+Unknowns: <material only>
+```
 
-- Keep security coverage to supported secure-design invariants and existing scanner evidence; do not present this skill as a complete security audit.
-- Keep language-specific catalog entries subordinate to current language and framework documentation.
-- Avoid copying upstream catalogs into the response. Cite the precise upstream source only when it materially supports a finding.
-- Preserve existing behavior unless the user explicitly requests a behavior change.
+For function findings, include purpose, current shape, verbosity classification, primary issue, rewrite direction, and test impact.
 
-## Example Triggers
+## Boundaries
+- This is not a complete security audit.
+- Do not copy external catalogs into the response.
+- Do not prescribe a replacement pattern without repository fit.
+- Do not infer systemic impact from one isolated example unless it crosses a critical boundary.
+- Do not apply remediation during review-only work.
+- Route a clear defect to `coding-repair`; route accepted behavior/architecture changes through the feature lifecycle.
 
-- "Find the anti-patterns in this service and show which ones are actually harmful."
-- "Audit this architecture for retry storms, chatty I/O, and shared-state problems."
-- "Review these tests for test smells and false confidence."
-- "Which recurring bad practices are making this codebase fragile?"
+## Handoff
+Lead with confirmed findings and strongest counter-evidence checks. Include suspected candidates only when the missing fact is actionable. Prefer fewer high-confidence findings over a noisy catalog dump.

@@ -1,84 +1,106 @@
 ---
 name: coding-architecture-deep-dive
-description: "Assess one component's architecture, logic, implementation, risks, and bottlenecks before refactoring, reliability, performance, or scaling decisions."
-metadata:
-  short-description: Deep component architecture and performance analysis
+description: "Assess one component's architecture, logic, implementation risks, bottlenecks, and tradeoffs before refactoring or reliability, performance, scaling, and migration decisions. Also compare the current design against a concrete reference when provided."
 ---
 
 # Architecture Deep Dive
 
-Purpose: produce a precise, evidence-based architectural assessment for one component of a codebase.
+Purpose: produce a precise, evidence-based architectural assessment for one component or one current-versus-reference decision.
 
-## Input
-- Required:
-  - component scope (module/service/package/path)
-  - analysis goal (for example: scale, reliability, maintainability, latency)
-- Optional:
-  - SLO/SLA targets
-  - peak load profile
-  - known incidents or regressions
+Read-only unless the user separately asks for implementation.
 
-If context is incomplete, infer from repository artifacts first and ask only blocking questions. Subsequent questions are not mandatory; ask them only when direction is unclear or blocked.
+## Inputs
+Required or inferable:
 
-## State-of-the-art analysis method
-1. Scope and boundary model
-   - Define component scope and external boundaries.
-   - Map dependencies and coupling (incoming/outgoing, sync/async, data contracts).
-   - Detect boundary violations and cyclic dependencies.
+- component scope: service, module, package, path, workflow, or system slice;
+- decision goal: simplicity, reliability, latency, throughput, scale, cost, maintainability, migration;
+- current contracts and architecture decisions;
+- constraints, rejected directions, and non-goals.
 
-2. Decision inventory
-   - Extract architectural, logical, and implementation choices that materially affect quality attributes.
-   - Record intended tradeoffs and implicit assumptions.
+Useful when available:
 
-3. Quality attributes assessment (ATAM-inspired)
-   - Evaluate impacts on: performance, scalability, reliability, security, operability, evolvability, testability, and cost efficiency.
-   - For each choice, rate fitness and highlight constraint violations.
+- reference design or implementation;
+- SLO/SLA and workload shape;
+- incidents, regressions, traces, profiles, metrics;
+- deployment topology and operational constraints.
 
-4. Weakness and flaw analysis
-   - Identify flaws by category:
-     - architectural: layering leaks, wrong abstraction level, high coupling
-     - logical: incorrect invariants, state-transition gaps, hidden branching complexity
-     - implementative: hot-path inefficiencies, duplicated logic, unsafe concurrency, error-handling gaps
-   - Link each flaw to root cause and concrete failure mode.
+Infer from repository artifacts first. Ask only when a missing answer can change the architectural decision.
 
-5. Performance bottleneck analysis
-   - Define a benchmark protocol for reproducible measurement (workload shape, concurrency, warm/cold runs, percentile targets).
-   - Build latency decomposition (I/O, CPU, memory, lock/queue contention).
-   - Inspect hot paths and complexity growth under load.
-   - Flag common bottleneck patterns: N+1 queries, unbounded fan-out, synchronous chokepoints, retry storms, serialization overhead, cache stampede.
-   - Estimate impact using available evidence (profiling traces, logs, metrics, code-path cost).
+## Workflow
+1. Establish authority
+   - Read `AGENTS.md`, feature/app contracts, architecture, conventions, testing, and relevant runtime/deployment docs.
+   - Treat accepted goals, constraints, and non-goals as the comparison frame.
+   - Distinguish actors/authority from procedure, document, or module ownership.
 
-6. Security and resilience deep checks
-   - Build a focused threat model for the component (entry points, trust boundaries, abuse/failure cases).
-   - Inspect degradation and recovery behavior: backpressure, circuit breaking, retry policy, timeout budget, idempotency, and rollback safety.
+2. Map the component
+   - Define inputs, outputs, state, data flow, dependencies, entrypoints, external boundaries, and failure paths.
+   - Identify synchronous/asynchronous transitions, queues, locks, caches, persistence, and provider calls.
+   - Note coupling, cycles, fan-in/fan-out, and lifecycle ownership.
 
-7. Limitation and risk modeling
-   - Identify current scalability ceilings and operational fragility.
-   - Produce a simple capacity model (steady-state vs peak, saturation points, queue growth risk).
-   - Distinguish known fact vs inference vs unknown.
-   - Provide confidence level per finding.
+3. Inventory decisions and assumptions
+   - Identify choices affecting performance, reliability, security, operability, evolvability, testability, or cost.
+   - Separate explicit decisions from accidental implementation shape.
+   - Record assumptions that need workload/runtime evidence.
 
-8. Prioritized remediation plan
-   - Prioritize by impact x likelihood x implementation effort.
-   - Provide minimal, staged actions: immediate stabilization, next hardening, later optimization.
-   - Include counterfactual alternatives (why this remediation is preferred over at least one alternative).
-   - Include rollback criteria for each high-risk change.
+4. Analyze flaws and limits
+   - Architecture: boundary leaks, wrong abstraction, coupling, shared ownership, hidden topology.
+   - Logic: broken invariant, state-transition gap, concurrency race, retry/idempotency error.
+   - Implementation: duplicated policy, unsafe error handling, synchronous choke point, unbounded work.
+   - Operations: missing timeout, backpressure, observability, rollback, recovery, capacity limit.
+   - Tie every finding to a concrete failure mode or maintenance consequence.
 
-## Output contract
-1. Findings first, ordered by severity (P0, P1, P2, P3).
-2. Each finding must include:
-   - title
-   - affected component scope
-   - evidence
-   - root cause
-   - user/system impact
-   - recommended change (minimal viable fix)
-   - confidence
-3. Return a single main section:
-   - `## Deep Dive Findings`
-4. Keep findings concise and technical. Include only the highest-value evidence and actions.
+5. Analyze performance when relevant
+   - Define the workload and metric before claiming a bottleneck.
+   - Decompose CPU, I/O, serialization, network, database, lock/queue, cache, and provider time.
+   - Look for N+1 work, unbounded fan-out, retry storms, cache stampede, hot locks, repeated parsing, or large copies.
+   - Use measurements when available; label code-path estimates as inference.
 
-## Constraints
-- Be precise and technical; avoid generic advice.
-- Do not report style-only issues without architectural or operational impact.
-- Do not prescribe broad refactors unless justified by high-severity risk.
+6. Recommend
+   - Prefer the smallest change that restores the violated boundary or quality attribute.
+   - Include impact, likelihood, effort, migration risk, rollback, and validation.
+   - Do not recommend broad refactoring for style or theoretical future scale.
+
+## Reference Comparison
+When the user supplies a concrete reference:
+
+1. Normalize both designs across components, data flow, state, failure behavior, performance, operations, testability, and cost.
+2. Identify identical behavior, material differences, and hidden assumptions.
+3. Judge the reference against current accepted goals; do not assume newer or external means better.
+4. Decide:
+   - `KEEP`: current design fits better or differences do not justify migration.
+   - `PARTIAL ADOPT`: adopt specific mechanisms while preserving current boundaries.
+   - `REPLACE`: reference direction materially better and migration risk is justified.
+5. For non-`KEEP`, state what changes, what stays, ordered migration, compatibility risk, rollback, and proof.
+
+Do not recommend an explicit non-goal or rejected direction without new evidence that invalidates the earlier decision. Record the tradeoff instead.
+
+## Evidence Rules
+- Use exact paths, call/data flow, configuration, tests, traces, logs, or metrics.
+- Separate observed fact, supported inference, and unknown.
+- State confidence for each material finding.
+- Do not convert a pattern name or reference preference into evidence.
+- Do not claim capacity or latency limits without workload assumptions.
+- Check counter-evidence that may make an apparent flaw intentional and bounded.
+
+## Output
+```text
+Scope: <component and goal>
+Findings:
+- P0|P1|P2|P3 | evidence | root cause | impact | smallest correction | confidence
+Decision: <none|KEEP|PARTIAL ADOPT|REPLACE>
+Tradeoffs: <material only>
+Migration: <none|ordered steps>
+Validation: <focused proof/benchmark/checks>
+Unknowns: <blocking only>
+```
+
+## Rules
+- Findings first, ordered by impact.
+- No generic architecture advice.
+- No mandatory framework or pattern replacement.
+- No backward-compatibility work unless required by user or authoritative contract.
+- No implementation edits during review-only work.
+- Route a clear defect to `coding-repair`; route accepted structural change through the normal feature lifecycle.
+
+## Handoff
+Lead with the decision and highest-impact evidence. Keep the remediation staged and testable. Ask for input only when one missing product/workload/operational fact can change the decision.

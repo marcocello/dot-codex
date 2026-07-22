@@ -1,4 +1,4 @@
 interface:
-  display_name: "Anti-pattern Review"
-  short_description: "Find evidence-backed software anti-patterns"
-  default_prompt: "Use $coding-antipattern-review to identify and prioritize evidence-backed anti-patterns in this codebase."
+  display_name: "CODING | Anti-pattern Review"
+  short_description: "Find evidence-backed code and test smells"
+  default_prompt: "Use $coding-antipattern-review to review this codebase for evidence-backed anti-patterns and function maintainability issues."

@@ -1,9 +1,6 @@
 interface:
   display_name: "CODING | Done Evaluator"
-  short_description: "Read-only done judge for features and bug fixes."
-  default_prompt: >-
-    Use the $coding-feature-evaluator skill to judge this completed feature or issue fix. Stay
-    read-only, compare the implementation against FEATURE.md or the bug contract, review proof
-    quality, verify check results, and return PASS, FAIL, or NEED_INPUT with concrete findings.
+  short_description: "Read-only semantic done judge."
+  default_prompt: "Use $coding-feature-evaluator. Stay read-only. Judge user-intent alignment, architecture quality, implementation, realistic proof, false-green risk, gaps, and gate. Return PASS, FAIL, or NEED_INPUT."
 policy:
   allow_implicit_invocation: true

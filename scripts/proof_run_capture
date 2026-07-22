@@ -2,385 +2,305 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
+import platform
+import signal
 import shutil
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
+from types import FrameType
 from typing import Any
 
 
-EVIDENCE_SCHEMA_VERSION = 3
+class CaptureSignal(Exception):
+    def __init__(self, signum: int) -> None:
+        self.signum = signum
 
 
-def timestamp() -> str:
-    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-
-
-def copy_files(paths: list[Path], target_dir: Path) -> list[str]:
-    target_dir.mkdir(parents=True, exist_ok=True)
-    copied: list[str] = []
-    for source in paths:
-        if not source.exists():
-            continue
-        destination = target_dir / source.name
-        shutil.copy2(source, destination)
-        copied.append(str(destination))
-    return copied
-
-
-def git_result(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        ["git", *args],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-
-
-def repository_root(cwd: Path) -> Path:
-    result = git_result(cwd, "rev-parse", "--show-toplevel")
-    if result.returncode == 0 and result.stdout.strip():
-        return Path(result.stdout.strip()).resolve()
-    return cwd.resolve()
-
-
-def is_completion_owned_path(path: Path) -> bool:
-    value = path.as_posix()
-    return value == "docs/features/status.json" or "/proof/runs/" in f"/{value}"
-
-
-def sha256_path(path: Path) -> str:
-    digest = hashlib.sha256()
-    if path.is_symlink():
-        digest.update(b"symlink\0")
-        digest.update(os.readlink(path).encode("utf-8"))
-        return digest.hexdigest()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def repository_files(root: Path) -> list[Path]:
-    result = git_result(root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")
-    if result.returncode != 0:
-        return []
-    paths = [Path(value) for value in result.stdout.split("\0") if value]
-    return sorted(
-        path
-        for path in paths
-        if not is_completion_owned_path(path)
-        and ((root / path).is_file() or (root / path).is_symlink())
-    )
-
-
-def changed_files(root: Path) -> list[str]:
-    result = git_result(root, "-c", "core.quotepath=false", "status", "--porcelain=v1", "--untracked-files=all")
-    if result.returncode != 0:
-        return []
-    values: set[str] = set()
-    for line in result.stdout.splitlines():
-        value = line[3:]
-        if " -> " in value:
-            value = value.split(" -> ", 1)[1]
-        path = Path(value)
-        if value and not is_completion_owned_path(path):
-            values.add(path.as_posix())
-    return sorted(values)
-
-
-def file_identity(root: Path, path: Path) -> dict[str, str] | None:
-    if not path.is_file() and not path.is_symlink():
-        return None
+def positive_seconds(value: str) -> float:
     try:
-        relative = path.resolve().relative_to(root).as_posix()
-    except ValueError:
-        relative = str(path.resolve())
-    return {"path": relative, "sha256": sha256_path(path)}
+        seconds = float(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("timeout must be positive") from exc
+    if seconds <= 0:
+        raise argparse.ArgumentTypeError("timeout must be positive")
+    return seconds
 
 
-def path_within(path: Path, parent: Path) -> bool:
-    try:
-        path.relative_to(parent)
-    except ValueError:
-        return False
-    return True
-
-
-def declared_source_files(root: Path, values: list[Path]) -> list[Path]:
-    repository_paths = repository_files(root)
-    selected: dict[str, Path] = {}
-    for value in values:
-        candidate = value if value.is_absolute() else root / value
-        lexical = Path(os.path.abspath(candidate))
-        resolved = candidate.resolve()
-        if not path_within(lexical, root) or not path_within(resolved, root):
-            raise ValueError(f"declared source path escapes repository root: {value}")
-        if candidate.is_file() or candidate.is_symlink():
-            relative = lexical.relative_to(root)
-            if is_completion_owned_path(relative):
-                raise ValueError(f"declared source path is completion-owned: {value}")
-            selected[relative.as_posix()] = lexical
-            continue
-        if not candidate.is_dir():
-            raise ValueError(f"declared source path does not exist: {value}")
-        matches = [
-            path
-            for path in repository_paths
-            if path_within((root / path).resolve(), resolved)
-        ]
-        if not matches:
-            raise ValueError(f"declared source directory contains no repository files: {value}")
-        for path in matches:
-            selected[path.as_posix()] = root / path
-    return [selected[key] for key in sorted(selected)]
-
-
-def declared_source_identities(root: Path, values: list[Path]) -> list[dict[str, str]]:
-    identities = [file_identity(root, path) for path in declared_source_files(root, values)]
-    return [identity for identity in identities if identity is not None]
-
-
-def proof_runner(args: argparse.Namespace, root: Path, feature_dir: Path) -> Path | None:
-    default = feature_dir / "proof" / "run.sh"
-    if default.is_file():
-        return default
-    for value in args.command:
-        candidate = Path(value)
-        candidate = candidate if candidate.is_absolute() else root / candidate
-        if candidate.is_file() and ".venv" not in candidate.parts:
-            return candidate
-    return None
-
-
-def capture_source_context(args: argparse.Namespace) -> tuple[dict[str, Any], dict[str, bytes]]:
-    root = repository_root(Path.cwd())
-    feature_dir = args.feature_dir if args.feature_dir.is_absolute() else Path.cwd() / args.feature_dir
-    feature_dir = feature_dir.resolve()
-    feature_path = feature_dir / "FEATURE.md"
-    proof_path = feature_dir / "PROOF.md"
-    runner_path = proof_runner(args, root, feature_dir)
-    head = git_result(root, "rev-parse", "HEAD")
-    changed = changed_files(root)
-    source = {
-        "git_head": head.stdout.strip() if head.returncode == 0 else None,
-        "worktree_dirty": bool(changed),
-        "changed_files": changed,
-        "feature": file_identity(root, feature_path),
-        "proof": file_identity(root, proof_path),
-        "runner": file_identity(root, runner_path) if runner_path else None,
-        "inputs": declared_source_identities(root, args.source_path),
-    }
-    snapshots = {
-        path.name: path.read_bytes()
-        for path in (feature_path, proof_path)
-        if path.is_file()
-    }
-    return source, snapshots
+def nonempty_note(value: str) -> str:
+    note = value.strip()
+    if not note:
+        raise argparse.ArgumentTypeError("note must not be empty")
+    return note
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run a proof command and write FEATURE_DIR/proof/runs evidence."
+        description=(
+            "Run FEATURE_DIR/proof/run.sh in a contained process group and create one "
+            "retained attempt."
+        ),
+        epilog=(
+            "Output: prints the retained attempt directory. Exit status: runner status; "
+            "2 for invalid input, 124 for timeout, 125 for cleanup failure, or 128+signal "
+            "for interruption."
+        ),
     )
-    parser.add_argument("--feature-dir", required=True, type=Path)
     parser.add_argument(
-        "--serious",
-        action="store_true",
-        help="Require behavior boundary, proof scope, and notes for serious proof evidence.",
-    )
-    parser.add_argument("--notes", default="", help="Short note for notes.md")
-    parser.add_argument("--behavior-boundary", default="")
-    parser.add_argument("--oracle-scope", default="", help="Proof scope content written to oracle-scope.md.")
-    parser.add_argument(
-        "--source-path",
-        action="append",
-        default=[],
+        "--feature-dir",
+        required=True,
         type=Path,
-        help="Repository file or directory whose current content authorizes completion.",
+        help="Repository-relative feature directory containing FEATURE.md, PROOF.md, and proof/run.sh.",
     )
-    parser.add_argument("--failure-class", default="")
-    parser.add_argument("--attempt", type=int, default=1)
-    parser.add_argument("--repair-action", default="")
-    parser.add_argument("--changed-file", action="append", default=[])
-    parser.add_argument("--check", action="append", default=[])
-    parser.add_argument("--log", action="append", default=[], type=Path)
-    parser.add_argument("--screenshot", action="append", default=[], type=Path)
-    parser.add_argument("--provider-readback", type=Path)
-    parser.add_argument("--agent-observation", type=Path)
-    parser.add_argument("--agent-observation-json", type=Path)
-    parser.add_argument("command", nargs=argparse.REMAINDER)
-    args = parser.parse_args()
-    if not args.command or args.command[0] != "--":
-        parser.error("pass the proof command after --")
-    args.command = args.command[1:]
-    if not args.command:
-        parser.error("missing proof command")
-    if args.attempt < 1:
-        parser.error("--attempt must be a positive integer")
-    if args.attempt > 1 and not args.failure_class:
-        parser.error("--failure-class is required when --attempt is greater than 1")
-    if args.attempt > 1 and not args.repair_action:
-        parser.error("--repair-action is required when --attempt is greater than 1")
-    if (args.attempt > 1 or args.failure_class or args.repair_action) and not args.agent_observation:
-        parser.error("--agent-observation is required for repeated or repaired proof attempts")
-    if args.serious:
-        if not args.behavior_boundary.strip():
-            parser.error("--behavior-boundary is required with --serious")
-        if not args.oracle_scope.strip():
-            parser.error("--oracle-scope is required with --serious")
-        if not args.notes.strip():
-            parser.error("--notes is required with --serious")
-    return args
+    parser.add_argument(
+        "--timeout-seconds",
+        required=True,
+        type=positive_seconds,
+        help="Positive wall-clock limit for the complete proof runner.",
+    )
+    parser.add_argument(
+        "--note",
+        required=True,
+        type=nonempty_note,
+        help="Non-empty reason retained with this attempt.",
+    )
+    return parser.parse_args()
 
 
-def metadata_from_args(args: argparse.Namespace) -> dict[str, Any]:
+def now() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def timestamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+
+
+def repository_root(cwd: Path) -> Path:
+    result = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return Path(result.stdout.strip()).resolve() if result.returncode == 0 else cwd.resolve()
+
+
+def write_json(path: Path, value: dict[str, Any]) -> None:
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def runtime_context() -> dict[str, str]:
     return {
-        "behavior_boundary": args.behavior_boundary,
-        "oracle_scope": args.oracle_scope,
-        "serious": args.serious,
-        "attempt": args.attempt,
-        "failure_class": args.failure_class,
-        "repair_action": args.repair_action,
-        "changed_files": args.changed_file,
-        "checks": args.check,
+        "capture_python": sys.version.split()[0],
+        "capture_python_executable": sys.executable,
+        "machine": platform.machine(),
+        "platform": platform.system(),
+        "platform_release": platform.release(),
+        "shell": os.environ.get("SHELL", ""),
     }
 
 
-def write_optional_metadata(
-    run_dir: Path,
-    args: argparse.Namespace,
-    source: dict[str, Any],
-) -> dict[str, str | None]:
-    metadata = metadata_from_args(args)
-    metadata["schema_version"] = EVIDENCE_SCHEMA_VERSION
-    metadata["source"] = source
-    metadata_path = run_dir / "run-metadata.json"
-    metadata_path.write_text(
-        json.dumps(metadata, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+def process_group_exists(pgid: int) -> bool:
+    try:
+        os.killpg(pgid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return False
+    return True
 
-    oracle_path = None
-    if args.oracle_scope:
-        oracle_path = run_dir / "oracle-scope.md"
-        oracle_path.write_text(args.oracle_scope.rstrip() + "\n", encoding="utf-8")
 
-    attempts_path = run_dir / "attempts.json"
-    attempts_path.write_text(
-        json.dumps(
-            [
-                {
-                    "attempt": args.attempt,
-                    "failure_class": args.failure_class,
-                    "repair_action": args.repair_action,
-                }
-            ],
-            indent=2,
-            sort_keys=True,
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+def wait_for_group_exit(pgid: int, seconds: float) -> bool:
+    deadline = time.monotonic() + seconds
+    while process_group_exists(pgid) and time.monotonic() < deadline:
+        time.sleep(0.02)
+    return not process_group_exists(pgid)
 
-    repair_notes_path = None
-    if args.repair_action:
-        repair_notes_path = run_dir / "repair-notes.md"
-        repair_notes_path.write_text(args.repair_action.rstrip() + "\n", encoding="utf-8")
 
-    return {
-        "run_metadata": str(metadata_path),
-        "oracle_scope": str(oracle_path) if oracle_path else None,
-        "attempts": str(attempts_path),
-        "repair_notes": str(repair_notes_path) if repair_notes_path else None,
+def cleanup_process_group(pgid: int) -> dict[str, bool | str]:
+    cleanup: dict[str, bool | str] = {
+        "kill_sent": False,
+        "status": "clear",
+        "term_sent": False,
     }
+    if not process_group_exists(pgid):
+        return cleanup
+
+    cleanup["term_sent"] = True
+    try:
+        os.killpg(pgid, signal.SIGTERM)
+    except ProcessLookupError:
+        return cleanup
+    except PermissionError:
+        cleanup["status"] = "denied"
+        return cleanup
+    if wait_for_group_exit(pgid, 1):
+        cleanup["status"] = "terminated"
+        return cleanup
+
+    cleanup["kill_sent"] = True
+    try:
+        os.killpg(pgid, signal.SIGKILL)
+    except ProcessLookupError:
+        cleanup["status"] = "terminated"
+        return cleanup
+    except PermissionError:
+        cleanup["status"] = "denied"
+        return cleanup
+    cleanup["status"] = "killed" if wait_for_group_exit(pgid, 1) else "remaining"
+    return cleanup
 
 
-def write_contract_snapshots(run_dir: Path, snapshots: dict[str, bytes]) -> None:
-    if not snapshots:
-        return
-    contract_dir = run_dir / "contracts"
-    contract_dir.mkdir(parents=True, exist_ok=True)
-    for name, content in snapshots.items():
-        (contract_dir / name).write_bytes(content)
+def signal_handler(signum: int, _frame: FrameType | None) -> None:
+    raise CaptureSignal(signum)
 
 
-def write_bundle(
-    args: argparse.Namespace,
-    result: subprocess.CompletedProcess[str],
-    source: dict[str, Any],
-    snapshots: dict[str, bytes],
-) -> Path:
-    run_dir = args.feature_dir / "proof" / "runs" / timestamp()
-    run_dir.mkdir(parents=True, exist_ok=False)
+def install_signal_handlers() -> dict[int, Any]:
+    watched = (signal.SIGHUP, signal.SIGTERM, signal.SIGQUIT)
+    previous = {signum: signal.getsignal(signum) for signum in watched}
+    for signum in watched:
+        signal.signal(signum, signal_handler)
+    return previous
 
-    command_text = " ".join(args.command)
-    (run_dir / "command.txt").write_text(command_text + "\n", encoding="utf-8")
-    (run_dir / "stdout.txt").write_text(result.stdout, encoding="utf-8")
-    (run_dir / "stderr.txt").write_text(result.stderr, encoding="utf-8")
-    write_contract_snapshots(run_dir, snapshots)
 
-    copied_logs = copy_files(args.log, run_dir / "logs")
-    copied_screenshots = copy_files(args.screenshot, run_dir / "screenshots")
-    provider_readback = None
-    if args.provider_readback and args.provider_readback.exists():
-        destination = run_dir / "provider-readback.json"
-        shutil.copy2(args.provider_readback, destination)
-        provider_readback = str(destination)
-    agent_observation = None
-    if args.agent_observation and args.agent_observation.exists():
-        destination = run_dir / "agent-observation.md"
-        shutil.copy2(args.agent_observation, destination)
-        agent_observation = str(destination)
-    agent_observation_json = None
-    if args.agent_observation_json and args.agent_observation_json.exists():
-        destination = run_dir / "agent-observation.json"
-        shutil.copy2(args.agent_observation_json, destination)
-        agent_observation_json = str(destination)
-
-    status = "PASS" if result.returncode == 0 else "FAIL"
-    metadata_paths = write_optional_metadata(run_dir, args, source)
-    metadata = {
-        "schema_version": EVIDENCE_SCHEMA_VERSION,
-        "status": status,
-        "returncode": result.returncode,
-        "command": args.command,
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "stdout": str(run_dir / "stdout.txt"),
-        "stderr": str(run_dir / "stderr.txt"),
-        "logs": copied_logs,
-        "screenshots": copied_screenshots,
-        "provider_readback": provider_readback,
-        "agent_observation": agent_observation,
-        "agent_observation_json": agent_observation_json,
-        **metadata_paths,
-    }
-    (run_dir / "result.json").write_text(
-        json.dumps(metadata, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-
-    note = args.notes or f"Proof command exited with {status}."
-    (run_dir / "notes.md").write_text(note.rstrip() + "\n", encoding="utf-8")
-    return run_dir
+def restore_signal_handlers(previous: dict[int, Any]) -> None:
+    for signum, handler in previous.items():
+        signal.signal(signum, handler)
 
 
 def main() -> int:
     args = parse_args()
+    root = repository_root(Path.cwd())
+    feature_dir = (
+        args.feature_dir if args.feature_dir.is_absolute() else root / args.feature_dir
+    ).resolve()
     try:
-        source, snapshots = capture_source_context(args)
-    except ValueError as exc:
-        print(f"proof_run_capture: {exc}", file=sys.stderr)
+        feature_dir.relative_to(root)
+    except ValueError:
+        print("proof_run_capture: feature directory escapes repository root", file=sys.stderr)
         return 2
-    result = subprocess.run(args.command, capture_output=True, text=True, check=False)
-    run_dir = write_bundle(args, result, source, snapshots)
+
+    feature = feature_dir / "FEATURE.md"
+    proof = feature_dir / "PROOF.md"
+    runner = feature_dir / "proof" / "run.sh"
+    for label, path in (("FEATURE.md", feature), ("PROOF.md", proof), ("proof/run.sh", runner)):
+        if not path.is_file():
+            print(f"proof_run_capture: missing {label}: {path}", file=sys.stderr)
+            return 2
+    if not runner.stat().st_mode & 0o111:
+        print(f"proof_run_capture: runner not executable: {runner}", file=sys.stderr)
+        return 2
+
+    run_dir = feature_dir / "proof" / "runs" / timestamp()
+    run_dir.mkdir(parents=True)
+    command = [runner.relative_to(root).as_posix()]
+    started_at = now()
+    started_clock = time.monotonic()
+    execution: dict[str, Any] = {
+        "capture_pid": os.getpid(),
+        "command": command,
+        "cwd": str(root),
+        "runtime": runtime_context(),
+        "started_at": started_at,
+        "timeout_seconds": args.timeout_seconds,
+    }
+    write_json(run_dir / "attempt-start.json", {**execution, "status": "STARTED"})
+    shutil.copy2(feature, run_dir / "FEATURE.md")
+    shutil.copy2(proof, run_dir / "PROOF.md")
+    shutil.copy2(runner, run_dir / "run.sh")
+    (run_dir / "notes.md").write_text(args.note + "\n", encoding="utf-8")
+
+    stdout_path = run_dir / "stdout.txt"
+    stderr_path = run_dir / "stderr.txt"
+    process: subprocess.Popen[bytes] | None = None
+    runner_returncode: int | None = None
+    final_returncode = 126
+    status = "FAIL"
+    interrupted_signal: int | None = None
+    cleanup: dict[str, bool | str] = {
+        "kill_sent": False,
+        "status": "not_started",
+        "term_sent": False,
+    }
+
+    with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
+        previous_handlers = install_signal_handlers()
+        try:
+            process = subprocess.Popen(
+                command,
+                cwd=root,
+                stdout=stdout,
+                stderr=stderr,
+                start_new_session=True,
+            )
+            execution["runner_pid"] = process.pid
+            execution["runner_pgid"] = process.pid
+            write_json(run_dir / "attempt-start.json", {**execution, "status": "STARTED"})
+            try:
+                runner_returncode = process.wait(timeout=args.timeout_seconds)
+            except subprocess.TimeoutExpired:
+                status = "TIMEOUT"
+                final_returncode = 124
+                stderr.write(
+                    f"proof_run_capture: timed out after {args.timeout_seconds:g} seconds\n".encode()
+                )
+            except KeyboardInterrupt:
+                interrupted_signal = signal.SIGINT
+            except CaptureSignal as exc:
+                interrupted_signal = exc.signum
+        except OSError as exc:
+            stderr.write(f"proof_run_capture: cannot execute runner: {exc}\n".encode())
+        finally:
+            restore_signal_handlers(previous_handlers)
+            if process is not None:
+                cleanup = cleanup_process_group(process.pid)
+                if process.poll() is None:
+                    try:
+                        runner_returncode = process.wait(timeout=1)
+                    except subprocess.TimeoutExpired:
+                        cleanup["status"] = "remaining"
+
+        if interrupted_signal is not None:
+            status = "INTERRUPTED"
+            final_returncode = 128 + interrupted_signal
+            stderr.write(
+                f"proof_run_capture: interrupted by signal {interrupted_signal}\n".encode()
+            )
+        elif status != "TIMEOUT" and runner_returncode is not None:
+            if runner_returncode == 0:
+                status = "PASS"
+                final_returncode = 0
+            elif runner_returncode < 0:
+                status = "INTERRUPTED"
+                final_returncode = 128 + abs(runner_returncode)
+            else:
+                status = "FAIL"
+                final_returncode = runner_returncode
+
+        if cleanup["status"] in {"denied", "remaining"}:
+            status = "FAIL"
+            final_returncode = 125
+            stderr.write(b"proof_run_capture: process group cleanup failed\n")
+
+    result: dict[str, Any] = {
+        **execution,
+        "cleanup": cleanup,
+        "duration_seconds": round(time.monotonic() - started_clock, 6),
+        "ended_at": now(),
+        "returncode": final_returncode,
+        "runner_returncode": runner_returncode,
+        "status": status,
+    }
+    if interrupted_signal is not None:
+        result["signal"] = interrupted_signal
+    write_json(run_dir / "result.json", result)
     print(f"proof_run_capture: {run_dir}")
-    return result.returncode
+    return final_returncode
 
 
 if __name__ == "__main__":

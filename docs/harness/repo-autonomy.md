@@ -13,6 +13,6 @@
 - Proof -> `PROOF.md`, runner, fixture, testing docs.
 - Setup -> repo scripts/docs.
 - Repeated cross-feature/repo issue -> smallest harness skill/doc/script/test.
-- Stable preference -> memory only when user asks.
+- Stable preference or recurring correction -> explicit `second-brain-capture-interactions` only when the user asks to save the relevant dialogue.
 
 One repo failure stays local. Promote only recurring pattern. Reject harness changes that add more ceremony than useful feedback.

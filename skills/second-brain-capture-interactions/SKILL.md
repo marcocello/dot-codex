@@ -46,7 +46,7 @@ Pass `--sessions-root` and `--archived-sessions-root` when their locations diffe
 - Preserve completed user messages plus human-visible assistant commentary and final answers. Exclude system/developer instructions, reasoning, tool traffic, command output, and environment data.
 - Keep incomplete turns out of completed history and retain the reported completeness boundary.
 - Treat explicit redaction markers as evidence that a detected critical credential value was removed.
-- Do not archive, unarchive, rename, pin, or message tasks. Do not change Git state, ignore rules, source sessions, or Codex memory.
+- Do not archive, unarchive, rename, pin, or message tasks. Do not change Git state, ignore rules, source sessions, or any parallel preference/history store.
 - Do not automatically commit, upload, or inject interaction records into later work.
 
-Project interaction history is historical evidence. It is not current source truth, a feature contract, proof, completion evidence, or a replacement for memory.
+Project interaction history is historical evidence. It is not current source truth, a feature contract, proof, completion evidence, or automatically injected context.

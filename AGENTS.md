@@ -6,7 +6,7 @@
 - Non-coding or personal operating work routes first through `docs/secondbrain.md` and matching `second-brain-*` skills.
 - Skill descriptions own the shortest unique routing trigger or exclusion. Skill bodies own task-specific procedure, examples, stack choices, decision rules, and domain judgment.
 - Scripts own command arguments, outputs, exit semantics, and mechanical guarantees.
-- Harness docs own durable rationale, threat models, and detailed proof, autonomy, safety, memory, and handoff design.
+- Harness docs own durable rationale, threat models, and detailed proof, autonomy, safety, and handoff design.
 - Repo docs own app context when present: `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`.
 - State each instruction once at its owner. Cross-reference the owner instead of copying defaults or full workflows.
 
@@ -69,7 +69,7 @@
 - Align with `docs/APP.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present.
 - Greenfield work uses stack/domain skills before choosing folders or starters.
 - `coding-app-to-features` may bootstrap app docs, multiple features, and `docs/features/status.json`; after preparation, return to one `FEATURE_DIR`.
-- Codex memories hold stable preferences and habits; `AGENTS.md` holds hard rules; skills hold reusable workflows. No secrets in memories.
+- Project-owned interaction records hold explicitly captured dialogue history; `AGENTS.md` holds hard rules; skills hold reusable workflows. Interaction records remain historical evidence, not automatic context.
 
 ## Harness Docs
 - Canonical design and threat model: `docs/harness/deep-dive.md`.
@@ -79,7 +79,6 @@
 - Autonomous execution and recovery: `docs/harness/autonomous-execution.md`.
 - Destructive proof allowlist: `docs/harness/destructive-proof-allowlist.md`.
 - Handoff receipt: `docs/harness/handoff.md`.
-- Memory policy: `docs/harness/memory-policy.md`.
 - Reference background lives in `README.md`; optional evolution notes live in `docs/harness/evolution/*`.
 
 ## Safety And Style

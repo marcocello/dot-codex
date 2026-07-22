@@ -7,7 +7,7 @@ description: "Review completed feature evidence and corrections to propose groun
 
 Purpose: extract high-confidence improvement suggestions from actual feature history. Keep project-specific fixes, proof improvements, harness lessons, and personal preferences separate.
 
-Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or update memory unless the user explicitly asks.
+Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or persist additional interaction history.
 
 ## Inputs
 - Target repository and optional feature scope.
@@ -60,7 +60,7 @@ If conversation/evaluator context is unavailable, say so. Do not reconstruct use
 - `project`: behavior, architecture, implementation, setup, convention, or testing owned by the target repository.
 - `proof`: scenario, activation, fake, fixture, readiness, read-back, false-green risk, or known gap owned by one feature/repository.
 - `harness`: repeated cross-feature or cross-repository evidence that a reusable skill, harness doc, script, or regression should change.
-- `preference`: stable user preference; memory candidate only when the user explicitly asks to preserve it.
+- `preference`: stable user preference; suggest explicit `second-brain-capture-interactions` only when the user asks to preserve the relevant dialogue.
 - `one-off`: keep local; no reusable policy.
 
 Promote a harness lesson only after recurring evidence. One failure in one repository remains local unless it exposes a direct harness defect.
@@ -73,7 +73,7 @@ Suggest, but do not write, the destination:
 - Proof gap -> owning `PROOF.md`, runner, fixture, readiness check, or testing doc.
 - Setup friction -> repository setup scripts/docs/tasks.
 - Cross-feature harness gap -> smallest relevant skill, harness doc, script, or regression.
-- Stable preference -> memory only on explicit request.
+- Stable preference -> explicit `second-brain-capture-interactions` only when the user asks to save the relevant dialogue.
 
 Reject changes that create more ceremony than useful feedback.
 
@@ -94,7 +94,7 @@ Next: <one action>
 
 ## Rules
 - Suggestions only; no auto-apply.
-- Current source beats memory.
+- Current source beats captured interaction history.
 - Passing command != realistic proof.
 - Missing evidence is not automatically a defect; explain why it matters.
 - Prefer a few high-confidence improvements over a broad roadmap.

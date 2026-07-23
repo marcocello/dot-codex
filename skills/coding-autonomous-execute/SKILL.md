@@ -50,7 +50,7 @@ This section overrides the Recovery Ladder, Persistent Repair Loop, and `coding-
 
 1. Read the queue through `coding-feature-queue` and select one `revalidate` item.
 2. Read its existing `FEATURE.md`, `PROOF.md`, and `proof/run.sh`. Do not change implementation, setup, contracts, proof, fixtures, or queue ownership paths.
-3. Capture the unchanged proof with `scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "revalidation reason"`.
+3. Capture the unchanged proof with `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "revalidation reason"`.
 4. Proof failure: write the result and reason into that attempt's plain `completion.md`, move the item to `ready`, and stop processing that item.
 5. Proof pass: skip the repository gate because revalidation owns no new implementation, then automatically spawn a fresh read-only `coding-feature-evaluator` using the passing attempt.
 6. Evaluator `PASS`: preserve its output in `completion.md` and return the item to `done`.

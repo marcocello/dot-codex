@@ -29,7 +29,7 @@ If behavior is missing, vague, or has unresolved material choices, return to `co
    - Confirm one accountable parent for this active feature; multiple agents or other feature parents may edit the same checkout concurrently.
    - Preserve unrelated work and re-read shared files before applying narrow edits. Do not start a competing proof while this feature's newest attempt is unresolved.
    - Validate queue `files` change prefixes and `revalidate_on` proof dependencies; broaden them before implementation when needed.
-   - Run `scripts/invalidate_feature_status --feature <id>` before code and after prefix expansion.
+   - Run `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status" --feature <id>` from the target repository before code and after prefix expansion.
    - Preserve unrelated dirty-tree changes.
 
 3. Prepare environment
@@ -57,7 +57,7 @@ If behavior is missing, vague, or has unresolved material choices, return to `co
    - Implement semantic behavior at the durable decision boundary, not through open-ended phrase lists.
 
 7. Capture proof
-   - Run `scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"`.
+   - Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"` from the target repository.
    - Read the created `result.json` and relevant output.
    - Keep every failed, timed-out, interrupted, and passing attempt.
    - Immediately after `PASS`, initialize that attempt’s `completion.md` with gate and evaluator `NOT RUN` context before starting either stage. Update it as each stage finishes or fails.
@@ -70,13 +70,13 @@ If behavior is missing, vague, or has unresolved material choices, return to `co
    - Contract/proof meaning changed: stop implementation and use Contract Repair below.
 
 9. Run repository gate
-   - After proof passes, run an existing useful and proportionate gate when the repository has one.
-   - Do not invent a gate only because the harness mentions it.
-   - Skip with a short reason for documentation-only, isolated changes, or repositories without a meaningful health command.
+   - After proof passes, run the canonical shared gate with `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root <repo-root> --profile <profile>` using every applicable explicit profile.
+   - Do not create or copy a target-repository `scripts/gate`; project-native build, test, lint, or health commands remain separate checks and may run in addition when useful.
+   - Skip with a short reason only when the canonical profiles and repository-native health commands are not meaningful for the change.
    - Retain the command and outcome or skip reason in the final attempt's `completion.md`. A failed gate is retained there before repair begins.
 
 10. Run managed evaluation
-   - Rerun `scripts/invalidate_feature_status --feature <id>` immediately before evaluation so a feature that became overlapping and `done` during this work moves to `revalidate` before completion is judged.
+   - Rerun `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status" --feature <id>` from the target repository immediately before evaluation so a feature that became overlapping and `done` during this work moves to `revalidate` before completion is judged.
    - Spawn a fresh read-only evaluator automatically.
    - Wait for the verdict and apply it through Managed Evaluator below.
    - Copy the evaluator's plain output verbatim into the final attempt's `completion.md` before queue mutation or repair.

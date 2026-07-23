@@ -15,7 +15,7 @@ Purpose: decide evidence that should fail when the feature’s central behavior 
 - Durable or visible effects are read back from the same boundary a real consumer uses.
 - Fakes replace only unsafe outer edges, never the behavior being claimed.
 - `proof/run.sh` contains the complete executable sequence; its exit code is the suite result.
-- Official runs use `scripts/proof_run_capture` with an explicit timeout and reason.
+- Official runs use `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture"` with an explicit timeout and reason.
 - New behavior and known defects should produce a captured failing attempt before substantial implementation when the decision-complete proof can run safely and meaningfully.
 - Static checks, source assertions, mocks, lint, typecheck, and unit tests are secondary unless the asserted surface is itself the feature boundary.
 
@@ -73,7 +73,7 @@ Use [proof-contract-template.md](references/proof-contract-template.md) when cre
 Official execution command:
 
 ```bash
-scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
 ```
 
 The caller selects a positive scenario-specific timeout. The runner must not edit implementation or harness inputs, daemonize, call `setsid`, use `disown`, or escape the capture process group. Do not print secrets or customer data.

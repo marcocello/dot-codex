@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scan tracked and untracked checkout files through GitGuardian ggmcp."""
+"""Scan checkout files for secrets and structured personal information."""
 
 from __future__ import annotations
 
@@ -7,6 +7,8 @@ import argparse
 import http.client
 import json
 import os
+import re
+import shutil
 import subprocess
 import sys
 import urllib.parse
@@ -17,6 +19,37 @@ DEFAULT_URL = "http://127.0.0.1:8000"
 DEFAULT_MAX_BYTES = 1_000_000
 DEFAULT_BATCH_SIZE = 20
 SECRET_KEYS = {"match", "secret", "value", "token", "password", "apikey", "api_key"}
+VISIBILITY_ENV_NAMES = (
+    "AUDIT_REPOSITORY_VISIBILITY",
+    "GITHUB_REPOSITORY_VISIBILITY",
+    "CI_PROJECT_VISIBILITY",
+)
+VISIBILITY_VALUES = {"public", "private", "internal", "unknown"}
+RESERVED_EMAIL_DOMAINS = {
+    "example.com",
+    "example.net",
+    "example.org",
+    "localhost",
+}
+EMAIL_PATTERN = re.compile(
+    r"(?i)(?<![A-Z0-9._%+-])[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,63}"
+    r"(?![A-Z0-9._%+-])"
+)
+POSIX_HOME_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9_.-])/(?:Users|home)/[A-Za-z0-9._-]+"
+    r"(?:/[^\s\"'`<>]*)?"
+)
+WINDOWS_HOME_PATTERN = re.compile(
+    r"(?i)(?<![A-Z0-9_])[A-Z]:\\Users\\[A-Z0-9._-]+"
+    r"(?:\\[^\s\"'`<>]*)?"
+)
+SUBSCRIPTION_FIELD_PATTERN = re.compile(
+    r"(?i)\b(?:azure[_\s.-]*)?subscription[_\s.-]*id\b"
+)
+UUID_PATTERN = re.compile(
+    r"(?i)\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-"
+    r"[0-9a-f]{4}-[0-9a-f]{12}\b"
+)
 
 
 def git_output(root: Path, args: list[str]) -> bytes:
@@ -66,6 +99,91 @@ def collect_checkout_documents(
             skipped.append(skip)
 
     return documents, skipped
+
+
+def normalize_visibility(raw_value: str) -> str | None:
+    value = raw_value.strip().lower()
+    return value if value in VISIBILITY_VALUES else None
+
+
+def repository_visibility(root: Path) -> tuple[str, str]:
+    for name in VISIBILITY_ENV_NAMES:
+        raw_value = os.environ.get(name)
+        if raw_value is None:
+            continue
+        value = normalize_visibility(raw_value)
+        if value is None:
+            return "unknown", f"invalid environment:{name}"
+        return value, f"environment:{name}"
+
+    gh = shutil.which("gh")
+    if gh is None:
+        return "unknown", "provider lookup unavailable"
+    try:
+        result = subprocess.run(
+            [gh, "repo", "view", "--json", "visibility", "--jq", ".visibility"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return "unknown", "provider lookup failed"
+    value = normalize_visibility(result.stdout) if result.returncode == 0 else None
+    if value is None:
+        return "unknown", "provider lookup failed"
+    return value, "gh"
+
+
+def reserved_email(value: str) -> bool:
+    domain = value.rsplit("@", maxsplit=1)[-1].lower()
+    return (
+        domain in RESERVED_EMAIL_DOMAINS
+        or domain.endswith(".invalid")
+        or domain.endswith(".test")
+    )
+
+
+def personal_information_findings(
+    documents: list[dict[str, str]],
+) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, str, str]] = set()
+
+    def add(filename: str, line_number: int, detector: str, value: str) -> None:
+        key = (filename, line_number, detector, value)
+        if key in seen:
+            return
+        seen.add(key)
+        findings.append(
+            {
+                "file": filename,
+                "line": line_number,
+                "detector": detector,
+                "value": value,
+            }
+        )
+
+    for document in documents:
+        filename = document["filename"]
+        for line_number, line in enumerate(document["document"].splitlines(), start=1):
+            for match in EMAIL_PATTERN.finditer(line):
+                value = match.group(0)
+                if not reserved_email(value):
+                    add(filename, line_number, "personal_email", value)
+            for pattern in (POSIX_HOME_PATTERN, WINDOWS_HOME_PATTERN):
+                for match in pattern.finditer(line):
+                    add(filename, line_number, "local_home_path", match.group(0))
+            if SUBSCRIPTION_FIELD_PATTERN.search(line):
+                for match in UUID_PATTERN.finditer(line):
+                    add(
+                        filename,
+                        line_number,
+                        "cloud_subscription_id",
+                        match.group(0),
+                    )
+    return findings
 
 
 def chunked(items: list[dict[str, str]], size: int) -> list[list[dict[str, str]]]:
@@ -225,6 +343,9 @@ def format_scan_report(
     documents: list[dict[str, str]],
     scan_results: list[dict[str, Any]],
     skipped: list[dict[str, str]],
+    personal_findings: list[dict[str, Any]],
+    visibility: str,
+    visibility_source: str,
 ) -> dict[str, Any]:
     findings: list[dict[str, Any]] = []
 
@@ -263,14 +384,26 @@ def format_scan_report(
                 )
 
     critical_count = sum(1 for finding in findings if finding["critical"])
+    if not personal_findings:
+        personal_disposition = "clear"
+    elif visibility == "public":
+        personal_disposition = "block"
+    else:
+        personal_disposition = "warn"
     return {
+        "repository_visibility": visibility,
+        "repository_visibility_source": visibility_source,
+        "personal_information_disposition": personal_disposition,
         "summary": {
             "files_scanned": len(documents),
             "files_skipped": len(skipped),
             "findings": len(findings),
             "critical_findings": critical_count,
+            "personal_information_findings": len(personal_findings),
+            "personal_information_blocking": personal_disposition == "block",
         },
         "findings": findings,
+        "personal_information_findings": personal_findings,
         "skipped": skipped,
     }
 
@@ -294,18 +427,47 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
     documents, skipped = collect_checkout_documents(args.root, max_bytes=args.max_bytes)
+    personal_findings = personal_information_findings(documents)
+    visibility, visibility_source = repository_visibility(args.root)
     if args.dry_run:
-        report = format_scan_report(documents, [], skipped)
+        report = format_scan_report(
+            documents,
+            [],
+            skipped,
+            personal_findings,
+            visibility,
+            visibility_source,
+        )
         print(json.dumps(report, indent=2, sort_keys=True))
-        return 0
+        return 1 if report["summary"]["personal_information_blocking"] else 0
 
     scan_results: list[dict[str, Any]] = []
     for batch in chunked(documents, args.batch_size):
         scan_results.extend(call_ggmcp_scan(args.url, args.token, batch, args.timeout))
 
-    report = format_scan_report(documents, scan_results, skipped)
+    report = format_scan_report(
+        documents,
+        scan_results,
+        skipped,
+        personal_findings,
+        visibility,
+        visibility_source,
+    )
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 1 if report["summary"]["critical_findings"] else 0
+    if report["personal_information_disposition"] == "block":
+        print(
+            "PERSONAL INFORMATION: BLOCKED (confirmed public repository)",
+            file=sys.stderr,
+        )
+    elif report["personal_information_disposition"] == "warn":
+        print(
+            f"PERSONAL INFORMATION: WARNING ({visibility} visibility; non-blocking)",
+            file=sys.stderr,
+        )
+    return 1 if (
+        report["summary"]["findings"]
+        or report["summary"]["personal_information_blocking"]
+    ) else 0
 
 
 if __name__ == "__main__":

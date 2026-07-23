@@ -8,7 +8,7 @@
 
 ## Command
 ```bash
-scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
 ```
 
 ## Scenario: <name>

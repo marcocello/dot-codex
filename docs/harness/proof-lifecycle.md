@@ -1,10 +1,10 @@
 # Proof Capture
 
-Owner: `scripts/proof_run_capture`.
+Owner: `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture"`.
 
 ## Command
 ```bash
-scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
 ```
 
 - Executes exactly `FEATURE_DIR/proof/run.sh` from repo root.

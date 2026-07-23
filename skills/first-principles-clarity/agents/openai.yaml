@@ -1,0 +1,4 @@
+interface:
+  display_name: "First-Principles Clarity"
+  short_description: "Find the truth beneath assumptions and ego"
+  default_prompt: "Use $first-principles-clarity to examine this situation, separate facts from stories, and reach an ego-aware conclusion."

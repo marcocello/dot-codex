@@ -1,7 +1,7 @@
 interface:
-  display_name: "CODING | Critical Secret Audit"
-  short_description: "Scan current checkout for critical secrets."
-  default_prompt: "Use $coding-critical-secret-audit to scan the current checkout for critical secrets with GitGuardian ggmcp."
+  display_name: "CODING | Secret Audit"
+  short_description: "Scan secrets and personal information."
+  default_prompt: "Use $coding-secret-audit to scan the current checkout for secrets and personal information."
 dependencies:
   tools:
     - type: "mcp"

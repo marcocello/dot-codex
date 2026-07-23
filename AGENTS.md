@@ -3,6 +3,7 @@
 ## Role
 - This file is the navigation contract for Codex in this repo.
 - `AGENTS.md` owns global authority, assurance lanes, completion, safety, and handoff rules.
+- Shared harness executables are owned by dot-codex and invoked from any checkout through `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>"`. Do not create, copy, or wrap these tools in target repositories.
 - Non-coding or personal operating work routes first through `docs/secondbrain.md` and matching `second-brain-*` skills.
 - Skill descriptions own the shortest unique routing trigger or exclusion. Skill bodies own task-specific procedure, examples, stack choices, decision rules, and domain judgment.
 - Scripts own command arguments, outputs, exit semantics, and mechanical guarantees.
@@ -33,11 +34,11 @@
 - Lightweight work is complete after its focused regression or narrow check passes; add broader checks only when the touched surface justifies them.
 - Tracked and autonomous work require a passing realistic proof, a useful existing repository gate or explicit skip reason, and a fresh managed `coding-feature-evaluator` `PASS`.
 - `FEATURE_DIR/proof/run.sh` contains the complete executable proof sequence. Its exit code is the suite result.
-- Capture every official attempt with `scripts/proof_run_capture --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"`.
+- Capture every official attempt with `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"`.
 - The LLM chooses a scenario-appropriate timeout. There is no default.
 - Keep failed, timed-out, interrupted, and passing attempts Git-trackable. Scripts record execution; the LLM judges meaning and progress.
 - Queue state lives in `docs/features/status.json` with only `draft`, `ready`, `revalidate`, `blocked`, and `done`, short notes, repository-relative `files` change prefixes, and `revalidate_on` proof-dependency prefixes.
-- Before implementation, whenever change prefixes broaden, and immediately before managed evaluation, run `scripts/invalidate_feature_status --feature <id>` so completed features whose proof dependencies overlap the active changes move to `revalidate` even if queue state changed during the active work.
+- Before implementation, whenever change prefixes broaden, and immediately before managed evaluation, run `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status" --feature <id>` from the target repository so completed features whose proof dependencies overlap the active changes move to `revalidate` even if queue state changed during the active work.
 - Default autonomous implementation selects only `ready` work and ignores `revalidate`. Revalidation is an explicit, separate pass: rerun the existing proof without changing implementation, setup, contracts, or proof; after proof passes, run a fresh evaluator. Evaluator `PASS` returns the item to `done`; proof or evaluator failure moves it to `ready` for the normal repair lifecycle. Do not repair or recursively execute invalidated work during revalidation.
 - Queue prose never authorizes completion. The parent marks `done` only after the current proof, optional gate decision, and fresh evaluator pass.
 - Artifact work uses artifact-specific parsers, renderers, contract checks, fixtures, syntax checks, or readiness checks.
@@ -89,7 +90,7 @@
 - Explicit over clever. Use red/green TDD for implementation and defects. Never delete, weaken, or bypass proof for green.
 - Code guidelines unless the repository defines stricter rules: function <=100 lines, cyclomatic complexity <=8 where tooling exists, positional parameters <=5. Do not add tooling only to enforce these numbers.
 - Do not hard-wrap Markdown prose.
-- Editing this dot-codex config: use `scripts/gate` as the repository gate. It is read-only and includes common, Python, harness, unit-test, and diff checks. Run the active feature proof separately when the tracked lifecycle applies.
+- Editing this dot-codex config: use `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$PWD"` as the repository gate. It is read-only and includes common, Python, harness, unit-test, and diff checks. Run the active feature proof separately when the tracked lifecycle applies.
 
 ## Handoff
 - Default to a short human receipt, not an audit log.

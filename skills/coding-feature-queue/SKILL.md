@@ -53,7 +53,7 @@ There is no `in_progress` or `repairing` status. The active Codex task owns tran
 ## Rules
 - Keep contracts authoritative. Queue notes summarize state, not requirements.
 - Keep all paths repository-relative and safe: no absolute paths, `..`, or repository root prefix.
-- Before implementation, declare likely `files` change prefixes and `revalidate_on` proof dependencies, then run `scripts/invalidate_feature_status --feature <id>`.
+- Before implementation, declare likely `files` change prefixes and `revalidate_on` proof dependencies, then run `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status" --feature <id>` from the target repository.
 - Run the invalidator again whenever the active feature’s prefixes broaden.
 - Run it once more immediately before managed evaluation to catch overlapping features that became `done` while the active work was running.
 - The invalidator compares active `files` only with each `done` feature's `revalidate_on` prefixes. It has no administrative-filename allowlist or denylist, moves only real change-to-dependency overlaps to `revalidate`, and never marks anything complete.
@@ -75,7 +75,7 @@ There is no `in_progress` or `repairing` status. The active Codex task owns tran
 ## Explicit Revalidation
 1. Enter this mode only when revalidation is explicitly requested; default autonomous implementation never selects it.
 2. Select the lowest-priority-number `revalidate` item and keep the pass bounded to that activity.
-3. Rerun the existing proof through `proof_run_capture` without changing implementation, setup, `FEATURE.md`, `PROOF.md`, or `proof/run.sh`.
+3. Rerun the existing proof through `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture"` without changing implementation, setup, `FEATURE.md`, `PROOF.md`, or `proof/run.sh`.
 4. Proof `PASS`: run a fresh read-only evaluator. Evaluator `PASS` returns the item to `done`.
 5. Proof failure or evaluator `FAIL`: move the item to `ready` for a later normal repair lifecycle.
 6. A genuinely external or user-owned proof blocker may move it to `blocked` with the exact reason.
@@ -86,7 +86,7 @@ There is no `in_progress` or `repairing` status. The active Codex task owns tran
 - Require unique feature ids.
 - Require exactly one existing `feature_dir` for the active item.
 - Require `files` and `revalidate_on` lists with safe repository-relative prefixes; a `done` item may not have an empty `revalidate_on` list.
-- Use `scripts/invalidate_feature_status` for overlap effects; do not reproduce its path logic in prompts or queue prose.
+- Use `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status"` for overlap effects; do not reproduce its path logic in prompts or queue prose.
 
 ## Handoff
 Report only meaningful transitions:

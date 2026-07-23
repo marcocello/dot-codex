@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision a managed ggmcp server when needed and scan one checkout."""
+"""Provision ggmcp when needed and run the checkout audit."""
 
 from __future__ import annotations
 
@@ -86,7 +86,7 @@ def load_scanner() -> Callable[[list[str]], int]:
     if not SCANNER.is_file():
         raise RuntimeError(f"checkout scanner is missing: {SCANNER}")
     spec = importlib.util.spec_from_file_location(
-        "coding_critical_secret_audit_scanner", SCANNER
+        "coding_secret_audit_scanner", SCANNER
     )
     if spec is None or spec.loader is None:
         raise RuntimeError(f"checkout scanner could not be loaded: {SCANNER}")
@@ -166,7 +166,7 @@ def managed_scan(root: Path, token: str) -> int:
 
 def report_result(result: int) -> int:
     if result == 0:
-        print("GITGUARDIAN audit: PASS")
+        print("AUDIT: PASS")
     return result
 
 

@@ -1,25 +1,30 @@
 ---
 name: coding-commit
-description: Stage explicit coherent change sets and create one or more local Conventional Commits, or draft their messages. Never push.
+description: Stage coherent repository change sets and create one or more local Conventional Commits, or draft messages, regardless of which task or chat produced the changes. Use for commit requests. Never push.
 ---
 
 # Commit
 
-Purpose: inspect local changes, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit.
+Purpose: inspect repository changes, select scope from the user's current request and Git state, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit.
 
 ## Default behavior
 - Never push. Do not run `git push`.
 - Create local commits only when the user explicitly asks to commit.
 - If the user only asks for a commit message, do not stage files and do not commit.
+- Task provenance is not a commit-scope boundary. Changes may predate the current task or come from other tasks, chats, agents, or sessions.
+- Apply commit scope in this order:
+  - Explicit scope: when the user names paths, a concern, an existing staged selection, or another clear subset, include only the named paths or concern.
+  - Unscoped commit request: when the user asks to commit without narrowing the scope, include the complete repository change set: staged changes, unstaged changes, and relevant untracked files.
+- Do not exclude, refuse, or request confirmation for a change solely because it predates or is unrelated to the current task.
 - Choose the smallest number of commits that keeps each commit coherent, independently understandable, and reviewable.
 - Create one commit when the requested changes form one concern, even when that concern spans several files.
-- Create multiple commits when the requested scope contains independently meaningful concerns that can be separated without leaving a misleading or broken intermediate state.
+- Create multiple commits when the selected repository scope contains independently meaningful concerns that can be separated without leaving a misleading or broken intermediate state.
 - Keep each concern's dependent implementation, tests, documentation, and retained proof artifacts in the same commit. Do not split by file type merely to produce more commits.
-- Stage selected files for the requested scope; do not use `git add .`.
+- Stage selected files for each commit group; do not use `git add .`.
 - For a feature commit, stage all official failed, timed-out, interrupted, and passing directories under that feature's `proof/runs/`. These are durable review history, not disposable generated output.
 - Preserve an explicit existing staged selection. Treat a coherent staged set as the first or only commit group; if it mixes concerns and splitting it would require rewriting ambiguous user staging, ask before reorganizing it.
-- If the requested scope is ambiguous, inspect changes and choose the smallest coherent scope. Ask only when choosing would risk committing unrelated user work or rewriting ambiguous staging.
-- Inspect both staged and unstaged changes in the requested scope before deciding the commit plan. If the worktree is clean, inspect the most recent commit.
+- After applying the explicit-versus-unscoped rules, ask only when the user's stated scope conflicts with the repository state or when proceeding would require rewriting ambiguous staging. Do not ask merely because selected changes came from outside the current task.
+- Inspect both staged and unstaged changes in the selected scope before deciding the commit plan. If the worktree is clean, inspect the most recent commit.
 - Default to a short full commit message: subject, blank line, then one compact paragraph.
 - Make the subject clear enough for a reviewer scanning history to understand the actual change.
 - Keep the subject lowercase, imperative, specific, concise, and without a trailing period.
@@ -41,8 +46,9 @@ Purpose: inspect local changes, plan coherent change sets, stage selected files,
    - If no staged, unstaged, or untracked change exists: `git show --stat --format=medium HEAD`
 2. Decide the operation:
    - Message-only request: plan the coherent group or groups, draft every message, and stop without changing Git state.
-   - Commit request: continue with only the staged or unstaged files belonging to the requested scope.
-3. Partition the requested scope into commit groups before staging:
+   - Explicitly scoped commit request: continue with only the named paths, concern, staged selection, or other clear subset.
+   - Unscoped commit request: continue with the complete staged, unstaged, and relevant untracked repository change set, regardless of which task produced it.
+3. Partition the selected scope into commit groups before staging:
    - Use the smallest number of groups that gives each commit one clear purpose.
    - Keep dependent implementation, tests, documentation, migrations, configuration, and retained proof together.
    - Order dependent groups so every intermediate commit is coherent and reviewable.

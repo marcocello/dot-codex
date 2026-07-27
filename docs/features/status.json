@@ -1,0 +1,66 @@
+{
+  "features": [
+    {
+      "id": "frontend-sites-routing",
+      "feature_dir": "docs/features/frontend-sites-routing",
+      "priority": 1,
+      "status": "done",
+      "notes": "Proof, repository gate, and managed evaluator passed.",
+      "files": [
+        "AGENTS.md",
+        "docs/features/frontend-sites-routing",
+        "scripts/gate",
+        "skills/coding-frontend",
+        "tests/unit/test_gate_policy.py"
+      ],
+      "revalidate_on": [
+        "AGENTS.md",
+        "config.toml",
+        "docs/features/frontend-sites-routing/FEATURE.md",
+        "docs/features/frontend-sites-routing/PROOF.md",
+        "docs/features/frontend-sites-routing/proof/run.sh",
+        "scripts/gate",
+        "skills/coding-frontend/SKILL.md",
+        "tests/unit/test_gate_policy.py"
+      ]
+    },
+    {
+      "id": "named-permission-profile",
+      "feature_dir": "docs/features/named-permission-profile",
+      "priority": 2,
+      "status": "done",
+      "notes": "Proof, applicable repository gate, and managed evaluator passed.",
+      "files": [
+        "config.template.toml",
+        "docs/features/named-permission-profile"
+      ],
+      "revalidate_on": [
+        "config.template.toml",
+        "docs/features/named-permission-profile/FEATURE.md",
+        "docs/features/named-permission-profile/PROOF.md",
+        "docs/features/named-permission-profile/proof/run.sh"
+      ]
+    },
+    {
+      "id": "cross-task-commit",
+      "feature_dir": "docs/features/cross-task-commit",
+      "priority": 3,
+      "status": "done",
+      "notes": "Cross-task scope proof, repository gate, and managed evaluator passed.",
+      "files": [
+        "docs/features/cross-task-commit",
+        "docs/features/status.json",
+        "skills/coding-commit",
+        "tests/unit/test_commit_skill_contract.py"
+      ],
+      "revalidate_on": [
+        "docs/features/cross-task-commit/FEATURE.md",
+        "docs/features/cross-task-commit/PROOF.md",
+        "docs/features/cross-task-commit/proof/run.sh",
+        "skills/coding-commit/SKILL.md",
+        "skills/coding-commit/agents/openai.yaml",
+        "tests/unit/test_commit_skill_contract.py"
+      ]
+    }
+  ]
+}

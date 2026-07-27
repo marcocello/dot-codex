@@ -1,9 +1,34 @@
 {
   "features": [
     {
+      "id": "app-visible-interaction-sync",
+      "feature_dir": "docs/features/app-visible-interaction-sync",
+      "priority": 1,
+      "status": "done",
+      "notes": "App-visible mirror proof, live four-chat read-back, repository gate, and managed evaluator passed.",
+      "files": [
+        "docs/interactions",
+        "docs/features/app-visible-interaction-sync",
+        "docs/features/status.json",
+        "skills/coding-app-improvement-review",
+        "skills/second-brain-capture-interactions",
+        "tests/unit/test_capture_interactions.py"
+      ],
+      "revalidate_on": [
+        "docs/features/app-visible-interaction-sync/FEATURE.md",
+        "docs/features/app-visible-interaction-sync/PROOF.md",
+        "docs/features/app-visible-interaction-sync/proof/run.sh",
+        "skills/coding-app-improvement-review/SKILL.md",
+        "skills/second-brain-capture-interactions/SKILL.md",
+        "skills/second-brain-capture-interactions/agents/openai.yaml",
+        "skills/second-brain-capture-interactions/scripts/capture_interactions.py",
+        "tests/unit/test_capture_interactions.py"
+      ]
+    },
+    {
       "id": "frontend-sites-routing",
       "feature_dir": "docs/features/frontend-sites-routing",
-      "priority": 1,
+      "priority": 2,
       "status": "done",
       "notes": "Proof, repository gate, and managed evaluator passed.",
       "files": [
@@ -27,7 +52,7 @@
     {
       "id": "named-permission-profile",
       "feature_dir": "docs/features/named-permission-profile",
-      "priority": 2,
+      "priority": 3,
       "status": "done",
       "notes": "Proof, applicable repository gate, and managed evaluator passed.",
       "files": [
@@ -44,7 +69,7 @@
     {
       "id": "cross-task-commit",
       "feature_dir": "docs/features/cross-task-commit",
-      "priority": 3,
+      "priority": 4,
       "status": "done",
       "notes": "Cross-task scope proof, repository gate, and managed evaluator passed.",
       "files": [

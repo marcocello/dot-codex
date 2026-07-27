@@ -7,14 +7,18 @@ import argparse
 import json
 import os
 import re
+import select
+import subprocess
 import sys
+import time
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 
 SCHEMA_VERSION = 1
+APP_SERVER_TIMEOUT_SECONDS = 20
 TASK_ID_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,199}")
 SECRET_PATTERNS = (
     (
@@ -244,31 +248,6 @@ def parse_source(path: Path) -> tuple[ParsedSession | None, SourceIssue | None]:
     return build_record(values, path)
 
 
-def discover_sources(roots: Iterable[Path]) -> list[Path]:
-    discovered: set[Path] = set()
-    for root in roots:
-        normalized = normalize_path(root)
-        if not normalized.is_dir():
-            continue
-        discovered.update(path for path in normalized.rglob("*.jsonl") if path.is_file())
-    return sorted(discovered)
-
-
-def select_candidates(candidates: Iterable[ParsedSession]) -> dict[str, ParsedSession]:
-    selected: dict[str, ParsedSession] = {}
-    for candidate in candidates:
-        current = selected.get(candidate.task_id)
-        if current is None or candidate_rank(candidate) > candidate_rank(current):
-            selected[candidate.task_id] = candidate
-    return selected
-
-
-def candidate_rank(candidate: ParsedSession) -> tuple[int, int, str]:
-    completed = len(candidate.record["turns"])
-    canonical = json.dumps(candidate.record, sort_keys=True, separators=(",", ":"))
-    return completed, candidate.event_count, canonical
-
-
 def render_json(value: dict[str, Any]) -> bytes:
     return (json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8")
 
@@ -327,37 +306,294 @@ class CaptureLock:
         self.path.unlink(missing_ok=True)
 
 
-def matching_sources(
+class AppServerClient:
+    def __init__(self, codex_bin: str) -> None:
+        self.codex_bin = codex_bin
+        self.process: subprocess.Popen[str] | None = None
+        self.request_id = 0
+
+    def __enter__(self) -> "AppServerClient":
+        try:
+            self.process = subprocess.Popen(
+                [self.codex_bin, "app-server", "--stdio"],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1,
+            )
+        except OSError as exc:
+            raise RuntimeError(f"cannot start Codex app server: {exc}") from exc
+        self.request(
+            "initialize",
+            {"clientInfo": {"name": "capture-interactions", "version": "1"}},
+        )
+        self.notify("initialized")
+        return self
+
+    def __exit__(self, _type: object, _value: object, _traceback: object) -> None:
+        if self.process is None:
+            return
+        if self.process.stdin is not None:
+            self.process.stdin.close()
+        try:
+            self.process.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            self.process.terminate()
+            try:
+                self.process.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait(timeout=2)
+
+    def send(self, payload: dict[str, Any]) -> None:
+        if self.process is None or self.process.stdin is None:
+            raise RuntimeError("Codex app server is not running")
+        try:
+            self.process.stdin.write(json.dumps(payload, separators=(",", ":")) + "\n")
+            self.process.stdin.flush()
+        except (BrokenPipeError, OSError) as exc:
+            raise RuntimeError(f"cannot write to Codex app server: {exc}") from exc
+
+    def notify(self, method: str) -> None:
+        self.send({"method": method})
+
+    def request(self, method: str, params: dict[str, Any]) -> dict[str, Any]:
+        self.request_id += 1
+        request_id = self.request_id
+        self.send({"id": request_id, "method": method, "params": params})
+        return self.read_response(request_id)
+
+    def read_response(self, request_id: int) -> dict[str, Any]:
+        if self.process is None or self.process.stdout is None:
+            raise RuntimeError("Codex app server is not running")
+        deadline = time.monotonic() + APP_SERVER_TIMEOUT_SECONDS
+        while time.monotonic() < deadline:
+            ready, _, _ = select.select(
+                [self.process.stdout], [], [], max(0.0, deadline - time.monotonic())
+            )
+            if not ready:
+                break
+            line = self.process.stdout.readline()
+            if not line:
+                break
+            try:
+                message = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise RuntimeError(f"Codex app server returned invalid JSON: {exc}") from exc
+            if message.get("id") != request_id:
+                continue
+            if isinstance(message.get("error"), dict):
+                error = message["error"].get("message") or message["error"]
+                raise RuntimeError(f"Codex app server request failed: {error}")
+            result = message.get("result")
+            if not isinstance(result, dict):
+                raise RuntimeError("Codex app server response has no result object")
+            return result
+        detail = self.process_error()
+        raise RuntimeError(f"Codex app server response timed out{detail}")
+
+    def process_error(self) -> str:
+        if self.process is None or self.process.poll() is None:
+            return ""
+        if self.process.stderr is None:
+            return f" after exit {self.process.returncode}"
+        stderr = self.process.stderr.read().strip()
+        suffix = f": {stderr}" if stderr else ""
+        return f" after exit {self.process.returncode}{suffix}"
+
+
+def list_app_threads(codex_bin: str) -> list[dict[str, Any]]:
+    threads: list[dict[str, Any]] = []
+    cursor: str | None = None
+    with AppServerClient(codex_bin) as client:
+        while True:
+            params: dict[str, Any] = {
+                "archived": False,
+                "limit": 100,
+                "sourceKinds": ["vscode"],
+            }
+            if cursor is not None:
+                params["cursor"] = cursor
+            result = client.request("thread/list", params)
+            page = result.get("data")
+            if not isinstance(page, list) or not all(
+                isinstance(thread, dict) for thread in page
+            ):
+                raise RuntimeError("Codex app server returned an invalid thread page")
+            threads.extend(page)
+            next_cursor = result.get("nextCursor")
+            if next_cursor is None:
+                return threads
+            if not isinstance(next_cursor, str) or next_cursor == cursor:
+                raise RuntimeError("Codex app server returned an invalid pagination cursor")
+            cursor = next_cursor
+
+
+def repository_worktrees(project_root: Path) -> set[Path]:
+    result = subprocess.run(
+        ["git", "-C", str(project_root), "worktree", "list", "--porcelain"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return {project_root}
+    worktrees = {
+        normalize_path(line.removeprefix("worktree "))
+        for line in result.stdout.splitlines()
+        if line.startswith("worktree ")
+    }
+    worktrees.add(project_root)
+    return worktrees
+
+
+def load_workspace_hints(path: Path, worktree_count: int) -> dict[str, Path]:
+    if not path.is_file():
+        if worktree_count <= 1:
+            return {}
+        raise RuntimeError(f"Codex app workspace state is unavailable: {path}")
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Codex app workspace state is unreadable: {exc}") from exc
+    raw_hints = value.get("thread-workspace-root-hints") if isinstance(value, dict) else None
+    if raw_hints is None:
+        return {}
+    if not isinstance(raw_hints, dict):
+        raise RuntimeError("Codex app workspace hints have an invalid shape")
+    return {
+        task_id: normalize_path(root)
+        for task_id, root in raw_hints.items()
+        if isinstance(task_id, str) and isinstance(root, str)
+    }
+
+
+def belongs_to_project(
+    thread: dict[str, Any],
     project_root: Path,
-    source_paths: list[Path],
-) -> tuple[dict[str, ParsedSession], list[SourceIssue]]:
-    candidates: list[ParsedSession] = []
+    worktrees: set[Path],
+    workspace_hints: dict[str, Path],
+) -> bool:
+    task_id = thread.get("id")
+    cwd = thread.get("cwd")
+    if not isinstance(task_id, str) or not isinstance(cwd, str):
+        return False
+    thread_root = normalize_path(cwd)
+    if thread_root == project_root:
+        return True
+    return (
+        thread_root in worktrees
+        and workspace_hints.get(task_id) == project_root
+    )
+
+
+def matching_app_threads(
+    project_root: Path,
+    threads: list[dict[str, Any]],
+    workspace_state: Path,
+) -> tuple[dict[str, ParsedSession], list[SourceIssue], set[str]]:
+    worktrees = repository_worktrees(project_root)
+    hints = load_workspace_hints(workspace_state, len(worktrees))
+    project_threads = [
+        thread
+        for thread in threads
+        if belongs_to_project(thread, project_root, worktrees, hints)
+    ]
+    selected: dict[str, ParsedSession] = {}
     issues: list[SourceIssue] = []
-    for path in source_paths:
+    visible_ids: set[str] = set()
+    for thread in project_threads:
+        task_id = thread.get("id")
+        source = thread.get("path")
+        if not isinstance(task_id, str) or not TASK_ID_PATTERN.fullmatch(task_id):
+            issues.append(SourceIssue(Path("<app-server>"), "unsafe task identity"))
+            continue
+        visible_ids.add(task_id)
+        if not isinstance(source, str):
+            issues.append(
+                SourceIssue(
+                    Path("<app-server>"),
+                    "visible task has no readable session path",
+                    task_id,
+                    project_root,
+                )
+            )
+            continue
+        path = normalize_path(source)
         candidate, issue = parse_source(path)
-        if candidate is not None and candidate.project_root == project_root:
-            candidates.append(candidate)
-        elif issue is not None and issue.project_root == project_root:
-            issues.append(issue)
-    selected = select_candidates(candidates)
-    accessible_ids = set(selected)
-    issues = [issue for issue in issues if issue.task_id not in accessible_ids]
-    return selected, issues
+        if candidate is not None and candidate.task_id == task_id:
+            selected[task_id] = candidate
+        elif candidate is not None:
+            issues.append(
+                SourceIssue(
+                    path,
+                    "app task identity does not match session metadata",
+                    task_id,
+                    project_root,
+                )
+            )
+        elif issue is not None:
+            issues.append(
+                SourceIssue(path, issue.message, task_id, project_root)
+            )
+        else:
+            issues.append(
+                SourceIssue(
+                    path,
+                    "visible task could not be parsed",
+                    task_id,
+                    project_root,
+                )
+            )
+    return selected, issues, visible_ids
+
+
+def record_index_entry(task_id: str, candidate: ParsedSession) -> dict[str, Any]:
+    return {
+        "task_id": task_id,
+        "path": f"threads/{task_id}.json",
+        "state": candidate.record["capture"]["state"],
+    }
+
+
+def remove_stale_records(
+    threads: Path,
+    existing_ids: set[str],
+    keep_ids: set[str],
+    counts: Counter[str],
+) -> None:
+    removable_ids = existing_ids - keep_ids
+    removable_ids.update(
+        path.stem
+        for path in threads.glob("*.json")
+        if TASK_ID_PATTERN.fullmatch(path.stem) and path.stem not in keep_ids
+    )
+    for task_id in sorted(removable_ids):
+        try:
+            (threads / f"{task_id}.json").unlink(missing_ok=True)
+        except OSError as exc:
+            raise RuntimeError(
+                f"cannot remove stale interaction record {task_id}: {exc}"
+            ) from exc
+        counts["removed"] += 1
 
 
 def write_capture(
     project_root: Path,
     selected: dict[str, ParsedSession],
     issues: list[SourceIssue],
+    reconcile: bool,
 ) -> Counter[str]:
-    interactions = project_root / "interactions"
+    interactions = project_root / "docs/interactions"
     threads = interactions / "threads"
-    interactions.mkdir(exist_ok=True)
+    interactions.mkdir(parents=True, exist_ok=True)
     threads.mkdir(exist_ok=True)
     counts: Counter[str] = Counter()
     with CaptureLock(interactions / ".capture.lock"):
         index_path = interactions / "index.json"
-        index_records = load_existing_index(index_path)
+        existing_records = load_existing_index(index_path)
+        index_records = dict(existing_records)
         for task_id in sorted(selected):
             candidate = selected[task_id]
             record_path = threads / f"{task_id}.json"
@@ -371,11 +607,25 @@ def write_capture(
                 counts["unchanged"] += 1
             if candidate.record["capture"]["state"] == "partial":
                 counts["incomplete"] += 1
-            index_records[task_id] = {
-                "task_id": task_id,
-                "path": f"threads/{task_id}.json",
-                "state": candidate.record["capture"]["state"],
+            index_records[task_id] = record_index_entry(task_id, candidate)
+        if reconcile:
+            unavailable_ids = {
+                issue.task_id
+                for issue in issues
+                if issue.task_id is not None and issue.task_id in existing_records
             }
+            keep_ids = set(selected) | unavailable_ids
+            index_records = {
+                task_id: record
+                for task_id, record in index_records.items()
+                if task_id in keep_ids
+            }
+            remove_stale_records(
+                threads,
+                set(existing_records),
+                keep_ids,
+                counts,
+            )
         index = {
             "schema_version": SCHEMA_VERSION,
             "records": [index_records[task_id] for task_id in sorted(index_records)],
@@ -390,16 +640,19 @@ def parser() -> argparse.ArgumentParser:
         description="Manually capture completed Codex dialogue into project-owned JSON."
     )
     argument_parser.add_argument(
-        "mode", nargs="?", choices=("current", "project"), default="current"
+        "mode", nargs="?", choices=("current", "project"), default="project"
     )
     argument_parser.add_argument("--project-root", type=Path, default=Path.cwd())
     argument_parser.add_argument(
-        "--sessions-root", type=Path, default=Path.home() / ".codex/sessions"
+        "--codex-bin",
+        default=os.environ.get("CODEX_BIN", "codex"),
+        help="Codex executable used for the read-only app-server thread list.",
     )
     argument_parser.add_argument(
-        "--archived-sessions-root",
+        "--workspace-state",
         type=Path,
-        default=Path.home() / ".codex/archived_sessions",
+        default=Path.home() / ".codex/.codex-global-state.json",
+        help="Codex app state containing worktree-to-project workspace hints.",
     )
     argument_parser.add_argument("--task-id")
     return argument_parser
@@ -422,13 +675,20 @@ def select_mode(
         if current_issues:
             return {}, current_issues
         raise RuntimeError(
-            f"task {arguments.task_id} was not found for the exact selected project"
+            f"task {arguments.task_id} is not an app-visible chat for the selected project"
         )
     return {arguments.task_id: current}, current_issues
 
 
 def print_summary(mode: str, counts: Counter[str]) -> None:
-    fields = ("captured", "updated", "unchanged", "incomplete", "unavailable")
+    fields = (
+        "captured",
+        "updated",
+        "unchanged",
+        "removed",
+        "incomplete",
+        "unavailable",
+    )
     summary = " ".join(f"{field}={counts[field]}" for field in fields)
     print(f"mode={mode} {summary}")
 
@@ -439,13 +699,20 @@ def main(argv: list[str] | None = None) -> int:
     if not project_root.is_dir():
         print(f"capture failed: project root is not a directory: {project_root}", file=sys.stderr)
         return 2
-    source_paths = discover_sources(
-        (arguments.sessions_root, arguments.archived_sessions_root)
-    )
-    candidates, issues = matching_sources(project_root, source_paths)
     try:
+        app_threads = list_app_threads(str(arguments.codex_bin))
+        candidates, issues, _visible_ids = matching_app_threads(
+            project_root,
+            app_threads,
+            normalize_path(arguments.workspace_state),
+        )
         selected, selected_issues = select_mode(arguments, candidates, issues)
-        counts = write_capture(project_root, selected, selected_issues)
+        counts = write_capture(
+            project_root,
+            selected,
+            selected_issues,
+            reconcile=arguments.mode == "project",
+        )
     except RuntimeError as exc:
         print(f"capture failed: {exc}", file=sys.stderr)
         return 2

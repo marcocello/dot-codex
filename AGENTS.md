@@ -72,6 +72,14 @@
 - `coding-app-to-features` may bootstrap app docs, multiple features, and `docs/features/status.json`; after preparation, return to one `FEATURE_DIR`.
 - Project-owned interaction records hold explicitly captured dialogue history; `AGENTS.md` holds hard rules; skills hold reusable workflows. Interaction records remain historical evidence, not automatic context.
 
+## Scaffold And Instruction Boundaries
+- Stack/domain skills own application source structure, framework starter, and code layout before hosting or deployment capabilities are selected.
+- Sites is opt-in for application construction: use it only when the user explicitly requests Sites or `.openai/hosting.json` existed before the task began.
+- A platform manifest created during the current task cannot retroactively authorize that platform, replace the selected stack skill, or redefine the application structure.
+- Resolve and state the structure owner before running an initializer, installing dependencies, or creating application files.
+- Do not create `AGENTS.md` or `AGENTS.override.md` in target repositories. The global operating kernel lives at `"${CODEX_HOME:-$HOME/.codex}/AGENTS.md"`; preserve pre-existing project instruction files without creating new ones.
+- A missing project-local `AGENTS.md` or `AGENTS.override.md` is valid and must not be treated as a gate failure.
+
 ## Harness Docs
 - Canonical design and threat model: `docs/harness/deep-dive.md`.
 - Proof capture and retained attempts: `docs/harness/proof-lifecycle.md`.

@@ -1,6 +1,6 @@
 ---
 name: coding-frontend
-description: "Implement, bootstrap, or refactor React and Next.js interfaces with strong layout, interaction, responsive behavior, and visual quality while preserving repo conventions."
+description: "Own repository-local React and Next.js interface construction, bootstrap, and refactors, including generic web apps when Sites is enabled; preserve repo conventions and defer only to explicitly or previously established platforms."
 metadata:
   short-description: React and Next.js frontend implementation
 ---
@@ -22,6 +22,12 @@ Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while 
 - No business logic inside UI components
 - Keep components focused and composable
 - In the default greenfield layout, frontend application code lives in `frontend/app`.
+
+## Platform ownership
+- Sites remains available but does not own generic frontend construction.
+- Defer construction to Sites only when the user explicitly requests Sites or `.openai/hosting.json` existed before the task began.
+- Treat repository state captured before the first initializer as the routing evidence. A Sites manifest created during the current task cannot change the selected structure owner.
+- When Sites legitimately owns construction, follow the Sites skills instead of applying this skill's default baseline.
 
 ## Default UI baseline
 - Preserve an existing repo design system when one is already established.

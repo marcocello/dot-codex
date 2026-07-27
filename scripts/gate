@@ -80,7 +80,7 @@ def git(gate: Gate, *args: str) -> subprocess.CompletedProcess[str] | None:
 
 
 def common(gate: Gate) -> None:
-    for name in ("AGENTS.md", ".gitignore"):
+    for name in (".gitignore",):
         if not (gate.root / name).is_file():
             gate.fail("common.structure", f"missing {name}", f"Create {name} at the repository root.")
     if not any(path.is_file() for path in gate.root.glob("README*")):
@@ -272,6 +272,12 @@ def harness_profile(gate: Gate) -> None:
     for name in ("skills", "tests/unit"):
         if not (gate.root / name).is_dir():
             gate.fail("harness.structure", f"missing {name}", f"Restore {name}.")
+    if not (gate.root / "AGENTS.md").is_file():
+        gate.fail(
+            "harness.structure",
+            "missing AGENTS.md",
+            "Restore the global operating kernel source in the dot-codex harness.",
+        )
     if not (gate.root / "config.template.toml").is_file():
         gate.fail("harness.structure", "missing config.template.toml", "Restore the checked template.")
     before = len(gate.failures)

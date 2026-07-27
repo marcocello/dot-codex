@@ -18,7 +18,7 @@ Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or p
 - Evaluator findings when available in the current conversation or supplied material.
 - User corrections, rejected directions, or repair history when available.
 - Repository context: app, architecture, conventions, testing.
-- Optional `interactions/index.json` and only the interaction records relevant to the explicit repository, feature, path, time, or task scope.
+- Optional `docs/interactions/index.json` and only the interaction records relevant to the explicit repository, feature, path, time, or task scope.
 
 If conversation/evaluator context is unavailable, say so. Do not reconstruct user intent from code alone.
 
@@ -26,7 +26,7 @@ If conversation/evaluator context is unavailable, say so. Do not reconstruct use
 1. Load current truth
    - Read repository context and active contracts.
    - Treat current source as authority for what exists; retained copies show what changed.
-   - When `interactions/index.json` exists, establish relevance before loading a record. Do not bulk-load unrelated project interactions.
+   - When `docs/interactions/index.json` exists, establish relevance before loading a record. Do not bulk-load unrelated project interactions.
    - Treat user-authored interaction messages as historical evidence of intent, corrections, and rejected directions. Treat prior assistant messages as historical proposals and claims, not current truth or proof.
    - Report relevant partial or unavailable history. Current source, accepted contracts, runtime state, and proof remain authoritative.
 

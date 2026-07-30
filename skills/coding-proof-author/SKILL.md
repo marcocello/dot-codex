@@ -33,9 +33,10 @@ Name these before proposing proof:
 For persisted work, seed input through the producer boundary, allow the normal selector/consumer to run, then read the durable result. Direct inner-service calls are secondary unless the feature explicitly claims only that inner service.
 
 ## Proof Questions And Decision
-1. Ask proof-specific questions that can change strength, cost, safety, or feasibility: live target, data, destructive effects, credentials, fakes, read-back, probabilistic thresholds, known gaps, timeout.
-2. Challenge proxy-only proof. Explain when a unit test or source assertion could pass while the user-visible feature remains broken.
-3. Show the proposed proof in chat before writing:
+1. Infer deterministic safe proof defaults before asking: a local non-destructive target, bounded fixtures, direct read-back, an outer-edge fake for unavailable live providers, and a scenario-appropriate timeout.
+2. Ask proof-specific questions only when an unresolved user-owned choice has no safe default and can change strength, cost, safety, or feasibility: live target, data, destructive effects, credentials, fakes, read-back, probabilistic thresholds, known gaps, timeout.
+3. Challenge proxy-only proof. Explain when a unit test or source assertion could pass while the user-visible feature remains broken.
+4. Show the proposed proof in chat before writing:
    - scenarios and exact activation;
    - durable/visible read-back;
    - fake boundaries;
@@ -43,8 +44,8 @@ For persisted work, seed input through the producer boundary, allow the normal s
    - environment/readiness;
    - known gaps;
    - command and timeout.
-4. Treat the proposal as a visible decision summary, not an approval request. After answers, write the proof artifacts and continue.
-5. Ask and wait only when an unresolved user-owned choice, credential, safe target, destructive effect, live cost, or central known gap prevents a safe and honest proof decision. When the repository and request resolve those choices, proceed directly.
+5. Treat the proposal as a visible decision summary, not an approval request. After answers, write the proof artifacts and continue.
+6. Ask and wait only when an unresolved user-owned choice, credential, safe target, destructive effect, live cost, or central known gap prevents a safe and honest proof decision. When the repository, request, or safe defaults resolve those choices, proceed directly.
 
 ## Profile Routing
 Read only the relevant section of [proof-profiles.md](references/proof-profiles.md):

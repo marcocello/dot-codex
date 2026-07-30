@@ -29,8 +29,8 @@
       "id": "frontend-sites-routing",
       "feature_dir": "docs/features/frontend-sites-routing",
       "priority": 2,
-      "status": "done",
-      "notes": "Proof, repository gate, and managed evaluator passed.",
+      "status": "revalidate",
+      "notes": "Invalidated by greenfield-default-inference: active change AGENTS.md overlaps proof dependency AGENTS.md; rerun proof separately before trusting done; do not enter the normal build loop unless revalidation fails.",
       "files": [
         "AGENTS.md",
         "docs/features/frontend-sites-routing",
@@ -85,6 +85,35 @@
         "skills/coding-commit/SKILL.md",
         "skills/coding-commit/agents/openai.yaml",
         "tests/unit/test_commit_skill_contract.py"
+      ]
+    },
+    {
+      "id": "greenfield-default-inference",
+      "feature_dir": "docs/features/greenfield-default-inference",
+      "priority": 5,
+      "status": "done",
+      "notes": "Infer-first policy proof, repository gate, and managed evaluator passed.",
+      "files": [
+        "AGENTS.md",
+        "docs/features/greenfield-default-inference",
+        "docs/features/status.json",
+        "skills/coding-app-to-features",
+        "skills/coding-feature-spec",
+        "skills/coding-proof-author",
+        "tests/unit/test_greenfield_default_policy.py"
+      ],
+      "revalidate_on": [
+        "AGENTS.md",
+        "docs/features/greenfield-default-inference/FEATURE.md",
+        "docs/features/greenfield-default-inference/PROOF.md",
+        "docs/features/greenfield-default-inference/proof/run.sh",
+        "skills/coding-app-to-features/SKILL.md",
+        "skills/coding-app-to-features/agents/openai.yaml",
+        "skills/coding-feature-spec/SKILL.md",
+        "skills/coding-feature-spec/agents/openai.yaml",
+        "skills/coding-proof-author/SKILL.md",
+        "skills/coding-proof-author/agents/openai.yaml",
+        "tests/unit/test_greenfield_default_policy.py"
       ]
     }
   ]

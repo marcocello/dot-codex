@@ -24,9 +24,11 @@ Derive from the request and repository before asking:
 
 Read `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`, related feature contracts, and existing behavior when present. Do not ask the user for facts the repository already establishes.
 
+Infer and disclose safe defaults before asking the user. Treat architecture, framework, starter, folder, and provider choices as implementation details when they are reversible and an owning repository or stack policy resolves them. Do not ask architecture questions unless architecture changes the observable product contract and no authoritative repository decision or safe default resolves it.
+
 ## User Discovery
 1. Identify choices that can change observable behavior, scope, external contracts, data handling, permissions, runtime ownership, or proof cost.
-2. Ask focused grouped questions. Prefer a small coherent set over one question per turn; avoid broad prompts such as “anything else?”
+2. Ask focused grouped questions only for the remaining unresolved choices with no safe default. Prefer a small coherent set over one question per turn; avoid broad prompts such as “anything else?”
 3. Challenge the happy path. Include relevant empty, invalid, duplicate, unauthorized, concurrent, partial-failure, retry, cancellation, restart, and recovery cases.
 4. Offer recommended defaults for smaller choices. Explain the material consequence of alternatives.
 5. Stop asking when remaining answers would only change reversible implementation details.
@@ -95,7 +97,7 @@ For semantic behavior, define the durable invariant and decision boundary. Do no
 - No silent invented product decisions; label inferred defaults in the decision summary.
 - No proof commands or evidence in `FEATURE.md`.
 - No mandatory Gherkin.
-- No architecture or backward-compatibility commitment unless requested or authoritative.
+- No architecture or backward-compatibility commitment unless requested, authoritative, or an explicitly labeled safe default selected by the owning app/stack policy.
 - Material ambiguity unresolved: ask and wait.
 - Non-trivial feature incomplete until `coding-proof-author` produces a decision-complete executable proof package.
 

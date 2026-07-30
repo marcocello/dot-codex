@@ -1,6 +1,10 @@
 interface:
   display_name: "CODING | Feature Spec"
   short_description: "Decide behavior, then invoke proof author."
-  default_prompt: "Use $coding-feature-spec, then $coding-proof-author in the same run. Ask focused material feature questions, show the feature decision summary, write FEATURE.md, complete the separate proof-decision round, and produce PROOF.md plus executable proof/run.sh without approval pauses."
+  default_prompt: >-
+    Use $coding-feature-spec, then $coding-proof-author in the same run. Infer and disclose safe
+    defaults before asking; ask only about unresolved contract-changing choices with no safe
+    default. Show the feature decision summary, write FEATURE.md, complete the separate proof
+    decision pass, and produce PROOF.md plus executable proof/run.sh without approval pauses.
 policy:
   allow_implicit_invocation: true

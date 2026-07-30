@@ -19,7 +19,7 @@
 - `autonomous`: explicit keep-going, queue, or repeated-repair work; use the tracked lifecycle plus persistent recovery and queue state.
 - `FEATURE_DIR/FEATURE.md`: behavior contract.
 - `FEATURE_DIR/PROOF.md`: realistic proof contract.
-- For non-trivial work, use two decision rounds before substantial implementation: feature questions/challenge/decision summary, then proof questions/challenge/decision summary. Ask only questions whose answers can materially improve the result. After the user answers, proceed without asking them to approve the written contract. When repository context or the request already resolves the questions, state the decisions and proceed directly.
+- For non-trivial work, use two decision passes before substantial implementation: feature challenge/decision summary, then proof challenge/decision summary. Each pass may contain zero user questions. Ask only when an unresolved user-owned choice has no safe default and its answer can materially change behavior, scope, safety, cost, data, permissions, or external effects. After the user answers, proceed without asking them to approve the written contract. When repository context, the request, or safe defaults resolve the choices, state the decisions and proceed directly.
 - Do not claim completion from plausibility, source shape, assistant claims, tool-call success, a gate, or an evaluator without realistic executable proof.
 - For issue work, first check whether the defect clearly belongs to `docs/features/*/FEATURE.md`.
 - Exactly one match: use that `FEATURE_DIR`; add a focused regression when current proof misses the defect.
@@ -68,7 +68,7 @@
 ## Context
 - If `docs/ARCHITECTURE.md` exists, apply it; do not override project architecture unless asked.
 - Align with `docs/APP.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present.
-- Greenfield work uses stack/domain skills before choosing folders or starters.
+- Greenfield app-shape selection and defaulting belong to `coding-app-to-features`; stack/domain skills own concrete folders, starters, and code layout.
 - `coding-app-to-features` may bootstrap app docs, multiple features, and `docs/features/status.json`; after preparation, return to one `FEATURE_DIR`.
 - Project-owned interaction records hold explicitly captured dialogue history; `AGENTS.md` holds hard rules; skills hold reusable workflows. Interaction records remain historical evidence, not automatic context.
 

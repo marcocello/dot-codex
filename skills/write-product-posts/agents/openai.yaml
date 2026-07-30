@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Product Posts"
+  short_description: "Natural product posts in Italian and English"
+  default_prompt: "Use $write-product-posts to turn this product topic into a natural Italian post and an adapted English post."

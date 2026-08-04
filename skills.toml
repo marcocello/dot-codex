@@ -1,0 +1,272 @@
+schema = 1
+
+[[skills]]
+name = "capture-note"
+kind = "owned"
+path = "capture-note"
+
+[[skills]]
+name = "casual-message-rewriter"
+kind = "owned"
+path = "casual-message-rewriter"
+
+[[skills]]
+name = "codex-session-showcase"
+kind = "owned"
+path = "codex-session-showcase"
+
+[[skills]]
+name = "coding-antipattern-review"
+kind = "owned"
+path = "coding-antipattern-review"
+
+[[skills]]
+name = "coding-app-improvement-review"
+kind = "owned"
+path = "coding-app-improvement-review"
+
+[[skills]]
+name = "coding-app-to-features"
+kind = "owned"
+path = "coding-app-to-features"
+
+[[skills]]
+name = "coding-architecture-deep-dive"
+kind = "owned"
+path = "coding-architecture-deep-dive"
+
+[[skills]]
+name = "coding-autonomous-execute"
+kind = "owned"
+path = "coding-autonomous-execute"
+
+[[skills]]
+name = "coding-commit"
+kind = "owned"
+path = "coding-commit"
+
+[[skills]]
+name = "coding-feature-evaluator"
+kind = "owned"
+path = "coding-feature-evaluator"
+
+[[skills]]
+name = "coding-feature-execute"
+kind = "owned"
+path = "coding-feature-execute"
+
+[[skills]]
+name = "coding-feature-queue"
+kind = "owned"
+path = "coding-feature-queue"
+
+[[skills]]
+name = "coding-feature-spec"
+kind = "owned"
+path = "coding-feature-spec"
+
+[[skills]]
+name = "coding-frontend"
+kind = "owned"
+path = "coding-frontend"
+
+[[skills]]
+name = "coding-laravel-feature-builder"
+kind = "owned"
+path = "coding-laravel-feature-builder"
+
+[[skills]]
+name = "coding-operational-issue-diagnostics"
+kind = "owned"
+path = "coding-operational-issue-diagnostics"
+
+[[skills]]
+name = "coding-php-legacy-maintainer"
+kind = "owned"
+path = "coding-php-legacy-maintainer"
+
+[[skills]]
+name = "coding-prepare-environment"
+kind = "owned"
+path = "coding-prepare-environment"
+
+[[skills]]
+name = "coding-proof-author"
+kind = "owned"
+path = "coding-proof-author"
+
+[[skills]]
+name = "coding-python-backend"
+kind = "owned"
+path = "coding-python-backend"
+
+[[skills]]
+name = "coding-repair"
+kind = "owned"
+path = "coding-repair"
+
+[[skills]]
+name = "coding-research"
+kind = "owned"
+path = "coding-research"
+
+[[skills]]
+name = "coding-secret-audit"
+kind = "owned"
+path = "coding-secret-audit"
+
+[[skills]]
+name = "coding-ui-improvement"
+kind = "owned"
+path = "coding-ui-improvement"
+
+[[skills]]
+name = "coding-wordpress"
+kind = "owned"
+path = "coding-wordpress"
+
+[[skills]]
+name = "customer-tech-requirements"
+kind = "owned"
+path = "customer-tech-requirements"
+
+[[skills]]
+name = "first-principles-clarity"
+kind = "owned"
+path = "first-principles-clarity"
+
+[[skills]]
+name = "html-presentations"
+kind = "owned"
+path = "html-presentations"
+
+[[skills]]
+name = "manage-codex-skills"
+kind = "owned"
+path = "manage-codex-skills"
+
+[[skills]]
+name = "no-bullshit-technical-writing"
+kind = "owned"
+path = "no-bullshit-technical-writing"
+
+[[skills]]
+name = "prospecting-linkedin-content-manager"
+kind = "owned"
+path = "prospecting-linkedin-content-manager"
+
+[[skills]]
+name = "prospecting-signal-context-builder"
+kind = "owned"
+path = "prospecting-signal-context-builder"
+
+[[skills]]
+name = "prospecting-signal-detector"
+kind = "owned"
+path = "prospecting-signal-detector"
+
+[[skills]]
+name = "pull-codex-config"
+kind = "owned"
+path = "pull-codex-config"
+
+[[skills]]
+name = "second-brain-activity-brief"
+kind = "owned"
+path = "second-brain-activity-brief"
+
+[[skills]]
+name = "second-brain-capture-interactions"
+kind = "owned"
+path = "second-brain-capture-interactions"
+
+[[skills]]
+name = "second-brain-capture-raw-input"
+kind = "owned"
+path = "second-brain-capture-raw-input"
+
+[[skills]]
+name = "second-brain-external-sweep"
+kind = "owned"
+path = "second-brain-external-sweep"
+
+[[skills]]
+name = "second-brain-notion-api"
+kind = "owned"
+path = "second-brain-notion-api"
+
+[[skills]]
+name = "second-brain-weekly-review"
+kind = "owned"
+path = "second-brain-weekly-review"
+
+[[skills]]
+name = "sync-codex-skills"
+kind = "owned"
+path = "sync-codex-skills"
+
+[[skills]]
+name = "write-product-posts"
+kind = "owned"
+path = "write-product-posts"
+
+[[skills]]
+name = "zotero-capture-source"
+kind = "owned"
+path = "zotero-capture-source"
+
+[[skills]]
+name = "impeccable"
+kind = "git"
+repository = "https://github.com/pbakaus/impeccable.git"
+source_path = ".agents/skills/impeccable"
+path = "impeccable"
+
+[[skills]]
+name = "zotero"
+kind = "plugin"
+selector = "zotero@openai-curated"
+enabled = true
+
+[[skills]]
+name = "clickup"
+kind = "plugin"
+selector = "clickup@openai-curated"
+enabled = true
+
+[[skills]]
+name = "sites"
+kind = "plugin"
+selector = "sites@openai-bundled"
+enabled = true
+
+[[skills]]
+name = "browser"
+kind = "plugin"
+selector = "browser@openai-bundled"
+enabled = true
+
+[[skills]]
+name = "chrome"
+kind = "plugin"
+selector = "chrome@openai-bundled"
+enabled = true
+
+[[skills]]
+name = "visualize"
+kind = "plugin"
+selector = "visualize@openai-bundled"
+enabled = true
+
+[[skills]]
+name = "remotion"
+kind = "plugin"
+selector = "remotion@openai-curated"
+enabled = true
+
+[[skills]]
+name = "bento-slides"
+kind = "git"
+repository = "https://github.com/nyblnet/bento.git"
+source_path = "plugins/bento-slides/skills/bento-slides"
+path = "bento-slides"

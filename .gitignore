@@ -36,5 +36,8 @@
 skills/.system/
 config.toml
 docs/features/**/proof/runs/**
-skills/remotion*
-skills/bento*
+
+# BEGIN skill_inventory.py managed skills
+skills/bento-slides/
+skills/impeccable/
+# END skill_inventory.py managed skills

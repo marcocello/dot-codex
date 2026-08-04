@@ -11,5 +11,6 @@ echo "policy=AGENTS.md"
 echo "app_skill=skills/coding-app-to-features"
 echo "feature_skill=skills/coding-feature-spec"
 echo "proof_skill=skills/coding-proof-author"
+echo "execute_skill=skills/coding-feature-execute"
 
 "$python_bin" -m pytest tests/unit/test_greenfield_default_policy.py -q -p no:cacheprovider

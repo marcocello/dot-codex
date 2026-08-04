@@ -5,116 +5,98 @@
       "feature_dir": "docs/features/app-visible-interaction-sync",
       "priority": 1,
       "status": "done",
-      "notes": "App-visible mirror proof, live four-chat read-back, repository gate, and managed evaluator passed.",
-      "files": [
-        "docs/interactions",
-        "docs/features/app-visible-interaction-sync",
-        "docs/features/status.json",
-        "skills/coding-app-improvement-review",
-        "skills/second-brain-capture-interactions",
-        "tests/unit/test_capture_interactions.py"
-      ],
-      "revalidate_on": [
-        "docs/features/app-visible-interaction-sync/FEATURE.md",
-        "docs/features/app-visible-interaction-sync/PROOF.md",
-        "docs/features/app-visible-interaction-sync/proof/run.sh",
-        "skills/coding-app-improvement-review/SKILL.md",
-        "skills/second-brain-capture-interactions/SKILL.md",
-        "skills/second-brain-capture-interactions/agents/openai.yaml",
-        "skills/second-brain-capture-interactions/scripts/capture_interactions.py",
-        "tests/unit/test_capture_interactions.py"
-      ]
+      "notes": "App-visible mirror proof, live four-chat read-back, and repository gate passed."
     },
     {
       "id": "frontend-sites-routing",
       "feature_dir": "docs/features/frontend-sites-routing",
       "priority": 2,
-      "status": "revalidate",
-      "notes": "Invalidated by greenfield-default-inference: active change AGENTS.md overlaps proof dependency AGENTS.md; rerun proof separately before trusting done; do not enter the normal build loop unless revalidation fails.",
-      "files": [
-        "AGENTS.md",
-        "docs/features/frontend-sites-routing",
-        "scripts/gate",
-        "skills/coding-frontend",
-        "tests/unit/test_gate_policy.py"
-      ],
-      "revalidate_on": [
-        "AGENTS.md",
-        "config.toml",
-        "docs/features/frontend-sites-routing/FEATURE.md",
-        "docs/features/frontend-sites-routing/PROOF.md",
-        "docs/features/frontend-sites-routing/proof/run.sh",
-        "scripts/gate",
-        "skills/coding-frontend/SKILL.md",
-        "tests/unit/test_gate_policy.py"
-      ]
+      "status": "done",
+      "notes": "Corrected the over-broad .codex oracle; feature proof passed. Canonical gate remains skipped only for unrelated ignored managed-skill metadata findings."
     },
     {
       "id": "named-permission-profile",
       "feature_dir": "docs/features/named-permission-profile",
       "priority": 3,
       "status": "done",
-      "notes": "Proof, applicable repository gate, and managed evaluator passed.",
-      "files": [
-        "config.template.toml",
-        "docs/features/named-permission-profile"
-      ],
-      "revalidate_on": [
-        "config.template.toml",
-        "docs/features/named-permission-profile/FEATURE.md",
-        "docs/features/named-permission-profile/PROOF.md",
-        "docs/features/named-permission-profile/proof/run.sh"
-      ]
+      "notes": "Feature proof and applicable repository gate passed."
     },
     {
       "id": "cross-task-commit",
       "feature_dir": "docs/features/cross-task-commit",
       "priority": 4,
       "status": "done",
-      "notes": "Cross-task scope proof, repository gate, and managed evaluator passed.",
-      "files": [
-        "docs/features/cross-task-commit",
-        "docs/features/status.json",
-        "skills/coding-commit",
-        "tests/unit/test_commit_skill_contract.py"
-      ],
-      "revalidate_on": [
-        "docs/features/cross-task-commit/FEATURE.md",
-        "docs/features/cross-task-commit/PROOF.md",
-        "docs/features/cross-task-commit/proof/run.sh",
-        "skills/coding-commit/SKILL.md",
-        "skills/coding-commit/agents/openai.yaml",
-        "tests/unit/test_commit_skill_contract.py"
-      ]
+      "notes": "Cross-task scope proof and repository gate passed."
     },
     {
       "id": "greenfield-default-inference",
       "feature_dir": "docs/features/greenfield-default-inference",
       "priority": 5,
       "status": "done",
-      "notes": "Infer-first policy proof, repository gate, and managed evaluator passed.",
-      "files": [
-        "AGENTS.md",
-        "docs/features/greenfield-default-inference",
-        "docs/features/status.json",
-        "skills/coding-app-to-features",
-        "skills/coding-feature-spec",
-        "skills/coding-proof-author",
-        "tests/unit/test_greenfield_default_policy.py"
-      ],
-      "revalidate_on": [
-        "AGENTS.md",
-        "docs/features/greenfield-default-inference/FEATURE.md",
-        "docs/features/greenfield-default-inference/PROOF.md",
-        "docs/features/greenfield-default-inference/proof/run.sh",
-        "skills/coding-app-to-features/SKILL.md",
-        "skills/coding-app-to-features/agents/openai.yaml",
-        "skills/coding-feature-spec/SKILL.md",
-        "skills/coding-feature-spec/agents/openai.yaml",
-        "skills/coding-proof-author/SKILL.md",
-        "skills/coding-proof-author/agents/openai.yaml",
-        "tests/unit/test_greenfield_default_policy.py"
-      ]
+      "notes": "Contract-authoring stop proof passed; repository gate was previously skipped for unrelated baseline findings."
+    },
+    {
+      "id": "ui-improvement-advisory-only",
+      "feature_dir": "docs/features/ui-improvement-advisory-only",
+      "priority": 6,
+      "status": "done",
+      "notes": "Previously completed; stable regressions remain owned by repository tests and the gate."
+    },
+    {
+      "id": "managed-skill-inventory",
+      "feature_dir": "docs/features/managed-skill-inventory",
+      "priority": 7,
+      "status": "done",
+      "notes": "Managed inventory proof, applicable gate checks, and live doctor passed."
+    },
+    {
+      "id": "lean-completion-lifecycle",
+      "feature_dir": "docs/features/lean-completion-lifecycle",
+      "priority": 8,
+      "status": "done",
+      "notes": "Original lean lifecycle proof passed with its narrowed gate canary; fresh evaluator PASS."
+    },
+    {
+      "id": "ready-feature-size-guard",
+      "feature_dir": "docs/features/ready-feature-size-guard",
+      "priority": 9,
+      "status": "done",
+      "notes": "Queue-boundary size guard proof passed; fresh evaluator PASS confirmed the split and no schema growth."
+    },
+    {
+      "id": "ui-proof-realism",
+      "feature_dir": "docs/features/ui-proof-realism",
+      "priority": 10,
+      "status": "done",
+      "notes": "Strengthened UI policy proof passed; fresh evaluator PASS after routing and clause coverage repair."
+    },
+    {
+      "id": "feature-proof-isolation",
+      "feature_dir": "docs/features/feature-proof-isolation",
+      "priority": 11,
+      "status": "done",
+      "notes": "Strengthened isolation proof passed; fresh evaluator PASS after whole-module selection repair."
+    },
+    {
+      "id": "bounded-consolidated-evaluation",
+      "feature_dir": "docs/features/bounded-consolidated-evaluation",
+      "priority": 12,
+      "status": "done",
+      "notes": "Seven-case proof passed for one evidence-first, implementation-second evaluator review with one consolidated verdict; fresh evaluator PASS."
+    },
+    {
+      "id": "proof-capture-hardening",
+      "feature_dir": "docs/features/proof-capture-hardening",
+      "priority": 13,
+      "status": "done",
+      "notes": "Real subprocess proof passed 36 capture, containment, validation, signal, and input-integrity cases; fresh evaluator PASS."
+    },
+    {
+      "id": "final-candidate-freshness",
+      "feature_dir": "docs/features/final-candidate-freshness",
+      "priority": 14,
+      "status": "done",
+      "notes": "Strengthened six-case proof passed for freshness plus continued queue draining; fresh evaluator PASS on the unchanged candidate."
     }
   ]
 }

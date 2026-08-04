@@ -13,14 +13,12 @@ Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or p
 - Target repository and optional feature scope.
 - Current `FEATURE.md`, `PROOF.md`, proof runner, implementation.
 - Relevant retained attempts: contract/runner copies, `attempt-start.json`, `result.json`, notes, stdout, stderr.
-- Plain per-attempt `completion.md` with gate outcome, evaluator output, and material correction or repair context when that stage was reached.
-- Gate result or skip reason.
-- Evaluator findings when available in the current conversation or supplied material.
+- Final evaluator verdict and relevant evaluator findings, plus useful setup diagnostics when they affected the work.
 - User corrections, rejected directions, or repair history when available.
 - Repository context: app, architecture, conventions, testing.
 - Optional `docs/interactions/index.json` and only the interaction records relevant to the explicit repository, feature, path, time, or task scope.
 
-If conversation/evaluator context is unavailable, say so. Do not reconstruct user intent from code alone.
+If conversation or optional review context is unavailable, say so. Do not reconstruct user intent from code alone.
 
 ## Review
 1. Load current truth
@@ -39,13 +37,13 @@ If conversation/evaluator context is unavailable, say so. Do not reconstruct use
    - Ask whether a central broken implementation could have passed.
 
 4. Inspect attempts
-   - Compare failed and passing output, notes, saved contracts, runner copies, and `completion.md` when present.
-   - Identify repeated failures, tactic changes, setup friction, weak diagnostics, proof changes, or recovery that worked.
+   - Compare failed and passing output, notes, and saved contract/runner copies.
+   - Identify repeated failures, tactic changes, setup friction, weak diagnostics, proof changes, evaluator findings, or recovery that worked.
    - Do not require every historical attempt when the latest evidence is sufficient.
 
 5. Inspect implementation and evaluation
    - Check whether the implementation solved the owning problem without unrelated complexity.
-   - Use evaluator findings as semantic feedback, not a recorded mechanical authority.
+   - Use optional review findings as semantic feedback, not completion authority.
    - Distinguish a product defect from proof weakness or harness friction.
 
 6. Inspect user corrections
@@ -102,4 +100,4 @@ Next: <one action>
 - No evaluator receipt, progress score, or evidence schema recommendation unless the user changes the threat model.
 
 ## Handoff
-Lead with the strongest signal and highest-value suggestion. Separate project changes from harness candidates. State unavailable conversation/evaluator context explicitly. Do not include exhaustive run ids or logs.
+Lead with the strongest signal and highest-value suggestion. Separate project changes from harness candidates. State unavailable conversation or review context explicitly. Do not include exhaustive run ids or logs.

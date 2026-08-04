@@ -1,57 +1,51 @@
 # Harness Design
 
 ## Objective
-Reach user intent autonomously across one or more features. Use realistic feedback to repair code, proof, setup, and architecture without weakening the feature or manufacturing green. Retain useful attempts with minimal harness overhead.
+Reach accepted behavior one feature at a time. Use realistic executable proof to drive implementation and fresh semantic evaluation to find contract, architecture, and false-green gaps. Convert every supported evaluator finding into durable proof pressure before repair.
 
 ## Pillars
-- Intent and decisions: focused questions improve `FEATURE.md` and `PROOF.md`; the LLM records decisions and proceeds without contract-approval gates.
-- Real-boundary proof: the LLM chooses activation, consumer, durable or visible read-back, fake boundary, and failure pressure that match the claim.
-- Reliable retained attempts: scripts guarantee what ran, how it ran, what returned, and whether mechanical requirements passed.
-- Autonomous repair: failures drive the next diagnosis and owning repair across code, architecture, setup, fixtures, diagnostics, or proof.
-- Contract and proof integrity: revisions stay aligned with the user goal and cannot narrow behavior or weaken proof merely to pass.
-- Fresh completion judgment: a read-only evaluator judges intent, behavior, architecture, proof realism, false-green risk, gaps, and gate outcome.
-- Learning without ceremony: attempts, completion notes, evaluator findings, and corrections inform the smallest project, proof, or repeated harness improvement.
+- Intent: `FEATURE.md` owns observable behavior and material boundaries.
+- Evidence: `PROOF.md` and `proof/run.sh` activate the real boundary and read back durable or visible effects.
+- Retention: `proof_run_capture` preserves meaningful failures, timeouts, interruptions, contract/runner copies, and final passes.
+- Semantic challenge: every tracked or autonomous feature receives fresh final evaluation; only evaluator `PASS` permits parent-owned completion.
+- Repair: proof or evaluator failures return to the owning code, architecture, setup, fixture, or proof boundary without weakening the goal.
+- Serial autonomy: one parent completes one feature before selecting the next.
+- Lean preparation: app-level work creates the complete non-speculative set of small, independently provable features.
+- Bounded evaluation: the parent supplies the active feature's transient changed-file surface and relevant call paths instead of making an accumulated same-checkout diff the default review scope. One evaluator reasons evidence-first and implementation-second so retained behavior is judged before implementation shape can bias the review.
 
-Script precision cannot make weak proof realistic.
+Script precision cannot make a weak proof realistic, and evaluator confidence cannot replace executable evidence.
 
-## Lifecycle
-1. Inspect the request, repository context, architecture, related features, and current behavior.
-2. Ask a compact set of feature questions only when answers can materially improve the result. Challenge edge cases, state decisions, write `FEATURE.md`, and proceed without requesting contract approval.
-3. Discover the real proof boundary. Ask only material proof questions, state activation/read-back/fakes/gaps/timeout, then write `PROOF.md` and `proof/run.sh` without a second approval gate.
-4. Mark the package `ready`, invalidate overlapping completed work to `revalidate`, and capture a failing proof before substantial implementation when meaningful.
-5. Implement at the owning boundary. On proof, gate, or evaluator failure, inspect the newest evidence, repair the owning problem, and repeat with a changed tactic when evidence does not improve.
-6. After realistic proof passes, run a useful repository gate or record a proportionate skip, then spawn a fresh read-only evaluator with the user goal, corrections, and parent-owned change surface.
-7. Evaluator `FAIL` returns to repair and a new proof/gate/evaluator cycle. `NEED_INPUT` is valid only for an exact user-owned or external dependency after local recovery. `PASS` permits `done` and the next `ready` feature.
+## Evaluator Loop
+A passing proof is a finite set of known scenarios. The evaluator first maps accepted claims to actual retained output, then inspects the implementation and relevant call paths against that evidence map. Both passes occur in the same bounded review with no intermediate report or extra stage. It returns all material findings it can support, including whether an important broken implementation could still pass. Supported findings first strengthen proof, demonstrate the missed failure when practical, repair the owning behavior, rerun the complete proof, and receive another fresh evaluation. This repeats until `PASS`.
 
-Material unresolved choices about behavior, scope, safety, cost, data, permissions, or external effects still require user input. Approval-risk actions remain separately approval-gated by `AGENTS.md` and platform policy.
+The evaluator is read-only and cannot mutate contracts, implementation, proof, or queue state. The parent owns every repair and transition.
+
+Final-candidate freshness is a serial parent invariant: relevant edits after proof or evaluation invalidate that evidence and return to complete proof followed by fresh evaluation. Retained attempt generation and the narrow queue completion write are bookkeeping, not candidate changes.
 
 ## Ownership
 | Concern | Owner |
 | --- | --- |
+| Global lanes, completion, safety | `AGENTS.md` |
+| App decomposition | `coding-app-to-features` |
 | Behavior contract | `coding-feature-spec` |
 | Proof contract | `coding-proof-author` |
-| Per-feature lifecycle | `coding-feature-execute` |
+| One-feature lifecycle | `coding-feature-execute` |
 | Failure repair | `coding-repair` |
-| Run containment + artifacts | `proof_run_capture` |
-| Semantic judgment | Fresh read-only evaluator subagent |
+| Fresh semantic judgment | `coding-feature-evaluator` |
 | Queue continuation | `coding-autonomous-execute` |
-| Queue fields + overlap | `coding-feature-queue` |
+| Queue schema/status | `coding-feature-queue` |
+| Run containment/artifacts | `proof_run_capture` |
 
-Each owner contains its procedure. Other files route to it.
+Each procedure lives at its owner. Prompts and other documents route rather than restate it.
 
 ## Deliberate Tradeoffs
-- Focused user questions and visible decision summaries replace contract-approval and pre-implementation review ceremony.
-- Rerun replaces source freshness calculation.
-- Plain retained attempts and completion notes replace manifests, hashes, receipts, structured evaluator records, progress scores.
-- Fresh evaluator context reduces rationalization; same model/shared filesystem still share bias.
-- Multiple feature parents may edit one checkout concurrently. Accountability remains per feature, overlap compares active change prefixes with completed proof dependencies rather than filename categories, and same-feature proof attempts do not compete.
-- Overlap invalidation creates a separate `revalidate` backlog. Default build autonomy never consumes it. An explicit proof-only pass either restores `done` after fresh evaluation or moves the feature to `ready` for later repair.
+- Fresh evaluation after every supported repair can lengthen difficult features; the user selected evaluator-confirmed assurance over a fixed review bound.
+- Rerunning executable proof replaces freshness hashes and dependency graphs.
+- Plain retained attempts replace receipts, progress scores, managed completion notes, and evidence schemas.
+- Serial execution removes coordination overhead and moving-checkout ambiguity.
+- No historical proof sweep gates feature completion; each proof must honestly own the feature claim.
 
 ## Threat Boundary
-Resists accidental hallucination, rationalization, lost failures, stale related status, shallow proof.
+Resists accidental hallucination, rationalization, lost failures, proof weakening, architecture bypass, and shallow green evidence.
 
-Not a secure trust root against an agent rewriting code + proof. Strong assurance needs protected infrastructure.
-
-Raw output secret redaction and size limits: deferred.
-
-Hard kill, host crash, or deliberately detached process can escape cleanup. Proof runners may not detach or create a new session.
+It is not a secure trust root against an agent rewriting both implementation and proof dishonestly. Hard kill, host crash, or deliberately detached descendants can escape cleanup; proof runners may not detach.

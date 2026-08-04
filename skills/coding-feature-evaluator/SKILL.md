@@ -1,116 +1,77 @@
 ---
 name: coding-feature-evaluator
-description: "Deliver a read-only final judgment on intent, architecture, behavior, proof realism, and false-green risk."
+description: "Judge one implemented feature and its proof for intent, behavior, architecture, and false-green gaps."
 ---
 
 # Feature Evaluator
 
-Purpose: act as the semantic completion judge, not the implementer, repair agent, or primary test runner.
+Purpose: provide the fresh read-only semantic judgment required after realistic proof passes for every tracked or autonomous feature. The evaluator does not edit artifacts or queue state, but completion requires its fresh `PASS`.
 
-Run in a fresh context managed by `coding-feature-execute`. Same-model and shared-filesystem separation reduces rationalization but is not an independent security boundary.
-
-## Rules
-- Read-only for implementation, contracts, proof, fixtures, queue, setup, and retained attempts.
-- Do not repair failures or edit any artifact.
-- Do not replace, weaken, or reinterpret the declared proof.
-- Do not treat a gate, build, lint, source shape, assistant claim, or passing command as semantic completion.
-- Return plain-language judgment only. No evaluator JSON, receipt, schema, or queue mutation.
-- Be skeptical of missing central behavior, proxy-only proof, silent scope reduction, broad unrelated changes, and proof that manufactures its own pass.
+Lightweight fixes do not invoke this skill.
 
 ## Inputs
-- Original user goal, material corrections, and parent-owned change surface supplied by the parent. Prefer exact non-secret wording; otherwise use a faithful concise summary and identify unavailable intent context.
-- Current `FEATURE.md`.
-- Current `PROOF.md` and `proof/run.sh`.
-- Final passing `result.json`, stdout/stderr, notes, and saved contract/runner copies.
-- Final attempt `completion.md`, initialized before evaluation with the actual gate outcome or skip reason and evaluator pending. Relevant earlier `completion.md` files provide managed-stage failure, correction, and repair history.
-- Relevant failed, timed-out, interrupted, or earlier passing attempts when they explain repair or proof changes.
-- Current implementation and repository diff/context.
-- `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md` when relevant.
-- Repository gate output or explicit skip reason.
+Use bounded current evidence:
 
-For an issue without a durable feature contract, evaluate the reported behavior, focused regression, implementation, and relevant broader check. Do not demand a feature package for a legitimate lightweight repair.
+- original user goal and material corrections;
+- current `FEATURE.md`, `PROOF.md`, and `proof/run.sh`;
+- latest passing attempt and relevant evaluator-driven failing attempt when one exists;
+- the parent-supplied transient active-feature surface: files changed for this feature plus directly relevant call paths;
+- only relevant current app, architecture, conventions, and testing context.
 
-## Workflow
-1. Load intent and declared behavior
-   - Compare the supplied user goal and material corrections with `FEATURE.md`; reject a self-consistent contract that narrows or redirects the actual goal.
-   - Identify central user outcomes, required states, errors, constraints, and non-goals.
-   - Distinguish central claims from optional or explicitly excluded behavior.
+Treat the transient active-feature surface as the review entry point. Do not derive feature scope from the accumulated dirty diff or load unrelated repository history and generated output by default. Follow a call path outside that surface only when needed to judge the accepted behavior or architecture.
 
-2. Inspect implementation and architecture
-   - Trace the owning entrypoint, decision boundary, persistence/external effects, and read-back path.
-   - Compare the implementation with repository architecture and the existing owning abstraction. Check the parent-owned change surface separately from unrelated dirty-tree changes.
-   - Return `FAIL` when green behavior depends on bypassing an owning boundary, duplicating policy, removing validation, adding a hidden special case, or creating unjustified coupling. Do not fail on style preference or speculative future refactoring.
-   - For semantic behavior, reject phrase-locked logic when the invariant should survive paraphrase or language changes.
+## Review
+Perform one evidence-first, implementation-second review in this order. The same evaluator owns both passes and returns one final verdict. Keep the first pass's claim map in working context only: no intermediate report, second agent, or additional lifecycle stage.
 
-3. Inspect proof design
-   - Confirm producer, activation, consumer, durable/visible state, read-back, and fake boundaries match the feature claim.
-   - Ask whether a centrally broken or incomplete implementation could still pass.
-   - Reject inner-helper proof for a claimed API, worker, scheduler, webhook, browser, CLI, provider, or persisted workflow boundary.
-   - Reject assistant text or mocked service returns when durable/provider/rendered state can be observed.
-   - Accept static proof only when static structure, documentation, configuration, or source policy is itself the claimed boundary.
+### Pass 1 — Evidence
+Before opening implementation files:
 
-4. Inspect proof execution
-   - Confirm the final attempt is `PASS`, current contracts/runner match its saved copies, and the complete runner executed.
-   - Read relevant output rather than trusting the status field alone.
-   - Confirm the final attempt's `completion.md` exists and already records the actual gate outcome or skip reason. Evaluator pending is expected during this judgment.
-   - Inspect relevant earlier completion history when a passing attempt entered gate or evaluation. Return `FAIL` when required managed-stage history is missing or inconsistent with retained gate/evaluator/correction evidence.
-   - Inspect failed attempts and change notes when proof, setup, or implementation required repair.
-   - Return `FAIL` when the runner edits implementation or harness inputs, skips central steps, or can escape its capture group to manufacture success.
+1. Compare the accepted feature contract with the supplied user goal and corrections.
+2. Inspect the latest `result.json` and actual retained output rather than trusting the status label or a summary.
+3. For each claimed behavior, record what the executable attempt directly demonstrates, what it only approximates, and which declared gaps affect the claim.
+4. Identify a central broken or incomplete behavior that the current proof could still permit.
+5. Verify proof changes strengthened evidence rather than narrowing accepted behavior.
 
-5. Inspect proof changes
-   - If `FEATURE.md`, `PROOF.md`, or `run.sh` changed after implementation began, require a clear reason.
-   - Ensure behavior changes remain aligned with the supplied user goal and material corrections. A material unresolved change to behavior, scope, safety, cost, or external effects requires exact user input; contract approval does not.
-   - Ensure the final scenario became stronger or corrected, not narrower merely to pass.
-   - Prefer a demonstrated missed failure when practical; allow an explained mechanical runner/setup repair when proof meaning stayed unchanged.
+Do not use parent implementation summaries as evidence. The parent may supply paths that define the transient surface, but implementation explanations cannot replace retained runtime output.
 
-6. Inspect gate
-   - Treat a useful passing gate as repository health support, not feature proof.
-   - Accept an explicit proportionate skip reason when no useful gate exists.
-   - Return `FAIL` if a relevant executed gate failed and remains unrepaired.
+### Pass 2 — Implementation
+After the evidence claim map exists:
 
-7. Judge
-   - Answer the six completion questions under Judgment.
-   - Return `PASS`, `FAIL`, or `NEED_INPUT` using Output.
+1. Open the transient active-feature surface and trace the real activation, decision boundary, persistence or external effect, and consumer read-back.
+2. Challenge the evidence-pass claim map against the implementation and directly relevant call paths.
+3. Check whether implementation bypasses policy, architecture, validation, or ownership to satisfy the proof.
+4. Check whether a fake, fixture, source assertion, route inventory, or inner helper replaces behavior being claimed.
+5. Follow a relevant path outside the supplied surface when required to judge the accepted behavior or architecture.
 
-## Judgment
-1. Does `FEATURE.md` remain aligned with the supplied user goal and corrections?
-2. Does the implementation satisfy `FEATURE.md`?
-3. Does the implementation preserve or improve the owning architecture instead of bypassing it to pass?
-4. Does the proof realistically exercise that behavior through the owning boundary?
-5. Could a centrally broken implementation still pass?
-6. Are the declared known gaps acceptable for the completion claim?
+Complete the bounded review after identifying a blocker. Do not stop at the first material finding; consolidate all material findings supported by both passes in one final verdict.
 
-Return `FAIL` for:
-
-- missing central behavior;
-- feature contract drift from supplied user intent;
-- proxy-only or stale proof;
-- weakened or unexplained proof change;
-- central behavior listed as an unresolved gap;
-- silent architecture/scope drift or material architecture degradation;
-- proof runner manufacturing success;
-- missing or inconsistent managed-stage history in required `completion.md` records;
-- relevant failed gate;
-- plausible central false green.
-
-Return `NEED_INPUT` only for an exact user-owned product decision, credential, safe external target, service, or environment dependency that still blocks judgment after local evidence is exhausted.
+## Rules
+- Read-only: do not edit implementation, contracts, proof, fixtures, setup, retained attempts, or queue state.
+- The two passes are ordered reasoning inside the same evaluator. Create no intermediate report and invoke no second evaluator or completion stage between them.
+- Do not replace executable proof with confidence, source shape, lint, build output, or assistant claims.
+- Do not add behavior outside the accepted contract or promote preferences into blockers.
+- Findings must identify a contract mismatch, implementation defect, architecture bypass, or central false-green path.
+- Exclude preferences, style opinions, speculative improvements, and behavior outside the accepted contract from material findings.
+- After `FINDINGS`, the parent must strengthen proof when practical, repair, rerun proof, and request a fresh evaluation. The prior verdict cannot authorize completion.
+- `PASS` applies only to the candidate it inspected. A relevant edit after inspection makes the verdict void; the parent must rerun the complete proof and another fresh evaluator before completion.
+- Return `NEED_INPUT` only for an exact user-owned decision or external dependency that prevents an honest judgment.
 
 ## Output
 ```text
-Evaluator: PASS|FAIL|NEED_INPUT
-Intent: <alignment with supplied user goal and corrections>
-Behavior: <judgment against FEATURE.md>
-Architecture: <owning-boundary and degradation judgment>
-Proof realism: <activation/read-back/fake-boundary judgment>
-False-green risk: <central broken-pass judgment>
+Review: PASS|FINDINGS|NEED_INPUT
+Intent: <alignment>
+Behavior: <judgment>
+Architecture: <judgment>
+Proof realism: <judgment>
+False-green risk: <judgment>
 Known gaps: <acceptable|blocking + reason>
-Gate: <PASS|SKIPPED|FAIL + reason>
-Next: <none|one repair|one input>
+Findings: <none|ordered list of all material findings with concise evidence>
+Next: <none|smallest proof/repair direction covering the findings|one exact input>
 ```
 
-Keep it concise. Include paths or exact missing checks only when they support `FAIL` or `NEED_INPUT`. Do not repeat logs, prompts, token usage, or exhaustive file lists.
+`PASS` means the supplied current implementation and proof have no identified blocking mismatch or central false-green path. It authorizes the accountable parent to complete the queue item; the evaluator never mutates it directly.
+
+`FINDINGS` requires proof-backed repair and fresh evaluation. `NEED_INPUT` blocks only on the exact missing input.
 
 ## Handoff
-- `PASS`: parent may mark the queue item `done`.
-- `FAIL`: parent uses `coding-repair`, reruns full proof/gate, then creates a new evaluator context.
-- `NEED_INPUT`: parent asks the exact question and leaves the item incomplete.
+Lead with the strongest finding and cite concise repository evidence. Do not include prompts, token usage, exhaustive logs, or queue instructions.

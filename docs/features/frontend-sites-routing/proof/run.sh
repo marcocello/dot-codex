@@ -18,4 +18,9 @@ enabled = config["plugins"]["sites@openai-bundled"]["enabled"]
 print(f"sites_enabled={str(enabled).lower()}")
 PY
 
-"$python_bin" -m pytest tests/unit/test_gate_policy.py -q -p no:cacheprovider
+"$python_bin" -m pytest \
+  tests/unit/test_gate_policy.py::test_common_gate_accepts_repository_without_agents_md \
+  tests/unit/test_gate_policy.py::test_harness_profile_owns_global_agents_requirement \
+  tests/unit/test_gate_policy.py::test_sites_stays_enabled_with_explicit_routing_boundary \
+  tests/unit/test_gate_policy.py::test_codex_home_has_no_self_referential_codex_symlink \
+  -q -p no:cacheprovider

@@ -1,6 +1,6 @@
 ---
 name: coding-prepare-environment
-description: "Prepare repo-local Python, Node, PHP, Laravel, WordPress, or mixed environments for coding, tests, proof, gates, dependencies, and VS Code tasks."
+description: "Prepare repo-local Python, Node, PHP, Laravel, WordPress, or mixed environments for coding, proof, dependencies, and VS Code tasks."
 ---
 
 # Prepare Environment
@@ -9,7 +9,7 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 
 ## Caller Contract
 
-- Use this skill before implementation or checks when the local environment is not known-good.
+- Use this skill before implementation or proof when the local environment is not known-good.
 - Other skills should delegate setup decisions here instead of repeating stack setup rules.
 - Keep setup changes minimal and reversible. Do not delete existing `.venv`, `node_modules`, `vendor`, `.env`, database files, caches, uploads, or generated assets unless the user explicitly asks.
 - Never print secret values. When reporting `.env` work, mention filenames and missing keys only.
@@ -38,15 +38,15 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 5. Prepare the minimum environment needed for the current task.
 6. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
 7. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
-8. Run `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root <repo-root> --profile <profile>` with every applicable explicit profile. Do not create or copy a target-repository `scripts/gate`; repository-native checks remain separate. When diagnosing an incomplete environment, the canonical gate may run before setup and must rerun after each materially different setup or repair attempt. Treat its output as read-only diagnosis; never repeat an unchanged failing command.
-9. Run the narrowest repository-native dependency or smoke check available; gate presence checks alone do not prove dependency health. Then report:
+8. Run `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root <repo-root> --profile <profile>` as supporting preflight with every applicable explicit profile. Do not create or copy it into the target repository. It diagnoses common structure, environment, and diff readiness; it is not generic semantic repository health or feature completion evidence.
+9. Run the narrowest repository-native dependency or readiness check needed by the active proof. Then report:
    - stacks detected
    - files created or changed
    - `.gitignore` status and whether it follows the whitelist pattern
    - commands run
    - remaining blockers
    - exact command prefix future skills should use
-   - gate profiles used and remaining gate failures
+   - preflight profiles and remaining setup failures
    - dev server command future run-task skills should use, when obvious
 
 ## Selection Rules

@@ -24,7 +24,6 @@
 !*.yaml
 !*.sh
 !scripts/gate
-!scripts/invalidate_feature_status
 !scripts/proof_run_capture
 !docs/presentations/*.html
 !docs/features/status.json

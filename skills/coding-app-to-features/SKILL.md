@@ -5,9 +5,13 @@ description: "Turn one app idea into decided context, feature contracts, executa
 
 # App To Features
 
-Purpose: shape an app with the user, create only the repository context that will guide implementation, and materialize a small sequence of independently valuable, realistically provable features.
+Purpose: shape an app with the user, create only the repository context that will guide implementation, and materialize the complete non-speculative feature set as independently valuable, realistically provable packages.
 
-This skill prepares app context and feature packages. When the user asks to create, build, or implement the app, preparation is a phase before the first ready feature enters implementation in the same parent run. Planning or specification-only requests stop after preparation.
+This skill prepares app context and feature packages. Route from the requested deliverable, not an isolated verb: when the requested outcome is an implemented app or product behavior, preparation is a phase before the first ready feature enters implementation in the same parent run. When the requested deliverable is app planning, feature contracts, or proof contracts, stop after preparation even if the user said to write, create, or define those artifacts.
+
+Replies to discovery or proof questions preserve the original request scope and do not authorize implementation. Contract-authoring work must not invoke `coding-feature-execute`; implementing the described product behavior requires a separate explicit request.
+
+Planning or specification-only requests stop after preparation.
 
 ## Inputs
 - Raw app idea or problem statement.
@@ -29,7 +33,7 @@ Derive facts from the repository and authoritative sources before asking. Infer 
 Use `coding-research` when external APIs, framework limits, provider contracts, domain rules, or current product facts would otherwise be guessed.
 
 ## Greenfield Defaults
-When the repository has no established product or architecture and the user asks to create, build, or implement:
+When the repository has no established product or architecture and the requested deliverable is an implemented app or product behavior:
 
 - Use the smallest local-first, single-user application shape that satisfies the request unless the request implies accounts, collaboration, cloud ownership, compliance, or another materially different product boundary.
 - For a generic web application, use a React frontend. Add a backend API boundary when server-owned secrets, provider calls, or persistence require one.
@@ -49,33 +53,35 @@ When the repository has no established product or architecture and the user asks
    - Create or update `docs/APP.md` with user, problem, outcome, scope, and non-goals.
    - Create `docs/ARCHITECTURE.md` when architecture is explicit, authoritative, or selected through the greenfield defaults above.
    - Create `docs/CONVENTIONS.md` and `docs/TESTING.md` only when they prevent repeated decisions.
-   - Record high-level components, boundaries, data flow, and external dependencies without copying concrete starters, folder trees, or implementation structure from the owning stack/domain skills.
+   - Keep these files concise maps of current authority. Move superseded history outside default context and load it only for a migration that needs it.
+   - Record high-level components, boundaries, data flow, external dependencies, and useful proof/testing guidance without copying concrete starters, folder trees, or implementation structure from the owning stack/domain skills.
 
 3. Derive vertical features
    - Prefer end-to-end user value over foundation-only slices.
-   - Create the smallest sequence that makes the app implementable and useful.
-   - Each feature must have one coherent user/system outcome and one provable boundary.
+   - Create the complete non-speculative sequence required for the accepted app outcome.
+   - Keep each feature lean: one coherent observable outcome for a user or system and one provable boundary.
+   - Before a feature becomes `ready`, reject a package with multiple independently valuable observable outcomes or independently runnable proof boundaries and split it into separate feature packages. Touching multiple files or layers alone does not make a feature oversized; do not split one outcome into component-only tasks.
    - Merge overlapping ideas; leave speculative roadmap items out.
    - Order by dependencies and value, not a universal backend/frontend/data sequence.
 
-4. Decide each selected feature
-   - Use `coding-feature-spec` for the feature challenge and visible decision summary; ask only for unresolved material choices with no safe default.
-   - Use `coding-proof-author` for the proof boundary challenge and visible decision summary; ask only when a safe honest proof cannot be inferred.
-   - Do not create all artifacts from one unexplained bulk interpretation.
-   - A feature package is materialized only when decision-complete `FEATURE.md`, decision-complete `PROOF.md`, and executable `proof/run.sh` exist.
+4. Decide every current feature
+   - Use `coding-feature-spec`, which invokes `coding-proof-author`, for every feature in the accepted sequence.
+   - Every decided feature receives `FEATURE.md`, `PROOF.md`, and executable `proof/run.sh`; do not replace the normal feature and proof decisions with bulk prose generated only by this skill.
+   - Ask only for unresolved material choices with no safe default, and do not create all artifacts from one unexplained bulk interpretation.
+   - A decision-ready feature package exists only when `FEATURE.md`, `PROOF.md`, and executable `proof/run.sh` are complete.
 
 5. Create queue
    - Use `coding-feature-queue` to create/update `docs/features/status.json`.
-   - `ready`: complete decision-ready package.
-   - `draft`: discovery/proof/artifacts incomplete.
+   - `ready`: complete decision-ready package; every decided feature from app preparation should finish here.
+   - `draft`: a genuinely incomplete or newly discovered feature whose discovery, proof decisions, or artifacts are not complete.
    - `blocked`: exact external/user dependency after recovery.
-   - Preserve numeric priority and realistic `files` prefixes.
+   - Preserve numeric priority; do not add file-overlap or dependency fields.
 
-6. Return to single-feature work
-   - After preparation, select one ready item.
-   - When the user asked to create, build, or implement, invoke `coding-feature-execute` for that item in the same parent run.
-   - Planning or specification-only requests stop after preparation and report the first ready item.
-   - Do not build an in-repo orchestrator or start implementing multiple features concurrently.
+6. Return to implementation
+   - When the original request explicitly asked to build, implement, or execute one feature, invoke `coding-feature-execute` for that ready item in the same parent run.
+   - When it asked to implement the multi-feature app, invoke `coding-autonomous-execute`; it completes ready features serially in priority order.
+   - When the requested deliverable is planning or contract artifacts, stop after preparation and report the complete ready feature set. Do not reinterpret answers to discovery questions as implementation authorization.
+   - Do not build an in-repo orchestrator, dependency graph, worktree manager, or branch manager.
 
 ## App Documents
 Keep documents small and authoritative:
@@ -83,7 +89,7 @@ Keep documents small and authoritative:
 - `docs/APP.md`: product intent, users, outcomes, scope, non-goals.
 - `docs/ARCHITECTURE.md`: accepted components, boundaries, data flow, external dependencies, constraints.
 - `docs/CONVENTIONS.md`: decisions likely to recur across features.
-- `docs/TESTING.md`: repository-native test/proof/gate guidance.
+- `docs/TESTING.md`: project test and proof guidance that prevents repeated decisions.
 
 Omit a document when it would contain only generic advice.
 
@@ -99,11 +105,11 @@ Omit a document when it would contain only generic advice.
 ## Rules
 - User input shapes app and proof; the agent records decisions and proceeds without contract-approval gates.
 - No universal folder tree, feature count, or foundation-first sequence; select the smallest applicable greenfield profile and leave concrete structure to its owning skills.
-- No speculative backlog.
+- No speculative backlog or god feature.
 - No prose-only proof package for non-trivial behavior.
 - No local workflow engine, daemon, or planning router.
 - Stack/domain skills own concrete implementation structure.
-- App preparation ends by returning to one `FEATURE_DIR`.
+- App preparation ends with every decided feature package ready and returns to one feature when implementation was explicitly authorized.
 
 ## Handoff
-Report the decided app shape, created/updated context docs, feature ids in recommended order, queue path/status summary, first ready item, and material unresolved input. Start implementation only when the request asked to create, build, or implement; otherwise stop after preparation.
+Report the decided app shape, created/updated context docs, complete lean feature ids in recommended order, queue path/status summary, ready set, and material unresolved input. Start implementation only when the original requested deliverable explicitly includes implemented app or product behavior; otherwise stop after preparation.

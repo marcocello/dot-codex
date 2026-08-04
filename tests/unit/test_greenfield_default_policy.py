@@ -76,3 +76,43 @@ def test_skill_prompts_do_not_force_question_first_behavior() -> None:
     assert "Ask material questions" not in combined
     assert "Ask focused material feature questions" not in combined
     assert "Ask material proof questions" not in combined
+
+
+def test_contract_authoring_requires_separate_implementation_request() -> None:
+    agents = read_text("AGENTS.md")
+    app_skill = read_text("skills/coding-app-to-features/SKILL.md")
+    feature_skill = read_text("skills/coding-feature-spec/SKILL.md")
+    proof_skill = read_text("skills/coding-proof-author/SKILL.md")
+    execute_skill = read_text("skills/coding-feature-execute/SKILL.md")
+
+    assert "requested deliverable" in agents
+    assert "do not authorize implementation" in agents
+    assert "separate explicit request" in agents
+
+    for skill in (app_skill, feature_skill, proof_skill):
+        assert "requested deliverable" in skill
+        assert "do not authorize implementation" in skill
+        assert "must not invoke `coding-feature-execute`" in skill
+        assert "separate explicit request" in skill
+
+    assert "Contract readiness alone is not implementation authorization" in execute_skill
+
+
+def test_contract_authoring_prompts_stop_before_execution() -> None:
+    prompts = (
+        read_text("skills/coding-app-to-features/agents/openai.yaml"),
+        read_text("skills/coding-feature-spec/agents/openai.yaml"),
+        read_text("skills/coding-proof-author/agents/openai.yaml"),
+    )
+
+    for prompt in prompts:
+        prompt_text = normalized(prompt)
+        assert "requested deliverable" in prompt_text
+        assert "separate explicit implementation request" in prompt_text
+
+    feature_prompt = normalized(prompts[1])
+    proof_prompt = normalized(prompts[2])
+    assert "Stop after the contract package" in feature_prompt
+    assert "do not invoke coding-feature-execute" in feature_prompt
+    assert "Stop after proof authoring" in proof_prompt
+    assert "do not invoke coding-feature-execute" in proof_prompt

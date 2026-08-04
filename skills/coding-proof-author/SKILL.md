@@ -9,11 +9,14 @@ Purpose: decide evidence that should fail when the feature’s central behavior 
 
 `FEATURE.md` says what to build. `PROOF.md` says how the intended behavior will be exercised and observed. Scripts make execution trustworthy; they do not make a weak scenario realistic.
 
+Route from the requested deliverable, not an isolated verb. In contract-authoring work, completing proof artifacts is the terminal phase: replies to proof questions preserve the original scope and do not authorize implementation. Proof authoring must not invoke `coding-feature-execute`; implementing the described product behavior requires a separate explicit request.
+
 ## Invariants
 - Every non-trivial feature has at least one executable proof artifact.
 - The primary scenario crosses the public or production boundary that owns the claim.
 - Durable or visible effects are read back from the same boundary a real consumer uses.
 - Fakes replace only unsafe outer edges, never the behavior being claimed.
+- A feature proof may use prerequisite behavior as setup and exercise the smallest necessary integration canary, but it must not import or execute another feature's complete proof.
 - `proof/run.sh` contains the complete executable sequence; its exit code is the suite result.
 - Official runs use `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture"` with an explicit timeout and reason.
 - New behavior and known defects should produce a captured failing attempt before substantial implementation when the decision-complete proof can run safely and meaningfully.
@@ -44,7 +47,7 @@ For persisted work, seed input through the producer boundary, allow the normal s
    - environment/readiness;
    - known gaps;
    - command and timeout.
-5. Treat the proposal as a visible decision summary, not an approval request. After answers, write the proof artifacts and continue.
+5. Treat the proposal as a visible decision summary, not an approval request. After answers, continue through proof artifact creation and handoff without expanding the original scope into implementation.
 6. Ask and wait only when an unresolved user-owned choice, credential, safe target, destructive effect, live cost, or central known gap prevents a safe and honest proof decision. When the repository, request, or safe defaults resolve those choices, proceed directly.
 
 ## Profile Routing
@@ -59,7 +62,7 @@ Read only the relevant section of [proof-profiles.md](references/proof-profiles.
 Use [proof-contract-template.md](references/proof-contract-template.md) when creating or materially restructuring the proof contract.
 
 ## Workflow
-1. Read decision-complete `FEATURE.md`, existing proof, repository architecture/testing docs, and the real runtime boundary.
+1. Read decision-complete `FEATURE.md`, existing proof, relevant current architecture/testing sections, and the real runtime boundary. Load superseded history only when the active migration needs it.
 2. Perform Boundary Discovery and select the smallest realistic profile.
 3. Map every central feature claim to activation and read-back.
 4. Name plausible fake or incomplete implementations and ensure a concrete step catches each central one.
@@ -108,11 +111,12 @@ Before substantial implementation of new behavior or a known defect:
 ## Rules
 - Keep behavior in `FEATURE.md`; verification in `PROOF.md`.
 - Include `Proves`, `Does not prove`, `False-green risks`, `Evidence method`, and `Known gaps`.
-- Gate, evaluator, build, lint, and source inspection do not replace realistic proof.
+- Evaluator review, generic validation, build, lint, and source inspection do not replace realistic proof.
 - No hashes or evidence-control metadata for ordinary feature proof.
 - Successful tool calls and assistant prose are not read-back.
-- Proof-authoring-only work does not run the final evaluator.
+- Proof-authoring-only work does not run an optional semantic review.
+- Proof-authoring-only work does not edit product implementation or invoke implementation skills.
 - If executable proof cannot be designed honestly, return `NEED_INPUT` with the exact product, environment, credential, or safe-target requirement.
 
 ## Handoff
-Report the decided scenarios, executable runner path, official capture command, timeout, fake boundaries, known gaps, and queue readiness. Do not claim feature completion until implementation is exercised.
+Report the decided scenarios, executable runner path, official capture command, timeout, fake boundaries, known gaps, and queue readiness. Stop after proof authoring when contracts were the requested deliverable; do not invoke implementation skills or claim feature completion.

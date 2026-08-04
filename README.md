@@ -8,15 +8,30 @@ This repo is my current Codex configuration. It is tuned for Codex App, Codex Go
 
 ## Pillars
 
-The harness is designed for agents doing most implementation work and humans steering and correcting goals. Its seven pillars are:
+The harness is designed for agents doing most implementation work and humans steering and correcting goals. Its operating pillars are:
 
 - Intent and decisions: `FEATURE.md` and `PROOF.md` become decision-complete after repository inspection, focused material questions, edge-case challenge, and visible decision summaries. Codex then proceeds without asking the user to approve agent-authored contracts.
 - Real-boundary proof: primary proof crosses the relevant API, UI, database, queue, provider, CLI, report, or workflow boundary and reads back durable or visible behavior. Scripts cannot make a weak scenario realistic.
 - Reliable retained attempts: `scripts/proof_run_capture` records what ran, how it exited, relevant output, and contract/runner copies for every official failure, timeout, interruption, and pass.
-- Autonomous repair: Codex treats proof, gate, and evaluator failures as the next work item, repairing the owning code, architecture, setup, fixture, diagnostic, or proof problem until completion or a true user/external blocker.
+- Autonomous repair: Codex treats proof failures and evaluator findings as the next work item, repairing the owning code, architecture, setup, fixture, diagnostic, or proof problem until evaluator-confirmed completion or a true user/external blocker.
 - Contract and proof integrity: revisions require a visible reason and must not narrow the user’s goal or weaken proof to manufacture green. Green-but-broken returns to proof design and demonstrates the missed failure when practical.
-- Fresh completion judgment: a fresh read-only evaluator checks intent alignment, behavior, architecture quality, realistic proof, false-green risk, known gaps, and the gate. Behaviorally green code fails when it misses intent or weakens the owning architecture to pass.
-- Learning without ceremony: retained attempts, `completion.md`, evaluator findings, and user corrections feed project/proof improvements first. Repeated cross-feature failures may change the smallest harness owner with a motivating regression and held-out check.
+- Evaluator-confirmed completion: every tracked or autonomous feature requires realistic feature-specific proof followed by fresh evaluator `PASS`; supported findings strengthen proof and receive another fresh evaluation after repair.
+- Complete lean app preparation: current app and architecture docs stay concise, the accepted outcome becomes a complete non-speculative list of lean features, and every decided feature receives a normal executable proof package.
+- Serial execution: one accountable parent completes one feature through proof, repair, and fresh evaluation before the next ready feature begins.
+- Learning without ceremony: meaningful retained attempts, check findings, observed false greens, and user corrections feed project/proof improvements first. Repeated cross-feature failures may change the smallest harness owner with a motivating regression and held-out check.
+
+## Skill Set
+
+This repository contains my own Codex skills together with external Git or URL skills and user-managed Codex plugins. `skills.toml` records that inventory so it can be restored on another computer. After cloning the repository as the Codex home, ask Codex to manage it through the included skills instead of running the underlying scripts directly.
+
+- “Use `$sync-codex-skills` to bootstrap this installation.”
+- “Use `$sync-codex-skills` to reconcile all declared skills and plugins.”
+- “Use `$manage-codex-skills` to add `NAME` from `GITHUB_URL`, using `SOURCE_PATH`.”
+- “Use `$manage-codex-skills` to add the plugin `PLUGIN@MARKETPLACE`.”
+- “Use `$manage-codex-skills` to update `NAME`.”
+- “Use `$manage-codex-skills` to list, diagnose, or remove skills from my inventory.”
+
+Codex system skills and `openai-primary-runtime` plugins remain runtime-managed and stay outside `skills.toml`. See [Skill Management](docs/skill-management.md) for the underlying commands, ownership rules, plugin versus `npx`, and the OpenSpace boundary.
 
 ## References
 
@@ -25,7 +40,7 @@ These references live in Zotero under the `Harness Engineering` collection. They
 - Ryan Lopopolo, [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) - Codex harnesses as context, tools, checks, and feedback loops around the model.
 - Xuying Ning et al., `Code as Agent Harness` - code as executable, inspectable, stateful harness substrate across interface, mechanisms, and multi-agent coordination.
 - Jiahang Lin et al., [Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](http://arxiv.org/abs/2604.25850) - harnesses as a first-class determinant of coding-agent performance.
-- Jiawei Gu et al., `A Survey on LLM-as-a-Judge` - evaluator reliability, bias, calibration, and judging against explicit criteria.
+- Jiawei Gu et al., `A Survey on LLM-as-a-Judge` - background on evaluator reliability, bias, and the need to preserve executable proof alongside semantic judgment.
 - Wanqin Ma et al., `(Why) Is My Prompt Getting Worse? Rethinking Regression Testing for Evolving LLM APIs` - prompt/API drift, slice-level regression, nondeterminism, and held-out checks.
 - Lei Wang et al., `A survey on large language model based autonomous agents` - autonomous-agent architecture around profiling, memory, planning, action, and evaluation.
 - Anthropic engineers, via Anatoli Kopadze, [planner/generator/evaluator loop for full-app builds](https://x.com/AnatoliKopadze/status/2068690663919530207) - generator/evaluator separation, live app judging, and contract-driven iteration.
@@ -54,3 +69,4 @@ The local direction is spec-driven development, code-as-harness, proof-centered 
 - Harness evolution: [`docs/harness/evolution/evolution-loop.md`](docs/harness/evolution/evolution-loop.md).
 - Handoff format: [`docs/harness/handoff.md`](docs/harness/handoff.md).
 - Non-coding and Second Brain workflows: [`docs/secondbrain.md`](docs/secondbrain.md).
+- Skill inventory, bootstrap, and maintenance: [`docs/skill-management.md`](docs/skill-management.md).

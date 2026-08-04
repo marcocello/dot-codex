@@ -4,7 +4,10 @@ interface:
   default_prompt: >-
     Use $coding-app-to-features. Infer safe defaults first, ask only about unresolved
     contract-changing choices with no safe default, challenge the app idea, state decisions, and
-    create the smallest decision-ready vertical feature queue without approval gates. For a
-    create/build/implement request, continue into the first ready feature in the same run.
+    derive the complete non-speculative feature set, keep every feature lean, and route every
+    decided feature through normal feature-spec and executable proof authoring without approval gates. Route from
+    the requested deliverable: contract authoring stops after preparation and requires a separate
+    explicit implementation request; only an original request for implemented product behavior
+    continues into serial priority-ordered feature execution in the same run.
 policy:
   allow_implicit_invocation: true

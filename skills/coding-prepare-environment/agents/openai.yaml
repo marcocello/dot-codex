@@ -3,7 +3,8 @@ interface:
   short_description: "Prepare envs, whitelist gitignore, and run tasks."
   default_prompt: >-
     Use $coding-prepare-environment to inspect this repository and prepare the local
-    environment, including whitelist .gitignore and VS Code run tasks when needed, before running
-    tests or implementation.
+    environment, including whitelist .gitignore and VS Code run tasks when needed. Treat the
+    shared gate only as supporting environment diagnostics, and prepare the narrow readiness
+    boundary required by the active proof.
 policy:
   allow_implicit_invocation: true

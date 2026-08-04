@@ -8,7 +8,7 @@ description: "Fix a known defect or concrete failure with the smallest verified 
 Purpose: identify the owning failure quickly, make the smallest correct change, and verify it at the narrow boundary before returning to the applicable completion lane.
 
 ## Entry
-- Clear issue, failing command, or evaluator finding: proceed.
+- Clear issue, failing command, observed green-but-broken behavior, or evaluator finding: proceed.
 - Unclear expected behavior: use `coding-feature-spec`; ask the user only when a material choice cannot be inferred safely.
 - Inherit the assurance lane from `AGENTS.md`.
 - Exactly one owning `FEATURE_DIR`: read its contracts and use the tracked lifecycle.
@@ -20,7 +20,7 @@ For a concrete failure, diagnose in this order:
 
 1. Read the latest `result.json` or exact failing command result.
 2. Read the relevant tail of `stderr.txt`; inspect stdout only when it carries the useful signal.
-3. Classify the owner: implementation, proof, setup/environment, gate/tooling, or external dependency.
+3. Classify the owner: implementation, proof, setup/environment, evaluator finding, or external dependency.
 4. Reproduce the narrow failure when cheap and safe.
 5. Inspect the owning code/configuration and adjacent tests only.
 6. Make the smallest effective repair without weakening accepted behavior or proof.
@@ -67,12 +67,11 @@ Same failure twice: change tactic or widen inspection. Do not repeat the same pa
 
 ## Verification
 - `lightweight`: focused regression or narrow check; add broader checks only when risk warrants.
-- `tracked`: captured realistic proof, useful gate or skip reason, fresh evaluator.
-- `autonomous`: same tracked checks plus queue continuation.
+- `tracked`: captured realistic proof, then return to `coding-feature-execute` for fresh evaluation.
+- `autonomous`: same tracked proof plus serial queue continuation after evaluator `PASS`.
 - Re-check the runtime/browser/provider signal that exposed the issue when relevant.
-- Evaluator `FAIL`: repair the specific finding, rerun full proof/gate, then use a new evaluator.
-- Evaluator `NEED_INPUT`: ask only for the exact dependency after local recovery.
+- Evaluator finding: preserve it in the next attempt note, strengthen proof when it exposes a false green, demonstrate the missed failure when practical, repair, rerun full proof, and return for fresh evaluation.
 - During autonomous work, return control to `coding-autonomous-execute` until proof passes or its terminal condition is met.
 
 ## Handoff
-Report outcome, root cause, changed surface, focused regression, broader proof/gate/evaluator when applicable, and blockers. Keep raw logs and internal attempts out unless needed for diagnosis or audit.
+Report outcome, root cause, changed surface, focused regression, broader proof when applicable, and blockers. Keep raw logs and internal attempts out unless needed for diagnosis or audit.

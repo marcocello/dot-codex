@@ -37,7 +37,7 @@
 ## Scenario: Codex-home filesystem shape
 - Producer/activation: pytest inspects the dot-codex root.
 - Consumer: the local filesystem.
-- Read-back: absence of a `.codex` symlink or entry inside the Codex home.
+- Read-back: `.codex` is not a self-referential symlink; a regular repository-owned configuration directory is allowed.
 - Fake: none.
 - Catches: retaining or recreating the self-referential symlink.
 
@@ -57,6 +57,9 @@ False-green risks:
 - Static policy assertions can pass while a future model ignores the policy; the proof therefore distinguishes instruction availability from probabilistic model adherence.
 - A unit-only gate test could bypass CLI wiring; the regression invokes the real gate subprocess.
 - Removing the common requirement could accidentally remove all kernel validation; the harness-profile scenario requires the failure at its new owner.
+
+Proof change:
+- The original assertion rejected every `.codex` entry even though the accepted behavior forbids only the broken self-referential symlink. The final queue sweep exposed a legitimate `.codex/hooks.json` directory. The corrected oracle checks the owning filesystem invariant without deleting repository configuration.
 
 Evidence method:
 - deterministic

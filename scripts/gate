@@ -223,13 +223,33 @@ def skill_data(gate: Gate, path: Path, yaml):
     return data
 
 
+def repository_skill_files(gate: Gate) -> list[Path]:
+    listed = git(
+        gate,
+        "ls-files",
+        "-z",
+        "--cached",
+        "--others",
+        "--exclude-standard",
+        "--",
+        "skills",
+    )
+    if listed is not None and listed.returncode == 0:
+        return sorted(
+            gate.root / value
+            for value in filter(None, listed.stdout.split("\0"))
+            if PurePosixPath(value).name == "SKILL.md"
+        )
+    return sorted((gate.root / "skills").rglob("SKILL.md"))
+
+
 def harness_lint(gate: Gate) -> None:
     try:
         import yaml  # type: ignore[import-untyped]
     except ImportError:
         gate.fail("harness.environment", "PyYAML is unavailable", "Install PyYAML for the Python running scripts/gate.")
         return
-    skills = sorted((gate.root / "skills").rglob("SKILL.md"))
+    skills = repository_skill_files(gate)
     names: set[str] = set()
     operational = [gate.root / "AGENTS.md", gate.root / "README.md", gate.root / "config.template.toml"]
     for path in skills:
@@ -287,7 +307,7 @@ def harness_profile(gate: Gate) -> None:
     python = gate.root / ".venv/bin/python"
     if not python.is_file() or not os.access(python, os.X_OK):
         gate.fail("harness.environment", ".venv/bin/python is missing", "Prepare the repo-local Python environment.")
-    elif len(gate.failures) == before:
+    else:
         env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
         gate.run(
             [str(python), "-m", "pytest", "tests/unit", "-q", "-p", "no:cacheprovider"],

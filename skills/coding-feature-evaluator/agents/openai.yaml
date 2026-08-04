@@ -1,6 +1,6 @@
 interface:
-  display_name: "CODING | Done Evaluator"
-  short_description: "Read-only semantic done judge."
-  default_prompt: "Use $coding-feature-evaluator. Stay read-only. Judge user-intent alignment, architecture quality, implementation, realistic proof, false-green risk, gaps, and gate. Return PASS, FAIL, or NEED_INPUT."
+  display_name: "CODING | Feature Review"
+  short_description: "Bounded proof challenge or diagnostic review."
+  default_prompt: "Use $coding-feature-evaluator for the fresh final read-only judgment of one tracked or autonomous feature after proof passes. Perform one evidence-first, implementation-second review: inspect the contracts and actual retained output before opening the parent-supplied active-feature surface, then challenge the evidence claim map against implementation and architecture. The same evaluator completes both passes and returns all material findings in one verdict; do not stop at the first finding. Return PASS, FINDINGS, or NEED_INPUT; findings require proof-backed repair and another fresh evaluation, while only PASS permits parent-owned completion."
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

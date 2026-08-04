@@ -3,6 +3,7 @@
 ## Done
 - The composed global, app-discovery, feature-spec, and proof-author instruction surfaces consistently require safe default inference before user questions.
 - The greenfield profile preserves explicit constraints, material ambiguity questions, stack-skill scaffold ownership, and create/build continuation into implementation.
+- The same instruction surfaces make contract authoring terminal until a separate explicit implementation request, including after the user answers discovery questions.
 - Question-first default prompts no longer override the conditional ask policy in the skill bodies.
 
 ## Command
@@ -25,6 +26,13 @@
 - Fake: none.
 - Catches: correcting skill bodies while leaving stronger question-first invocation prompts active.
 
+## Scenario: Contract authoring stops before implementation
+- Producer/activation: pytest reads the global router plus the app, feature-spec, proof-author, and feature-execute instruction artifacts loaded by Codex.
+- Consumer: the composed routing policy that decides whether a ready contract package enters implementation.
+- Read-back: assertions require routing by requested deliverable, preservation of the original scope after question replies, an explicit prohibition on invoking `coding-feature-execute` from contract-authoring work, and a separate implementation request before product code is changed.
+- Fake: none.
+- Catches: treating “create” as unconditional build authorization, treating a discovery answer as expanded scope, or continuing automatically from ready contracts into implementation.
+
 ## Scenario: Material ambiguity and ownership remain protected
 - Producer/activation: pytest reads the global kernel and app/feature skill contracts.
 - Consumer: the same policy sources used for greenfield routing.
@@ -37,6 +45,7 @@ Proves:
 - The active instruction artifacts expose one consistent infer-first greenfield decision policy.
 - The original question-first prompt metadata is absent from all three involved skills.
 - The policy distinguishes safe defaults from material unresolved choices and distinguishes create/build from planning-only requests.
+- The policy makes feature/proof authoring a terminal phase and requires separate implementation authorization.
 
 Does not prove:
 - Deterministic instruction compliance by every future model or product version.
@@ -45,7 +54,7 @@ Does not prove:
 
 False-green risks:
 - Static policy assertions can pass while a future model ignores the instructions; the claimed deterministic boundary is policy availability and consistency, while live model adherence remains a declared gap.
-- Checking only one skill could miss a stronger conflicting prompt elsewhere; the regression reads the global kernel, all three skill bodies or prompts involved in the original interaction, and the scaffold ownership rule.
+- Checking only one skill could miss a stronger conflicting prompt elsewhere; the regression reads the global kernel, all relevant skill bodies and prompts involved in the original interaction, the execution entry contract, and the scaffold ownership rule.
 
 Evidence method:
 - deterministic

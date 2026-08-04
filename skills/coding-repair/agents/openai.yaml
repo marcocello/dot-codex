@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Repair"
   short_description: "Latest-failure-first narrow repair."
-  default_prompt: "Use $coding-repair. Read latest result and relevant error, classify owner, reproduce narrowly, repair minimally, rerun narrow and full proof."
+  default_prompt: "Use $coding-repair. Read the latest proof failure or evaluator finding, classify its owner, reproduce narrowly, repair minimally, rerun the full proof when tracked, and return for fresh evaluation."
 policy:
   allow_implicit_invocation: true

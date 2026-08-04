@@ -11,6 +11,8 @@ Purpose: learn the real user goal, challenge incomplete assumptions, state the r
 
 For every non-trivial feature, this skill must invoke `coding-proof-author` after writing `FEATURE.md` and before handoff in the same parent run. Load and apply the proof-author skill as the next workflow phase so it produces decision-complete `PROOF.md` and executable `proof/run.sh`. A separate proof-decision round is not a separate task or a reason to return control to the user.
 
+Route from the requested deliverable, not an isolated verb. When the requested deliverable is feature and proof contracts, user replies to discovery or proof questions preserve that scope and do not authorize implementation. Contract-authoring work must not invoke `coding-feature-execute`; implementing the described product behavior requires a separate explicit request.
+
 ## Inputs
 Derive from the request and repository before asking:
 
@@ -22,7 +24,7 @@ Derive from the request and repository before asking:
 - constraints, non-goals, compatibility needs;
 - success criteria and material corner cases.
 
-Read `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`, related feature contracts, and existing behavior when present. Do not ask the user for facts the repository already establishes.
+Read the relevant current sections of `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`, related feature contracts, and existing behavior when present. Do not load superseded history unless the active feature is its migration owner, and do not ask the user for facts the repository already establishes.
 
 Infer and disclose safe defaults before asking the user. Treat architecture, framework, starter, folder, and provider choices as implementation details when they are reversible and an owning repository or stack policy resolves them. Do not ask architecture questions unless architecture changes the observable product contract and no authoritative repository decision or safe default resolves it.
 
@@ -59,7 +61,9 @@ The summary is not an approval request. After the user answers material discover
 5. Preserve existing accepted behavior unless the user changes it.
 6. Add implementation routing only when a stack/domain skill clearly owns the work.
 7. Invoke and apply `coding-proof-author` for non-trivial decided behavior in the same parent run. Complete its separate proof-decision round before handoff.
-8. Keep the queue item `draft` until `PROOF.md` and executable proof are decision-complete; `ready` belongs to the completed contract package.
+8. Before setting `ready`, reject a contract with multiple independently valuable observable outcomes or independently runnable proof boundaries. Split those outcomes into separate feature packages; work spanning multiple files or layers is not by itself oversized.
+9. Keep the queue item `draft` until `PROOF.md` and executable proof are decision-complete; `ready` belongs to the completed contract package.
+10. Stop after the decision-complete contract package unless the original request independently and explicitly authorized implementation of the product behavior.
 
 ## FEATURE.md Shape
 Start small:
@@ -100,6 +104,7 @@ For semantic behavior, define the durable invariant and decision boundary. Do no
 - No architecture or backward-compatibility commitment unless requested, authoritative, or an explicitly labeled safe default selected by the owning app/stack policy.
 - Material ambiguity unresolved: ask and wait.
 - Non-trivial feature incomplete until `coding-proof-author` produces a decision-complete executable proof package.
+- Contract readiness is a handoff state, not implementation authorization.
 
 ## Handoff
-For a non-trivial feature, hand off only after `coding-proof-author` has produced decision-complete `PROOF.md` and executable `proof/run.sh`, or after it returns `NEED_INPUT` for an exact user-owned dependency. Report the decided behavior, feature and proof paths, remaining product or proof decisions, and queue readiness. Do not claim implementation proof was run during contract-authoring work.
+For a non-trivial feature, hand off only after `coding-proof-author` has produced decision-complete `PROOF.md` and executable `proof/run.sh`, or after it returns `NEED_INPUT` for an exact user-owned dependency. Report the decided behavior, feature and proof paths, remaining product or proof decisions, and queue readiness. Stop there for contract-authoring requests: do not invoke implementation skills, edit product code, run implementation proof, or claim feature completion.

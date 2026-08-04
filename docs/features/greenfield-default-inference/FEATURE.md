@@ -12,6 +12,9 @@ Let a user start a greenfield application from a short create/build request with
 - Safe inferred product defaults are stated in the decision summary rather than presented as approval questions. Explicit user or repository constraints override inferred defaults.
 - The harness asks and waits only when an unresolved user-owned choice has no safe default and can materially change observable behavior, data ownership, permissions, safety, cost, or external effects.
 - When the user asks to create, build, or implement, app preparation continues into `coding-feature-execute` for the first ready feature in the same parent run. Planning or specification-only requests stop after preparation.
+- Routing distinguishes the requested deliverable from incidental verbs: a request to write, define, design, or create feature and proof contracts is contract-authoring work, not authorization to implement the product behavior described by those contracts.
+- Contract-authoring work ends after decision-complete `FEATURE.md`, `PROOF.md`, and executable `proof/run.sh` artifacts are ready. It must not invoke `coding-feature-execute`; implementation requires a separate explicit request to build, implement, or execute the product behavior.
+- User replies to feature-discovery or proof questions retain the scope of the original request and do not independently authorize implementation.
 
 ## Constraints
 - Preserve the distinction between high-level app-shape selection and stack-skill ownership of concrete scaffolding.
@@ -24,3 +27,4 @@ Let a user start a greenfield application from a short create/build request with
 - Changing the default frontend starter, backend framework, or folder layout owned by stack skills.
 - Performing live provider calls, deployments, credential entry, or paid resource creation.
 - Removing the feature and proof decision summaries or weakening realistic proof requirements.
+- Treating contract readiness as feature implementation or completion.

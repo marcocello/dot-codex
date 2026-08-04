@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Feature Execute"
-  short_description: "Implement, prove, repair, auto-evaluate one feature."
-  default_prompt: "Use $coding-feature-execute for one ready feature. Manage proof, repair, gate, fresh evaluator subagent, and queue result."
+  short_description: "Implement, prove, evaluate one ready feature."
+  default_prompt: "Use $coding-feature-execute for one explicitly authorized ready feature. Work serially through retained realistic proof and a fresh final evaluator. Convert evaluator findings into strengthened proof and repair, then repeat proof and fresh evaluation until PASS before queue completion."
 policy:
   allow_implicit_invocation: true

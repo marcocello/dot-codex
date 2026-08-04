@@ -2,10 +2,9 @@
 
 ## Inputs
 - Failed/passing attempts + notes.
-- Plain per-attempt `completion.md` gate/evaluator/correction context.
-- Evaluator findings.
+- Proof results, evaluator findings, and relevant setup diagnostics.
 - User corrections/rejected directions.
-- Repeated setup/diagnostic/proof failures.
+- Repeated setup, diagnostic, proof, or evaluator failures.
 
 ## Owners
 - Behavior -> `FEATURE.md` + implementation.

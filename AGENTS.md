@@ -12,14 +12,15 @@
 - State each instruction once at its owner. Cross-reference the owner instead of copying defaults or full workflows.
 
 ## Work Kernel
-- Work on one feature or issue, and one `FEATURE_DIR`, at a time.
+- Work on one issue, one feature, and one `FEATURE_DIR` at a time. One accountable parent owns decisions, implementation, proof, evaluation, queue state, and completion.
 - Select one assurance lane before editing and keep downstream skills aligned with it.
-- `lightweight`: isolated, low-risk edit or bug fix with no durable behavior contract; use the smallest regression or narrow check. No `FEATURE_DIR`, captured proof, repository gate, evaluator, or queue mutation required.
+- `lightweight`: isolated, low-risk edit or bug fix with no durable behavior contract; use the smallest regression or narrow check. No `FEATURE_DIR`, captured proof, evaluator, or queue mutation required.
 - `tracked`: feature work, behavior-contract work, or repairs involving queues, safety, data, migrations, external services, multiple modules, or repeated failures; use the normal feature lifecycle.
 - `autonomous`: explicit keep-going, queue, or repeated-repair work; use the tracked lifecycle plus persistent recovery and queue state.
 - `FEATURE_DIR/FEATURE.md`: behavior contract.
 - `FEATURE_DIR/PROOF.md`: realistic proof contract.
 - For non-trivial work, use two decision passes before substantial implementation: feature challenge/decision summary, then proof challenge/decision summary. Each pass may contain zero user questions. Ask only when an unresolved user-owned choice has no safe default and its answer can materially change behavior, scope, safety, cost, data, permissions, or external effects. After the user answers, proceed without asking them to approve the written contract. When repository context, the request, or safe defaults resolve the choices, state the decisions and proceed directly.
+- Route scope from the requested deliverable, not isolated verbs. A request for feature, proof, specification, or planning artifacts is contract-authoring work and ends after decision-ready `FEATURE.md`, `PROOF.md`, and executable `proof/run.sh` artifacts are written. Answers to discovery or proof questions do not authorize implementation. Contract authoring must not invoke `coding-feature-execute`; implementing the described product behavior requires a separate explicit request.
 - Do not claim completion from plausibility, source shape, assistant claims, tool-call success, a gate, or an evaluator without realistic executable proof.
 - For issue work, first check whether the defect clearly belongs to `docs/features/*/FEATURE.md`.
 - Exactly one match: use that `FEATURE_DIR`; add a focused regression when current proof misses the defect.
@@ -32,44 +33,38 @@
 
 ## Completion Kernel
 - Lightweight work is complete after its focused regression or narrow check passes; add broader checks only when the touched surface justifies them.
-- Tracked and autonomous work require a passing realistic proof, a useful existing repository gate or explicit skip reason, and a fresh managed `coding-feature-evaluator` `PASS`.
-- `FEATURE_DIR/proof/run.sh` contains the complete executable proof sequence. Its exit code is the suite result.
-- Capture every official attempt with `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"`.
-- The LLM chooses a scenario-appropriate timeout. There is no default.
-- Keep failed, timed-out, interrupted, and passing attempts Git-trackable. Scripts record execution; the LLM judges meaning and progress.
-- Queue state lives in `docs/features/status.json` with only `draft`, `ready`, `revalidate`, `blocked`, and `done`, short notes, repository-relative `files` change prefixes, and `revalidate_on` proof-dependency prefixes.
-- Before implementation, whenever change prefixes broaden, and immediately before managed evaluation, run `"${CODEX_HOME:-$HOME/.codex}/scripts/invalidate_feature_status" --feature <id>` from the target repository so completed features whose proof dependencies overlap the active changes move to `revalidate` even if queue state changed during the active work.
-- Default autonomous implementation selects only `ready` work and ignores `revalidate`. Revalidation is an explicit, separate pass: rerun the existing proof without changing implementation, setup, contracts, or proof; after proof passes, run a fresh evaluator. Evaluator `PASS` returns the item to `done`; proof or evaluator failure moves it to `ready` for the normal repair lifecycle. Do not repair or recursively execute invalidated work during revalidation.
-- Queue prose never authorizes completion. The parent marks `done` only after the current proof, optional gate decision, and fresh evaluator pass.
+- Tracked and autonomous work require a passing realistic proof and a fresh read-only `coding-feature-evaluator` `PASS` for the current implementation and proof.
+- Every tracked and autonomous feature invokes the evaluator after proof passes. Lightweight work does not invoke the evaluator.
+- Completion applies only to an unchanged final candidate. Any relevant edit after the latest official proof `PASS` makes that proof stale; any relevant edit after evaluator `PASS` also voids the verdict. Follow `coding-feature-execute` to rerun the complete proof and obtain a fresh evaluator before marking `done`.
+- `coding-feature-execute` owns evaluator findings, proof-backed repair, fresh reevaluation, and the parent-owned completion transition.
+- `coding-proof-author`, `docs/harness/proof-lifecycle.md`, and `proof_run_capture` own executable proof design, retained attempts, timeouts, and process containment.
+- `coding-feature-queue` owns queue schema and status; `coding-autonomous-execute` owns serial priority selection and continuation.
 - Artifact work uses artifact-specific parsers, renderers, contract checks, fixtures, syntax checks, or readiness checks.
-- For new behavior or a known defect, retain a captured failing proof before substantial implementation when safe and meaningful. If useful red evidence cannot be produced, retain the reason and do not present an older PASS as red pressure.
-- Autonomous Proof Loop for `ready` implementation work: while proof is unsatisfied, inspect the latest result, repair the owning problem, and capture another attempt. This loop never applies to explicit revalidation.
-- Multiple agents and feature parents may edit one checkout concurrently. Keep one accountable parent per active feature for decisions, integration, queue transitions, and completion judgment; preserve unrelated work. On resume, inspect that feature's newest run directory; an `attempt-start.json` without `result.json` is unresolved until its recorded process is checked. Never start a competing proof for the same feature or fall back to an older PASS while a newer attempt is incomplete.
+- One accountable parent owns the active feature, contracts, queue state, implementation, official proof, evaluation, and completion. On resume, inspect the feature's newest run directory; never start a competing proof or fall back to an older PASS while a newer attempt is incomplete.
 - `NEED_INPUT` only after safe local recovery is exhausted and the remaining requirement is user-owned or external.
 - Green-but-broken means proof is insufficient. Return to proof design, state the strengthened proof decision, demonstrate the missed failure when practical, and rerun.
-- Contract revision guard: after implementation begins, explain why `FEATURE.md`, `PROOF.md`, or `proof/run.sh` changed. Continue autonomously when the revision remains within the user’s stated goal; ask only when an unresolved choice would materially change behavior, scope, safety, cost, or external effects. The evaluator rejects silent scope reduction or proof weakening. Show the missed failure when practical and rerun the complete proof. Saved attempt copies provide comparison; no freshness hash or receipt graph is required.
+- Contract revision guard: after implementation begins, explain why `FEATURE.md`, `PROOF.md`, or `proof/run.sh` changed. Continue autonomously when the revision remains within the user’s stated goal; ask only when an unresolved choice would materially change behavior, scope, safety, cost, or external effects. Never silently reduce scope or weaken proof. Show the missed failure when practical and rerun the complete proof. Saved attempt copies provide comparison; no freshness hash or receipt graph is required.
 - A proof runner must not edit implementation or harness inputs, daemonize, call `setsid`, or escape its capture process group.
 - `proof/run.sh` prints relevant non-secret facts about the actual application runtime and readiness into captured output. Generic capture records only its own runtime context and never dumps the full environment.
-- After a proof attempt passes and before it enters gate/evaluation, the parent initializes plain `completion.md`; it then updates the file with gate outcome, evaluator output, and material correction or repair reason. Missing managed-stage history is a proof/evaluator failure. The file is never parsed as a completion receipt or queue authority.
 
 ## Routing
 - App idea -> `coding-app-to-features`.
 - Spec -> `coding-feature-spec`.
 - Proof -> `coding-proof-author`.
 - Implement -> `coding-feature-execute`.
-- Repair -> `coding-repair` for a clear defect, runtime bug, failing proof, gate, test, typecheck, lint, build, or evaluator `FAIL`.
+- Repair -> `coding-repair` for a clear defect, runtime bug, failing proof, evaluator finding, setup failure, test, typecheck, lint, or build.
 - Autonomous queue, repeated repair, or keep-going work -> `coding-autonomous-execute`.
-- Done judge -> `coding-feature-evaluator`, normally spawned automatically by `coding-feature-execute`.
+- Final semantic judgment for every tracked or autonomous feature -> `coding-feature-evaluator`.
 - Queue schema/status -> `coding-feature-queue`.
 - Setup/env/tasks -> `coding-prepare-environment`.
 - Commit -> `coding-commit` only when asked.
 - Stack/domain details live in the relevant frontend, backend, Laravel, PHP, WordPress, operations, or research skill.
 
 ## Context
-- If `docs/ARCHITECTURE.md` exists, apply it; do not override project architecture unless asked.
-- Align with `docs/APP.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present.
+- If `docs/ARCHITECTURE.md` exists, apply the relevant current sections; do not override project architecture unless asked.
+- Align with the relevant current sections of `docs/APP.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present. Do not load superseded history by default unless the active migration needs it.
 - Greenfield app-shape selection and defaulting belong to `coding-app-to-features`; stack/domain skills own concrete folders, starters, and code layout.
-- `coding-app-to-features` may bootstrap app docs, multiple features, and `docs/features/status.json`; after preparation, return to one `FEATURE_DIR`.
+- `coding-app-to-features` may bootstrap app docs, the complete lean feature set, executable proof packages, and `docs/features/status.json`; after preparation, return to one feature.
 - Project-owned interaction records hold explicitly captured dialogue history; `AGENTS.md` holds hard rules; skills hold reusable workflows. Interaction records remain historical evidence, not automatic context.
 
 ## Scaffold And Instruction Boundaries
@@ -98,12 +93,12 @@
 - Explicit over clever. Use red/green TDD for implementation and defects. Never delete, weaken, or bypass proof for green.
 - Code guidelines unless the repository defines stricter rules: function <=100 lines, cyclomatic complexity <=8 where tooling exists, positional parameters <=5. Do not add tooling only to enforce these numbers.
 - Do not hard-wrap Markdown prose.
-- Editing this dot-codex config: use `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$PWD"` as the repository gate. It is read-only and includes common, Python, harness, unit-test, and diff checks. Run the active feature proof separately when the tracked lifecycle applies.
+- Editing this dot-codex config: use `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$PWD"` for repository-local harness validation. It is read-only and includes common, Python, harness, unit-test, and diff checks. It is not a product-feature completion stage; run the active feature proof separately when the tracked lifecycle applies.
 
 ## Handoff
 - Default to a short human receipt, not an audit log.
-- Product work: outcome, changed surface, realistic proof, gate or skip reason, evaluator, known gaps, blockers.
+- Product work: outcome, changed surface, realistic proof, evaluator verdict, known gaps, blockers.
 - Lightweight work: outcome, changed surface, focused regression or narrow check.
 - Artifact work: created/changed artifacts, relevant parser/render/contract validation, live validation only when relevant, blockers.
-- Do not label a gate, evaluator, lint, build, or source inspection as feature proof.
+- Do not label an evaluator, lint, build, generic validation, or source inspection as feature proof.
 - If the remaining requirement is user-owned after recovery: `NEED_INPUT: <question>`.

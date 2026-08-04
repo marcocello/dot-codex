@@ -15,8 +15,11 @@ Read only the sections selected by `SKILL.md`.
 - Black-box provider proof should not import app internals or monkeypatch the activation path.
 
 ## UI And Artifact
+- UI interaction claims drive genuine browser/user actions against rendered controls. Calling handlers or directly dispatching DOM events is not sufficient proof of click, input, focus, navigation, or other user interaction behavior.
+- Resource claims verify that the browser observes content as loaded, decoded, and visible. A URL or source attribute alone is not sufficient proof that an image, font, media item, or other resource rendered for the user.
+- UI domain-behavior claims cross the real protected application API and its normal authentication/authorization path when relevant, then read back the resulting visible or durable state. Fixtures and stubs may prove presentation-only states; fake only unsafe outer providers when proving domain behavior.
 - UI profile: render the component/page or drive the browser; verify visible state, interaction, reload behavior, and screenshots when useful.
-- Frontend integration: run the frontend and API stub/server, drive connect, disconnect, toggle, empty, loading, error, and responsive states through the browser.
+- Frontend integration: run the frontend and real application API, drive connect, disconnect, toggle, empty, loading, error, and responsive states through the browser. Use an API stub only for presentation-only claims.
 - PDF/report/artifact: seed source context, call the real endpoint or orchestration path, render or extract the artifact, and verify grounded values, layout-critical state, and missing-fact behavior.
 
 ## Reactive And Process Boundaries

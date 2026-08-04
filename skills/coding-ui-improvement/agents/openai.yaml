@@ -1,0 +1,28 @@
+interface:
+  display_name: "CODING | UI Improvement"
+  short_description: "Write component-specific UI improvement briefs."
+  default_prompt: "Use $coding-ui-improvement to write a component-specific UI improvement brief without editing the product."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "agentation"
+      description: "Read visual feedback annotations from the running interface."
+      transport: "stdio"
+      url: "npm:agentation-mcp@1.2.0"
+    - type: "mcp"
+      value: "landingfolio"
+      description: "Search curated screenshots of shipped landing-page sections and patterns."
+      transport: "streamable_http"
+      url: "https://mcp.landingfolio.com/mcp"
+    - type: "mcp"
+      value: "shadcn"
+      description: "Browse shadcn, Canvas UI, and React Bits component registries."
+      transport: "stdio"
+      url: "npm:shadcn@latest"
+    - type: "mcp"
+      value: "originkit"
+      description: "Search and retrieve OriginKit components and implementation metadata."
+      transport: "streamable_http"
+      url: "https://mcp.originkit.dev/mcp"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync Codex Skills"
+  short_description: "Reconcile skills from the pinned inventory"
+  default_prompt: "Use $sync-codex-skills to reconcile this Codex installation from skills.toml."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Codex Skills"
+  short_description: "Add, remove, update, or audit skill dependencies"
+  default_prompt: "Use $manage-codex-skills to change or inspect the authoritative skills.toml inventory."

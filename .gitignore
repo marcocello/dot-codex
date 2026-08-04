@@ -28,6 +28,7 @@
 !scripts/proof_run_capture
 !docs/presentations/*.html
 !docs/features/status.json
+!skills/coding-ui-improvement/references/shadcn-catalog/components.json
 
 # 4. Block some directories and files
 *.git

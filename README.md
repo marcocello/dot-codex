@@ -1,72 +1,87 @@
-## dot-codex
+# dot-codex
 
-Around December 2025, I stopped writing code. I also stopped reading generated code as the primary way to decide whether the work was done.
+In December 2025, I stopped writing code. Codex now does the implementation work.
 
-The product still matters. The code still matters. The rendered output still matters. What changed is the control point: instead of manually inspecting every generated source file, I shape the work before generation and make the AI produce proof that its work matches the intended behavior.
+That only works because I also changed how completion is judged. Source inspection is no longer the primary control point. I decide the behavior, require executable proof at the real product boundary, retain every official attempt, and demand a fresh evaluator pass before tracked work is complete.
 
-This repo is my current Codex configuration. It is tuned for Codex App, Codex Goals, local skills, and a harness that refuses to call plausible output done.
+This repository is the control layer behind that workflow. It turns Codex from a fast code generator into an accountable engineering system that can take a feature from intent to evidence-backed completion.
 
 ## Pillars
 
-The harness is designed for agents doing most implementation work and humans steering and correcting goals. Its operating pillars are:
+- **Intent becomes a contract.** `FEATURE.md` records observable behavior, boundaries, edge cases, and material decisions before substantial implementation begins.
+- **Proof crosses the real boundary.** `PROOF.md` and `proof/run.sh` exercise the relevant UI, API, database, queue, provider, CLI, report, or workflow and read back durable or visible behavior.
+- **Evidence survives the run.** `proof_run_capture` preserves the command, output, exit state, and accepted proof inputs for official failures, timeouts, interruptions, and passes.
+- **Contracts do not bend for green.** Revisions need a visible reason and cannot narrow the goal or weaken proof to manufacture a pass.
+- **Failures drive the next repair.** Codex fixes the owning code, architecture, setup, fixture, diagnostic, or proof boundary and keeps going until completion or a real user-owned or external blocker.
+- **Evaluation challenges the evidence.** A fresh read-only evaluator maps accepted claims to retained output, then inspects the relevant implementation and call paths for gaps and false greens.
+- **Completion belongs to the final candidate.** Any relevant edit makes earlier proof and evaluation stale. Tracked work is complete only after realistic proof and a fresh evaluator `PASS` on unchanged work.
+- **One parent owns one feature.** Serial execution keeps contracts, implementation, proof, repair, queue state, and completion under one accountable owner.
+- **Failures improve the system.** Retained attempts, evaluator findings, observed false greens, and user corrections feed stronger project checks and proof design instead of disappearing into terminal history.
 
-- Intent and decisions: `FEATURE.md` and `PROOF.md` become decision-complete after repository inspection, focused material questions, edge-case challenge, and visible decision summaries. Codex then proceeds without asking the user to approve agent-authored contracts.
-- Real-boundary proof: primary proof crosses the relevant API, UI, database, queue, provider, CLI, report, or workflow boundary and reads back durable or visible behavior. Scripts cannot make a weak scenario realistic.
-- Reliable retained attempts: `scripts/proof_run_capture` records what ran, how it exited, relevant output, and contract/runner copies for every official failure, timeout, interruption, and pass.
-- Autonomous repair: Codex treats proof failures and evaluator findings as the next work item, repairing the owning code, architecture, setup, fixture, diagnostic, or proof problem until evaluator-confirmed completion or a true user/external blocker.
-- Contract and proof integrity: revisions require a visible reason and must not narrow the user’s goal or weaken proof to manufacture green. Green-but-broken returns to proof design and demonstrates the missed failure when practical.
-- Evaluator-confirmed completion: every tracked or autonomous feature requires realistic feature-specific proof followed by fresh evaluator `PASS`; supported findings strengthen proof and receive another fresh evaluation after repair.
-- Complete lean app preparation: current app and architecture docs stay concise, the accepted outcome becomes a complete non-speculative list of lean features, and every decided feature receives a normal executable proof package.
-- Serial execution: one accountable parent completes one feature through proof, repair, and fresh evaluation before the next ready feature begins.
-- Learning without ceremony: meaningful retained attempts, check findings, observed false greens, and user corrections feed project/proof improvements first. Repeated cross-feature failures may change the smallest harness owner with a motivating regression and held-out check.
+The standard is simple: accepted behavior, executable evidence, and no plausible shortcuts.
 
-## Skill Set
+## Install
 
-This repository contains my own Codex skills together with external Git or URL skills and user-managed Codex plugins. `skills.toml` records that inventory so it can be restored on another computer. After cloning the repository as the Codex home, ask Codex to manage it through the included skills instead of running the underlying scripts directly.
+Clone the repository as your Codex home, or point `CODEX_HOME` at another checkout:
+
+```bash
+git clone https://github.com/marcocello/dot-codex /path/to/dot-codex
+export CODEX_HOME=/path/to/dot-codex
+cp "$CODEX_HOME/config.template.toml" "$CODEX_HOME/config.toml"
+```
+
+Review `config.toml` and replace the example paths, permission roots, notification command, and MCP settings for your machine. Then ask Codex to manage the installation through the included skills:
 
 - “Use `$sync-codex-skills` to bootstrap this installation.”
 - “Use `$sync-codex-skills` to reconcile all declared skills and plugins.”
-- “Use `$manage-codex-skills` to add `NAME` from `GITHUB_URL`, using `SOURCE_PATH`.”
-- “Use `$manage-codex-skills` to add the plugin `PLUGIN@MARKETPLACE`.”
-- “Use `$manage-codex-skills` to update `NAME`.”
-- “Use `$manage-codex-skills` to list, diagnose, or remove skills from my inventory.”
+- “Use `$manage-codex-skills` to add, update, diagnose, list, or remove an inventory entry.”
 
-Codex system skills and `openai-primary-runtime` plugins remain runtime-managed and stay outside `skills.toml`. See [Skill Management](docs/skill-management.md) for the underlying commands, ownership rules, plugin versus `npx`, and the OpenSpace boundary.
+System skills and `openai-primary-runtime` plugins remain runtime-managed and stay outside `skills.toml`. The [skill management guide](docs/skill-management.md) explains ownership, reconciliation, plugin handling, and update policy.
 
-## References
+When editing this repository, run its read-only gate:
 
-These references live in Zotero under the `Harness Engineering` collection. They are the main external background for this dot-codex harness.
+```bash
+"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$CODEX_HOME"
+```
 
-- Ryan Lopopolo, [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) - Codex harnesses as context, tools, checks, and feedback loops around the model.
-- Xuying Ning et al., `Code as Agent Harness` - code as executable, inspectable, stateful harness substrate across interface, mechanisms, and multi-agent coordination.
-- Jiahang Lin et al., [Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](http://arxiv.org/abs/2604.25850) - harnesses as a first-class determinant of coding-agent performance.
-- Jiawei Gu et al., `A Survey on LLM-as-a-Judge` - background on evaluator reliability, bias, and the need to preserve executable proof alongside semantic judgment.
-- Wanqin Ma et al., `(Why) Is My Prompt Getting Worse? Rethinking Regression Testing for Evolving LLM APIs` - prompt/API drift, slice-level regression, nondeterminism, and held-out checks.
-- Lei Wang et al., `A survey on large language model based autonomous agents` - autonomous-agent architecture around profiling, memory, planning, action, and evaluation.
-- Anthropic engineers, via Anatoli Kopadze, [planner/generator/evaluator loop for full-app builds](https://x.com/AnatoliKopadze/status/2068690663919530207) - generator/evaluator separation, live app judging, and contract-driven iteration.
-- dominik kundel, [A guide to /goal](https://x.com/dkundel/status/2062650378089594955) - Codex Goal as runtime state, not repo truth.
-- Anatoli Kopadze, [Loops explained: Claude, GPT, Mira and what actually works](https://x.com/AnatoliKopadze/status/2068328135611822149) - autonomous loop patterns and persistent state.
-- elvis, [From Prompting Agents to Loop Engineering](https://x.com/omarsar0/status/2068008743153832264) - the shift from prompting to engineered agent loops.
-- Dan Farrelly, [The Agent Loop Architecture](https://x.com/djfarrelly/status/2067677007140278630) - loop primitives behind agentic systems.
-- Deepak Babu Piskala, [Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants](http://arxiv.org/abs/2602.00180) - specs and contracts as primary artifacts when agents generate implementation.
-- GitHub, [Spec Kit](https://github.com/github/spec-kit), and Fission AI, [OpenSpec](https://openspec.dev/) - practical SDD toolkits behind the `FEATURE.md` / `PROOF.md` split.
-- Birgitta Bockeler, [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) - pragmatic SDD tradeoffs.
-- Andrej Karpathy, [Software Is Changing (Again)](https://www.youtube.com/watch?v=LCEmiRjPEtQ) and [coding workflow notes](https://x.com/karpathy/status/2015883857489522876) - human-in-the-loop coding and what remains worth reading.
-- Geoffrey Huntley, [Ralph Wiggum as a "software engineer"](https://ghuntley.com/ralph/) - while-loop coding-agent pattern and its limits.
-- Simon Willison, [What is agentic engineering?](https://simonwillison.net/guides/agentic-engineering-patterns/what-is-agentic-engineering/) - agentic engineering as an engineering discipline, not magic prompting.
-- Peter Steinberger, [Shipping at Inference-Speed](https://steipete.me/posts/2025/shipping-at-inference-speed) - field report on high-throughput agent-assisted shipping.
+## Design references
 
-The local direction is spec-driven development, code-as-harness, proof-centered execution, and observability-driven harness improvement.
+The external background for this work lives in Zotero under the `Harness Engineering` collection.
 
-## More Details
+<details>
+<summary>Research and field reports</summary>
 
-- Operating kernel: [`AGENTS.md`](AGENTS.md).
-- Harness design and workflow: [`docs/harness/deep-dive.md`](docs/harness/deep-dive.md).
-- Proof lifecycle and evidence bundles: [`docs/harness/proof-lifecycle.md`](docs/harness/proof-lifecycle.md).
-- Proof scope and false-green risk: [`docs/harness/oracle-scope.md`](docs/harness/oracle-scope.md).
-- Target repo autofix, autosuggestions, and auto-improve: [`docs/harness/repo-autonomy.md`](docs/harness/repo-autonomy.md).
-- Autonomous execution and recovery: [`docs/harness/autonomous-execution.md`](docs/harness/autonomous-execution.md).
-- Harness evolution: [`docs/harness/evolution/evolution-loop.md`](docs/harness/evolution/evolution-loop.md).
-- Handoff format: [`docs/harness/handoff.md`](docs/harness/handoff.md).
-- Non-coding and Second Brain workflows: [`docs/secondbrain.md`](docs/secondbrain.md).
-- Skill inventory, bootstrap, and maintenance: [`docs/skill-management.md`](docs/skill-management.md).
+- Ryan Lopopolo, [Harness engineering: leveraging Codex in an agent-first world](https://openai.com/index/harness-engineering/) on context, tools, checks, and feedback loops around the model.
+- Xuying Ning et al., `Code as Agent Harness` on executable, inspectable, stateful harness substrate.
+- Jiahang Lin et al., [Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses](http://arxiv.org/abs/2604.25850) on harnesses as a determinant of coding-agent performance.
+- Jiawei Gu et al., `A Survey on LLM-as-a-Judge` on evaluator reliability, bias, and the need to preserve executable evidence alongside semantic judgment.
+- Wanqin Ma et al., `(Why) Is My Prompt Getting Worse? Rethinking Regression Testing for Evolving LLM APIs` on prompt drift, nondeterminism, and held-out checks.
+- Lei Wang et al., `A survey on large language model based autonomous agents` on profiling, memory, planning, action, and evaluation.
+- Anthropic engineers, via Anatoli Kopadze, on the [planner, generator, and evaluator loop for full-app builds](https://x.com/AnatoliKopadze/status/2068690663919530207).
+- dominik kundel, [A guide to /goal](https://x.com/dkundel/status/2062650378089594955) on Codex Goal as runtime state.
+- Anatoli Kopadze, [Loops explained: Claude, GPT, Mira and what actually works](https://x.com/AnatoliKopadze/status/2068328135611822149) on autonomous loop patterns and persistent state.
+- elvis, [From Prompting Agents to Loop Engineering](https://x.com/omarsar0/status/2068008743153834264) on engineered agent loops.
+- Dan Farrelly, [The Agent Loop Architecture](https://x.com/djfarrelly/status/2067677007140278630) on the primitives behind agentic systems.
+- Deepak Babu Piskala, [Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants](http://arxiv.org/abs/2602.00180) on contracts as primary artifacts.
+- GitHub, [Spec Kit](https://github.com/github/spec-kit), and Fission AI, [OpenSpec](https://openspec.dev/) as practical spec-driven development toolkits.
+- Birgitta Bockeler, [Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) on the tradeoffs of spec-driven development.
+- Andrej Karpathy, [Software Is Changing (Again)](https://www.youtube.com/watch?v=LCEmiRjPEtQ) and [coding workflow notes](https://x.com/karpathy/status/2015883857489522876) on human-in-the-loop coding.
+- Geoffrey Huntley, [Ralph Wiggum as a “software engineer”](https://ghuntley.com/ralph/) on while-loop coding agents and their limits.
+- Simon Willison, [What is agentic engineering?](https://simonwillison.net/guides/agentic-engineering-patterns/what-is-agentic-engineering/) on agentic engineering as an engineering discipline.
+- Peter Steinberger, [Shipping at Inference-Speed](https://steipete.me/posts/2025/shipping-at-inference-speed) on high-throughput agent-assisted shipping.
+
+</details>
+
+## Go deeper
+
+- [Harness design and workflow](docs/harness/deep-dive.md)
+- [Proof lifecycle and retained attempts](docs/harness/proof-lifecycle.md)
+- [Proof scope and false-green risk](docs/harness/oracle-scope.md)
+- [Target repository autonomy](docs/harness/repo-autonomy.md)
+- [Autonomous execution and recovery](docs/harness/autonomous-execution.md)
+- [Harness evolution](docs/harness/evolution/evolution-loop.md)
+- [Handoff format](docs/harness/handoff.md)
+- [Non-coding and Second Brain workflows](docs/secondbrain.md)
+- [Skill inventory and maintenance](docs/skill-management.md)
+
+Code generation is becoming abundant. Reliable acceptance remains scarce. dot-codex concentrates engineering effort on the scarce part: deciding behavior, producing evidence, and preserving enough context to repair failures without starting over.

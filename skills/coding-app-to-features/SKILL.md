@@ -91,6 +91,8 @@ Keep documents small and authoritative:
 - `docs/CONVENTIONS.md`: decisions likely to recur across features.
 - `docs/TESTING.md`: project test and proof guidance that prevents repeated decisions.
 
+These documents and `docs/features/` are the durable repository record for app planning. Do not create a parallel app plan in `outputs/`, at the repository root, or in another arbitrary location as a summary or handoff. Fold durable planning decisions into their owning document and update the queue instead of maintaining a second source of truth. The handoff is a chat response, not another repository artifact, unless the user explicitly requests a separate deliverable.
+
 Omit a document when it would contain only generic advice.
 
 ## Feature Quality

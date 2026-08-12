@@ -27,7 +27,8 @@ Name these before proposing proof:
 
 - Producer: what creates the real input.
 - Activation: route, browser action, listener, worker pickup, scheduler, command, callback, or import path the proof drives.
-- Consumer: normal application path that must run unchanged.
+- Authority: actor, component, or source that owns each central decision or state, including precedence when several paths can mutate or interpret it.
+- Materially affected consumers: normal application paths that must run unchanged or remain compatible; identify the primary consumer the proof drives and honest gaps for others.
 - Durable/visible state: database row, provider object, file, runtime state, artifact, message, or UI.
 - Read-back: query, provider GET, screenshot, extraction, received message, trace, log, or public response.
 - Unsafe edge: external mutation that must be live, approval-gated, or replaced at the outermost boundary.
@@ -41,6 +42,7 @@ For persisted work, seed input through the producer boundary, allow the normal s
 3. Challenge proxy-only proof. Explain when a unit test or source assertion could pass while the user-visible feature remains broken.
 4. Show the proposed proof in chat before writing:
    - scenarios and exact activation;
+   - authority and materially affected consumers;
    - durable/visible read-back;
    - fake boundaries;
    - expected failure pressure;
@@ -64,7 +66,7 @@ Use [proof-contract-template.md](references/proof-contract-template.md) when cre
 ## Workflow
 1. Read decision-complete `FEATURE.md`, existing proof, relevant current architecture/testing sections, and the real runtime boundary. Load superseded history only when the active migration needs it.
 2. Perform Boundary Discovery and select the smallest realistic profile.
-3. Map every central feature claim to activation and read-back.
+3. Map every central feature claim to authority, materially affected consumers, activation, and read-back.
 4. Name plausible fake or incomplete implementations and ensure a concrete step catches each central one.
 5. Run Proof Questions And Decision.
 6. Create or repair `PROOF.md`, executable `proof/run.sh`, and only necessary fixtures/tests/readiness checks.
@@ -114,7 +116,7 @@ Before substantial implementation of new behavior or a known defect:
 - Evaluator review, generic validation, build, lint, and source inspection do not replace realistic proof.
 - No hashes or evidence-control metadata for ordinary feature proof.
 - Successful tool calls and assistant prose are not read-back.
-- Proof-authoring-only work does not run an optional semantic review.
+- Proof-authoring-only work does not run implementation preflight or final semantic evaluation.
 - Proof-authoring-only work does not edit product implementation or invoke implementation skills.
 - If executable proof cannot be designed honestly, return `NEED_INPUT` with the exact product, environment, credential, or safe-target requirement.
 

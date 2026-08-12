@@ -4,8 +4,9 @@ interface:
   default_prompt: >-
     Use $coding-feature-spec, then $coding-proof-author in the same run. Infer and disclose safe
     defaults before asking; ask only about unresolved contract-changing choices with no safe
-    default. Show the feature decision summary, write FEATURE.md, complete the separate proof
-    decision pass, and produce PROOF.md plus executable proof/run.sh without approval pauses.
+    default. Show the feature decision summary including a material rejected interpretation when
+    relevant, write FEATURE.md, complete the separate proof decision pass, and produce PROOF.md plus
+    executable proof/run.sh without approval pauses.
     Route from the requested deliverable. Stop after the contract package and do not invoke
     coding-feature-execute; product implementation requires a separate explicit implementation request.
 policy:

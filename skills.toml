@@ -56,6 +56,11 @@ kind = "owned"
 path = "coding-feature-execute"
 
 [[skills]]
+name = "coding-feature-preflight"
+kind = "owned"
+path = "coding-feature-preflight"
+
+[[skills]]
 name = "coding-feature-queue"
 kind = "owned"
 path = "coding-feature-queue"

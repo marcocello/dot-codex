@@ -54,7 +54,7 @@
       "feature_dir": "docs/features/lean-completion-lifecycle",
       "priority": 8,
       "status": "done",
-      "notes": "Original lean lifecycle proof passed with its narrowed gate canary; fresh evaluator PASS."
+      "notes": "Bounded separate implementation-entry preflight proof passed; repository gate passed; fresh evaluator PASS."
     },
     {
       "id": "ready-feature-size-guard",

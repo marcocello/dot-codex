@@ -4,8 +4,9 @@ interface:
   default_prompt: >-
     Use $coding-proof-author. Use deterministic safe proof defaults before asking; ask only when an
     unresolved user-owned proof choice has no safe option. Show activation/read-back/fakes/gaps as
-    decisions, then write PROOF.md and proof/run.sh without an approval gate. Route from the
-    requested deliverable. Stop after proof authoring and do not invoke coding-feature-execute;
-    product implementation requires a separate explicit implementation request.
+    decisions, including authority and affected consumers, then write PROOF.md and proof/run.sh
+    without an approval gate. Route from the requested deliverable. Stop after proof authoring and do
+    not invoke coding-feature-execute; product implementation requires a separate explicit
+    implementation request.
 policy:
   allow_implicit_invocation: true

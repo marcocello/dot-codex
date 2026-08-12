@@ -45,6 +45,7 @@ When the user corrects a prior direction, first restate:
 Before writing the artifact, show the decided contract in chat:
 
 - goal and user outcome;
+- accepted interpretation and the strongest materially different interpretation rejected, plus its consequence, when ambiguity exists;
 - observable behavior and main scenarios;
 - external interface or data contract when relevant;
 - constraints and assumptions;

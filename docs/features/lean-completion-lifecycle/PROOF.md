@@ -2,6 +2,8 @@
 
 ## Done
 - Active owners define serial one-feature execution with no batch, parallel feature, or coordinator policy.
+- Tracked and autonomous implementation entry receives one fresh separate bounded read-only preflight after feature/proof decisions and before red evidence or implementation; lightweight work remains outside it.
+- The preflight challenges intent, authority and state, affected consumers, central false-green pressure, and scope cohesion with at most three findings and no proof execution, implementation verdict, mutation, durable receipt, or repeat-until-clear loop.
 - Tracked and autonomous completion requires current realistic proof plus a fresh evaluator `PASS`, with no repository fast-check stage.
 - Evaluator findings strengthen proof and drive repair before another fresh evaluator is required.
 - Lightweight fixes remain outside the managed proof/evaluator lifecycle.
@@ -14,8 +16,22 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/lean-completion-lifecycle --timeout-seconds 60 --note "verify serial proof-evaluator completion lifecycle"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/lean-completion-lifecycle --timeout-seconds 60 --note "verify bounded contract preflight and final evaluator lifecycle"
 ```
+
+## Scenario: Implementation entry receives one independent bounded challenge
+- Producer/activation: pytest reads feature execution, the new preflight skill and prompt, managed skill inventory, and durable harness rationale.
+- Consumer: every tracked or autonomous implementation request entering `coding-feature-execute`, whether or not a queue exists.
+- Read-back: assertions require a fresh separate reviewer context after current authority is loaded and before red evidence or implementation; the reviewer receives bounded contract context, challenges the five general failure surfaces, returns at most three findings, leaves resolution to the accountable parent, and blocks the implementation path on `NEED_INPUT`.
+- Fake: none.
+- Catches: same-context self-review, direct implementation bypass, infrastructure-specific checklists, implementation review before implementation exists, proof execution, durable preflight state, unbounded findings, ignored `NEED_INPUT`, or a repeat-until-clear loop.
+
+## Scenario: Authoring decisions expose ambiguity, authority, consumers, and false-green pressure
+- Producer/activation: pytest reads feature-spec and proof-author decision instructions.
+- Consumer: the parent and fresh preflight reviewer preparing one decided feature package.
+- Read-back: feature decisions expose the accepted and strongest materially rejected interpretation when ambiguity exists; proof boundary discovery names authority, materially affected consumers, and a central incomplete implementation the scenario must catch.
+- Fake: none.
+- Catches: silently selecting archive-versus-detach-like semantics, proving only the producer artifact, or omitting which source/component owns a decision.
 
 ## Scenario: Completion is proof plus fresh evaluator PASS
 - Producer/activation: pytest reads the global completion invariant, one-feature execution owner, evaluator owner, queue owner, prompt metadata, and handoff contract.
@@ -62,18 +78,21 @@
 ## Scope
 Proves:
 - The active harness exposes the accepted serial proof-evaluator lifecycle.
-- Repository fast checks, batching, invalidation, revalidation, completion notes, and pre-implementation evaluator routing are absent from active completion policy.
+- Tracked and autonomous implementation receives one fresh separate bounded challenge before red evidence without creating an implementation verdict or completion stage.
+- Repository fast checks, batching, invalidation, revalidation, and completion notes remain absent from active completion policy.
 - Evaluator findings cannot be completion by prose; they must become proof pressure and receive fresh reevaluation.
 - App preparation still creates the complete lean feature and proof set.
 - Repository-specific Graphify policy is not promoted into the global harness.
 
 Does not prove:
 - Deterministic compliance by every future model.
+- Semantic quality or latency benefit of a future preflight judgment.
 - Product-specific proof quality in a target repository.
 - Semantic quality of a future evaluator verdict.
 
 False-green risks:
 - Static policy checks cannot guarantee future model adherence. They can demonstrate that active repository-owned instructions no longer expose the rejected lifecycle.
+- A preflight can miss a contract defect or produce an unsupported finding. The parent remains accountable and final proof plus evaluation remain required.
 - An evaluator can miss a defect. The harness preserves executable proof and requires a fresh evaluator after every supported correction, but neither is a formal correctness proof.
 
 Evidence method:

@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Feature Preflight"
+  short_description: "Challenge feature and proof before implementation."
+  default_prompt: "Use $coding-feature-preflight in one fresh separate read-only context to challenge a decision-complete tracked feature and proof before implementation. Return no more than three findings and do not execute proof or issue a completion verdict."
+policy:
+  allow_implicit_invocation: false

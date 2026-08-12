@@ -146,6 +146,11 @@ kind = "owned"
 path = "html-presentations"
 
 [[skills]]
+name = "launch-photo-drop"
+kind = "owned"
+path = "launch-photo-drop"
+
+[[skills]]
 name = "manage-codex-skills"
 kind = "owned"
 path = "manage-codex-skills"

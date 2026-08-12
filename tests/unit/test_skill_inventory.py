@@ -461,7 +461,7 @@ path = ".system/runtime-system"
 
 def test_repository_manifest_covers_only_user_managed_skills() -> None:
     data = tomllib.loads((ROOT / "skills.toml").read_text())
-    assert len(data["skills"]) == 53
+    assert len(data["skills"]) == 54
     assert all(
         "revision" not in entry and "version" not in entry for entry in data["skills"]
     )

@@ -1,0 +1,131 @@
+{
+  "title": "Request path",
+  "description": "Architecture showing a browser calling an orders API, which dispatches work and stores order state.",
+  "type": "architecture",
+  "audience": "mixed",
+  "detail": "balanced",
+  "page": {
+    "name": "Overview",
+    "width": 1200,
+    "height": 720,
+    "background": "#f5f5f5"
+  },
+  "header": {
+    "eyebrow": "SYSTEM MAP",
+    "title": "Request path",
+    "subtitle": "A deliberately small operational view"
+  },
+  "zones": [
+    {
+      "id": "private-zone",
+      "x": 424,
+      "y": 160,
+      "w": 520,
+      "h": 320,
+      "label": "PRIVATE SERVICES"
+    }
+  ],
+  "edges": [
+    {
+      "id": "request",
+      "source": "browser",
+      "target": "api",
+      "kind": "link",
+      "label": "HTTPS",
+      "source_port": {"x": 1, "y": 0.5},
+      "target_port": {"x": 0, "y": 0.5},
+      "waypoints": []
+    },
+    {
+      "id": "dispatch",
+      "source": "api",
+      "target": "worker",
+      "kind": "accent",
+      "label": "DISPATCH",
+      "source_port": {"x": 1, "y": 0.25},
+      "target_port": {"x": 0, "y": 0.75},
+      "waypoints": []
+    },
+    {
+      "id": "write",
+      "source": "api",
+      "target": "database",
+      "kind": "default",
+      "label": "WRITE",
+      "source_port": {"x": 1, "y": 0.75},
+      "target_port": {"x": 0, "y": 0.25},
+      "waypoints": [
+        {"x": 688, "y": 300},
+        {"x": 688, "y": 368}
+      ]
+    },
+    {
+      "id": "complete",
+      "source": "worker",
+      "target": "database",
+      "kind": "async",
+      "label": "RESULT",
+      "source_port": {"x": 0.5, "y": 1},
+      "target_port": {"x": 0.5, "y": 0},
+      "waypoints": []
+    }
+  ],
+  "edge_labels": [
+    {"id": "request-label", "edge": "request", "x": 320, "y": 248, "w": 64, "h": 16, "text": "HTTPS"},
+    {"id": "dispatch-label", "edge": "dispatch", "x": 656, "y": 228, "w": 72, "h": 16, "text": "DISPATCH"},
+    {"id": "write-label", "edge": "write", "x": 696, "y": 328, "w": 56, "h": 16, "text": "WRITE"},
+    {"id": "complete-label", "edge": "complete", "x": 840, "y": 296, "w": 64, "h": 16, "text": "RESULT"}
+  ],
+  "nodes": [
+    {
+      "id": "browser",
+      "kind": "input",
+      "x": 80,
+      "y": 240,
+      "w": 160,
+      "h": 80,
+      "tag": "CLIENT",
+      "label": "Web app",
+      "sublabel": "browser"
+    },
+    {
+      "id": "api",
+      "kind": "focal",
+      "x": 472,
+      "y": 240,
+      "w": 160,
+      "h": 80,
+      "tag": "API",
+      "label": "Orders API",
+      "sublabel": "https :443"
+    },
+    {
+      "id": "worker",
+      "kind": "backend",
+      "x": 752,
+      "y": 200,
+      "w": 160,
+      "h": 80,
+      "tag": "WORKER",
+      "label": "Fulfilment",
+      "sublabel": "queue consumer"
+    },
+    {
+      "id": "database",
+      "kind": "store",
+      "x": 752,
+      "y": 344,
+      "w": 160,
+      "h": 96,
+      "tag": "STORE",
+      "label": "Orders",
+      "sublabel": "postgres :5432"
+    }
+  ],
+  "primitives": [],
+  "legend": [
+    {"kind": "focal", "label": "Primary service"},
+    {"kind": "link", "label": "External request"},
+    {"kind": "async", "label": "Asynchronous result"}
+  ]
+}

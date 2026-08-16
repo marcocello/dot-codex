@@ -11,6 +11,14 @@
 - Repo docs own app context when present: `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, `docs/TESTING.md`.
 - State each instruction once at its owner. Cross-reference the owner instead of copying defaults or full workflows.
 
+## Task Naming
+- At the beginning of every task, rename the current task with the task-title tool using `TYPE: concise outcome`.
+- Use uppercase types: `FEAT` for new user-facing behavior, `FIX` for broken behavior, `REFACTOR` for internal restructuring without behavior changes, `DOCS` for documentation-only work, `TEST` for tests or proof-only work, `CHORE` for configuration, dependencies, tooling, or maintenance, `REVIEW` for code, architecture, or security review, `RESEARCH` for investigation without implementation, and `OPS` for deployment, infrastructure, or operational work.
+- Keep the outcome under 60 characters and omit trailing punctuation.
+- Prefer `FIX` over `FEAT` when restoring previously intended behavior.
+- If the primary outcome changes, rename the task again.
+- Perform the rename; do not merely suggest a title.
+
 ## Work Kernel
 - Work on one issue, one feature, and one `FEATURE_DIR` at a time. One accountable parent owns decisions, implementation, proof, evaluation, queue state, and completion.
 - Select one assurance lane before editing and keep downstream skills aligned with it.

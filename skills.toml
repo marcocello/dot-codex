@@ -280,3 +280,8 @@ kind = "git"
 repository = "https://github.com/nyblnet/bento.git"
 source_path = "plugins/bento-slides/skills/bento-slides"
 path = "bento-slides"
+
+[[skills]]
+name = "plan-company-visit-itinerary"
+kind = "owned"
+path = "plan-company-visit-itinerary"

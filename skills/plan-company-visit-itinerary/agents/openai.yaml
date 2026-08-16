@@ -1,0 +1,4 @@
+interface:
+  display_name: "Company Visit Itinerary"
+  short_description: "Plan verified multi-day company visit routes"
+  default_prompt: "Use $plan-company-visit-itinerary to extract this company list, recommend the planning inputs for my confirmation, and create a verified itinerary workbook with map routes."

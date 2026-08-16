@@ -1,0 +1,4 @@
+interface:
+  display_name: "Draw.io Diagram Design"
+  short_description: "Create polished, editable Draw.io diagrams"
+  default_prompt: "Use $drawio-diagram-design to create a polished, fully editable Draw.io diagram."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create CLI Toolkit Kit"
+  short_description: "Build safe, deployable CLI Toolkit kits"
+  default_prompt: "Use $create-cli-toolkit-kit to turn this Python CLI or business engine into a validated TWYD CLI Toolkit archive."

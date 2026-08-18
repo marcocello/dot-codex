@@ -90,6 +90,45 @@ def test_harness_gate_ignores_external_skills_and_runs_tests_after_lint_failure(
     assert "test_failure" in output
 
 
+def test_harness_gate_ignores_tracked_skills_deleted_in_worktree(tmp_path: Path) -> None:
+    write_common_repository_files(tmp_path)
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    (tmp_path / "AGENTS.md").write_text("# Fixture harness\n", encoding="utf-8")
+    (tmp_path / "config.template.toml").write_text("", encoding="utf-8")
+    (tmp_path / ".venv").symlink_to(ROOT / ".venv", target_is_directory=True)
+    retired = tmp_path / "skills" / "retired" / "SKILL.md"
+    retired.parent.mkdir(parents=True)
+    retired.write_text(
+        "---\nname: retired\ndescription: retired fixture\n---\n",
+        encoding="utf-8",
+    )
+    passing_test = tmp_path / "tests" / "unit" / "test_ok.py"
+    passing_test.parent.mkdir(parents=True)
+    passing_test.write_text("def test_ok():\n    assert True\n", encoding="utf-8")
+    subprocess.run(
+        [
+            "git",
+            "add",
+            ".gitignore",
+            "README.md",
+            "AGENTS.md",
+            "config.template.toml",
+            "skills/retired/SKILL.md",
+            "tests/unit/test_ok.py",
+        ],
+        cwd=tmp_path,
+        check=True,
+    )
+    retired.unlink()
+
+    result = run_gate(tmp_path, "harness")
+    output = result.stdout + result.stderr
+
+    assert result.returncode == 0, output
+    assert "Traceback" not in output
+    assert "HARNESS tests: PASS" in output
+
+
 def test_sites_stays_enabled_with_explicit_routing_boundary() -> None:
     config = tomllib.loads((ROOT / "config.toml").read_text(encoding="utf-8"))
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")

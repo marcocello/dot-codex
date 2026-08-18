@@ -239,6 +239,7 @@ def repository_skill_files(gate: Gate) -> list[Path]:
             gate.root / value
             for value in filter(None, listed.stdout.split("\0"))
             if PurePosixPath(value).name == "SKILL.md"
+            and (gate.root / value).is_file()
         )
     return sorted((gate.root / "skills").rglob("SKILL.md"))
 

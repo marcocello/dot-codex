@@ -15,6 +15,9 @@
 !/tests/
 !/tests/**/
 
+!/evals/
+!/evals/**/
+
 # 3. Allow specific files and file extensions
 !.gitignore
 !*.md

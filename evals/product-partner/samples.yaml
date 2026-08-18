@@ -1,0 +1,73 @@
+version: 1
+sampled_at: "2026-08-17T15:31:05+02:00"
+sampling_context: >-
+  Produced in one Codex task by applying the active coding-product-partner contract to each
+  prompt without an external model endpoint. These are inspectable behavioral samples, not a
+  claim about every future response.
+samples:
+  - case_id: rough-idea
+    context: Rough product signal with a proposed AI solution and no repository-specific facts.
+    output: |-
+      What is clear is the pain, not yet the solution: some customers struggle to get useful reports, while “AI report builder” is still a hypothesis. The likely benefit is faster answers with less manual configuration, but we do not yet know whether the recurring failure is finding existing reports, choosing fields, composing queries, interpreting results, or sharing them.
+
+      I would first consolidate the signal into one outcome: a target user can answer a recurring business question correctly, faster than today. Before choosing a feature, I need one grouped answer: which users raised this, two or three concrete questions they were trying to answer, how they solve them now, and what made the current path fail. If customer examples or usage/support data exist, I would inspect those rather than asking you to translate all of them into requirements.
+
+      My default first move is a short evidence pass, then choose among three realistic directions: improve discovery of existing reports, add a guided deterministic builder, or use language to draft a report that the user confirms. The third has the highest flexibility but also correctness and trust costs. I would not architect or implement it until the examples show that free-form composition is the missing capability.
+
+      Current scope is problem synthesis and selecting a first measurable outcome. Candidate builders are alternatives, not accepted scope. A credible proof would replay representative customer questions through the chosen path and verify the visible report result and time-to-answer; exact thresholds remain open until we identify the users and baseline.
+
+  - case_id: detailed-build
+    context: Decision-ready product behavior with explicit authorization, limits, and local proof target.
+    output: |-
+      This is decision-ready. I would inspect the orders table, filter/query ownership, admin authorization, and repository test conventions, then implement the smallest coherent export path.
+
+      Accepted behavior: an account admin exports the currently filtered orders, in visible column order, as CSV; a result above 10,000 rows is refused with a clear error. I will assume the existing UI’s filter semantics and column formatting are authoritative unless the repository shows a separate export convention. Non-admin behavior should reuse the existing authorization boundary rather than a UI-only check.
+
+      The simple design is one export use case that receives the normalized current filter and ordered column identifiers, performs the authorized bounded query, and serializes CSV at the boundary. I would not add a queue, scheduled export, alternate format, or generic report engine. The query/serialization separation is enough to keep a later asynchronous path possible without building it now.
+
+      Proof should drive the real admin UI with a non-default filter and reordered columns, download the file, and verify headers, ordering, rows, escaping, and authorization. A seeded 10,001-row state should show the visible cap error and produce no misleading download. I would also run the repository gate, but I would not call that feature proof. Because you explicitly authorized implementation and local proof, no further product decision is needed before inspecting the code.
+
+  - case_id: adjacent-scope
+    context: One accepted invitation outcome surrounded by plausible but unapproved enterprise capabilities.
+    output: |-
+      Current scope is email invitations that let an authorized team actor invite a person into an existing team and let the intended recipient accept safely. The architectural prerequisite is a clear membership owner and stable identity matching; those are needed for invitations themselves, not speculative enterprise work.
+
+      I would classify the nearby ideas this way:
+
+      - Prerequisites: invitation authority, recipient identity matching, expiry/revocation, and idempotent acceptance.
+      - Likely follow-ups: audit events for invite lifecycle and custom role assignment at invite time.
+      - Alternative onboarding path: SSO or domain-based provisioning.
+      - Not current scope: SSO integration, an audit-log product, and custom-role management.
+
+      The key material choices are who may invite, whether an invitation grants a fixed existing role, and how long it remains valid. If repository permissions already define a team-admin role, my default is to reuse it; issue a single-use expiring token; match the signed-in normalized email; and assign the least-privileged existing member role. I would ask you only if role or expiry policy is genuinely absent because those change authorization and product behavior.
+
+      Keep the invitation workflow dependent on membership and identity services, not the reverse. Emit the same domain-level lifecycle facts the current system already uses if such an event boundary exists; do not create an event platform solely for future audit logs. Proof should cover authorized creation, wrong-recipient refusal, expiry/revocation, idempotent acceptance, resulting membership, and visible read-back after a new session.
+
+  - case_id: low-risk-fix
+    context: Isolated reversible copy repair with explicitly unchanged behavior and accessibility semantics.
+    output: |-
+      I would treat this as a focused repair. I’ll locate the settings button and its nearest test or rendered-text assertion, change only “Save changes” to “Save,” and run that focused check plus any cheap component check already owned by the file.
+
+      I would not create a feature package, add a copy abstraction, or reopen accessibility behavior because you explicitly said semantics are unchanged. If the string comes from an existing translation catalog, I would update the existing owner rather than hard-code a second source.
+
+      Completion means the owning rendered component shows “Save” and the focused regression passes. I would report that narrow verification accurately; it would not justify claiming the entire settings workflow was end-to-end proved.
+
+  - case_id: future-seam
+    context: Approved email behavior with one likely unapproved delivery channel follow-up.
+    output: |-
+      Current scope is overdue-invoice reminders delivered by email. SMS should influence one seam, not expand implementation scope.
+
+      I would keep four responsibilities visible: selecting overdue invoices and eligible recipients, deciding when a reminder is due, constructing a channel-neutral reminder intent, and delivering that intent through the existing email adapter. The stable seam is the reminder intent/use-case boundary: business rules produce recipient, invoice reference, template data, and idempotency identity; the email adapter turns that into provider-specific input.
+
+      That prevents overdue policy from being buried in an email SDK call and gives a later SMS feature a clean consumer of the same approved intent. I would not build a provider registry, plugin interface, event bus, generic notification platform, or any SMS code now. If the repository already has a notification boundary, I would reuse it; otherwise a small interface at the adapter boundary is sufficient.
+
+      Material questions are limited to reminder timing, repeat policy, recipient authority, and opt-out/legal constraints. Repository billing and communication rules should answer these first; I would involve you only where policy is absent. Proof should seed overdue and non-overdue invoices, run the real scheduler/command boundary, verify exactly one eligible email and idempotent retry, and read back delivery/activity state without pretending an email-provider fake proves live deliverability.
+
+  - case_id: runtime-proof
+    context: Source candidate differs from the installed local runtime actually consumed by users.
+    output: |-
+      The work is complete only when the already installed local extension bundle—the named consumption target—contains and demonstrates the change. Passing source tests is useful intermediate evidence, not completion for this request.
+
+      The complete sequence is: run focused source regression checks; build the extension artifact with the normal repository path; install or reload that exact artifact into the local host; confirm readiness/version so we know the host is consuming the new bundle; exercise the user-visible action that activates the change; and read the result back from the extension UI or affected host behavior. The proof should include an existing-state case if the change touches saved settings or cached extension state.
+
+      A generic gate can catch compatibility regressions, and a fresh review can challenge false-green risks, but neither substitutes for activating the installed bundle. If reload or installation requires your approval, credentials, or a host action I cannot safely perform, I would finish all source/build checks, mark the feature blocked, and state the exact remaining activation step. I would report “source proven; activation required,” not “done.”

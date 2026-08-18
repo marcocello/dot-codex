@@ -8,10 +8,9 @@ description: "Fix a known defect or concrete failure with the smallest verified 
 Purpose: identify the owning failure quickly, make the smallest correct change, and verify it at the narrow boundary before returning to the applicable completion lane.
 
 ## Entry
-- Clear issue, failing command, observed green-but-broken behavior, or evaluator finding: proceed.
-- Unclear expected behavior: use `coding-feature-spec`; ask the user only when a material choice cannot be inferred safely.
-- Inherit the assurance lane from `AGENTS.md`.
-- Exactly one owning `FEATURE_DIR`: read its contracts and use the tracked lifecycle.
+- Clear issue, failing command, observed green-but-broken behavior, or review finding: proceed.
+- Unclear expected behavior: use `coding-product-partner`; ask the user only when a material choice cannot be inferred safely.
+- Standalone isolated repair is focused. Exactly one owning `FEATURE_DIR`: read its contracts, inherit its standard or sensitive assurance, and return to `coding-feature-execute` after the narrow repair.
 - Multiple plausible owners: ask one focused ownership question.
 - No owner for an isolated defect: use a focused local regression rather than creating ceremony.
 
@@ -20,12 +19,12 @@ For a concrete failure, diagnose in this order:
 
 1. Read the latest `result.json` or exact failing command result.
 2. Read the relevant tail of `stderr.txt`; inspect stdout only when it carries the useful signal.
-3. Classify the owner: implementation, proof, setup/environment, evaluator finding, or external dependency.
+3. Classify the owner: implementation, proof, setup/environment, review finding, or external dependency.
 4. Reproduce the narrow failure when cheap and safe.
 5. Inspect the owning code/configuration and adjacent tests only.
 6. Make the smallest effective repair without weakening accepted behavior or proof.
 7. Rerun the narrow check.
-8. For tracked/autonomous work, rerun the full proof through capture and retain the attempt.
+8. For standard or sensitive feature work, rerun the full proof through capture and retain the attempt. Autonomous continuation does not change that assurance requirement.
 
 Same failure twice: change tactic or widen inspection. Do not repeat the same patch/retry loop without new evidence.
 
@@ -66,11 +65,11 @@ Same failure twice: change tactic or widen inspection. Do not repeat the same pa
 - Mechanical runner, fixture, or setup repair with unchanged proof meaning: note why and rerun.
 
 ## Verification
-- `lightweight`: focused regression or narrow check; add broader checks only when risk warrants.
-- `tracked`: captured realistic proof, then return to `coding-feature-execute` for fresh evaluation.
-- `autonomous`: same tracked proof plus serial queue continuation after evaluator `PASS`.
+- Standalone focused repair: focused regression or narrow check; add broader checks only when risk warrants.
+- Standard or sensitive feature repair: rerun captured realistic proof, then return to `coding-feature-execute` for fresh final review.
+- Autonomous continuation: inherit the selected feature assurance and return control only after its feature lifecycle reaches a terminal state.
 - Re-check the runtime/browser/provider signal that exposed the issue when relevant.
-- Evaluator finding: preserve it in the next attempt note, strengthen proof when it exposes a false green, demonstrate the missed failure when practical, repair, rerun full proof, and return for fresh evaluation.
+- Review finding: preserve it in the next attempt note, strengthen proof when it exposes a false green, demonstrate the missed failure when practical, repair, rerun full proof, and return for fresh final review.
 - During autonomous work, return control to `coding-autonomous-execute` until proof passes or its terminal condition is met.
 
 ## Handoff

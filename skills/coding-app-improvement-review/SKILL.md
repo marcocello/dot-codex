@@ -13,7 +13,7 @@ Read-only. Do not apply suggestions, mutate queue state, rewrite contracts, or p
 - Target repository and optional feature scope.
 - Current `FEATURE.md`, `PROOF.md`, proof runner, implementation.
 - Relevant retained attempts: contract/runner copies, `attempt-start.json`, `result.json`, notes, stdout, stderr.
-- Final evaluator verdict and relevant evaluator findings, plus useful setup diagnostics when they affected the work.
+- Final-review verdict and relevant reviewer findings, plus useful setup diagnostics when they affected the work.
 - User corrections, rejected directions, or repair history when available.
 - Repository context: app, architecture, conventions, testing.
 - Optional `docs/interactions/index.json` and only the interaction records relevant to the explicit repository, feature, path, time, or task scope.
@@ -38,7 +38,7 @@ If conversation or optional review context is unavailable, say so. Do not recons
 
 4. Inspect attempts
    - Compare failed and passing output, notes, and saved contract/runner copies.
-   - Identify repeated failures, tactic changes, setup friction, weak diagnostics, proof changes, evaluator findings, or recovery that worked.
+   - Identify repeated failures, tactic changes, setup friction, weak diagnostics, proof changes, reviewer findings, or recovery that worked.
    - Do not require every historical attempt when the latest evidence is sufficient.
 
 5. Inspect implementation and evaluation
@@ -97,7 +97,7 @@ Next: <one action>
 - Missing evidence is not automatically a defect; explain why it matters.
 - Prefer a few high-confidence improvements over a broad roadmap.
 - No new feature by default; suggest one only when accepted behavior needs durable ownership.
-- No evaluator receipt, progress score, or evidence schema recommendation unless the user changes the threat model.
+- No reviewer receipt, progress score, or evidence schema recommendation unless the user changes the threat model.
 
 ## Handoff
 Lead with the strongest signal and highest-value suggestion. Separate project changes from harness candidates. State unavailable conversation or review context explicitly. Do not include exhaustive run ids or logs.

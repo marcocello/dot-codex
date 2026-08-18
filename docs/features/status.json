@@ -97,6 +97,48 @@
       "priority": 14,
       "status": "done",
       "notes": "Strengthened six-case proof passed for freshness plus continued queue draining; fresh evaluator PASS on the unchanged candidate."
+    },
+    {
+      "id": "adaptive-feature-shaping",
+      "feature_dir": "docs/features/adaptive-feature-shaping",
+      "priority": 15,
+      "status": "done",
+      "notes": "Adaptive intake, conversational shaping, bounded adjacency, conditional artifacts, and risk-based proof passed 25 scenarios; fresh evaluator PASS."
+    },
+    {
+      "id": "independent-feature-risk-review",
+      "feature_dir": "docs/features/independent-feature-risk-review",
+      "priority": 16,
+      "status": "done",
+      "notes": "Independent relevance-bounded reviewer discovery, verbatim intent input, and uncapped material findings passed 25 scenarios; fresh evaluator PASS."
+    },
+    {
+      "id": "simple-product-partner-harness",
+      "feature_dir": "docs/features/simple-product-partner-harness",
+      "priority": 17,
+      "status": "done",
+      "notes": "Named active-runtime completion proof passed 49 checks; full gate passed 114 tests; fresh evaluator PASS."
+    },
+    {
+      "id": "adaptive-product-partner-core",
+      "feature_dir": "docs/features/adaptive-product-partner-core",
+      "priority": 18,
+      "status": "done",
+      "notes": "Deep discovery proof passed 5 focused checks and the 81-test gate; two-turn forward test and fresh final review PASS."
+    },
+    {
+      "id": "decomposed-delivery-lifecycle",
+      "feature_dir": "docs/features/decomposed-delivery-lifecycle",
+      "priority": 19,
+      "status": "done",
+      "notes": "Decomposed delivery proof passed 9 lifecycle checks, 36 proof-capture checks, and the 76-test gate; fresh final review PASS."
+    },
+    {
+      "id": "product-partner-behavioral-evals",
+      "feature_dir": "docs/features/product-partner-behavioral-evals",
+      "priority": 20,
+      "status": "done",
+      "notes": "Six retained semantic cases passed four integrity checks and the 80-test gate; fresh final review PASS with honest mixed action judgments."
     }
   ]
 }

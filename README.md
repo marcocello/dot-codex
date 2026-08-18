@@ -2,23 +2,40 @@
 
 In December 2025, I stopped writing code. Codex now does the implementation work.
 
-That only works because I also changed how completion is judged. Source inspection is no longer the primary control point. I decide the behavior, require executable proof at the real product boundary, retain every official attempt, and demand a fresh evaluator pass before tracked work is complete.
+That only works because I also changed how work begins and how completion is judged. Codex investigates rough product input, helps clarify the outcome and architecture, asks the material questions early, and then turns accepted decisions into lean contracts. Source inspection is no longer the primary completion control point: realistic executable proof and a fresh final review are.
 
-This repository is the control layer behind that workflow. It turns Codex from a fast code generator into an accountable engineering system that can take a feature from intent to evidence-backed completion.
+This repository is the control layer behind that workflow. It turns Codex from a fast code generator into a product and engineering partner that can take anything from a loose app idea to a detailed feature through evidence-backed completion.
 
 ## Pillars
 
-- **Intent becomes a contract.** `FEATURE.md` records observable behavior, boundaries, edge cases, and material decisions before substantial implementation begins.
-- **Proof crosses the real boundary.** `PROOF.md` and `proof/run.sh` exercise the relevant UI, API, database, queue, provider, CLI, report, or workflow and read back durable or visible behavior.
-- **Evidence survives the run.** `proof_run_capture` preserves the command, output, exit state, and accepted proof inputs for official failures, timeouts, interruptions, and passes.
-- **Contracts do not bend for green.** Revisions need a visible reason and cannot narrow the goal or weaken proof to manufacture a pass.
-- **Failures drive the next repair.** Codex fixes the owning code, architecture, setup, fixture, diagnostic, or proof boundary and keeps going until completion or a real user-owned or external blocker.
-- **Evaluation challenges the evidence.** A fresh read-only evaluator maps accepted claims to retained output, then inspects the relevant implementation and call paths for gaps and false greens.
-- **Completion belongs to the final candidate.** Any relevant edit makes earlier proof and evaluation stale. Tracked work is complete only after realistic proof and a fresh evaluator `PASS` on unchanged work.
-- **One parent owns one feature.** Serial execution keeps contracts, implementation, proof, repair, queue state, and completion under one accountable owner.
-- **Failures improve the system.** Retained attempts, evaluator findings, observed false greens, and user corrections feed stronger project checks and proof design instead of disappearing into terminal history.
+- **Understand before producing.** Investigate the user, purpose, benefit, current repository, and material uncertainty before creating artifacts.
+- **Questions deepen understanding without becoming ceremony.** Ask focused grouped questions when answers can clarify or expand the problem, user implications, product, architecture, safety, cost, or proof. Continue across multiple rounds when answers expose consequential new unknowns; resynthesize and stop when the outcome is decision-ready.
+- **Enrich without speculative scope.** Classify adjacent capabilities and preserve only useful future seams; do not automatically build or specify plausible follow-ups.
+- **Record lean authority.** Create `APP.md`, `ARCHITECTURE.md`, feature packages, and queues only when accepted durable decisions justify them.
+- **Prefer simple modular architecture.** Separate real responsibilities and ownership without adding abstractions or orchestration for hypothetical flexibility.
+- **Prove the real lifecycle.** Cross the real boundary and exercise relevant existing state, visible read-back, affected consumers, failures, and runtime environment—not only fresh happy-path data.
+- **Own truthful completion.** One parent drives one feature through proof, repair, and fresh evaluation. When an existing runtime is the accepted target, source proof remains intermediate until that runtime works.
 
-The standard is simple: accepted behavior, executable evidence, and no plausible shortcuts.
+The standard is simple: understand the outcome, record only accepted decisions, prove the real behavior, and leave no plausible shortcuts.
+
+## From idea to implementation
+
+The starting point can be a rough app idea, a detailed feature, one correction, or a bundle of potential capabilities. Input polish does not determine the workflow:
+
+```text
+product input
+  -> investigate and clarify material choices
+  -> classify adjacent outcomes
+  -> write only earned authority and proof
+  -> for sensitive work, run a fresh preflight
+  -> implement and capture realistic evidence
+  -> fresh final review and repair when needed
+  -> truthful source/active-runtime handoff
+```
+
+Product input of any maturity or cardinality routes through `coding-product-partner`. The partner adapts its depth, may produce one or several accepted feature packages, and hands them to separate proof, implementation, review, and repair skills. Implementation remains serial: one accountable parent completes one feature before selecting the next.
+
+Contract authoring and implementation are separate authorities. A request to shape, specify, or prepare proof stops after decision-ready artifacts; answering discovery questions does not silently authorize product implementation.
 
 ## Install
 
@@ -77,7 +94,7 @@ The external background for this work lives in Zotero under the `Harness Enginee
 - [Harness design and workflow](docs/harness/deep-dive.md)
 - [Proof lifecycle and retained attempts](docs/harness/proof-lifecycle.md)
 - [Proof scope and false-green risk](docs/harness/oracle-scope.md)
-- [Target repository autonomy](docs/harness/repo-autonomy.md)
+- [Repository discovery and harness learning](docs/harness/repo-autonomy.md)
 - [Autonomous execution and recovery](docs/harness/autonomous-execution.md)
 - [Harness evolution](docs/harness/evolution/evolution-loop.md)
 - [Handoff format](docs/harness/handoff.md)

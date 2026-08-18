@@ -3,7 +3,7 @@
 ## Done
 - Active owners define serial one-feature execution with no batch, parallel feature, or coordinator policy.
 - Tracked and autonomous implementation entry receives one fresh separate bounded read-only preflight after feature/proof decisions and before red evidence or implementation; lightweight work remains outside it.
-- The preflight challenges intent, authority and state, affected consumers, central false-green pressure, and scope cohesion with at most three findings and no proof execution, implementation verdict, mutation, durable receipt, or repeat-until-clear loop.
+- The preflight challenges intent, authority and state, affected consumers, central false-green pressure, and scope cohesion with all supported material findings, no numeric quota, and no proof execution, implementation verdict, mutation, durable receipt, or repeat-until-clear loop.
 - Tracked and autonomous completion requires current realistic proof plus a fresh evaluator `PASS`, with no repository fast-check stage.
 - Evaluator findings strengthen proof and drive repair before another fresh evaluator is required.
 - Lightweight fixes remain outside the managed proof/evaluator lifecycle.
@@ -22,9 +22,9 @@
 ## Scenario: Implementation entry receives one independent bounded challenge
 - Producer/activation: pytest reads feature execution, the new preflight skill and prompt, managed skill inventory, and durable harness rationale.
 - Consumer: every tracked or autonomous implementation request entering `coding-feature-execute`, whether or not a queue exists.
-- Read-back: assertions require a fresh separate reviewer context after current authority is loaded and before red evidence or implementation; the reviewer receives bounded contract context, challenges the five general failure surfaces, returns at most three findings, leaves resolution to the accountable parent, and blocks the implementation path on `NEED_INPUT`.
+- Read-back: assertions require a fresh separate reviewer context after current authority is loaded and before red evidence or implementation; the reviewer receives bounded contract context, challenges the five general failure surfaces, returns all supported material findings without a numeric quota, leaves resolution to the accountable parent, and blocks the implementation path on `NEED_INPUT`.
 - Fake: none.
-- Catches: same-context self-review, direct implementation bypass, infrastructure-specific checklists, implementation review before implementation exists, proof execution, durable preflight state, unbounded findings, ignored `NEED_INPUT`, or a repeat-until-clear loop.
+- Catches: same-context self-review, direct implementation bypass, infrastructure-specific checklists, implementation review before implementation exists, proof execution, durable preflight state, a repository-wide unbounded review, ignored `NEED_INPUT`, or a repeat-until-clear loop.
 
 ## Scenario: Authoring decisions expose ambiguity, authority, consumers, and false-green pressure
 - Producer/activation: pytest reads feature-spec and proof-author decision instructions.

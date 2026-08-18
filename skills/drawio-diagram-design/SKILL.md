@@ -1,6 +1,6 @@
 ---
 name: drawio-diagram-design
-description: Create, redesign, import, and validate polished technical or product diagrams as native editable Draw.io / diagrams.net files (.drawio), while preserving the editorial visual system, diagram grammars, complexity limits, and connector discipline of the diagram-design skill. Use when a user asks for Draw.io, diagrams.net, editable diagram source, an existing diagram converted or redrawn into Draw.io, or Draw.io output that should match the diagram-design aesthetic.
+description: Create, redesign, import, and validate polished native editable Draw.io diagrams while preserving diagram-design visual grammar, complexity limits, and connector discipline. Use for .drawio or diagrams.net output and conversions.
 ---
 
 # Draw.io Diagram Design

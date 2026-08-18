@@ -1,59 +1,61 @@
 # Harness Design
 
 ## Objective
-Reach accepted behavior one feature at a time. Use realistic executable proof to drive implementation and fresh semantic evaluation to find contract, architecture, and false-green gaps. Convert every supported evaluator finding into durable proof pressure before repair.
 
-## Pillars
-- Intent: `FEATURE.md` owns observable behavior and material boundaries.
-- Evidence: `PROOF.md` and `proof/run.sh` activate the real boundary and read back durable or visible effects.
-- Retention: `proof_run_capture` preserves meaningful failures, timeouts, interruptions, contract/runner copies, and final passes.
-- Semantic challenge: every tracked or autonomous feature receives fresh final evaluation; only evaluator `PASS` permits parent-owned completion.
-- Repair: proof or evaluator failures return to the owning code, architecture, setup, fixture, or proof boundary without weakening the goal.
-- Serial autonomy: one parent completes one feature before selecting the next.
-- Lean preparation: app-level work creates the complete non-speculative set of small, independently provable features.
-- Independent contract challenge: one fresh separate bounded read-only preflight challenges tracked and autonomous feature/proof assumptions on the real implementation entry path without becoming a completion stage.
-- Bounded evaluation: the parent supplies the active feature's transient changed-file surface and relevant call paths instead of making an accumulated same-checkout diff the default review scope. One evaluator reasons evidence-first and implementation-second so retained behavior is judged before implementation shape can bias the review.
+Turn product input of any maturity into accepted, lean behavior and then deliver it through realistic evidence. Optimize for fewer user corrections and working outcomes, not artifact volume or internal ceremony.
 
-Script precision cannot make a weak proof realistic, and evaluator confidence cannot replace executable evidence.
+## Seven Pillars
 
-## Contract Preflight
-After feature and proof decisions are complete and implementation is explicitly authorized, `coding-feature-execute` starts a fresh separate reviewer context before red evidence. The reviewer challenges intent forks, authority and state transitions, affected consumers, central false-green pressure, and feature cohesion. The review is contract-only: it may inspect relevant existing behavior needed to identify authority or consumers, but it does not inspect a candidate implementation or execute proof.
+1. **Understand before producing.** Investigate the user, purpose, benefit, current repository, and material uncertainty before creating artifacts.
+2. **Questions deepen understanding without becoming ceremony.** Ask focused grouped questions when answers can materially clarify or expand the problem, user implications, product, architecture, safety, cost, or proof. Continue across turns when answers expose consequential new unknowns; resynthesize after each round and stop on decision readiness rather than a fixed round count.
+3. **Enrich without speculative scope.** Classify adjacent capabilities as current behavior, prerequisites, follow-ups, alternatives, or unrelated. Only accepted decisions expand scope; use a small future seam only when it prevents foreseeable rework.
+4. **Record lean authority.** Create `APP.md`, `ARCHITECTURE.md`, feature packages, and queues only when they own durable decisions. Keep exploration and rejected ideas in conversation.
+5. **Prefer simple modular architecture.** Separate real responsibilities and durable ownership while avoiding abstractions, orchestration, and documents created only for hypothetical flexibility.
+6. **Prove the real lifecycle.** Exercise the public activation and consumer read-back, including relevant existing state, reopen/restart behavior, failures, affected consumers, and the actual runtime target. A fresh isolated environment proves source, not an already-running app.
+7. **Own truthful completion.** One parent completes one feature before selecting the next and drives it through implementation, proof, repair, and fresh evaluation. When an existing runtime is the named consumption target, source proof is intermediate and cannot produce `done`.
 
-The reviewer returns at most three material findings in one pass. The accountable parent owns every contract/proof revision, evidence-based rejection, user question, and readiness transition. Preflight output is transient and grants no implementation or completion authority; final executable proof and fresh implementation evaluation remain unchanged.
+## Flow
 
-## Evaluator Loop
-A passing proof is a finite set of known scenarios. The evaluator first maps accepted claims to actual retained output, then inspects the implementation and relevant call paths against that evidence map. Both passes occur in the same bounded review with no intermediate report or extra stage. It returns all material findings it can support, including whether an important broken implementation could still pass. Supported findings first strengthen proof, demonstrate the missed failure when practical, repair the owning behavior, rerun the complete proof, and receive another fresh evaluation. This repeats until `PASS`.
+```text
+input
+  -> investigate and clarify material choices
+  -> classify adjacent outcomes
+  -> write only earned product, architecture, feature, and proof authority
+  -> for sensitive work, fresh preflight
+  -> implement and capture realistic proof
+  -> fresh final review
+  -> repair and repeat when needed
+  -> truthful source/active-runtime handoff
+```
 
-The evaluator is read-only and cannot mutate contracts, implementation, proof, or queue state. The parent owns every repair and transition.
+Product input of any maturity or cardinality routes to `coding-product-partner`, which adapts investigation and artifact depth to uncertainty and consequence. Contract authoring stops before implementation unless implementation was explicitly requested.
 
-Final-candidate freshness is a serial parent invariant: relevant edits after proof or evaluation invalidate that evidence and return to complete proof followed by fresh evaluation. Retained attempt generation and the narrow queue completion write are bookkeeping, not candidate changes.
+## Independent Challenge
+
+For sensitive work, `coding-feature-review` preflight mode receives verbatim goal and correction excerpts before implementation. Parent paths are an entry point, not a scope ceiling: the reviewer independently follows relevance-bounded current authority, state, affected consumers, persistence, runtime, and interactions. It returns all supported material findings in one pass and has no implementation or completion authority.
+
+After realistic proof passes, `coding-feature-review` final mode is evidence-first and implementation-second. The parent's transient changed-file surface is an entry point, not a scope ceiling. The reviewer follows relevance-bounded authority and consumers, returns all supported material findings, and checks contract mismatch, architecture bypass, missing real usage states, environment mismatch, and central false greens. Supported findings strengthen proof, drive repair, require a complete proof rerun, and receive another fresh review.
+
+## Completion Integrity
+
+Realistic proof and final-review `PASS` apply only to the unchanged final candidate. Relevant edits make both stale. Retained attempt generation and the narrow queue completion write are bookkeeping, not candidate changes. Rerunning executable proof replaces freshness hashes, receipts, dependency graphs, commit pins, worktrees, and coordination machinery.
+
+When an existing local or deployed runtime is the named consumption target, the queue cannot record `done` until that exact runtime passes. Safe local activation continues autonomously. `Source proven; activation required` is an intermediate or blocked handoff; deployment and other approval-risk actions remain approval-gated.
 
 ## Ownership
+
 | Concern | Owner |
 | --- | --- |
-| Global lanes, completion, safety | `AGENTS.md` |
-| App decomposition | `coding-app-to-features` |
-| Behavior contract | `coding-feature-spec` |
-| Proof contract | `coding-proof-author` |
-| Fresh contract challenge | `coding-feature-preflight` |
-| One-feature lifecycle | `coding-feature-execute` |
-| Failure repair | `coding-repair` |
-| Fresh semantic judgment | `coding-feature-evaluator` |
-| Queue continuation | `coding-autonomous-execute` |
-| Queue schema/status | `coding-feature-queue` |
-| Run containment/artifacts | `proof_run_capture` |
+| Routing, lanes, safety, completion truth | `AGENTS.md` |
+| Product and architecture shaping | `coding-product-partner` |
+| Proof design and real usage states | `coding-proof-author` |
+| Implementation and repair loop | `coding-feature-execute` |
+| Preflight and final semantic judgment | `coding-feature-review` |
+| Queue continuation and state | `coding-autonomous-execute`, `coding-feature-queue` |
+| Run containment and retained output | `proof_run_capture` |
 
-Each procedure lives at its owner. Prompts and other documents route rather than restate it.
-
-## Deliberate Tradeoffs
-- Fresh evaluation after every supported repair can lengthen difficult features; the user selected evaluator-confirmed assurance over a fixed review bound.
-- One fresh preflight adds implementation-entry latency to tracked and autonomous work; its bounded contract-only scope targets later contract/proof repair loops without duplicating final evaluation.
-- Rerunning executable proof replaces freshness hashes and dependency graphs.
-- Plain retained attempts replace receipts, progress scores, managed completion notes, and evidence schemas.
-- Serial execution removes coordination overhead and moving-checkout ambiguity.
-- No historical proof sweep gates feature completion; each proof must honestly own the feature claim.
+Each procedure lives at its owner. Other files route or explain; they do not restate full workflows.
 
 ## Threat Boundary
-Resists accidental hallucination, rationalization, lost failures, proof weakening, architecture bypass, and shallow green evidence.
 
-It is not a secure trust root against an agent rewriting both implementation and proof dishonestly. Hard kill, host crash, or deliberately detached descendants can escape cleanup; proof runners may not detach.
+The harness reduces hallucinated intent, speculative scope, proof weakening, lost failures, architecture bypass, stale evidence, environment confusion, and shallow green results. It is not a formal correctness proof or a secure trust root against deliberate self-deception. Host crashes and deliberately detached descendants may escape cleanup; proof runners may not detach.

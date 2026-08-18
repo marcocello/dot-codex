@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Feature Queue"
   short_description: "Maintain the small feature queue."
-  default_prompt: "Use $coding-feature-queue. Maintain only draft, ready, blocked, and done; select one lowest-priority ready feature at a time and mark done only after current realistic proof plus a fresh evaluator PASS."
+  default_prompt: "Use $coding-feature-queue. Maintain only draft, ready, blocked, and done; mark done only after target-valid realistic proof plus fresh $coding-feature-review final PASS on the unchanged candidate."
 policy:
   allow_implicit_invocation: true

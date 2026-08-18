@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Product Partner"
+  short_description: "Explore ideas and shape product outcomes."
+  default_prompt: "Use $coding-product-partner to dissect and expand my idea across unknowns, user implications, and technical architecture; ask focused questions across as many useful turns as needed, then shape accepted outcomes and delivery contracts."
+policy:
+  allow_implicit_invocation: true

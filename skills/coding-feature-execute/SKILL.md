@@ -1,100 +1,85 @@
 ---
 name: coding-feature-execute
-description: "Implement one decision-ready feature through realistic proof, fresh evaluation, and queue completion."
+description: "Implement one decision-ready feature through proportional assurance, realistic proof, fresh final review, repair, and truthful completion."
 ---
 
 # Feature Execute
 
-Purpose: deliver one accepted feature through realistic executable proof and fresh semantic evaluation. One accountable parent owns decisions, implementation, proof repair, evaluator follow-up, queue transition, and completion.
+Deliver one accepted material feature. One accountable parent owns contracts, implementation, proof, review follow-up, queue transition, and completion while invoking separate skills for their focused responsibilities.
 
 ## Entry
-Require one `FEATURE_DIR` containing:
 
-- decision-complete `FEATURE.md`;
-- decision-complete `PROOF.md`;
-- executable `proof/run.sh`;
-- `ready` queue item when `docs/features/status.json` exists.
+Require one `FEATURE_DIR` with decision-complete `FEATURE.md`, `PROOF.md`, executable `proof/run.sh`, and a `ready` item when a feature queue exists. Enter only when the user has explicitly authorized implementation.
 
-Contract readiness alone is not implementation authorization. Enter only when the original or a later separate explicit request asks to build, implement, or execute the product behavior.
+If expected behavior or a material product choice remains unclear, return to `coding-product-partner`. If evidence is proxy-only or decision-incomplete, return to `coding-proof-author`. A clear isolated defect that does not need a material feature contract belongs to `coding-repair` rather than this lifecycle.
 
-If behavior is vague or a material choice remains, return to `coding-feature-spec`. If proof is prose-only, proxy-only, gameable, or decision-incomplete, return to `coding-proof-author`.
+## Assurance
 
-## Workflow
-1. Load current authority
-   - Read `FEATURE.md`, `PROOF.md`, `proof/run.sh`, the queue item, required domain skills, and only relevant current sections of app, architecture, conventions, and testing docs.
-   - Preserve unrelated dirty-tree work and do not load superseded history unless the active feature owns its migration.
+Classify the feature at the implementation boundary:
 
-2. Confirm ownership and environment
-   - Work on one feature and one `FEATURE_DIR` only. The parent owns contracts, implementation, queue state, official proof, evaluation, and completion.
-   - Maintain a transient active-feature surface in parent context: files changed for this feature plus directly relevant call paths. Do not persist it as queue fields, intermediate reports, receipts, hashes, commits, branches, or worktrees, and do not turn it into another agent or another completion stage.
-   - Reuse repository-native runtimes and tasks. Use `coding-prepare-environment` only for missing dependencies, services, local configuration, or runtime readiness.
-   - On resume, inspect the newest run directory and resolve an incomplete attempt before starting another.
+- `standard`: material new or changed product behavior; requires realistic executable proof and fresh final review;
+- `sensitive`: standard assurance plus fresh preflight before red evidence because the change affects data or migration semantics, authorization or security, destructive or paid external effects, durable cross-component ownership, or has a material proof-target ambiguity.
 
-3. Run contract preflight
-   - Before red evidence or implementation, start one fresh separate read-only reviewer agent with isolated context and apply `coding-feature-preflight`. An inline role switch by the accountable parent is not fresh review.
-   - Provide the original goal and material corrections, current `FEATURE.md`, `PROOF.md`, and `proof/run.sh`, and only relevant current repository context. Do not provide parent rationale as evidence or a candidate implementation explanation.
-   - Require one bounded pass with no more than three material findings. The reviewer does not edit, execute proof, inspect a candidate implementation, mutate queue state, or issue an implementation/completion verdict.
-   - `CLEAR`: continue. `FINDINGS`: resolve supported contract/proof defects or reject unsupported scope expansion with evidence before continuing; do not invoke a second preflight as a passing gate. `NEED_INPUT`: do not begin red evidence or implementation, mark the queue item `blocked` when present, and ask the exact user-owned question.
+`focused` work does not enter feature execution; standalone `coding-repair` owns it. Repair inside a standard or sensitive feature inherits the active assurance and returns here.
 
-4. Establish red evidence
-   - Before substantial implementation, capture the decision-complete proof failing for the intended reason when safe and meaningful.
-   - If it passes, determine whether the behavior already exists or the proof is weak. An older `PASS` is not red evidence.
-   - If useful red cannot be produced, preserve the exact reason in the first implementation attempt note.
+Explicit user, repository, or accepted-contract sensitivity is the minimum floor. Never downgrade it. Execution-time discovery may escalate standard work to sensitive before implementation. On resume, reclassify from current contracts and repository evidence, preserve the explicit floor, and resolve any incomplete proof attempt before continuing.
 
-5. Implement
-   - Use the owning stack/domain skill and make the smallest coherent change satisfying `FEATURE.md`.
-   - Reuse existing paths and abstractions; fix semantic behavior at its durable decision boundary.
-   - Add lower-level tests only when they reduce risk or localize a concrete defect.
+Autonomous execution is a continuation mode, not an assurance tier. `coding-autonomous-execute` applies this classification separately to each selected feature.
 
-6. Capture proof
-   - Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"` from the target repository.
-   - Read the new `result.json` and relevant output.
-   - Retain meaningful red, materially distinct failures, evaluator-driven strengthened-proof failures when practical, and the final passing attempt. Narrow debugging checks are not official attempts.
+## Preflight
 
-7. Repair proof failures
-   - Use `coding-repair` for the latest concrete failure.
-   - Run the narrow failing check while repairing, then capture the complete feature proof when a materially different failure or final pass is expected.
-   - Same failure twice: change tactic or widen only the owning inspection boundary.
-   - If behavior or proof meaning is wrong, use Contract Repair below before continuing.
+For sensitive work only, before red evidence or implementation, start one fresh separate read-only `coding-feature-review` invocation with `mode: preflight`.
 
-8. Run fresh evaluator
-   - After the current proof passes, start a fresh read-only `coding-feature-evaluator` with isolated context.
-   - Before starting the evaluator, confirm that the final candidate has no relevant edit after the passing attempt. If it changed, that proof is stale: rerun the complete official proof before starting a fresh evaluator.
-   - Require one evidence-first, implementation-second review by the same evaluator, with no intermediate report or second evaluation stage.
-   - Provide the original goal and material corrections, accepted feature and proof contracts, latest passing attempt, paths in the transient active-feature surface, and only relevant current app/architecture context. Do not send parent implementation summaries as evaluation evidence and do not substitute the checkout's accumulated dirty diff for the feature surface. The evaluator opens implementation paths only after its evidence pass.
-   - Wait for `PASS`, `FINDINGS`, or `NEED_INPUT`. The evaluator never edits or mutates queue state.
+Provide verbatim goal and corrections, current feature/proof contracts, the named consumption target, and relevant repository paths as discovery entry points. Do not provide a candidate implementation or parent rationale as evidence.
 
-9. Handle evaluator result
-   - `PASS`: continue to queue completion.
-   - `FINDINGS`: preserve the material finding in the next proof attempt note. If it identifies contract mismatch or a central false-green path, strengthen proof and demonstrate the missed failure when practical, repair the owning behavior, rerun the complete proof, and invoke another fresh evaluator.
-   - Reject evaluator scope expansion or unsupported preferences with a concise evidence-based reason, but still invoke another fresh evaluator because completion requires `PASS`.
-   - `NEED_INPUT`: ask only when the evaluator identifies an exact user-owned or external dependency that local recovery cannot resolve.
-   - Repeat until a fresh evaluator returns `PASS`.
+- `CLEAR`: continue.
+- `FINDINGS`: repair supported contract or proof defects once; reject unsupported scope expansion with evidence; do not repeat preflight as an approval gate.
+- `NEED_INPUT`: block before red evidence and implementation, update the queue when present, and ask the exact user-owned question.
 
-10. Finalize queue
-   - Before marking the item `done`, confirm again that the final candidate has no relevant edit after the proof or evaluator `PASS`.
-   - A relevant edit after evaluator `PASS` makes both the proof and verdict stale. Rerun the complete official proof, then obtain another fresh evaluator `PASS`.
-   - The parent marks the item `done` only after the current realistic proof passes and a fresh evaluator returns `PASS` for that unchanged proof and implementation.
-   - Re-read the queue before the narrow update and preserve unrelated entries.
+Standard work skips preflight and proceeds directly to red evidence.
 
-## Final Candidate Freshness
-The final candidate is the implementation, contracts, proof runner and fixtures, and relevant runtime, configuration, and call paths that produced the latest passing official proof. Relevant edits include changes to any of those surfaces. When relevance is uncertain, include the file and rerun rather than assuming it cannot affect behavior or evidence.
+## Establish Red Evidence
 
-Freshness is a serial parent judgment, not another artifact or stage. Retained attempt generation and the narrow queue transition to `done` are bookkeeping, not candidate changes. Do not add hashes, manifests, receipts, dependency graphs, commit pins, branches, worktrees, or queue fields to enforce it.
+Capture the decision-complete proof failing for the intended reason before substantial implementation when safe and meaningful. A passing attempt means the behavior may already exist or the proof may be weak. If useful red is impossible, retain the exact reason in the first attempt note.
 
-## Contract Repair
-When accepted behavior or proof meaning is wrong or incomplete after implementation begins:
+## Implement And Repair
 
-1. Stop coding against the wrong contract.
-2. Explain the defect and its behavior/proof consequence.
-3. State the revised decision and continue when it remains within the user goal; ask only for a material unresolved user-owned choice.
-4. Strengthen proof and demonstrate the missed failure when practical.
-5. Rerun the complete official proof with a note explaining the change and why scope was not weakened.
+Use the owning stack/domain skill and make the smallest coherent change satisfying `FEATURE.md`. Reuse existing ownership boundaries and add lower-level tests only when they reduce a concrete risk.
 
-Mechanical runner, fixture, or setup repairs with unchanged proof meaning need an attempt note and full rerun, not another product discussion.
+Use `coding-repair` for the latest implementation, setup, proof, or review failure. Run narrow diagnostics while repairing, then return to the full feature proof. The repair inherits standard or sensitive assurance; it cannot reset the feature to focused.
 
-## Green-But-Broken
-Observed failure after green proof is proof-system failure. Identify the missed activation, read-back, fake boundary, or scenario; strengthen proof; demonstrate the missed failure when practical; repair; rerun the complete proof; and obtain a fresh evaluator `PASS`.
+If accepted behavior or proof meaning is wrong, stop coding against it, explain the consequence, repair the contract within the user goal, strengthen proof, demonstrate the missed failure when practical, and rerun the complete proof. Ask only for a new material user-owned choice.
+
+## Capture Proof
+
+Run:
+
+```bash
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir FEATURE_DIR --timeout-seconds N --note "reason"
+```
+
+Inspect the new `result.json` and retained output. Keep meaningful red, materially distinct failures, review-driven strengthened-proof failures when practical, and the final passing attempt.
+
+Compare the proof environment with the named consumption target. Source proof is intermediate when the user consumes an existing local or deployed runtime. Continue safe local rebuild, restart, readiness, and exact-runtime verification. If an approval or external dependency remains after recovery, mark the item blocked with the exact action.
+
+## Final Review
+
+After target-valid realistic proof passes, confirm no relevant candidate edit occurred after the attempt. Then start a fresh separate read-only `coding-feature-review` invocation with `mode: final`.
+
+Provide verbatim goal and corrections, current contracts, latest passing attempt, named target, and the transient active-feature surface as a discovery entry point. Do not substitute an implementation summary or accumulated dirty diff for evidence.
+
+- `PASS`: continue to completion.
+- `FINDINGS`: preserve the finding in the next attempt note, strengthen proof when practical, repair through `coding-repair`, rerun the complete proof, and request another fresh final review.
+- `NEED_INPUT`: stop only for an exact user-owned decision or external dependency that safe local recovery cannot resolve.
+
+## Completion
+
+The final candidate includes implementation, contracts, proof runner and fixtures, relevant configuration, runtime, and call paths. Any relevant edit after proof makes that evidence stale; any relevant edit after final review also voids the verdict. Rerun the complete proof and obtain a fresh final `PASS`.
+
+Mark the queue item `done` only when target-valid realistic proof and fresh final review `PASS` apply to the unchanged candidate. Re-read the queue and preserve unrelated entries.
+
+Observed broken behavior after green proof is proof-system failure. Strengthen the missed activation, state, read-back, consumer, fake, or runtime boundary; demonstrate the miss when practical; repair; rerun; and obtain a fresh final review.
 
 ## Handoff
-Report outcome, changed surface, realistic proof, final evaluator verdict, known gaps, and blockers. Keep internal prompts, exhaustive logs, and complete file lists out unless audit/debug is requested.
+
+Report outcome, changed surface, realistic proof, final review verdict, and one runtime state: `active runtime proven`, `source proven; activation required`, or `not applicable`. Include known gaps and exact blockers; never report source-only evidence as completed work for a named active-runtime target.

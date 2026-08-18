@@ -11,17 +11,18 @@ def read_text(relative_path: str) -> str:
 
 def test_ready_transition_rejects_oversized_feature_packages() -> None:
     owners = (
-        read_text("skills/coding-app-to-features/SKILL.md"),
-        read_text("skills/coding-feature-spec/SKILL.md"),
+        read_text("skills/coding-product-partner/SKILL.md"),
         read_text("skills/coding-feature-queue/SKILL.md"),
     )
 
-    for owner in owners:
-        assert "multiple independently valuable observable outcomes" in owner
-        assert "independently runnable proof boundaries" in owner
-        assert "before" in owner and "`ready`" in owner
-    assert "multiple files or layers" in owners[0]
-    assert "multiple files or layers" in owners[2]
+    partner, queue = owners
+    assert "one feature package per accepted independently valuable" in partner
+    assert "split god features" in partner
+    assert "independently runnable proof boundary" in partner
+    assert "multiple independently valuable observable outcomes" in queue
+    assert "independently runnable proof boundaries" in queue
+    assert "before" in queue and "`ready`" in queue
+    assert "multiple files or layers" in queue
 
 
 def test_size_guard_does_not_expand_queue_schema() -> None:
@@ -30,4 +31,3 @@ def test_size_guard_does_not_expand_queue_schema() -> None:
 
     for item in queue["features"]:
         assert set(item) == allowed_fields
-

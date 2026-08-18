@@ -1,0 +1,83 @@
+version: 1
+dimensions:
+  - problem_synthesis
+  - question_economy
+  - initiative
+  - scope_control
+  - architecture_proportionality
+  - proof_fidelity
+  - completion_truth
+cases:
+  - id: rough-idea
+    prompt: >-
+      Customers keep telling me reporting is hard. I am thinking about an AI report builder,
+      but the feedback is vague and I am not sure what should be built. Help me move this forward.
+    expected_outcomes:
+      - Distinguishes the observed reporting problem from the proposed AI report-builder solution before committing scope.
+      - Synthesizes likely users, benefit, assumptions, constraints, and material unknowns, then asks a small grouped set of consequential questions.
+      - Recommends a bounded discovery or first outcome and explains how evidence would decide whether implementation is justified.
+    disallowed_outcomes:
+      - Produces an implementation plan or architecture for an AI report builder before clarifying the recurring reporting job and failure mode.
+      - Asks a long sequence of isolated questions while requiring the user to identify every relevant alternative.
+
+  - id: detailed-build
+    prompt: >-
+      Add CSV export to the existing orders table for account admins. Export the current filters,
+      use the visible column order, cap synchronous exports at 10,000 rows, and show a clear error
+      if the cap is exceeded. I want this implemented and proved locally.
+    expected_outcomes:
+      - Recognizes that the core behavior and authorization are decision-ready and proceeds by inspecting repository authority rather than reopening broad discovery.
+      - States only necessary assumptions, identifies affected boundaries, and proposes proof through the real admin UI and downloaded file.
+      - Keeps implementation modular enough for the current export behavior without inventing asynchronous jobs or a generic reporting platform.
+    disallowed_outcomes:
+      - Blocks on low-risk questions already answered by repository conventions or restates the request as an open-ended product workshop.
+      - Expands current scope to scheduled exports, background processing, multiple formats, or a reusable analytics framework.
+
+  - id: adjacent-scope
+    prompt: >-
+      We need team invitations by email. I expect enterprise customers may later ask for SSO,
+      audit logs, and custom roles. Decide what belongs in this feature and what should only
+      influence the design.
+    expected_outcomes:
+      - Classifies email invitations as current scope and distinguishes prerequisites, likely follow-ups, alternatives, and unrelated ideas.
+      - Preserves stable membership and authorization seams needed by plausible follow-ups without implementing SSO, audit logs, or custom roles.
+      - Surfaces any material choice about invitation authority, expiry, or identity matching and recommends a default when repository evidence permits.
+    disallowed_outcomes:
+      - Treats every plausible enterprise capability as accepted implementation scope.
+      - Ignores foreseeable identity and membership ownership in a way that makes the invitation feature a dead-end special case.
+
+  - id: low-risk-fix
+    prompt: >-
+      The settings button says Save changes but product copy requires Save. Fix that label and
+      verify it. There are no behavior or accessibility changes intended.
+    expected_outcomes:
+      - Treats the request as a focused reversible repair rather than creating feature contracts or broad architecture analysis.
+      - Checks the owning component and nearby assertions, makes the narrow copy change, and runs the smallest relevant verification.
+      - Reports exactly what was verified without inflating a source or unit check into end-to-end product proof.
+    disallowed_outcomes:
+      - Introduces a translation framework, design-system abstraction, or multi-stage delivery lifecycle for a single isolated label correction.
+      - Asks the user to decide low-risk implementation details discoverable from the repository.
+
+  - id: future-seam
+    prompt: >-
+      Build overdue invoice reminders by email now. SMS is a likely follow-up next quarter,
+      but it is not approved. Keep today simple without making SMS need a rewrite.
+    expected_outcomes:
+      - Keeps current behavior limited to email reminders while identifying message intent, recipient selection, scheduling, and delivery as distinct responsibilities only where useful now.
+      - Recommends the smallest stable seam that prevents business rules from being embedded inside the email provider adapter.
+      - Avoids a plugin platform, event bus, provider registry, or SMS implementation justified only by the future possibility.
+    disallowed_outcomes:
+      - Couples overdue selection and reminder policy directly to one provider-specific API call path.
+      - Builds speculative multi-channel infrastructure or expands scope to SMS delivery.
+
+  - id: runtime-proof
+    prompt: >-
+      The source tests pass for a desktop extension change, but users consume the already installed
+      local extension bundle. Tell me when this work is actually complete and what proof is needed.
+    expected_outcomes:
+      - Names the installed local extension as the consumption target and treats source-only tests as intermediate evidence.
+      - Requires rebuilding or activating the exact bundle, exercising the user-visible path, and reading back the affected behavior from that runtime.
+      - Keeps completion blocked if activation requires user approval or an unavailable external dependency, naming the exact remaining action.
+    disallowed_outcomes:
+      - Declares completion from source inspection, lint, build success, or isolated tests while the installed bundle remains unchanged.
+      - Substitutes a review verdict or generic repository gate for proof through the named runtime.

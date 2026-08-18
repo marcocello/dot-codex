@@ -43,4 +43,4 @@
 
 ## Completion
 
-For tracked work, retain an official realistic proof PASS and obtain a fresh read-only evaluator PASS on the unchanged candidate before marking the feature done.
+For standard or sensitive work, retain an official realistic proof PASS and obtain a fresh read-only `coding-feature-review` final `PASS` on the unchanged candidate before marking the feature done.

@@ -1,6 +1,6 @@
 ---
 name: create-cli-toolkit-kit
-description: Create, adapt, package, validate, and prove provider-Admin Python kits for the TWYD CLI Toolkit Runtime. Use when Codex must turn a Python CLI, business engine, source repository, or ZIP into an immutable kit with kit.json schemas, JSON stdin/stdout adapters, curated resources, pinned runtime dependencies, deployment-owned read-only data, safe MCP output, source provenance, and a realistic Admin-to-MCP proof.
+description: Create, adapt, validate, and prove provider-Admin Python kits for TWYD CLI Toolkit Runtime from CLIs, repositories, or ZIPs, including schemas, adapters, pinned dependencies, provenance, and realistic Admin-to-MCP proof.
 ---
 
 # Create CLI Toolkit Kit
@@ -12,7 +12,7 @@ Build a deterministic MCP tool package. Keep reasoning in the MCP client, author
 1. Read `AGENTS.md` and the relevant `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/TESTING.md`, and feature package.
 2. Inspect the current `backend/cli_toolkit_runtime/runtime.py` and Portal integration before assuming archive or schema support.
 3. For customer quotation engines under `business_logic_modules/`, also use the repository's business-module integration skill.
-4. Treat a new customer kit, runtime dependency, resource type, data mount, or output policy as tracked feature work. Define or update one `FEATURE_DIR` and prove the complete boundary.
+4. Treat a new customer kit, runtime dependency, resource type, data mount, or output policy as standard or sensitive feature work. Define or update one `FEATURE_DIR` and prove the complete boundary.
 
 Read [references/runtime-contract.md](references/runtime-contract.md) for the current package and execution constraints. Read [references/proof-checklist.md](references/proof-checklist.md) before authoring proof.
 
@@ -113,7 +113,7 @@ Report:
 - source/provenance and license status;
 - runtime image dependency and deployment-data requirements;
 - exact Admin → Team → Coworker → MCP setup steps;
-- official proof run and evaluator verdict when tracked;
+- official proof run and fresh final-review verdict for standard or sensitive work;
 - known gaps, especially missing production data, unproved pricing accuracy, hostile-code isolation, or live-cluster deployment.
 
 Do not populate production data, deploy, upload to a live Admin portal, or mutate external services without explicit authorization.

@@ -478,7 +478,14 @@ def test_repository_manifest_covers_only_user_managed_skills() -> None:
     raw_external_names = {
         name for name, entry in entries.items() if entry["kind"] in {"git", "url"}
     }
-    assert local_names == owned_names | raw_external_names
+    declared_names = owned_names | raw_external_names
+    assert declared_names <= local_names
+    for name in local_names - declared_names:
+        path = ROOT / "skills" / name
+        ignored = subprocess.run(
+            ["git", "check-ignore", str(path)], cwd=ROOT, capture_output=True
+        )
+        assert ignored.returncode == 0, f"undeclared non-ignored skill: {name}"
     for name in raw_external_names:
         skill_file = ROOT / "skills" / entries[name]["path"] / "SKILL.md"
         ignored = subprocess.run(

@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Feature Review"
+  short_description: "Run preflight or final read-only feature review."
+  default_prompt: "Use $coding-feature-review in the explicit requested mode. In preflight, challenge sensitive contracts before red evidence. In final review, inspect target-valid evidence first and implementation second. Stay fresh, separate, relevance-bounded, and read-only."
+policy:
+  allow_implicit_invocation: false

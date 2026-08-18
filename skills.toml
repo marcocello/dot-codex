@@ -26,11 +26,6 @@ kind = "owned"
 path = "coding-app-improvement-review"
 
 [[skills]]
-name = "coding-app-to-features"
-kind = "owned"
-path = "coding-app-to-features"
-
-[[skills]]
 name = "coding-architecture-deep-dive"
 kind = "owned"
 path = "coding-architecture-deep-dive"
@@ -46,19 +41,14 @@ kind = "owned"
 path = "coding-commit"
 
 [[skills]]
-name = "coding-feature-evaluator"
-kind = "owned"
-path = "coding-feature-evaluator"
-
-[[skills]]
 name = "coding-feature-execute"
 kind = "owned"
 path = "coding-feature-execute"
 
 [[skills]]
-name = "coding-feature-preflight"
+name = "coding-feature-review"
 kind = "owned"
-path = "coding-feature-preflight"
+path = "coding-feature-review"
 
 [[skills]]
 name = "coding-feature-queue"
@@ -66,9 +56,9 @@ kind = "owned"
 path = "coding-feature-queue"
 
 [[skills]]
-name = "coding-feature-spec"
+name = "coding-product-partner"
 kind = "owned"
-path = "coding-feature-spec"
+path = "coding-product-partner"
 
 [[skills]]
 name = "coding-frontend"
@@ -134,6 +124,16 @@ path = "coding-wordpress"
 name = "customer-tech-requirements"
 kind = "owned"
 path = "customer-tech-requirements"
+
+[[skills]]
+name = "create-cli-toolkit-kit"
+kind = "owned"
+path = "create-cli-toolkit-kit"
+
+[[skills]]
+name = "drawio-diagram-design"
+kind = "owned"
+path = "drawio-diagram-design"
 
 [[skills]]
 name = "first-principles-clarity"

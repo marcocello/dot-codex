@@ -1,0 +1,74 @@
+version: 1
+reviewed_at: "2026-08-17T15:34:30+02:00"
+reviewer_context: >-
+  Dimensional evidence judgment revised by the accountable parent after a fresh read-only reviewer
+  identified impossible chronology and action claims unsupported by the retained outputs. Another
+  fresh final reviewer must independently challenge this corrected candidate before completion.
+overall: >-
+  The samples consistently synthesize the problem, control scope, recommend proportional seams,
+  and distinguish proof from generic validation. The rough-idea proof and three action-oriented
+  samples retain explicit mixed judgments where the outputs propose rather than perform work.
+limitations:
+  - One task context and one sample per case cannot establish universal future model behavior.
+  - The outputs were retained manually and did not come from an external model-calling service.
+  - These are response samples without disposable repositories, so action-authorized cases demonstrate planning quality but not completed inspection, edits, or verification.
+cases:
+  - case_id: rough-idea
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Separates the reporting pain from the AI-builder hypothesis and identifies several plausible underlying jobs."}
+      question_economy: {verdict: meets, evidence: "Requests one grouped evidence bundle covering users, concrete questions, current workaround, and failure."}
+      initiative: {verdict: meets, evidence: "Proposes inspecting existing signals and recommends a bounded evidence pass plus three realistic directions."}
+      scope_control: {verdict: meets, evidence: "Keeps builders as alternatives and explicitly limits current scope to synthesis and outcome selection."}
+      architecture_proportionality: {verdict: meets, evidence: "Avoids choosing any implementation architecture before evidence establishes which capability is missing."}
+      proof_fidelity: {verdict: mixed, evidence: "Names representative replay and visible result plus time-to-answer, but defers exact success thresholds until discovery."}
+      completion_truth: {verdict: meets, evidence: "Does not claim implementation readiness or completion from the vague initial customer signal."}
+
+  - case_id: detailed-build
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Restates actor, filters, column order, row cap, refusal behavior, and authorization as accepted behavior."}
+      question_economy: {verdict: meets, evidence: "Proceeds without broad questions and flags only one repository-dependent export-format assumption."}
+      initiative: {verdict: mixed, evidence: "Selects repository inspection targets, a bounded implementation shape, and proof states, but retains no actual inspection or implementation result."}
+      scope_control: {verdict: meets, evidence: "Explicitly excludes queues, schedules, alternate formats, and a generic reporting engine."}
+      architecture_proportionality: {verdict: meets, evidence: "Uses a single export use case with query and serialization separation instead of speculative infrastructure."}
+      proof_fidelity: {verdict: meets, evidence: "Requires real admin UI activation, downloaded-file inspection, cap refusal, and authorization behavior."}
+      completion_truth: {verdict: meets, evidence: "Distinguishes feature proof from the repository gate and recognizes explicit implementation authorization."}
+
+  - case_id: adjacent-scope
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Defines the invitation outcome around authorized creation, intended-recipient acceptance, and membership."}
+      question_economy: {verdict: meets, evidence: "Limits user involvement to genuinely absent role or expiry policies that materially affect behavior."}
+      initiative: {verdict: meets, evidence: "Recommends safe defaults for authority, token use, identity matching, and least-privileged membership."}
+      scope_control: {verdict: meets, evidence: "Classifies prerequisites, follow-ups, an alternative onboarding path, and explicit non-scope."}
+      architecture_proportionality: {verdict: meets, evidence: "Preserves membership and identity ownership while rejecting a new event platform for hypothetical audit logs."}
+      proof_fidelity: {verdict: meets, evidence: "Covers wrong recipient, expiry, revocation, idempotency, resulting membership, and new-session read-back."}
+      completion_truth: {verdict: meets, evidence: "Does not imply that SSO, audit logs, or custom roles are accepted or delivered."}
+
+  - case_id: low-risk-fix
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Correctly identifies an isolated copy correction with unchanged behavior and accessibility semantics."}
+      question_economy: {verdict: meets, evidence: "Asks no user-owned questions and relies on the existing string owner and nearby tests."}
+      initiative: {verdict: mixed, evidence: "Chooses the owning component, nearest assertion, narrow change, and verification path, but the sample does not perform or report the edit."}
+      scope_control: {verdict: meets, evidence: "Rejects a feature package, copy abstraction, and unrelated accessibility redesign."}
+      architecture_proportionality: {verdict: not_applicable, evidence: "The output explains that no new architecture is warranted and will reuse an existing translation owner if present."}
+      proof_fidelity: {verdict: mixed, evidence: "Defines rendered-text read-back and a focused regression accurately, but retains no executed verification result for the authorized fix."}
+      completion_truth: {verdict: meets, evidence: "Defines a narrow completion claim aligned exactly with the requested label repair."}
+
+  - case_id: future-seam
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Frames the present outcome as overdue reminders by email and SMS as design influence only."}
+      question_economy: {verdict: meets, evidence: "Restricts questions to timing, repetition, recipient authority, and legal policy not found in repository authority."}
+      initiative: {verdict: mixed, evidence: "Recommends a concrete reminder-intent boundary and existing notification ownership, but retains no implemented reminder or executed proof result."}
+      scope_control: {verdict: meets, evidence: "Explicitly excludes SMS, registries, plugins, event buses, and a generic notification platform."}
+      architecture_proportionality: {verdict: meets, evidence: "Separates business intent from the email adapter using one small seam rather than speculative channel infrastructure."}
+      proof_fidelity: {verdict: meets, evidence: "Exercises scheduler activation, eligibility, one delivery, retry idempotency, state read-back, and fake limitations."}
+      completion_truth: {verdict: meets, evidence: "Does not equate an email-provider fake with live deliverability or claim the future SMS capability."}
+
+  - case_id: runtime-proof
+    dimensions:
+      problem_synthesis: {verdict: meets, evidence: "Identifies the installed extension bundle—not the source checkout—as the user-consumed target."}
+      question_economy: {verdict: meets, evidence: "Requires no unnecessary discovery and isolates approval only to an unavailable installation or host action."}
+      initiative: {verdict: meets, evidence: "Provides a complete source, build, activate, readiness, user-action, and runtime read-back sequence."}
+      scope_control: {verdict: meets, evidence: "Stays focused on truthful activation and proof without adding deployment or receipt machinery."}
+      architecture_proportionality: {verdict: meets, evidence: "Uses the repository's normal artifact and host path instead of introducing a new runtime system."}
+      proof_fidelity: {verdict: meets, evidence: "Requires exact-bundle activation, version readiness, visible behavior, and relevant existing-state coverage."}
+      completion_truth: {verdict: meets, evidence: "Explicitly reports source proven; activation required and blocks completion when the named runtime is unverified."}

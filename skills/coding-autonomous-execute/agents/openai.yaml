@@ -1,4 +1,4 @@
 interface:
   display_name: "CODING | Autonomous Execute"
-  short_description: "Build ready features serially to evaluator PASS."
-  default_prompt: "Use $coding-autonomous-execute. Select the lowest-priority ready feature, complete its full retained proof, repair, and fresh-evaluator lifecycle serially through PASS, then select the next ready feature. Stop when none remain."
+  short_description: "Build ready features serially to final review PASS."
+  default_prompt: "Use $coding-autonomous-execute as continuation mode, not an assurance tier. Complete one ready feature serially through $coding-feature-execute and select the next only after target-valid proof plus fresh $coding-feature-review final PASS produce done."

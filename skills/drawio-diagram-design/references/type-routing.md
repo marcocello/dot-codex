@@ -1,8 +1,8 @@
 # Diagram type routing
 
-Select one dominant grammar. When the sibling `diagram-design` skill is present, read the listed reference before authoring.
+Select one dominant grammar using the checked-in hints below. The final column maps each type to the corresponding file in the upstream Diagram Design repository for future maintenance comparisons; those files are not runtime dependencies.
 
-| Showing | Type | Sibling reference |
+| Showing | Type | Upstream reference file |
 |---|---|---|
 | system components and connections | architecture | `type-architecture.md` |
 | legacy landscape grouped by phase or department | IT current-state | `type-it-state.md` |

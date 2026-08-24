@@ -14,14 +14,17 @@ Purpose: inspect repository changes, select scope from the user's current reques
 - Task provenance is not a commit-scope boundary. Changes may predate the current task or come from other tasks, chats, agents, or sessions.
 - Apply commit scope in this order:
   - Explicit scope: when the user names paths, a concern, an existing staged selection, or another clear subset, include only the named paths or concern.
-  - Unscoped commit request: when the user asks to commit without narrowing the scope, include the complete repository change set: staged changes, unstaged changes, and relevant untracked files.
+  - Unscoped commit request: when the user asks to commit without narrowing the scope, include the complete repository change set: staged changes, unstaged changes, and relevant non-ignored untracked files.
+- Treat repository ignore rules as an explicit scope boundary. Never stage an ignored path, never use `git add -f` or `git add --force`, and never use another command or option to bypass ignore rules.
+- A request to commit all changes does not authorize overriding ignore rules. If the user explicitly names an ignored path, explain that it is ignored and require an explicit instruction to change the repository's ignore policy before staging it normally.
+- If an ignored path is already staged, do not commit it. Report the conflict and ask before changing ambiguous user staging unless the current request already authorizes unstaging it.
 - Do not exclude, refuse, or request confirmation for a change solely because it predates or is unrelated to the current task.
 - Choose the smallest number of commits that keeps each commit coherent, independently understandable, and reviewable.
 - Create one commit when the requested changes form one concern, even when that concern spans several files.
 - Create multiple commits when the selected repository scope contains independently meaningful concerns that can be separated without leaving a misleading or broken intermediate state.
-- Keep each concern's dependent implementation, tests, documentation, and retained proof artifacts in the same commit. Do not split by file type merely to produce more commits.
+- Keep each concern's dependent implementation, tests, documentation, and non-ignored retained proof artifacts in the same commit. Do not split by file type merely to produce more commits.
 - Stage selected files for each commit group; do not use `git add .`.
-- For a feature commit, stage all official failed, timed-out, interrupted, and passing directories under that feature's `proof/runs/`. These are durable review history, not disposable generated output.
+- For a feature commit, stage official failed, timed-out, interrupted, and passing directories under that feature's `proof/runs/` only when repository ignore rules allow them. Ignore rules take precedence over proof-retention guidance.
 - Preserve an explicit existing staged selection. Treat a coherent staged set as the first or only commit group; if it mixes concerns and splitting it would require rewriting ambiguous user staging, ask before reorganizing it.
 - After applying the explicit-versus-unscoped rules, ask only when the user's stated scope conflicts with the repository state or when proceeding would require rewriting ambiguous staging. Do not ask merely because selected changes came from outside the current task.
 - Inspect both staged and unstaged changes in the selected scope before deciding the commit plan. If the worktree is clean, inspect the most recent commit.
@@ -40,6 +43,7 @@ Purpose: inspect repository changes, select scope from the user's current reques
 ## Workflow
 1. Inspect the change set in this order:
    - `git status --short`
+   - `git status --short --ignored` when untracked or generated artifacts may be relevant, so ignored paths are identified and excluded.
    - For staged changes: `git diff --cached --stat` then `git diff --cached`
    - For unstaged changes: `git diff --stat` then `git diff`
    - Inspect relevant untracked files named by `git status --short` without broad staging.
@@ -47,7 +51,7 @@ Purpose: inspect repository changes, select scope from the user's current reques
 2. Decide the operation:
    - Message-only request: plan the coherent group or groups, draft every message, and stop without changing Git state.
    - Explicitly scoped commit request: continue with only the named paths, concern, staged selection, or other clear subset.
-   - Unscoped commit request: continue with the complete staged, unstaged, and relevant untracked repository change set, regardless of which task produced it.
+   - Unscoped commit request: continue with the complete staged, unstaged, and relevant non-ignored untracked repository change set, regardless of which task produced it.
 3. Partition the selected scope into commit groups before staging:
    - Use the smallest number of groups that gives each commit one clear purpose.
    - Keep dependent implementation, tests, documentation, migrations, configuration, and retained proof together.
@@ -69,11 +73,12 @@ Purpose: inspect repository changes, select scope from the user's current reques
 7. Describe the outcome, not the mechanics. Prefer concrete nouns and verbs from the diff over broad verbs like `update`, `change`, or `improve`.
 8. For each commit group:
    - Stage selected files only when committing; stage only that group's explicit paths with `git add <path>...`.
+   - Never pass `-f` or `--force` to `git add`. If normal `git add` refuses a path because it is ignored, exclude it and follow the ignore-policy rules above.
    - If the group is already staged, preserve its index content and do not stage later unstaged edits from the same paths.
    - Use `git add -p` only when partial-file staging is needed and interactive use is practical.
    - If a safe partial-file split is impractical, keep the inseparable concern in one commit instead of forcing a split.
    - Do not stage unrelated files just because they are present.
-   - Before committing, inspect `git diff --cached --stat` and inspect `git diff --cached` to confirm the index contains exactly that group.
+   - Before committing, inspect `git diff --cached --stat` and inspect `git diff --cached` to confirm the index contains exactly that group and no ignored path is being newly introduced.
    - Run `git commit` with that group's final message to create that group's commit.
    - After each commit, re-run `git status --short` and confirm the remaining changes still match the plan.
 9. Stop immediately if staging or committing a group fails. Report the commits already created and the exact remaining issue; do not continue into later groups.

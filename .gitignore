@@ -41,9 +41,8 @@ config.toml
 docs/features/**/proof/runs/**
 docs/interactions
 
-
 # BEGIN skill_inventory.py managed skills
 skills/bento-slides/
 skills/impeccable/
-skills/diagram-design
+skills/reui/
 # END skill_inventory.py managed skills

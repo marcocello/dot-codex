@@ -79,7 +79,7 @@ This keeps connectors behind endpoint boxes while labels remain readable.
 - Standard limit: 9 semantic nodes and 12 connectors.
 - Imported `faithful` mode may use up to 24 nodes only when zoned; split above 24.
 - Keep at most 2 focal elements.
-- Use at most 3 architecture zones, 5 lanes, 5 sequence lifelines, 8 ER entities, or the stricter limit in the sibling type reference.
+- Use at most 3 architecture zones, 5 lanes, 5 sequence lifelines, or 8 ER entities.
 
 ## Visual inspection gate
 

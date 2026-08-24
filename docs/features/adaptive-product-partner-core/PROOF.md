@@ -4,7 +4,7 @@
 
 - Active global routing, inventory, public design, agent metadata, and delivery fallbacks use one product-partner entry.
 - The retired split app/feature shaping skills are absent from the active skill surface.
-- The partner contract adapts to input cardinality and maturity, explores unknown, user, and technical implications, supports purposeful multi-turn questions without a fixed round cap, controls adjacent scope, conditionally creates artifacts, contains no global React or OpenAI default, and names the separate delivery transitions.
+- The partner contract adapts to input cardinality and maturity, explores unknown, user, and technical implications, supports purposeful multi-turn questions without a fixed round cap, presents a concise practical working brief, controls adjacent scope, conditionally creates artifacts, contains no global React or OpenAI default, and names the separate delivery transitions.
 - The complete repository gate remains green after affected active tests migrate away from the retired shaping skills.
 
 ## Command
@@ -36,6 +36,14 @@
 - Read-back: assertions require focused grouped questions, resynthesis after each round, continuation while consequential unknowns remain, and termination based on decision readiness rather than a one- or two-round limit.
 - Fake: none.
 - Catches: treating questions only as a one-shot approval gate, skipping user or implementation implications, or allowing endless repetitive interrogation.
+
+## Scenario: Deep analysis produces a practical response
+
+- Producer/activation: pytest parses the active response contract and a mutation-canary version with that section hollowed.
+- Consumer: a user who needs the partner's current understanding, recommendation, unresolved decisions, and questions without an analysis essay.
+- Read-back: assertions require a concise one-screen synthesis, one recommended direction, highest-value missing or undecided items, short focused questions, expansion only when requested or risk warrants it, omission of empty sections and raw reasoning, and a direct fast path for clear requests.
+- Fake: none.
+- Catches: dumping internal analysis, repeating the request, hiding the recommendation, forcing a verbose template, or asking questions when nothing material is missing.
 
 ## Scenario: Delivery handoffs remain decomposed
 

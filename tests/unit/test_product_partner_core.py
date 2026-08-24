@@ -28,6 +28,16 @@ SECTION_CONCEPTS = {
         {"reversible", "infer"},
         {"behavior", "ownership", "scope", "safety"},
     ),
+    "Respond Practically": (
+        {"concise", "practical", "synthesis"},
+        {"one screen", "one recommended direction"},
+        {"highest-value", "short", "questions"},
+        {"expand", "asks", "risk"},
+        {"understand", "recommend"},
+        {"missing", "undecided", "questions"},
+        {"omit", "empty", "raw reasoning"},
+        {"clear", "assumptions", "proceed"},
+    ),
     "Bound Scope": (
         {"current", "prerequisite", "follow-up", "alternative", "unrelated"},
         {"accepted", "scope"},
@@ -127,9 +137,14 @@ def test_product_partner_structure_and_metadata_are_valid() -> None:
     assert match is not None
     metadata = yaml.safe_load(match.group(1))
     assert metadata["name"] == PARTNER
-    assert {"Understand", "Decide", "Bound Scope", "Record", "Continue"} <= headings(
-        document
-    )
+    assert {
+        "Understand",
+        "Decide",
+        "Respond Practically",
+        "Bound Scope",
+        "Record",
+        "Continue",
+    } <= headings(document)
     assert policy_gaps(document) == []
     assert not re.search(r"\bReact\b|\bOpenAI\b", document)
     assert f"${PARTNER}" in agent["interface"]["default_prompt"]

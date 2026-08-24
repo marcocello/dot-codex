@@ -151,7 +151,19 @@ def test_sync_bootstraps_current_sources_and_plugin_without_pruning(tmp_path: Pa
     http_root.mkdir()
     http_content = b"---\nname: url-skill\ndescription: pinned\n---\n"
     (http_root / "SKILL.md").write_bytes(http_content)
+    bundle_content = {
+        "version": "bundle-v1",
+        "files": [
+            {
+                "path": "SKILL.md",
+                "content": "---\nname: bundle-skill\ndescription: remote bundle\n---\n",
+            },
+            {"path": "rules/workflow.md", "content": "# Workflow\n"},
+        ],
+    }
+    (http_root / "bundle.json").write_text(json.dumps(bundle_content))
     server, url = start_http(http_root)
+    bundle_url = url.replace("SKILL.md", "bundle.json")
     fake_codex, env = make_fake_codex(tmp_path)
     manifest = tmp_path / "skills.toml"
     write_manifest(
@@ -178,6 +190,12 @@ def test_sync_bootstraps_current_sources_and_plugin_without_pruning(tmp_path: Pa
             path = "url-skill"
 
             [[skills]]
+            name = "bundle-skill"
+            kind = "bundle"
+            url = "{bundle_url}"
+            path = "bundle-skill"
+
+            [[skills]]
             name = "demo-plugin"
             kind = "plugin"
             selector = "demo-plugin@test-market"
@@ -193,16 +211,19 @@ def test_sync_bootstraps_current_sources_and_plugin_without_pruning(tmp_path: Pa
         server.shutdown()
     assert "installed git skill external-skill" in first.stdout
     assert "installed URL skill url-skill" in first.stdout
+    assert "installed bundle skill bundle-skill" in first.stdout
     assert "installed plugin demo-plugin@test-market" in first.stdout
     assert "already synchronized" in second.stdout
     assert "doctor: healthy" in doctor.stdout
     assert "description: v2" in (skills_root / "external-skill" / "SKILL.md").read_text()
     assert (skills_root / "url-skill" / "SKILL.md").read_bytes() == http_content
+    assert (skills_root / "bundle-skill" / "rules/workflow.md").read_text() == "# Workflow\n"
     assert (skills_root / "extra" / "SKILL.md").read_text() == "preserve me"
     generated_ignore = (tmp_path / ".gitignore").read_text()
     assert generated_ignore.count("# BEGIN skill_inventory.py managed skills") == 1
     assert "skills/external-skill/" in generated_ignore
     assert "skills/url-skill/" in generated_ignore
+    assert "skills/bundle-skill/" in generated_ignore
 
     state_path = Path(env["FAKE_CODEX_STATE"])
     state_path.write_text(
@@ -461,7 +482,7 @@ path = ".system/runtime-system"
 
 def test_repository_manifest_covers_only_user_managed_skills() -> None:
     data = tomllib.loads((ROOT / "skills.toml").read_text())
-    assert len(data["skills"]) == 55
+    assert len(data["skills"]) == 56
     assert all(
         "revision" not in entry and "version" not in entry for entry in data["skills"]
     )
@@ -476,7 +497,9 @@ def test_repository_manifest_covers_only_user_managed_skills() -> None:
     }
     owned_names = {name for name, entry in entries.items() if entry["kind"] == "owned"}
     raw_external_names = {
-        name for name, entry in entries.items() if entry["kind"] in {"git", "url"}
+        name
+        for name, entry in entries.items()
+        if entry["kind"] in {"git", "url", "bundle"}
     }
     declared_names = owned_names | raw_external_names
     assert declared_names <= local_names
@@ -495,4 +518,5 @@ def test_repository_manifest_covers_only_user_managed_skills() -> None:
 
     assert entries["bento-slides"]["kind"] == "git"
     assert entries["impeccable"]["kind"] == "git"
+    assert entries["reui"]["kind"] == "bundle"
     assert entries["remotion"]["selector"] == "remotion@openai-curated"

@@ -285,3 +285,9 @@ path = "bento-slides"
 name = "plan-company-visit-itinerary"
 kind = "owned"
 path = "plan-company-visit-itinerary"
+
+[[skills]]
+name = "reui"
+kind = "bundle"
+url = "https://mcp.reui.io/api/skills/download"
+path = "reui"

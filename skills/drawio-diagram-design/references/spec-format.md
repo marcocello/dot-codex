@@ -115,5 +115,5 @@ The builder positions the legend in one horizontal strip near the bottom of the 
 
 - Use integer coordinates and dimensions divisible by 4.
 - Keep content within the declared page.
-- Use the page presets from the sibling `diagram-design/references/output-spec.md` when available.
+- Set explicit page dimensions for the intended output; use `assets/example-architecture.json` as the default 1200 × 720 reference.
 - The builder rejects duplicate IDs, unknown endpoints, repeated attachment points, built-in edge labels without label cells, over-budget content, and non-grid geometry.

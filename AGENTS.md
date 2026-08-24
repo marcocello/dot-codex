@@ -7,8 +7,8 @@
 - State a rule once at its smallest owner. Cross-reference it instead of repeating workflows here.
 
 ## Start
-- Rename every task with the task-title tool as `TYPE: concise outcome`, under 60 characters and without trailing punctuation.
-- Use `FEAT`, `FIX`, `REFACTOR`, `DOCS`, `TEST`, `CHORE`, `REVIEW`, `RESEARCH`, or `OPS`. Prefer `FIX` when restoring intended behavior. Rename again if the primary outcome changes.
+- Rename each task only once, on the first turn, with the task-title tool as `TYPE: concise outcome`, under 60 characters and without trailing punctuation. Do not rename it again later in the conversation.
+- Use `FEAT`, `FIX`, `REFACTOR`, `DOCS`, `TEST`, `CHORE`, `REVIEW`, `RESEARCH`, or `OPS`. Prefer `FIX` when restoring intended behavior.
 - Select one assurance category before editing:
   - `focused`: clear isolated reversible repair; use a focused regression or narrow check.
   - `standard`: material product behavior; use realistic proof and fresh final review.

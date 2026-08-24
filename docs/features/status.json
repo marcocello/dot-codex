@@ -5,7 +5,7 @@
       "feature_dir": "docs/features/app-visible-interaction-sync",
       "priority": 1,
       "status": "done",
-      "notes": "App-visible mirror proof, live four-chat read-back, and repository gate passed."
+      "notes": "Add-update-retain proof passed; fresh final review PASS. Repository gate remains blocked only by unrelated diagram-design inventory metadata."
     },
     {
       "id": "frontend-sites-routing",
@@ -124,7 +124,7 @@
       "feature_dir": "docs/features/adaptive-product-partner-core",
       "priority": 18,
       "status": "done",
-      "notes": "Deep discovery proof passed 5 focused checks and the 81-test gate; two-turn forward test and fresh final review PASS."
+      "notes": "Practical one-screen response proof passed 5 focused checks and the 81-test gate; fresh forward test and final review PASS."
     },
     {
       "id": "decomposed-delivery-lifecycle",

@@ -557,33 +557,10 @@ def record_index_entry(task_id: str, candidate: ParsedSession) -> dict[str, Any]
     }
 
 
-def remove_stale_records(
-    threads: Path,
-    existing_ids: set[str],
-    keep_ids: set[str],
-    counts: Counter[str],
-) -> None:
-    removable_ids = existing_ids - keep_ids
-    removable_ids.update(
-        path.stem
-        for path in threads.glob("*.json")
-        if TASK_ID_PATTERN.fullmatch(path.stem) and path.stem not in keep_ids
-    )
-    for task_id in sorted(removable_ids):
-        try:
-            (threads / f"{task_id}.json").unlink(missing_ok=True)
-        except OSError as exc:
-            raise RuntimeError(
-                f"cannot remove stale interaction record {task_id}: {exc}"
-            ) from exc
-        counts["removed"] += 1
-
-
 def write_capture(
     project_root: Path,
     selected: dict[str, ParsedSession],
     issues: list[SourceIssue],
-    reconcile: bool,
 ) -> Counter[str]:
     interactions = project_root / "docs/interactions"
     threads = interactions / "threads"
@@ -608,24 +585,6 @@ def write_capture(
             if candidate.record["capture"]["state"] == "partial":
                 counts["incomplete"] += 1
             index_records[task_id] = record_index_entry(task_id, candidate)
-        if reconcile:
-            unavailable_ids = {
-                issue.task_id
-                for issue in issues
-                if issue.task_id is not None and issue.task_id in existing_records
-            }
-            keep_ids = set(selected) | unavailable_ids
-            index_records = {
-                task_id: record
-                for task_id, record in index_records.items()
-                if task_id in keep_ids
-            }
-            remove_stale_records(
-                threads,
-                set(existing_records),
-                keep_ids,
-                counts,
-            )
         index = {
             "schema_version": SCHEMA_VERSION,
             "records": [index_records[task_id] for task_id in sorted(index_records)],
@@ -711,7 +670,6 @@ def main(argv: list[str] | None = None) -> int:
             project_root,
             selected,
             selected_issues,
-            reconcile=arguments.mode == "project",
         )
     except RuntimeError as exc:
         print(f"capture failed: {exc}", file=sys.stderr)

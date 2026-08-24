@@ -1,17 +1,17 @@
 # App-visible interaction synchronization
 
 ## Goal
-Synchronize the human-visible Codex chats shown for a project into project-owned interaction records so the stored history matches the app after chat updates and archival.
+Synchronize the human-visible Codex chats shown for a project into project-owned interaction records without deleting previously captured history when chats disappear from the app-visible set.
 
 ## Behavior
 - A normal skill invocation synchronizes every non-archived, interactive Codex chat assigned to the selected project.
 - Chats running in the main checkout and Codex-managed Git worktrees assigned to the same saved project are included.
 - CLI execution sessions, guardian sessions, spawned subagents, reviewer sessions, archived chats, and worktree chats not assigned to the project are excluded.
 - Records are written under `docs/interactions/index.json` and `docs/interactions/threads/<task-id>.json`.
-- Synchronization is an exact mirror of the app-visible set:
+- Synchronization adds and updates records from the app-visible set:
   - a newly visible chat creates one record;
   - new completed dialogue atomically updates the existing record;
-  - an archived or otherwise no-longer-visible chat is removed from both the index and record directory;
+  - an archived or otherwise no-longer-visible chat retains its existing index entry and record file;
   - an unchanged chat does not rewrite its record.
 - Only completed user-visible dialogue is persisted. An in-progress turn is reported as incomplete and remains outside completed history until a later synchronization.
 - If the authoritative app-visible list cannot be obtained, synchronization fails without changing the store.
@@ -28,3 +28,4 @@ Synchronize the human-visible Codex chats shown for a project into project-owned
 - Capturing ChatGPT chats, Codex CLI execution jobs, or internal agent sessions.
 - Automatically committing or uploading interaction records.
 - Migrating or deleting the legacy top-level `interactions/` directory.
+- Automatically deleting previously captured task history.

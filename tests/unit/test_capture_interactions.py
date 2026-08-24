@@ -179,7 +179,7 @@ def seed_stale_record(repo: Path) -> None:
     )
 
 
-def test_project_sync_mirrors_visible_chats_updates_and_archives(
+def test_project_sync_adds_updates_and_retains_missing_chats(
     tmp_path: Path,
 ) -> None:
     repo = tmp_path / "repo"
@@ -223,17 +223,18 @@ def test_project_sync_mirrors_visible_chats_updates_and_archives(
     initial = invoke_capture(repo, fake_codex, state, manifest)
     assert initial.returncode == 0, (initial.stdout, initial.stderr)
     assert "captured=2" in initial.stdout
-    assert "removed=1" in initial.stdout
+    assert "removed=0" in initial.stdout
     index_path = repo / "docs/interactions/index.json"
     initial_index = json.loads(index_path.read_text(encoding="utf-8"))
     assert [record["task_id"] for record in initial_index["records"]] == [
         root_id,
+        "stale",
         worktree_id,
     ]
     record_files = sorted(
         path.name for path in (repo / "docs/interactions/threads").glob("*.json")
     )
-    assert record_files == [f"{root_id}.json", f"{worktree_id}.json"]
+    assert record_files == [f"{root_id}.json", "stale.json", f"{worktree_id}.json"]
 
     write_session(
         root_session,
@@ -250,9 +251,13 @@ def test_project_sync_mirrors_visible_chats_updates_and_archives(
     updated = invoke_capture(repo, fake_codex, state, manifest)
     assert updated.returncode == 0, (updated.stdout, updated.stderr)
     assert "updated=1" in updated.stdout
-    assert "removed=1" in updated.stdout
+    assert "removed=0" in updated.stdout
     final_index = json.loads(index_path.read_text(encoding="utf-8"))
-    assert [record["task_id"] for record in final_index["records"]] == [root_id]
+    assert [record["task_id"] for record in final_index["records"]] == [
+        root_id,
+        "stale",
+        worktree_id,
+    ]
     root_record = json.loads(
         (repo / f"docs/interactions/threads/{root_id}.json").read_text(
             encoding="utf-8"
@@ -261,5 +266,6 @@ def test_project_sync_mirrors_visible_chats_updates_and_archives(
     assert len(root_record["turns"]) == 2
     assert root_record["capture"]["state"] == "partial"
     assert root_record["capture"]["incomplete_turn_ids"] == ["turn-in-progress"]
-    assert not (repo / f"docs/interactions/threads/{worktree_id}.json").exists()
+    assert (repo / f"docs/interactions/threads/{worktree_id}.json").exists()
+    assert (repo / "docs/interactions/threads/stale.json").exists()
     assert not (repo / "interactions").exists()

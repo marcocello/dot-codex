@@ -1,7 +1,7 @@
 # Managed Skill Inventory Proof
 
 ## Proves
-- The real manager CLI can bootstrap a Git skill from current `HEAD`, a digest-verified URL skill, and a Codex plugin into an isolated skill root without manifest revision/version fields.
+- The real manager CLI can bootstrap a Git skill from current `HEAD`, a digest-verified URL skill, a versioned multi-file provider bundle, and a Codex plugin into an isolated skill root without manifest revision/version fields.
 - The same CLI can add, refresh, remove, list, and diagnose dependencies while persisting `skills.toml` as the desired-state authority.
 - Provider operations use argument arrays and an isolated fake `codex` executable; network and plugin provider behavior are the only fakes.
 - A second synchronization is idempotent and undeclared directories are not pruned.
@@ -12,14 +12,14 @@
 
 ## Evidence Method
 - Build a temporary local Git repository containing a real `SKILL.md`, install its current `HEAD`, advance the repository, then require `update` to refresh to the new `HEAD`.
-- Serve a real `SKILL.md` from an in-process loopback HTTP server and pin its SHA-256 digest.
+- Serve a real `SKILL.md` and versioned multi-file JSON bundle from an in-process loopback HTTP server; pin the single-file skill's SHA-256 digest and read back the bundle's nested file.
 - Use a fake `codex` executable that implements the documented `plugin list --json`, `plugin add`, and `plugin remove` boundary with persistent JSON state.
 - Invoke the actual CLI through subprocesses, then read back the manifest, installed content, installer metadata, plugin state, and preserved extra directory.
 - Initialize the temporary inventory root as a real Git checkout, then read back the manager-generated `.gitignore` block after two synchronizations.
 - Mutate the fake provider's persisted plugin version and require `doctor` to ignore it; mutate enablement and require `doctor` to reject the drift.
 - Create temporary destination-parent and Git-source symlink escapes and require reconciliation to fail without materializing content outside either root.
 - Run focused pytest coverage against failure and mutation paths.
-- Parse the repository's real manifest, compare owned entries with Git-tracked skill directories, require exactly 52 managed entries, and reject any system kind or primary-runtime selector.
+- Parse the repository's real manifest, compare owned entries with Git-tracked skill directories, require the expected managed entries including ReUI's external bundle, and reject any system kind or primary-runtime selector.
 - Run `quick_validate.py` against both new skill directories.
 
 ## False-Green Risks

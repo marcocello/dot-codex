@@ -9,9 +9,10 @@
 | `owned` | This Git repository | Verify `SKILL.md`; edit and commit normally |
 | `git` | External Git repository | Resolve current `HEAD`, copy one skill directory, and record the resolved commit only in derived metadata |
 | `url` | External single-file endpoint at an exact SHA-256 | Download one `SKILL.md` and verify bytes |
+| `bundle` | External JSON bundle endpoint | Download its declared files and record the provider version only in derived metadata |
 | `plugin` | Configured Codex marketplace snapshot | Install/remove through `codex plugin`; verify membership and enablement, not version |
 
-Downloaded Git and URL skills remain uncommitted. The manager derives a marked block in `.gitignore` from the manifest. This repository uses whitelist negations that override `.git/info/exclude`, so the tracked generated block is required to keep the same clean behavior on every clone. The block and each `.codex-skill-source.json` are derived state, not authorities; edit the manifest, never the block.
+Downloaded Git, URL, and bundle skills remain uncommitted. The manager derives a marked block in `.gitignore` from the manifest. This repository uses whitelist negations that override `.git/info/exclude`, so the tracked generated block is required to keep the same clean behavior on every clone. The block and each `.codex-skill-source.json` are derived state, not authorities; edit the manifest, never the block.
 
 Codex system skills and plugins from `openai-primary-runtime` are runtime-owned. They stay out of `skills.toml`, are neither installed nor verified by this manager, and must not be added through `manage-codex-skills`.
 
@@ -46,6 +47,7 @@ That solves a different problem from repeatable machine membership bootstrap. Ad
 
 - Owned skills change through normal Git review.
 - Git skills follow current repository `HEAD`; `sync` detects and installs a changed resolved commit.
+- Bundle skills follow the provider's declared bundle version; `sync` refreshes when that version changes.
 - URL skills move only after reviewing new content and recording its SHA-256.
 - Plugin versions are intentionally absent. `update NAME` removes and reinstalls a plugin from the configured marketplace.
 - Codex system skills and `openai-primary-runtime` plugins move with the runtime and remain outside inventory drift checks.

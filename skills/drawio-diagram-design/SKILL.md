@@ -5,16 +5,19 @@ description: Create, redesign, import, and validate polished native editable Dra
 
 # Draw.io Diagram Design
 
-Create fully editable Draw.io diagrams with the editorial restraint of the sibling `diagram-design` skill. Produce native `mxGraphModel` cells: never paste a flattened SVG as the diagram.
+Create fully editable Draw.io diagrams with the bundled editorial grammar and Draw.io contracts. Produce native `mxGraphModel` cells: never paste a flattened SVG as the diagram.
 
 ## Source of truth
 
 1. Locate this skill directory as `SKILL_DIR`.
-2. Locate the sibling `diagram-design` skill at `../diagram-design` relative to `SKILL_DIR`. If present, read its complete `SKILL.md`, its `references/style-guide.md`, and the selected `references/type-*.md` before drawing.
-3. Use [references/design-contract.md](references/design-contract.md) as the Draw.io translation contract. If the sibling skill is unavailable, use the fallback tokens and rules in that reference.
-4. For type selection and file routing, read [references/type-routing.md](references/type-routing.md).
+2. Use [references/design-contract.md](references/design-contract.md) as the Draw.io translation contract.
+3. For type selection and file routing, read [references/type-routing.md](references/type-routing.md).
 
-The sibling skill owns visual intent and diagram grammar. This skill owns editable Draw.io representation, generation, and validation. Never weaken the visual rules merely because Draw.io can auto-layout or auto-route.
+This skill's checked-in contracts own visual intent, diagram grammar, editable Draw.io representation, generation, and validation. Never weaken the visual rules merely because Draw.io can auto-layout or auto-route.
+
+## Upstream reference
+
+[cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) is the reference source for future manual updates to the editorial diagram grammar. It is not a runtime dependency. When an update is requested, compare its `skills/diagram-design` instructions, style guide, and relevant type references against this skill; port only applicable changes into the Draw.io contracts and validate the resulting native Draw.io behavior. Do not silently replace this skill or track upstream changes without an explicit update request.
 
 ## Workflow
 

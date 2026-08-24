@@ -28,8 +28,10 @@ KIND_KEYS = {
     "owned": ("name", "kind", "path"),
     "git": ("name", "kind", "repository", "source_path", "path"),
     "url": ("name", "kind", "url", "sha256", "path"),
+    "bundle": ("name", "kind", "url", "path"),
     "plugin": ("name", "kind", "selector", "enabled"),
 }
+RAW_KINDS = {"git", "url", "bundle"}
 
 
 class InventoryError(Exception):
@@ -67,18 +69,22 @@ def entry_errors(entry: object) -> list[str]:
     for forbidden in ("revision", "version"):
         if forbidden in entry:
             errors.append(f"{name or '<unnamed>'}: {forbidden} is not allowed in skills.toml")
-    if kind in {"owned", "git", "url"} and not safe_relative(entry.get("path")):
+    if (kind == "owned" or kind in RAW_KINDS) and not safe_relative(
+        entry.get("path")
+    ):
         errors.append(f"{name or '<unnamed>'}: path must be a safe relative path")
     if kind == "git":
         if not safe_relative(entry.get("source_path")):
             errors.append(f"{name or '<unnamed>'}: source_path must be a safe relative path")
         if not isinstance(entry.get("repository"), str) or not entry.get("repository"):
             errors.append(f"{name or '<unnamed>'}: repository must be non-empty")
-    if kind == "url":
-        if not re.fullmatch(r"[0-9a-f]{64}", str(entry.get("sha256", ""))):
-            errors.append(f"{name or '<unnamed>'}: sha256 must be a 64-character digest")
+    if kind in {"url", "bundle"}:
         if not str(entry.get("url", "")).startswith(("https://", "http://")):
             errors.append(f"{name or '<unnamed>'}: url must use HTTP or HTTPS")
+    if kind == "url" and not re.fullmatch(
+        r"[0-9a-f]{64}", str(entry.get("sha256", ""))
+    ):
+        errors.append(f"{name or '<unnamed>'}: sha256 must be a 64-character digest")
     if kind == "plugin":
         selector = str(entry.get("selector", ""))
         if not re.fullmatch(r"[^@\s]+@[^@\s]+", selector):
@@ -164,12 +170,16 @@ def plugin_state(codex_bin: str) -> dict[str, dict[str, Any]]:
 
 
 def expected_metadata(
-    entry: dict[str, Any], resolved_revision: str | None = None
+    entry: dict[str, Any],
+    resolved_revision: str | None = None,
+    resolved_version: str | None = None,
 ) -> dict[str, Any]:
     keys = KIND_KEYS[entry["kind"]]
     metadata = {key: entry[key] for key in keys if key != "path"}
     if entry["kind"] == "git" and resolved_revision is not None:
         metadata["resolved_revision"] = resolved_revision
+    if entry["kind"] == "bundle" and resolved_version is not None:
+        metadata["resolved_version"] = resolved_version
     return metadata
 
 
@@ -193,6 +203,7 @@ def metadata_matches(
     destination: Path,
     entry: dict[str, Any],
     resolved_revision: str | None = None,
+    resolved_version: str | None = None,
 ) -> bool:
     metadata = read_metadata(destination)
     if metadata is None:
@@ -200,12 +211,17 @@ def metadata_matches(
     expected = expected_metadata(entry)
     if any(metadata.get(key) != value for key, value in expected.items()):
         return False
-    if entry["kind"] != "git":
-        return metadata == expected
-    installed_revision = metadata.get("resolved_revision")
-    if not re.fullmatch(r"[0-9a-f]{40}", str(installed_revision or "")):
-        return False
-    return resolved_revision is None or installed_revision == resolved_revision
+    if entry["kind"] == "git":
+        installed_revision = metadata.get("resolved_revision")
+        if not re.fullmatch(r"[0-9a-f]{40}", str(installed_revision or "")):
+            return False
+        return resolved_revision is None or installed_revision == resolved_revision
+    if entry["kind"] == "bundle":
+        installed_version = metadata.get("resolved_version")
+        if not re.fullmatch(r"[A-Za-z0-9._-]{1,128}", str(installed_version or "")):
+            return False
+        return resolved_version is None or installed_version == resolved_version
+    return metadata == expected
 
 
 def resolve_git_head(entry: dict[str, Any]) -> str:
@@ -300,6 +316,50 @@ def build_url_skill(entry: dict[str, Any], staging: Path) -> None:
     (staging / "SKILL.md").write_bytes(content)
 
 
+def fetch_bundle(entry: dict[str, Any]) -> tuple[str, list[tuple[PurePosixPath, str]]]:
+    context = verified_ssl_context()
+    request = Request(entry["url"], headers={"User-Agent": "dot-codex-skill-inventory/1"})
+    try:
+        with urlopen(request, timeout=30, context=context) as response:  # noqa: S310
+            payload = json.loads(response.read())
+    except (OSError, json.JSONDecodeError) as error:
+        raise InventoryError(f"download {entry['name']} bundle failed: {error}") from error
+    if not isinstance(payload, dict):
+        raise InventoryError(f"{entry['name']}: bundle response must be a JSON object")
+    version = payload.get("version")
+    if not re.fullmatch(r"[A-Za-z0-9._-]{1,128}", str(version or "")):
+        raise InventoryError(f"{entry['name']}: bundle version is invalid")
+    raw_files = payload.get("files")
+    if not isinstance(raw_files, list) or not raw_files or len(raw_files) > 256:
+        raise InventoryError(f"{entry['name']}: bundle files must contain 1-256 entries")
+    files: list[tuple[PurePosixPath, str]] = []
+    seen: set[str] = set()
+    for raw_file in raw_files:
+        if not isinstance(raw_file, dict):
+            raise InventoryError(f"{entry['name']}: bundle file entry must be an object")
+        path = raw_file.get("path")
+        content = raw_file.get("content")
+        if not safe_relative(path) or path == METADATA_FILE or not isinstance(content, str):
+            raise InventoryError(f"{entry['name']}: bundle contains an invalid file entry")
+        if path in seen:
+            raise InventoryError(f"{entry['name']}: bundle contains duplicate path {path}")
+        seen.add(path)
+        files.append((PurePosixPath(path), content))
+    if "SKILL.md" not in seen:
+        raise InventoryError(f"{entry['name']}: bundle does not contain SKILL.md")
+    return str(version), files
+
+
+def build_bundle_skill(
+    entry: dict[str, Any], staging: Path, files: list[tuple[PurePosixPath, str]]
+) -> None:
+    staging.mkdir()
+    for relative_path, content in files:
+        destination = staging.joinpath(*relative_path.parts)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(content)
+
+
 def verified_ssl_context() -> ssl.SSLContext:
     candidates = [
         os.environ.get("SSL_CERT_FILE"),
@@ -330,7 +390,13 @@ def replace_destination(staging: Path, destination: Path) -> None:
 def install_raw_skill(entry: dict[str, Any], skills_root: Path) -> bool:
     destination = contained_destination(entry, skills_root)
     resolved_revision = resolve_git_head(entry) if entry["kind"] == "git" else None
-    if destination.exists() and metadata_matches(destination, entry, resolved_revision):
+    resolved_version = None
+    bundle_files = None
+    if entry["kind"] == "bundle":
+        resolved_version, bundle_files = fetch_bundle(entry)
+    if destination.exists() and metadata_matches(
+        destination, entry, resolved_revision, resolved_version
+    ):
         if not (destination / "SKILL.md").is_file():
             raise InventoryError(f"{entry['name']}: managed destination lacks SKILL.md")
         return False
@@ -344,11 +410,16 @@ def install_raw_skill(entry: dict[str, Any], skills_root: Path) -> bool:
         if entry["kind"] == "git":
             assert resolved_revision is not None
             build_git_skill(entry, staging, resolved_revision)
+        elif entry["kind"] == "bundle":
+            assert bundle_files is not None
+            build_bundle_skill(entry, staging, bundle_files)
         else:
             build_url_skill(entry, staging)
         (staging / METADATA_FILE).write_text(
             json.dumps(
-                expected_metadata(entry, resolved_revision), indent=2, sort_keys=True
+                expected_metadata(entry, resolved_revision, resolved_version),
+                indent=2,
+                sort_keys=True,
             )
             + "\n"
         )
@@ -357,15 +428,15 @@ def install_raw_skill(entry: dict[str, Any], skills_root: Path) -> bool:
 
 
 def local_skill_error(entry: dict[str, Any], skills_root: Path) -> str | None:
-    if entry["kind"] in {"git", "url"}:
+    if entry["kind"] in RAW_KINDS:
         destination = contained_destination(entry, skills_root)
     else:
         destination = skills_root / entry["path"]
     if not (destination / "SKILL.md").is_file():
         return f"{entry['name']}: missing {destination / 'SKILL.md'}"
-    if entry["kind"] in {"git", "url"} and not metadata_matches(destination, entry):
+    if entry["kind"] in RAW_KINDS and not metadata_matches(destination, entry):
         return f"{entry['name']}: installer metadata does not match the manifest source"
-    if entry["kind"] in {"git", "url"}:
+    if entry["kind"] in RAW_KINDS:
         symlink = next((item for item in destination.rglob("*") if item.is_symlink()), None)
         if symlink:
             return f"{entry['name']}: managed skill contains a symlink: {symlink}"
@@ -414,7 +485,7 @@ def update_generated_ignores(
         if not end:
             raise InventoryError(f"unterminated managed block in {ignore_file}")
         current = before.rstrip() + ("\n" + after.lstrip() if after.strip() else "")
-    managed = sorted(entry["path"] for entry in entries if entry["kind"] in {"git", "url"})
+    managed = sorted(entry["path"] for entry in entries if entry["kind"] in RAW_KINDS)
     block = [IGNORE_START]
     block.extend(f"{relative_skills}/{path}/" for path in managed)
     block.append(IGNORE_END)
@@ -445,9 +516,9 @@ def sync_entries(args: argparse.Namespace, entries: list[dict[str, Any]]) -> Non
             error = local_skill_error(entry, args.skills_root)
             if error:
                 errors.append(error)
-        elif kind in {"git", "url"}:
+        elif kind in RAW_KINDS:
             if install_raw_skill(entry, args.skills_root):
-                source_label = "URL" if kind == "url" else "git"
+                source_label = {"url": "URL", "git": "git", "bundle": "bundle"}[kind]
                 print(f"installed {source_label} skill {entry['name']}")
                 changed = True
         elif entry["selector"] not in state:
@@ -477,6 +548,8 @@ def command_list(args: argparse.Namespace) -> None:
             detail = entry["repository"]
         elif kind == "url":
             detail = entry["sha256"]
+        elif kind == "bundle":
+            detail = entry["url"]
         else:
             detail = f"{entry['selector']} enabled={str(entry['enabled']).lower()}"
         print(f"{entry['name']}\t{kind}\t{detail}")
@@ -511,6 +584,8 @@ def entry_from_add_args(args: argparse.Namespace) -> dict[str, Any]:
         )
     elif args.kind == "url":
         entry.update(url=args.url, sha256=args.sha256, path=args.path or args.name)
+    elif args.kind == "bundle":
+        entry.update(url=args.url, path=args.path or args.name)
     else:
         entry.update(
             selector=args.selector,
@@ -546,12 +621,13 @@ def updated_entry(entry: dict[str, Any], args: argparse.Namespace) -> dict[str, 
     if args.enabled is not None:
         result["enabled"] = args.enabled == "true"
         supplied.add("enabled")
-    if not supplied and entry["kind"] not in {"git", "plugin"}:
+    if not supplied and entry["kind"] not in {"git", "bundle", "plugin"}:
         raise InventoryError("update requires a URL or SHA-256 for this dependency")
     allowed = {
         "owned": set(),
         "git": set(),
         "url": {"url", "sha256"},
+        "bundle": {"url"},
         "plugin": {"enabled"},
     }[entry["kind"]]
     invalid = sorted(supplied - allowed)
@@ -581,7 +657,7 @@ def command_update(args: argparse.Namespace) -> None:
 
 
 def uninstall_entry(args: argparse.Namespace, entry: dict[str, Any]) -> None:
-    if entry["kind"] in {"git", "url"}:
+    if entry["kind"] in RAW_KINDS:
         destination = contained_destination(entry, args.skills_root)
         if destination.exists():
             if not managed_identity_matches(read_metadata(destination), entry):

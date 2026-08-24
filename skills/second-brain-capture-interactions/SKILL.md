@@ -44,7 +44,7 @@ Pass `--codex-bin` or `--workspace-state` only when the host configuration diffe
 ## Preserve Boundaries
 
 - Write only `docs/interactions/index.json` and stable `docs/interactions/threads/<task-id>.json` records inside the project.
-- Treat project synchronization as an exact mirror: remove index entries and managed record files for chats that the app no longer returns as visible, including chats archived since the previous capture.
+- Treat project synchronization as an additive update: add newly visible chats, update visible chats whose completed dialogue changed, and retain existing index entries and managed record files for chats the app no longer returns as visible.
 - Atomically rewrite an existing chat record when its completed human-visible dialogue changes; leave byte-identical records untouched.
 - Preserve completed user messages plus human-visible assistant commentary and final answers. Exclude system/developer instructions, reasoning, tool traffic, command output, and environment data.
 - Keep incomplete turns out of completed history and retain the reported completeness boundary.

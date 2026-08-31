@@ -51,12 +51,7 @@ Purpose: implement or bootstrap Python backend API/application work with clear b
 - Treat `coding-prepare-environment` as the source of truth for `.venv`, dependency install, `.env` location, and command-prefix policy.
 
 ## Reference repos (Python backend)
-Use only if current repo lacks a needed pattern.
-
-- `$HOME/software/marcocello/meshify-backend`
-  - FastAPI service layout
-  - pytest fixtures style
-  - ruff config conventions
+Use only when the current repository lacks a needed pattern.
 
 When using a reference repo:
 - Borrow patterns, not whole implementations.

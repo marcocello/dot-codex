@@ -1,39 +1,29 @@
 ---
 name: pull-codex-config
-description: Safely pull or refresh the local dot-codex checkout, including Codex skills, scripts, AGENTS.md rules, and configuration from marcocello/dot-codex.
+description: Safely clone or fast-forward a local dot-codex checkout containing Codex skills, scripts, rules, and configuration. Use when the user wants to refresh that checkout without overwriting local work.
 ---
 
 # Pull Codex Config
 
-Use this skill to update the local `marcocello/dot-codex` checkout that supplies Codex skills, scripts, and configuration.
+Use the bundled script to update the user's dot-codex checkout:
 
-## Workflow
+```bash
+python skills/pull-codex-config/scripts/pull_codex_config.py
+```
 
-1. Run the bundled script from this skill:
+## Behavior
 
-   ```bash
-   python skills/pull-codex-config/scripts/pull_codex_config.py
-   ```
+The script resolves the checkout from `--repo-dir`, `DOT_CODEX_REPO`, the repository containing the installed skill, a Git-backed `CODEX_HOME`, or `$HOME/dot-codex`, in that order.
 
-2. If the script reports local changes, stop and show the user the listed paths. Do not stash, reset, or overwrite those changes unless the user explicitly asks.
-3. If the script succeeds, tell the user whether the repo was cloned or fast-forwarded.
-4. If new or changed skills are expected in the current Codex session, mention that the UI or thread may need a reload before newly pulled skill metadata is visible.
+For an existing checkout it derives the expected repository URL from `--repo-url`, `DOT_CODEX_REPO_URL`, or the current `origin`. It refuses local changes by default and performs a fast-forward-only pull from the requested branch.
 
-## Script Behavior
+For a missing checkout, the repository URL must be supplied with `--repo-url` or `DOT_CODEX_REPO_URL`. The script then clones it into the resolved destination.
 
-- Default repository: `https://github.com/marcocello/dot-codex`.
-- Default checkout path:
-  - `--repo-dir`, when provided.
-  - `DOT_CODEX_REPO`, when set.
-  - The repo containing this installed skill, when it is already inside a Git checkout.
-  - `CODEX_HOME`, when it points at a Git checkout.
-  - `$HOME/software/marcocello/dot-codex`.
-- Missing checkout: clone the repository.
-- Existing checkout: verify the `origin` remote, refuse local changes by default, then run a fast-forward pull from `origin/main`.
+## Safety and receipt
 
-## Useful Options
+- If local changes are reported, stop and show the affected paths. Do not stash, reset, or discard them without explicit user direction.
+- Use `--allow-dirty` only after explicit user approval.
+- If the command succeeds, report whether the checkout was cloned or fast-forwarded.
+- Mention that the app or task may need a reload before newly pulled skill metadata is visible.
 
-- `--repo-dir PATH`: pull into a specific checkout.
-- `--repo-url URL`: override the remote, mainly for tests or mirrors.
-- `--branch NAME`: pull a branch other than `main`.
-- `--allow-dirty`: allow Git to attempt the pull despite local changes. Use only after explicit user approval.
+Useful overrides are `--repo-dir PATH`, `--repo-url URL`, and `--branch NAME`.

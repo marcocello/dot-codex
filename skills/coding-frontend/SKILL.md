@@ -65,13 +65,7 @@ Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while 
 - Tests must assert observable behavior such as DOM state, navigation, persisted data, or API effects.
 
 ## Reference repos (Frontend)
-Use only if current repo lacks a needed pattern.
-
-- `$HOME/software/marcocello/meshify-frontend`
-  - Next.js app structure
-  - lint/build scripts
-  - component conventions
-
+Use only when the current repository lacks a needed pattern.
 When using a reference repo:
 - Borrow patterns, not whole implementations.
 - Mention repo + pattern reused (1 line).

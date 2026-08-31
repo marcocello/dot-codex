@@ -47,7 +47,7 @@ For data integrations, preserve the customer's target architecture even if curre
 
 ## Style Rules
 
-Use the customer's real name when the user asks for it. Use "ScaleUp Labs", not "ScaleUp", when referring to this company.
+Use the customer's real name and preferred styling when the user supplies or requests it. Do not infer a legal entity name from an abbreviation.
 
 Prefer concrete nouns and numbers: "4 vCPU and 16 GB RAM", "50 GB persistent disk", "nightly backups with 30-day retention", "alerting at 80% capacity", "read-only SQL access".
 

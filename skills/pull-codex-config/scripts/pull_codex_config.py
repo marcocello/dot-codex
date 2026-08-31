@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_REPO_URL = "https://github.com/marcocello/dot-codex"
 DEFAULT_BRANCH = "main"
 DIRTY_WORKTREE_EXIT = 2
 
@@ -19,10 +18,10 @@ class SyncError(Exception):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Clone or fast-forward the marcocello/dot-codex checkout."
+        description="Clone or fast-forward a dot-codex checkout."
     )
     parser.add_argument("--repo-dir", help="Path to the dot-codex checkout.")
-    parser.add_argument("--repo-url", default=DEFAULT_REPO_URL, help="Repository URL to pull.")
+    parser.add_argument("--repo-url", help="Repository URL to clone or verify.")
     parser.add_argument("--branch", default=DEFAULT_BRANCH, help="Branch to pull.")
     parser.add_argument(
         "--allow-dirty",
@@ -72,7 +71,24 @@ def resolve_repo_dir(raw_repo_dir: str | None) -> Path:
         if (candidate / ".git").exists():
             return candidate
 
-    return (Path.home() / "software" / "marcocello" / "dot-codex").resolve()
+    return (Path.home() / "dot-codex").resolve()
+
+
+def resolve_repo_url(raw_repo_url: str | None, repo_dir: Path) -> str:
+    if raw_repo_url:
+        return raw_repo_url
+
+    env_url = os.environ.get("DOT_CODEX_REPO_URL")
+    if env_url:
+        return env_url
+
+    if (repo_dir / ".git").exists():
+        return git(["remote", "get-url", "origin"], repo_dir).stdout.strip()
+
+    raise SyncError(
+        "a repository URL is required to clone a missing checkout; "
+        "use --repo-url or DOT_CODEX_REPO_URL"
+    )
 
 
 def normalize_remote(value: str) -> str:
@@ -136,13 +152,14 @@ def fast_forward_repo(repo_url: str, repo_dir: Path, branch: str, allow_dirty: b
 
 def main() -> int:
     args = parse_args()
-    repo_dir = resolve_repo_dir(args.repo_dir)
 
     try:
+        repo_dir = resolve_repo_dir(args.repo_dir)
+        repo_url = resolve_repo_url(args.repo_url, repo_dir)
         if repo_dir.exists():
-            fast_forward_repo(args.repo_url, repo_dir, args.branch, args.allow_dirty)
+            fast_forward_repo(repo_url, repo_dir, args.branch, args.allow_dirty)
         else:
-            clone_repo(args.repo_url, repo_dir, args.branch)
+            clone_repo(repo_url, repo_dir, args.branch)
     except SyncError as exc:
         print(str(exc), file=sys.stderr)
         return exc.exit_code

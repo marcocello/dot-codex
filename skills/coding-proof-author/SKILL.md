@@ -73,18 +73,19 @@ This is not an approval gate. Proceed when repository context, the request, or s
 ## Author
 
 1. Read current `FEATURE.md`, relevant architecture/testing context, existing proof, and runtime boundary.
-2. Map each central claim to activation, authority, consumer, real usage state, and read-back.
-3. Select one relevant profile from [proof-profiles.md](references/proof-profiles.md):
+2. When `docs/features/status.json` exists, synchronize it in the same task: ensure the queue entry exists as `draft`, and return a non-draft entry to `draft` before creating or materially amending the proof contract or executable proof inputs.
+3. Map each central claim to activation, authority, consumer, real usage state, and read-back.
+4. Select one relevant profile from [proof-profiles.md](references/proof-profiles.md):
    - bug fix/internal invariant -> Bug Fix And Internal;
    - API/OAuth/provider -> API And Provider;
    - UI/rendered artifact -> UI And Artifact;
    - worker/scheduler/webhook/messaging/queue/CLI -> Reactive And Process Boundaries;
    - semantic behavior -> Semantic Pressure.
-4. Use [proof-contract-template.md](references/proof-contract-template.md) for new or materially restructured contracts.
-5. Create or repair `PROOF.md`, executable `proof/run.sh`, and only necessary fixtures, tests, and readiness checks.
-6. Make the runner print concise non-secret facts identifying the actual application runtime and readiness used.
-7. Validate syntax or narrow proof behavior without claiming implementation completion.
-8. Mark the feature `ready` only when the contract and executable proof are decision-complete.
+5. Use [proof-contract-template.md](references/proof-contract-template.md) for new or materially restructured contracts.
+6. Create or repair `PROOF.md`, executable `proof/run.sh`, and only necessary fixtures, tests, and readiness checks.
+7. Make the runner print concise non-secret facts identifying the actual application runtime and readiness used.
+8. Validate syntax or narrow proof behavior without claiming implementation completion.
+9. When the existing queue applies, mark it `ready` in the same task only when the contract and executable proof are decision-complete; otherwise leave it `draft` with the exact next action.
 
 ## Execution And Change Guard
 
@@ -102,4 +103,4 @@ After implementation starts, explain any behavior or proof-strength revision. Co
 
 ## Handoff
 
-Report scenarios, environment target, runner, capture command, timeout, fake boundaries, known gaps, and queue readiness. Stop after proof authoring and never claim feature completion.
+Report scenarios, environment target, runner, capture command, timeout, fake boundaries, known gaps, and the queue transition. Stop after proof authoring and never claim feature completion.

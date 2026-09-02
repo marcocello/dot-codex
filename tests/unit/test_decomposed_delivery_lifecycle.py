@@ -223,6 +223,25 @@ def test_migrated_completion_guarantees_cover_all_owners() -> None:
     assert "source proven; activation required" in owners["handoff"]
 
 
+def test_contract_authoring_synchronizes_an_existing_feature_queue() -> None:
+    partner = read("skills/coding-product-partner/SKILL.md").casefold()
+    proof = read("skills/coding-proof-author/SKILL.md").casefold()
+    queue = read("skills/coding-feature-queue/SKILL.md").casefold()
+
+    for owner in (partner, proof, queue):
+        assert "status.json" in owner
+        assert "same task" in owner
+
+    assert "ensure its queue entry exists" in partner
+    assert "materially amend" in partner
+    assert "`draft` before" in partner
+    assert "ensure the queue entry exists" in proof
+    assert "mark it `ready`" in proof
+    assert "new highest numeric priority plus one" in queue
+    assert "must synchronize" in queue
+    assert "return it to `draft` before" in queue
+
+
 def test_delivery_prompts_do_not_route_to_retired_reviewers() -> None:
     prompts = [
         read("skills/coding-feature-execute/agents/openai.yaml"),

@@ -77,7 +77,7 @@ Create only earned authority:
 - `docs/CONVENTIONS.md` or `docs/TESTING.md` only when they prevent repeated decisions;
 - `docs/features/<id>/FEATURE.md` for material accepted behavior;
 - `PROOF.md` and executable `proof/run.sh` through `coding-proof-author` when realistic feature evidence is required;
-- `docs/features/status.json` through `coding-feature-queue` only for several material features or explicit autonomous continuation.
+- `docs/features/status.json` through `coding-feature-queue`: when the file already exists, every feature package created or materially amended must synchronize it in the same task; ensure its queue entry exists as `draft`, and return a non-draft entry to `draft` before changing accepted behavior or proof strength. Create the queue when several material features or explicit autonomous continuation need durable coordination.
 
 Keep exploration and discarded alternatives out of durable files. A clear isolated defect uses its existing feature owner or the smallest local regression rather than receiving a feature package automatically.
 
@@ -93,4 +93,4 @@ Route by the authorized outcome:
 
 Answers to shaping questions preserve the request's original authorization. They do not turn planning-only work into implementation, and they do not revoke implementation already requested.
 
-Report the accepted outcome, artifacts created, material decisions, deferred adjacency, delivery route, and exact unresolved input. Never claim implementation completion from contract preparation.
+Report the accepted outcome, artifacts created, material decisions, deferred adjacency, delivery route, queue transition when applicable, and exact unresolved input. Never claim implementation completion from contract preparation.

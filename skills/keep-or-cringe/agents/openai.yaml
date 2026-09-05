@@ -1,0 +1,4 @@
+interface:
+  display_name: "Keep or Cringe"
+  short_description: "Brutal verdicts for content and profiles"
+  default_prompt: "Use $keep-or-cringe to give KEEP or CRINGE verdicts for this content and, when accessible, its author or publication profile."

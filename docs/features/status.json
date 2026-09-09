@@ -139,6 +139,13 @@
       "priority": 20,
       "status": "done",
       "notes": "Six retained semantic cases passed four integrity checks and the 80-test gate; fresh final review PASS with honest mixed action judgments."
+    },
+    {
+      "id": "linkedin-post-filter",
+      "feature_dir": "docs/features/linkedin-post-filter",
+      "priority": 21,
+      "status": "done",
+      "notes": "Source-agnostic item and profile analysis passed LinkedIn, X, and blog cases with independent verdicts, examples, truthful coverage, and insufficient-evidence handling; full proof passed 82 tests and fresh final review PASS."
     }
   ]
 }

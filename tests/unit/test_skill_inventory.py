@@ -482,7 +482,7 @@ path = ".system/runtime-system"
 
 def test_repository_manifest_covers_only_user_managed_skills() -> None:
     data = tomllib.loads((ROOT / "skills.toml").read_text())
-    assert len(data["skills"]) == 56
+    assert len(data["skills"]) == 57
     assert all(
         "revision" not in entry and "version" not in entry for entry in data["skills"]
     )
@@ -517,6 +517,8 @@ def test_repository_manifest_covers_only_user_managed_skills() -> None:
         assert ignored.returncode == 0, f"external skill is not ignored: {name}"
 
     assert entries["bento-slides"]["kind"] == "git"
-    assert entries["impeccable"]["kind"] == "git"
+    assert "impeccable" not in entries
+    assert entries["keep-or-cringe"]["kind"] == "owned"
+    assert entries["skills-registry-guide"]["kind"] == "owned"
     assert entries["reui"]["kind"] == "bundle"
     assert entries["remotion"]["selector"] == "remotion@openai-curated"

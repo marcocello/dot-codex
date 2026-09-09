@@ -226,13 +226,6 @@ kind = "owned"
 path = "zotero-capture-source"
 
 [[skills]]
-name = "impeccable"
-kind = "git"
-repository = "https://github.com/pbakaus/impeccable.git"
-source_path = ".agents/skills/impeccable"
-path = "impeccable"
-
-[[skills]]
 name = "zotero"
 kind = "plugin"
 selector = "zotero@openai-curated"
@@ -291,3 +284,13 @@ name = "reui"
 kind = "bundle"
 url = "https://mcp.reui.io/api/skills/download"
 path = "reui"
+
+[[skills]]
+name = "keep-or-cringe"
+kind = "owned"
+path = "keep-or-cringe"
+
+[[skills]]
+name = "skills-registry-guide"
+kind = "owned"
+path = "skills-registry-guide"

@@ -43,6 +43,5 @@ docs/interactions
 
 # BEGIN skill_inventory.py managed skills
 skills/bento-slides/
-skills/impeccable/
 skills/reui/
 # END skill_inventory.py managed skills

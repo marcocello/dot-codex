@@ -5,7 +5,7 @@ description: Review the Notion Second Brain weekly, surfacing stale tasks, deals
 
 # Second Brain Weekly Review
 
-Use the Notion structure defined in `docs/secondbrain.md`.
+Use the Notion structure defined in `docs/harness/secondbrain.md`.
 
 Live surfaces:
 - `SB - Tasks`

@@ -5,7 +5,7 @@ description: Classify manual notes, Granola excerpts, dictation, screenshot text
 
 # Second Brain Capture Raw Input
 
-Use the Notion structure defined in `docs/secondbrain.md`.
+Use the Notion structure defined in `docs/harness/secondbrain.md`.
 
 Classify the input directly into one of:
 

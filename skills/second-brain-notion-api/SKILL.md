@@ -6,7 +6,7 @@ description: Read or write Notion Second Brain tasks, deals, and ideas through t
 # Second Brain Notion API
 
 Use this skill for direct Notion API operations on the Second Brain tables
-defined in `docs/secondbrain.md`.
+defined in `docs/harness/secondbrain.md`.
 
 ## Safety
 
@@ -48,12 +48,12 @@ schema work:
 - `ideas` -> `SB - Ideas`
 
 At the beginning of each interaction, read or confirm the current data-source IDs for these
-tables from `docs/secondbrain.md`, the live Notion structure, or user-provided context before
+tables from `docs/harness/secondbrain.md`, the live Notion structure, or user-provided context before
 running write operations.
 
 ## Workflow
 
-1. Read `docs/secondbrain.md` for the current table contract.
+1. Read `docs/harness/secondbrain.md` for the current table contract.
 2. Use the script with the token stored in
    `$HOME/.config/codex/notion_secondbrain_token`.
 3. For writes, create the narrowest row that matches the user's request.

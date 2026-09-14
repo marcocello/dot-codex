@@ -9,6 +9,8 @@ metadata:
 
 Purpose: implement or bootstrap Python backend API/application work with clear boundaries, repo-native setup, and pytest coverage.
 
+`coding-workflow` owns routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Fix path for known defects and Shape/Ship for material accepted behavior changes.
+
 ## Scope
 - Applies when:
   - The feature affects backend logic
@@ -32,22 +34,14 @@ Purpose: implement or bootstrap Python backend API/application work with clear b
 - Smallest change that satisfies the feature
 - Avoid backward compatibility work by default; do it only when explicitly requested
 
-## Tests (required)
-- Add/extend repo tests (pytest) so that:
-  - Red phase: at least one relevant test fails before implementation
-  - Green phase: the same test passes after the code change
-  - New behavior is covered
-- Tests must contain real assertions
-- Do not weaken or delete existing tests
-
-## Feature Proof
-- If `FEATURE_DIR/PROOF.md` is missing or weak, use `coding-proof-author`.
-- For API behavior, prefer a black-box HTTP/API proof against the app runtime.
-- For Python-only internal behavior, use a regression, contract, migration, or equivalence proof that matches the change.
-- Translate behavior described in `FEATURE.md` into executable proof without importing application internals unless the proof type is explicitly internal.
+## Verification
+- Reuse pytest and select checks for affected routes, services, persistence, shared utilities, and their consumers. Add focused coverage for a concrete uncovered risk; reproduce the failure when practical.
+- For material API features, the separate proof author should exercise HTTP against the real app runtime. Internal changes may use contract, migration, invariant, or equivalence proof matching the accepted boundary.
+- Assert requested outcomes rather than incidental private structure. Generic tests support verification but do not replace dedicated feature proof.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../coding-workflow/references/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
 
 ## Environment
-- Before running Python tooling, use `coding-prepare-environment`.
+- Use `coding-prepare-environment` when setup or readiness is unknown; reuse a prepared environment.
 - Treat `coding-prepare-environment` as the source of truth for `.venv`, dependency install, `.env` location, and command-prefix policy.
 
 ## Reference repos (Python backend)

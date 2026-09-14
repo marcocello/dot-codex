@@ -7,6 +7,8 @@ description: "Prepare repo-local Python, Node, PHP, Laravel, WordPress, or mixed
 
 Purpose: centralize repo setup policy so other skills and AGENTS.md do not duplicate stack-specific environment rules.
 
+`coding-workflow` owns routing, acceptance, execution, and completion. Prepare only the environment needed for that work; setup does not require its own feature package or review.
+
 ## Caller Contract
 
 - Use this skill before implementation or proof when the local environment is not known-good.
@@ -15,10 +17,8 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 - Never print secret values. When reporting `.env` work, mention filenames and missing keys only.
 - Prefer repo-provided setup scripts, Make targets, package scripts, Docker files, and documented commands.
 - If setup requires missing credentials or external services, stop with the exact blocker and continue with any checks that do not require those services.
-- Discover available local CLIs, package managers, containers, browser/app automation, MCP
-  tools, and repo scripts before reporting that setup cannot continue.
-- Suggest the exact install or enablement action when a useful tool is missing, explain why
-  it is needed, and continue with any lower-fidelity local check that remains honest.
+- Discover relevant local CLIs, package managers, containers, browser/app automation, MCP tools, and repo scripts before reporting that setup cannot continue.
+- Report the exact install or enablement needed for a missing capability. Independent supporting checks can continue, but cannot replace unavailable required proof.
 
 ## Workflow
 
@@ -31,22 +31,19 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
    - PHP/Laravel: `composer.json`, `artisan`, `phpunit.xml`, `pest.php`, `.php-version`.
    - WordPress: `wp-config.php`, `wp-config-sample.php`, `wp-content/`, or WordPress Composer packages.
    - Other: Docker, devcontainer, Nix, direnv, mise, asdf, language lockfiles, or custom scripts.
-3. Inspect tool availability relevant to the proof: PATH, repo scripts, Makefiles, package
-   scripts, Docker files, local apps/connectors, browser automation, database clients, and
-   cloud CLIs named by docs or proof.
+3. Inspect tool availability relevant to the proof: PATH, repo scripts, Makefiles, package scripts, Docker files, local apps/connectors, browser automation, database clients, and cloud CLIs named by docs or proof.
 4. Load only the relevant sections of [stack-reference.md](references/stack-reference.md).
 5. Prepare the minimum environment needed for the current task.
 6. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
 7. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
-8. Run `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root <repo-root> --profile <profile>` as supporting preflight with every applicable explicit profile. Do not create or copy it into the target repository. It diagnoses common structure, environment, and diff readiness; it is not generic semantic repository health or feature completion evidence.
-9. Run the narrowest repository-native dependency or readiness check needed by the active proof. Then report:
+8. Run the narrowest repository-native dependency or readiness check needed by the active work. Do not run a full suite or gate as a routine setup prerequisite. Repository-required gates remain supporting verification under `coding-workflow`, separate from feature proof. Then report:
    - stacks detected
    - files created or changed
    - `.gitignore` status and whether it follows the whitelist pattern
    - commands run
    - remaining blockers
    - exact command prefix future skills should use
-   - preflight profiles and remaining setup failures
+   - readiness result and remaining setup failures
    - dev server command future run-task skills should use, when obvious
 
 ## Selection Rules
@@ -77,7 +74,7 @@ Generate `.vscode/tasks.json` from this skill when a software project needs the 
 Run:
 
 ```bash
-skills/coding-prepare-environment/scripts/generate_tasks.py <repo-root>
+"${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/generate_tasks.py" <repo-root>
 ```
 
 The bundled generator has operational defaults for the Python backend and React frontend skills, but it does not define the project structure. Override these values whenever repo docs or the owning domain skill uses different paths:
@@ -88,7 +85,7 @@ The bundled generator has operational defaults for the Python backend and React 
 - Backend app command: auto-detect FastAPI from `backend/app/main.py` plus dependency files in `backend/app` or `backend`, and use `${workspaceFolder}/.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`; otherwise use `${workspaceFolder}/.venv/bin/python main.py`
 - Backend ngrok command: `ngrok http 8000`
 
-Preserve unrelated existing tasks. Replace only generated labels: `frontend`, `backend:app`, `backend:ngrok`, `backend`, and `fullstack`. Use script flags when a repo uses different commands, paths, or a different ngrok URL. Do not start frontend or backend tasks unless the user asks to run them.
+Preserve unrelated existing tasks. Replace only generated labels: `frontend`, `backend:app`, `backend:ngrok`, `backend`, and `fullstack`. Use script flags when a repo uses different commands, paths, or a different ngrok URL. Start local services when required by authorized implementation or proof; generating tasks alone does not require starting them. External tunnels require applicable authorization.
 
 ## Output Shape
 

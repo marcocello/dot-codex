@@ -7,6 +7,8 @@ description: Stage coherent repository change sets and create one or more local 
 
 Purpose: inspect repository changes, select scope from the user's current request and Git state, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit.
 
+Committing is a supporting action, not a new feature workflow or a completion verdict. Preserve `coding-workflow` acceptance and retained evidence; do not reopen proof or claim a feature complete solely because a commit succeeds. Keep private dialogue out of commits and reference its retained capture instead.
+
 ## Default behavior
 - Never push. Do not run `git push`.
 - Create local commits only when the user explicitly asks to commit.

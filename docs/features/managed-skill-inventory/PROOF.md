@@ -31,7 +31,7 @@
 ## Does Not Prove
 - Access to private Git repositories, future marketplace snapshots, or external URLs on another machine.
 - That a running Codex task reloads newly installed skills without restart.
-- OpenSpace cloud, quality scoring, skill evolution, or task execution.
+- External cloud services, quality scoring, skill evolution, or task execution.
 - MCP servers installed or launched through npm or `npx`.
 
 ## Execution

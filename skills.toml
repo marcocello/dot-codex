@@ -31,34 +31,14 @@ kind = "owned"
 path = "coding-architecture-deep-dive"
 
 [[skills]]
-name = "coding-autonomous-execute"
-kind = "owned"
-path = "coding-autonomous-execute"
-
-[[skills]]
 name = "coding-commit"
 kind = "owned"
 path = "coding-commit"
 
 [[skills]]
-name = "coding-feature-execute"
+name = "coding-workflow"
 kind = "owned"
-path = "coding-feature-execute"
-
-[[skills]]
-name = "coding-feature-review"
-kind = "owned"
-path = "coding-feature-review"
-
-[[skills]]
-name = "coding-feature-queue"
-kind = "owned"
-path = "coding-feature-queue"
-
-[[skills]]
-name = "coding-product-partner"
-kind = "owned"
-path = "coding-product-partner"
+path = "coding-workflow"
 
 [[skills]]
 name = "coding-frontend"
@@ -71,11 +51,6 @@ kind = "owned"
 path = "coding-laravel-feature-builder"
 
 [[skills]]
-name = "coding-operational-issue-diagnostics"
-kind = "owned"
-path = "coding-operational-issue-diagnostics"
-
-[[skills]]
 name = "coding-php-legacy-maintainer"
 kind = "owned"
 path = "coding-php-legacy-maintainer"
@@ -86,19 +61,9 @@ kind = "owned"
 path = "coding-prepare-environment"
 
 [[skills]]
-name = "coding-proof-author"
-kind = "owned"
-path = "coding-proof-author"
-
-[[skills]]
 name = "coding-python-backend"
 kind = "owned"
 path = "coding-python-backend"
-
-[[skills]]
-name = "coding-repair"
-kind = "owned"
-path = "coding-repair"
 
 [[skills]]
 name = "coding-research"
@@ -224,13 +189,6 @@ path = "write-product-posts"
 name = "zotero-capture-source"
 kind = "owned"
 path = "zotero-capture-source"
-
-[[skills]]
-name = "impeccable"
-kind = "git"
-repository = "https://github.com/pbakaus/impeccable.git"
-source_path = ".agents/skills/impeccable"
-path = "impeccable"
 
 [[skills]]
 name = "zotero"

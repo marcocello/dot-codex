@@ -39,7 +39,7 @@ python3 skills/second-brain-capture-interactions/scripts/capture_interactions.py
   --task-id TASK_ID
 ```
 
-Pass `--codex-bin` or `--workspace-state` only when the host configuration differs from the defaults. Read back the printed `captured`, `updated`, `unchanged`, `removed`, `incomplete`, and `unavailable` counts. A nonzero result with unavailable visible chats is partial coverage, not a complete synchronization.
+Pass `--codex-bin` or `--workspace-state` only when the host configuration differs from the defaults. Read back the printed `captured`, `updated`, `unchanged`, `removed`, `empty`, `incomplete`, and `unavailable` counts. `empty` means an app-visible session contained no human-visible dialogue and was not newly persisted. A nonzero result with unavailable visible chats is partial coverage, not a complete synchronization.
 
 ## Preserve Boundaries
 
@@ -47,6 +47,8 @@ Pass `--codex-bin` or `--workspace-state` only when the host configuration diffe
 - Treat project synchronization as an additive update: add newly visible chats, update visible chats whose completed dialogue changed, and retain existing index entries and managed record files for chats the app no longer returns as visible.
 - Atomically rewrite an existing chat record when its completed human-visible dialogue changes; leave byte-identical records untouched.
 - Preserve completed user messages plus human-visible assistant commentary and final answers. Exclude system/developer instructions, reasoning, tool traffic, command output, and environment data.
+- Read dialogue from legacy message events and response-item messages without duplicating mirrored messages. A user role on a response item does not make injected app context, selected skill instructions, or subagent notifications human dialogue.
+- Omit lifecycle-only turns with no human-visible messages. Preserve compact allowlisted event-type counts and source/app metadata, never raw non-dialogue payloads.
 - Keep incomplete turns out of completed history and retain the reported completeness boundary.
 - Treat explicit redaction markers as evidence that a detected critical credential value was removed.
 - If the app-visible list is unavailable, fail before writing. If one visible chat is unreadable, report partial coverage and preserve its existing record.

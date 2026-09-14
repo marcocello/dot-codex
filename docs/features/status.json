@@ -1,144 +1,221 @@
 {
+  "version": 2,
   "features": [
     {
       "id": "app-visible-interaction-sync",
       "feature_dir": "docs/features/app-visible-interaction-sync",
       "priority": 1,
-      "status": "done",
-      "notes": "Add-update-retain proof passed; fresh final review PASS. Repository gate remains blocked only by unrelated diagram-design inventory metadata."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Add-update-retain proof passed; fresh final review PASS. Repository gate remains blocked only by unrelated diagram-design inventory metadata.",
+      "owner": null
     },
     {
       "id": "frontend-sites-routing",
       "feature_dir": "docs/features/frontend-sites-routing",
       "priority": 2,
-      "status": "done",
-      "notes": "Corrected the over-broad .codex oracle; feature proof passed. Canonical gate remains skipped only for unrelated ignored managed-skill metadata findings."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Corrected the over-broad .codex oracle; feature proof passed. Canonical gate remains skipped only for unrelated ignored managed-skill metadata findings.",
+      "owner": null
     },
     {
       "id": "named-permission-profile",
       "feature_dir": "docs/features/named-permission-profile",
       "priority": 3,
-      "status": "done",
-      "notes": "Feature proof and applicable repository gate passed."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Feature proof and applicable repository gate passed.",
+      "owner": null
     },
     {
       "id": "cross-task-commit",
       "feature_dir": "docs/features/cross-task-commit",
       "priority": 4,
-      "status": "done",
-      "notes": "Cross-task scope proof and repository gate passed."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Cross-task scope proof and repository gate passed.",
+      "owner": null
     },
     {
       "id": "greenfield-default-inference",
       "feature_dir": "docs/features/greenfield-default-inference",
       "priority": 5,
-      "status": "done",
-      "notes": "Contract-authoring stop proof passed; repository gate was previously skipped for unrelated baseline findings."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Contract-authoring stop proof passed; repository gate was previously skipped for unrelated baseline findings.",
+      "owner": null
     },
     {
       "id": "ui-improvement-advisory-only",
       "feature_dir": "docs/features/ui-improvement-advisory-only",
       "priority": 6,
-      "status": "done",
-      "notes": "Previously completed; stable regressions remain owned by repository tests and the gate."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Previously completed; stable regressions remain owned by repository tests and the gate.",
+      "owner": null
     },
     {
       "id": "managed-skill-inventory",
       "feature_dir": "docs/features/managed-skill-inventory",
       "priority": 7,
-      "status": "done",
-      "notes": "Managed inventory proof, applicable gate checks, and live doctor passed."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Managed inventory proof, applicable gate checks, and live doctor passed.",
+      "owner": null
     },
     {
       "id": "lean-completion-lifecycle",
       "feature_dir": "docs/features/lean-completion-lifecycle",
       "priority": 8,
-      "status": "done",
-      "notes": "Bounded separate implementation-entry preflight proof passed; repository gate passed; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Bounded separate implementation-entry preflight proof passed; repository gate passed; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "ready-feature-size-guard",
       "feature_dir": "docs/features/ready-feature-size-guard",
       "priority": 9,
-      "status": "done",
-      "notes": "Queue-boundary size guard proof passed; fresh evaluator PASS confirmed the split and no schema growth."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Queue-boundary size guard proof passed; fresh evaluator PASS confirmed the split and no schema growth.",
+      "owner": null
     },
     {
       "id": "ui-proof-realism",
       "feature_dir": "docs/features/ui-proof-realism",
       "priority": 10,
-      "status": "done",
-      "notes": "Strengthened UI policy proof passed; fresh evaluator PASS after routing and clause coverage repair."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Strengthened UI policy proof passed; fresh evaluator PASS after routing and clause coverage repair.",
+      "owner": null
     },
     {
       "id": "feature-proof-isolation",
       "feature_dir": "docs/features/feature-proof-isolation",
       "priority": 11,
-      "status": "done",
-      "notes": "Strengthened isolation proof passed; fresh evaluator PASS after whole-module selection repair."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Strengthened isolation proof passed; fresh evaluator PASS after whole-module selection repair.",
+      "owner": null
     },
     {
       "id": "bounded-consolidated-evaluation",
       "feature_dir": "docs/features/bounded-consolidated-evaluation",
       "priority": 12,
-      "status": "done",
-      "notes": "Seven-case proof passed for one evidence-first, implementation-second evaluator review with one consolidated verdict; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Seven-case proof passed for one evidence-first, implementation-second evaluator review with one consolidated verdict; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "proof-capture-hardening",
       "feature_dir": "docs/features/proof-capture-hardening",
       "priority": 13,
-      "status": "done",
-      "notes": "Real subprocess proof passed 36 capture, containment, validation, signal, and input-integrity cases; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Real subprocess proof passed 36 capture, containment, validation, signal, and input-integrity cases; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "final-candidate-freshness",
       "feature_dir": "docs/features/final-candidate-freshness",
       "priority": 14,
-      "status": "done",
-      "notes": "Strengthened six-case proof passed for freshness plus continued queue draining; fresh evaluator PASS on the unchanged candidate."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Strengthened six-case proof passed for freshness plus continued queue draining; fresh evaluator PASS on the unchanged candidate.",
+      "owner": null
     },
     {
       "id": "adaptive-feature-shaping",
       "feature_dir": "docs/features/adaptive-feature-shaping",
       "priority": 15,
-      "status": "done",
-      "notes": "Adaptive intake, conversational shaping, bounded adjacency, conditional artifacts, and risk-based proof passed 25 scenarios; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Adaptive intake, conversational shaping, bounded adjacency, conditional artifacts, and risk-based proof passed 25 scenarios; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "independent-feature-risk-review",
       "feature_dir": "docs/features/independent-feature-risk-review",
       "priority": 16,
-      "status": "done",
-      "notes": "Independent relevance-bounded reviewer discovery, verbatim intent input, and uncapped material findings passed 25 scenarios; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Independent relevance-bounded reviewer discovery, verbatim intent input, and uncapped material findings passed 25 scenarios; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "simple-product-partner-harness",
       "feature_dir": "docs/features/simple-product-partner-harness",
       "priority": 17,
-      "status": "done",
-      "notes": "Named active-runtime completion proof passed 49 checks; full gate passed 114 tests; fresh evaluator PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Named active-runtime completion proof passed 49 checks; full gate passed 114 tests; fresh evaluator PASS.",
+      "owner": null
     },
     {
       "id": "adaptive-product-partner-core",
       "feature_dir": "docs/features/adaptive-product-partner-core",
       "priority": 18,
-      "status": "done",
-      "notes": "Practical one-screen response proof passed 5 focused checks and the 81-test gate; fresh forward test and final review PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Practical one-screen response proof passed 5 focused checks and the 81-test gate; fresh forward test and final review PASS.",
+      "owner": null
     },
     {
       "id": "decomposed-delivery-lifecycle",
       "feature_dir": "docs/features/decomposed-delivery-lifecycle",
       "priority": 19,
-      "status": "done",
-      "notes": "Decomposed delivery proof passed 9 lifecycle checks, 36 proof-capture checks, and the 76-test gate; fresh final review PASS."
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Decomposed delivery proof passed 9 lifecycle checks, 36 proof-capture checks, and the 76-test gate; fresh final review PASS.",
+      "owner": null
     },
     {
       "id": "product-partner-behavioral-evals",
       "feature_dir": "docs/features/product-partner-behavioral-evals",
       "priority": 20,
+      "status": "blocked",
+      "proof_run": null,
+      "notes": "Historical completion unverified: passing proof reference absent; reconciliation required. Previous note: Six retained semantic cases passed four integrity checks and the 80-test gate; fresh final review PASS with honest mixed action judgments.",
+      "owner": null
+    },
+    {
+      "id": "four-mode-coding-workflow",
+      "feature_dir": "docs/features/four-mode-coding-workflow",
+      "priority": 21,
       "status": "done",
-      "notes": "Six retained semantic cases passed four integrity checks and the 80-test gate; fresh final review PASS with honest mixed action judgments."
+      "proof_run": "docs/features/four-mode-coding-workflow/proof/runs/20260910T085059213376Z",
+      "notes": "28 purpose-built proof tests PASS; fresh final oracle PASS (01a08a83-ff87-7de0-a4d3-43d01519d18e). Same-checkout default, isolated target status validation, and optional early review. Relevant inputs unchanged through proof/review; future LLM behavior and fresh-session discovery not claimed.",
+      "owner": null
+    },
+    {
+      "id": "interaction-capture-integrity",
+      "feature_dir": "docs/features/interaction-capture-integrity",
+      "priority": 22,
+      "status": "done",
+      "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20260910T121212495216Z",
+      "notes": "Response-item parser repair proven; live project recapture saved 31 new and updated 6 records, with 5 partial records and 0 unavailable. Fresh final oracle PASS.",
+      "owner": null
+    },
+    {
+      "id": "coding-harness-alignment",
+      "feature_dir": "docs/features/coding-harness-alignment",
+      "priority": 23,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/coding-harness-alignment/proof/runs/20260914T095633259739Z",
+      "notes": "Installed coding instruction alignment complete; frozen independent proof PASS, six decision cases PASS, gate 89 tests PASS, fresh reviewer PASS. Runtime capture/protection limits remain explicit."
+    },
+    {
+      "id": "feature-verification-capture",
+      "feature_dir": "docs/features/feature-verification-capture",
+      "priority": 24,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/feature-verification-capture/proof/runs/20260914T200739934657Z",
+      "notes": "Installed proof/regression capture verified: 9 independent real-CLI scenarios PASS; captured gate regression PASS; fresh separate reviewer /root/capture_review PASS on unchanged candidate. User explicitly authorized execution without Goal."
     }
   ]
 }

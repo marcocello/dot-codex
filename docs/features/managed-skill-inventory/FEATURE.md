@@ -14,7 +14,7 @@ Make `skills.toml` the portable desired-state inventory for authored skills, use
 - Keep downloaded content out of Git. The manifest is authoritative; installer metadata and a marked generated `.gitignore` block are derived state.
 - Reconciliation is additive. It installs or refreshes declared dependencies but never prunes undeclared directories or plugins.
 - `update` refreshes a Git skill from current `HEAD` or reinstalls a plugin from its configured marketplace. URL updates remain explicit URL/digest changes.
-- Keep OpenSpace outside the bootstrap path. It is an optional retrieval, evaluation, sharing, and evolution layer, not the authority for this machine's installed skill set.
+- Keep optional retrieval, evaluation, sharing, and evolution layers outside the bootstrap path; they do not govern this machine's installed skill set.
 
 ## Behavior
 - `scripts/skill_inventory.py` reads `skills.toml` by default and exposes `list`, `doctor`, `sync`, `add`, `remove`, and `update` commands.
@@ -42,5 +42,5 @@ Make `skills.toml` the portable desired-state inventory for authored skills, use
 - Managing MCP servers declared directly in `config.toml`, including servers launched with `npx`.
 - Replacing Codex plugin cache, marketplace, enablement, or authentication semantics.
 - Automatically discovering every skill visible through remote app connectors.
-- Automatically publishing, evaluating, evolving, or sharing skills through OpenSpace.
+- Automatically publishing, evaluating, evolving, or sharing skills.
 - Deleting undeclared skills or plugins during `sync`.

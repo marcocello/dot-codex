@@ -41,6 +41,35 @@ SECRET_PATTERNS = (
             re.DOTALL,
         ),
     ),
+    (
+        "slack_token",
+        re.compile(r"(?<![A-Za-z0-9])xox[baprs]-[A-Za-z0-9-]{10,255}"),
+    ),
+    (
+        "gitlab_token",
+        re.compile(r"(?<![A-Za-z0-9])glpat-[A-Za-z0-9_-]{20,255}"),
+    ),
+    (
+        "google_api_key",
+        re.compile(r"(?<![A-Za-z0-9])AIza[A-Za-z0-9_-]{35}(?![A-Za-z0-9_-])"),
+    ),
+    (
+        "bearer_token",
+        re.compile(r"(?i)\bBearer[ \t]+[A-Za-z0-9._~+/\-]{20,}={0,2}"),
+    ),
+)
+SAFE_TOP_LEVEL_EVENT_TYPES = {"session_meta", "response_item", "turn_context", "compacted"}
+SAFE_APP_EVENT_TYPES = {
+    "task_started",
+    "task_complete",
+    "user_message",
+    "agent_message",
+    "turn_aborted",
+}
+SAFE_EVENT_COUNT_KEYS = frozenset(
+    SAFE_TOP_LEVEL_EVENT_TYPES
+    | {f"event_msg.{event_type}" for event_type in SAFE_APP_EVENT_TYPES}
+    | {"event_msg.other", "other"}
 )
 
 
@@ -99,7 +128,9 @@ def attachment_metadata(
     return attachments
 
 
-def dialogue_message(payload: dict[str, Any], counts: Counter[str]) -> dict[str, Any] | None:
+def dialogue_message(
+    payload: dict[str, Any], timestamp: object, counts: Counter[str]
+) -> dict[str, Any] | None:
     event_type = payload.get("type")
     text = payload.get("message")
     if event_type not in {"user_message", "agent_message"} or not isinstance(text, str):
@@ -108,6 +139,8 @@ def dialogue_message(payload: dict[str, Any], counts: Counter[str]) -> dict[str,
         "role": "user" if event_type == "user_message" else "assistant",
         "text": redact_text(text, counts),
     }
+    if isinstance(timestamp, str):
+        message["timestamp"] = timestamp
     if event_type == "agent_message":
         phase = payload.get("phase")
         if isinstance(phase, str):
@@ -117,6 +150,97 @@ def dialogue_message(payload: dict[str, Any], counts: Counter[str]) -> dict[str,
         if attachments:
             message["attachments"] = attachments
     return message
+
+
+def without_injected_context(text: str) -> str:
+    """Strip known app envelopes when older sessions lack content-kind metadata."""
+    remaining = text
+    while remaining:
+        candidate = remaining.lstrip()
+        match = re.match(
+            r"<(recommended_plugins|environment_context|skill|subagent_notification|"
+            r"turn_aborted|in-app-browser-context)>", candidate,
+        )
+        if match:
+            closing = f"</{match[1]}>"
+        elif candidate.startswith("# AGENTS.md instructions"):
+            closing = "</INSTRUCTIONS>"
+        else:
+            return remaining
+        end = candidate.find(closing)
+        if end < 0:
+            return ""
+        remaining = candidate[end + len(closing):].lstrip()
+    return remaining
+
+
+def response_dialogue_message(
+    payload: dict[str, Any], timestamp: object, counts: Counter[str]
+) -> dict[str, Any] | None:
+    role = payload.get("role")
+    if payload.get("type") != "message" or role not in {"user", "assistant"}:
+        return None
+    if payload.get("recipient") not in {None, "all", "user"}:
+        return None
+    phase = payload.get("phase") or payload.get("channel")
+    if payload.get("channel") not in {None, "commentary", "final", "final_answer"}:
+        return None
+    if role == "assistant" and phase not in {None, "commentary", "final", "final_answer"}:
+        return None
+    content = payload.get("content")
+    if not isinstance(content, list):
+        return None
+    metadata = payload.get("internal_chat_message_metadata_passthrough")
+    kinds = metadata.get("content_item_kinds") if isinstance(metadata, dict) else None
+    texts: list[str] = []
+    attachments: list[dict[str, str]] = []
+    for index, part in enumerate(content):
+        if not isinstance(part, dict):
+            continue
+        if role == "user" and isinstance(kinds, list):
+            if index >= len(kinds) or kinds[index] not in {"user.text", "user.image"}:
+                continue
+        if part.get("type") == "input_image" and role == "user":
+            attachments.append({"kind": "image"})
+        elif part.get("type") in {"input_text", "output_text"}:
+            text = part.get("text")
+            if not isinstance(text, str):
+                continue
+            if role == "user" and not isinstance(kinds, list):
+                text = without_injected_context(text)
+            if text.strip():
+                texts.append(redact_text(text, counts))
+    if not texts and not attachments:
+        return None
+    message: dict[str, Any] = {"role": role, "text": "\n".join(texts)}
+    if isinstance(timestamp, str):
+        message["timestamp"] = timestamp
+    if role == "assistant" and phase is not None:
+        message["phase"] = "final_answer" if phase == "final" else phase
+    if attachments:
+        message["attachments"] = attachments
+    return message
+
+
+def event_count_key(value: dict[str, Any]) -> str:
+    event_type = value.get("type")
+    if event_type == "event_msg":
+        payload = value.get("payload")
+        app_type = payload.get("type") if isinstance(payload, dict) else None
+        if app_type in SAFE_APP_EVENT_TYPES:
+            return f"event_msg.{app_type}"
+        return "event_msg.other"
+    if event_type in SAFE_TOP_LEVEL_EVENT_TYPES:
+        return str(event_type)
+    return "other"
+
+
+def redaction_summary(counts: Counter[str]) -> list[dict[str, Any]]:
+    return [
+        {"type": secret_type, "count": counts[secret_type]}
+        for secret_type in sorted(counts)
+        if counts[secret_type]
+    ]
 
 
 def load_jsonl(path: Path) -> tuple[list[dict[str, Any]], SourceIssue | None]:
@@ -171,20 +295,30 @@ def session_metadata(values: list[dict[str, Any]]) -> tuple[dict[str, Any] | Non
     return None, "session metadata is missing"
 
 
-def parse_turns(values: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[str], Counter[str]]:
+def parse_turns(
+    values: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], list[str], list[str], Counter[str]]:
     turns: list[dict[str, Any]] = []
     incomplete_ids: list[str] = []
+    omitted_empty_ids: list[str] = []
     active: dict[str, Any] | None = None
     redactions: Counter[str] = Counter()
+    turn_redactions: Counter[str] = Counter()
+    occurrences: dict[str, Counter[tuple[str, str, str | None]]] = {
+        "event_msg": Counter(), "response_item": Counter(),
+    }
+    response_ids: set[str] = set()
     sequence = 0
     for value in values:
+        source_type = value.get("type")
         payload = value.get("payload")
-        if value.get("type") != "event_msg" or not isinstance(payload, dict):
+        if source_type not in occurrences or not isinstance(payload, dict):
             continue
-        event_type = payload.get("type")
+        event_type = payload.get("type") if source_type == "event_msg" else None
         if event_type == "task_started":
             if active is not None:
-                incomplete_ids.append(active["id"])
+                target = incomplete_ids if active["messages"] else omitted_empty_ids
+                target.append(active["id"])
             sequence += 1
             turn_id = payload.get("turn_id")
             active = {
@@ -192,18 +326,56 @@ def parse_turns(values: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], lis
                 "status": "complete",
                 "messages": [],
             }
+            if isinstance(value.get("timestamp"), str):
+                active["started_at"] = value["timestamp"]
+            turn_redactions = Counter()
+            for counts in occurrences.values():
+                counts.clear()
             continue
         if active is None:
             continue
-        message = dialogue_message(payload, redactions)
+        message_redactions: Counter[str] = Counter()
+        if source_type == "response_item":
+            metadata = payload.get("internal_chat_message_metadata_passthrough")
+            turn_id = metadata.get("turn_id") if isinstance(metadata, dict) else None
+            if turn_id is not None and turn_id != active["id"]:
+                continue
+            response_id = payload.get("id")
+            if isinstance(response_id, str) and response_id in response_ids:
+                continue
+            message = response_dialogue_message(payload, value.get("timestamp"), message_redactions)
+            if message is not None and isinstance(response_id, str):
+                response_ids.add(response_id)
+        else:
+            message = dialogue_message(payload, value.get("timestamp"), message_redactions)
         if message is not None:
-            active["messages"].append(message)
+            # Pair mirror occurrences across formats without collapsing real repeats.
+            key = (message["role"], message["text"], message.get("phase"))
+            occurrences[source_type][key] += 1
+            other_source = "response_item" if source_type == "event_msg" else "event_msg"
+            if occurrences[source_type][key] > occurrences[other_source][key]:
+                active["messages"].append(message)
+                turn_redactions.update(message_redactions)
+        if event_type in {"task_complete", "turn_aborted"}:
+            if payload.get("turn_id") not in {None, active["id"]}:
+                continue
+        if event_type == "turn_aborted":
+            target = incomplete_ids if active["messages"] else omitted_empty_ids
+            target.append(active["id"])
+            active = None
         if event_type == "task_complete":
-            turns.append(active)
+            if active["messages"]:
+                if isinstance(value.get("timestamp"), str):
+                    active["completed_at"] = value["timestamp"]
+                turns.append(active)
+                redactions.update(turn_redactions)
+            else:
+                omitted_empty_ids.append(active["id"])
             active = None
     if active is not None:
-        incomplete_ids.append(active["id"])
-    return turns, incomplete_ids, redactions
+        target = incomplete_ids if active["messages"] else omitted_empty_ids
+        target.append(active["id"])
+    return turns, incomplete_ids, omitted_empty_ids, redactions
 
 
 def build_record(values: list[dict[str, Any]], source_path: Path) -> tuple[ParsedSession | None, SourceIssue | None]:
@@ -212,25 +384,24 @@ def build_record(values: list[dict[str, Any]], source_path: Path) -> tuple[Parse
         return None, SourceIssue(source_path, error or "invalid metadata")
     task_id = str(metadata.get("id") or metadata["session_id"])
     project_root = normalize_path(str(metadata["cwd"]))
-    turns, incomplete_ids, redactions = parse_turns(values)
+    turns, incomplete_ids, omitted_empty_ids, redactions = parse_turns(values)
     started_at = next(
         (value.get("timestamp") for value in values if value.get("type") == "session_meta"),
         None,
     )
     task: dict[str, Any] = {"id": task_id, "workspace": "."}
     if isinstance(metadata.get("originator"), str):
-        task["originator"] = metadata["originator"]
+        task["originator"] = redact_text(metadata["originator"], redactions)
     if isinstance(started_at, str):
         task["started_at"] = started_at
     capture: dict[str, Any] = {
         "state": "partial" if incomplete_ids else "complete",
         "completed_through_turn_id": turns[-1]["id"] if turns else None,
         "incomplete_turn_ids": incomplete_ids,
-        "redactions": [
-            {"type": secret_type, "count": redactions[secret_type]}
-            for secret_type in sorted(redactions)
-            if redactions[secret_type]
-        ],
+        "omitted_empty_turn_ids": omitted_empty_ids,
+        "source_event_count": len(values),
+        "event_type_counts": dict(sorted(Counter(event_count_key(value) for value in values).items())),
+        "redactions": redaction_summary(redactions),
     }
     record = {
         "schema_version": SCHEMA_VERSION,
@@ -246,6 +417,31 @@ def parse_source(path: Path) -> tuple[ParsedSession | None, SourceIssue | None]:
     if issue is not None:
         return None, issue
     return build_record(values, path)
+
+
+def with_app_metadata(candidate: ParsedSession, thread: dict[str, Any]) -> ParsedSession:
+    record = {**candidate.record, "task": dict(candidate.record["task"])}
+    task = record["task"]
+    redactions = Counter(
+        {
+            item["type"]: item["count"]
+            for item in record["capture"]["redactions"]
+            if isinstance(item, dict)
+            and isinstance(item.get("type"), str)
+            and isinstance(item.get("count"), int)
+        }
+    )
+    title = thread.get("title")
+    if isinstance(title, str):
+        task["title"] = redact_text(title, redactions)
+    updated_at = thread.get("updatedAt")
+    if isinstance(updated_at, str):
+        task["updated_at"] = updated_at
+    record["capture"] = {
+        **record["capture"],
+        "redactions": redaction_summary(redactions),
+    }
+    return ParsedSession(candidate.task_id, candidate.project_root, record, candidate.event_count)
 
 
 def render_json(value: dict[str, Any]) -> bytes:
@@ -523,7 +719,7 @@ def matching_app_threads(
         path = normalize_path(source)
         candidate, issue = parse_source(path)
         if candidate is not None and candidate.task_id == task_id:
-            selected[task_id] = candidate
+            selected[task_id] = with_app_metadata(candidate, thread)
         elif candidate is not None:
             issues.append(
                 SourceIssue(
@@ -550,11 +746,19 @@ def matching_app_threads(
 
 
 def record_index_entry(task_id: str, candidate: ParsedSession) -> dict[str, Any]:
-    return {
+    turns = candidate.record["turns"]
+    entry: dict[str, Any] = {
         "task_id": task_id,
         "path": f"threads/{task_id}.json",
         "state": candidate.record["capture"]["state"],
+        "turn_count": len(turns),
+        "message_count": sum(len(turn["messages"]) for turn in turns),
     }
+    task = candidate.record["task"]
+    for key in ("title", "updated_at"):
+        if isinstance(task.get(key), str):
+            entry[key] = task[key]
+    return entry
 
 
 def write_capture(
@@ -573,6 +777,9 @@ def write_capture(
         index_records = dict(existing_records)
         for task_id in sorted(selected):
             candidate = selected[task_id]
+            if not candidate.record["turns"] and not candidate.record["capture"]["incomplete_turn_ids"]:
+                counts["empty"] += 1
+                continue
             record_path = threads / f"{task_id}.json"
             existed = record_path.is_file()
             changed = atomic_write(record_path, render_json(candidate.record))
@@ -645,6 +852,7 @@ def print_summary(mode: str, counts: Counter[str]) -> None:
         "updated",
         "unchanged",
         "removed",
+        "empty",
         "incomplete",
         "unavailable",
     )

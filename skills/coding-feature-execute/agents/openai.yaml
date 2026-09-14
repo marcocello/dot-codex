@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | Feature Execute"
-  short_description: "Implement, prove, evaluate one ready feature."
-  default_prompt: "Use $coding-feature-execute for one explicitly authorized ready feature. Classify it as standard or sensitive, add preflight only for sensitive work, and require target-valid proof plus fresh $coding-feature-review final PASS before completion."
-policy:
-  allow_implicit_invocation: true

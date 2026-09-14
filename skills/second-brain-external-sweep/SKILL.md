@@ -5,7 +5,7 @@ description: Review Gmail, Zotero, Git, Granola, Codex work, or other native sou
 
 # Second Brain External Sweep
 
-Use the Notion structure defined in `docs/secondbrain.md`.
+Use the Notion structure defined in `docs/harness/secondbrain.md`.
 
 External sources stay native:
 - Gmail stays in Gmail.

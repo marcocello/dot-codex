@@ -1,6 +1,6 @@
 # Design source routing
 
-Use this map after inspecting the target interface and repository. Use every configured server through read-only discovery and inspection. Discover the live tool schema before calling a server; tool names can change independently of this skill.
+Use this map after inspecting the target interface and repository. Query only sources needed for the actual design question, through read-only discovery and inspection. Discover the live tool schema before calling a server; tool names can change independently of this skill.
 
 ## Configured MCP servers
 
@@ -13,15 +13,16 @@ Use this map after inspecting the target interface and repository. Use every con
 
 If an authenticated server is unavailable, name the missing environment variable and continue with repository evidence and available sources. Never request a token in chat or write one into `config.toml`.
 
-## Query sequence
+## Source selection
 
-For broad audits or redesigns:
+For broad audits or redesigns, choose sources for the unresolved design question:
 
-1. Query LandingFolio with a specific product type, page section, user goal, and style constraint.
-2. Query `@shadcn` for conventional accessible primitives, then search `@canvas-ui` or `@react-bits` only when expressive motion or rendering supports the goal.
-3. Query OriginKit with the target framework and interaction need, not generic aesthetic terms.
-4. Compare candidates against the existing design system, bundle cost, browser support, accessibility, and maintenance burden.
-5. Use Agentation feedback as user evidence; do not let external inspiration override explicit annotations.
+- LandingFolio: a specific product type, page section, user goal, and style constraint.
+- `@shadcn`: conventional accessible primitives; `@canvas-ui` or `@react-bits` only when expressive motion or rendering supports the goal.
+- OriginKit: a concrete framework and interaction need, not generic aesthetic terms.
+- Agentation: relevant user feedback; external inspiration does not override explicit annotations.
+
+Compare candidates against the existing design system, bundle cost, browser support, accessibility, and maintenance burden. Do not query every source by default.
 
 For a focused fix, skip unrelated sources. A form validation issue rarely needs LandingFolio or a WebGL component.
 
@@ -37,4 +38,4 @@ These are not separately configured MCP servers. Browse their official docs or m
 - Beautiful UI: `https://beautiful-ui-five.vercel.app/` for manual AI-interface pattern references; treat copied code as unvetted.
 - Remotion and Bento: use their installed skills for video or presentation artifacts, not application UI primitives.
 
-Do not install a supplemental package. Do not run add commands or copy registry source. Never enter an implementation phase from this skill; leave installation, code changes, dependency recording, and rendered verification to a later separately requested task.
+During review, do not install a supplemental package, run add commands, or copy registry source. When implementation is already authorized, hand the findings to `coding-workflow` and the relevant frontend skill in the same task for implementation and verification.

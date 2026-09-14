@@ -5,7 +5,7 @@ description: Produce a concise Notion Second Brain operating brief covering focu
 
 # Second Brain Activity Brief
 
-Use the Notion structure defined in `docs/secondbrain.md`.
+Use the Notion structure defined in `docs/harness/secondbrain.md`.
 
 Read only:
 - `SB - Tasks`

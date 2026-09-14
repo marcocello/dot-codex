@@ -2,44 +2,35 @@
 
 In December 2025, I stopped writing code. Codex now does the implementation work.
 
-That only works because I also changed how work begins and how completion is judged. Codex investigates rough product input, helps clarify the outcome and architecture, asks the material questions early, and then turns accepted decisions into lean contracts. Source inspection is no longer the primary completion control point: realistic executable proof and a fresh final review are.
+That changed where I put my engineering effort: understanding the problem, deciding what should happen, and checking whether the result works. A convincing response or a passing test suite can still leave the user's problem unresolved. Completion needs evidence from the place where the software is actually used.
 
-This repository is the control layer behind that workflow. It turns Codex from a fast code generator into a product and engineering partner that can take anything from a loose app idea to a detailed feature through evidence-backed completion.
+I built dot-codex to make that workflow repeatable. It gives Codex a shared set of instructions, skills, and checks for investigating rough ideas, clarifying consequential choices, implementing accepted behavior, and retaining enough evidence to explain what worked and what still needs attention.
 
-## Pillars
+The aim is dependable delegation. Codex should carry the work through implementation and verification while bringing decisions about scope, cost, permissions, and external effects back to me when needed. Small corrections should remain small; material features need explicit acceptance and realistic proof.
 
-- **Understand before producing.** Investigate the user, purpose, benefit, current repository, and material uncertainty before creating artifacts.
-- **Questions deepen understanding without becoming ceremony.** Ask focused grouped questions when answers can clarify or expand the problem, user implications, product, architecture, safety, cost, or proof. Continue across multiple rounds when answers expose consequential new unknowns; resynthesize and stop when the outcome is decision-ready.
-- **Enrich without speculative scope.** Classify adjacent capabilities and preserve only useful future seams; do not automatically build or specify plausible follow-ups.
-- **Record lean authority.** Create `APP.md`, `ARCHITECTURE.md`, feature packages, and queues only when accepted durable decisions justify them.
-- **Prefer simple modular architecture.** Separate real responsibilities and ownership without adding abstractions or orchestration for hypothetical flexibility.
-- **Prove the real lifecycle.** Cross the real boundary and exercise relevant existing state, visible read-back, affected consumers, failures, and runtime environment—not only fresh happy-path data.
-- **Own truthful completion.** One parent drives one feature through proof, repair, and fresh evaluation. When an existing runtime is the accepted target, source proof remains intermediate until that runtime works.
+## Four pillars
 
-The standard is simple: understand the outcome, record only accepted decisions, prove the real behavior, and leave no plausible shortcuts.
+**Spec-driven work.** Start with conversation and investigation. Record accepted behavior in `FEATURE.md` so implementation and verification have a stable target.
 
-## From idea to implementation
+**Realistic proof.** Have a separate agent author executable acceptance checks. Exercise the user's journey on the intended runtime, verify affected existing behavior, and use a fresh final reviewer to challenge the completion claim.
 
-The starting point can be a rough app idea, a detailed feature, one correction, or a bundle of potential capabilities. Input polish does not determine the workflow:
+**Persistent execution.** Use native Codex Goals, when explicitly authorized, to carry material implementation through proof and repair within the configured allowance. Report unfinished work when input, access, or runtime limits prevent completion.
 
-```text
-product input
-  -> investigate and clarify material choices
-  -> classify adjacent outcomes
-  -> write only earned authority and proof
-  -> for sensitive work, run a fresh preflight
-  -> implement and capture realistic evidence
-  -> fresh final review and repair when needed
-  -> truthful source/active-runtime handoff
-```
+**Evidence and reflection.** Retain decisions, attempts, corrections, and results so failures can be understood and recurring problems can inform deliberate improvements to the harness.
 
-Product input of any maturity or cardinality routes through `coding-product-partner`. The partner adapts its depth, may produce one or several accepted feature packages, and hands them to separate proof, implementation, review, and repair skills. Implementation remains serial: one accountable parent completes one feature before selecting the next.
+## How work flows
 
-Contract authoring and implementation are separate authorities. A request to shape, specify, or prepare proof stops after decision-ready artifacts; answering discovery questions does not silently authorize product implementation.
+The [coding workflow](skills/coding-workflow/SKILL.md) selects Shape, Ship, Fix, Analyze, or Operate according to the request. Domain skills supply the relevant implementation technique. A rough idea needs discovery; an isolated correction needs a focused change and check.
+
+For a material feature, the path is conversation → `FEATURE.md` → independently authored `PROOF.md` and executable proof → implementation → affected regression checks → fresh final review. Acceptance stays fixed during implementation, and repairs continue within the same feature. The [coding guide](docs/harness/coding-workflow.md) explains the decisions and completion requirements.
+
+Codex provides the runtime, permissions, task history, and Goal controls. This repository defines how to use them. Automatic evidence capture and protected proof execution still have integration limits; the workflow must report what was verified and where evidence is missing. The [evidence guidance](skills/coding-workflow/references/evidence.md) describes those boundaries.
+
+The same installation also supports [personal operations through Second Brain](docs/harness/secondbrain.md), with shared rules for turning notes and activity into Notion tasks, deals, and ideas.
 
 ## Install
 
-Clone the repository as your Codex home, or point `CODEX_HOME` at another checkout:
+Clone this repository as your Codex home, or point `CODEX_HOME` to the checkout:
 
 ```bash
 git clone https://github.com/marcocello/dot-codex /path/to/dot-codex
@@ -47,19 +38,23 @@ export CODEX_HOME=/path/to/dot-codex
 cp "$CODEX_HOME/config.template.toml" "$CODEX_HOME/config.toml"
 ```
 
-Review `config.toml` and replace the example paths, permission roots, notification command, and MCP settings for your machine. Then ask Codex to manage the installation through the included skills:
+Review machine-specific paths and permissions. The template enables multiple agents for separate proof authorship and final review. Start a fresh Codex task to load updated skill discovery. Use `$sync-codex-skills` to reconcile declared dependencies and `$manage-codex-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
 
-- “Use `$sync-codex-skills` to bootstrap this installation.”
-- “Use `$sync-codex-skills` to reconcile all declared skills and plugins.”
-- “Use `$manage-codex-skills` to add, update, diagnose, list, or remove an inventory entry.”
-
-System skills and `openai-primary-runtime` plugins remain runtime-managed and stay outside `skills.toml`. The [skill management guide](docs/skill-management.md) explains ownership, reconciliation, plugin handling, and update policy.
-
-When editing this repository, run its read-only gate:
+Validate the repository:
 
 ```bash
 "${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$CODEX_HOME"
 ```
+
+## Documentation
+
+`docs/harness/` describes how dot-codex operates today. `docs/features/` records dot-codex changes, feature descriptions, decisions, and verification evidence.
+
+- [Operating rules and ownership](AGENTS.md)
+- [Coding workflow and pillars](docs/harness/coding-workflow.md)
+- [Safety and operations](docs/harness/safety.md)
+- [Skill inventory](docs/harness/skill-management.md)
+- [Non-coding workflows](docs/harness/secondbrain.md)
 
 ## Design references
 
@@ -86,19 +81,7 @@ The external background for this work lives in Zotero under the `Harness Enginee
 - Geoffrey Huntley, [Ralph Wiggum as a “software engineer”](https://ghuntley.com/ralph/) on while-loop coding agents and their limits.
 - Simon Willison, [What is agentic engineering?](https://simonwillison.net/guides/agentic-engineering-patterns/what-is-agentic-engineering/) on agentic engineering as an engineering discipline.
 - Peter Steinberger, [Shipping at Inference-Speed](https://steipete.me/posts/2025/shipping-at-inference-speed) on high-throughput agent-assisted shipping.
+- [Pi](https://pi.dev/) as an extensible coding agent with project instructions and a programmable SDK.
+- [Exo](https://github.com/exoharness/exo) on inspectable execution history, durable canonical state, and an agent-modifiable harness.
 
 </details>
-
-## Go deeper
-
-- [Harness design and workflow](docs/harness/deep-dive.md)
-- [Proof lifecycle and retained attempts](docs/harness/proof-lifecycle.md)
-- [Proof scope and false-green risk](docs/harness/oracle-scope.md)
-- [Repository discovery and harness learning](docs/harness/repo-autonomy.md)
-- [Autonomous execution and recovery](docs/harness/autonomous-execution.md)
-- [Harness evolution](docs/harness/evolution/evolution-loop.md)
-- [Handoff format](docs/harness/handoff.md)
-- [Non-coding and Second Brain workflows](docs/secondbrain.md)
-- [Skill inventory and maintenance](docs/skill-management.md)
-
-Code generation is becoming abundant. Reliable acceptance remains scarce. dot-codex concentrates engineering effort on the scarce part: deciding behavior, producing evidence, and preserving enough context to repair failures without starting over.

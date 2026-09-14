@@ -1,18 +1,18 @@
 ---
 name: coding-ui-improvement
-description: "Write UI/UX critiques and redesign guidance as written, component-specific improvement instructions grounded in rendered UI, repository context, Agentation, and design registries; use for interface review or motion, and never implement changes."
+description: "Assess UI/UX and write component-specific improvement guidance grounded in rendered interfaces, repository context, annotations, and relevant design references. Use for UI review and redesign analysis."
 ---
 
 # Improve UI
 
-Keep this skill advisory-only in every invocation. Produce a written implementation brief that another task can apply. Ground every judgment in the product's goal, the observed interface, and real source material.
+Use directly for `coding-workflow` Analyze to produce a component-specific implementation brief. Ground every judgment in the product's goal, the observed interface, and real source material. The review is read-only; authorized implementation can follow in the same task through `coding-workflow` and the relevant frontend skill.
 
 ## Preserve the read-only boundary
 
 - Do not edit product or test files, generate or apply patches, install or copy components, or change dependencies or configuration.
-- Do not treat implementation-shaped wording as edit authorization. Requests to improve, fix, redesign, build, apply, or address feedback still receive only the written brief.
+- Preserve the user's requested scope. A critique ends with findings; an explicit request to apply or build continues through the implementation workflow once the behavior is understood.
 - Do not mutate the running product, connected services, or feedback state. Never acknowledge, resolve, or otherwise mutate an annotation.
-- When the user asks to apply the recommendations, complete the brief and state that implementation requires a separate implementation task using the relevant frontend or repair skill. Do not invoke that implementation workflow in the current task.
+- Invoking this analytical skill does not cancel existing implementation authorization or require another task. Route known UI defects to Fix and material new behavior through Shape/Ship.
 - Inspect rendered UI, screenshots, repository source, annotations, and external sources only through read-only actions.
 
 ## Inspect before researching
@@ -26,7 +26,7 @@ Keep this skill advisory-only in every invocation. Produce a written implementat
 
 Read [references/mcp-routing.md](references/mcp-routing.md) before using external design sources.
 
-- For a broad critique or redesign, query LandingFolio for shipped examples, shadcn for established primitives and the `@canvas-ui` registry, and OriginKit for motion-rich alternatives. Use at least two materially different sources before recommending a new visual direction.
+- For a broad critique or redesign, use relevant design sources when the existing interface and design system leave a decision unresolved. LandingFolio supplies shipped examples, shadcn supplies primitives, and OriginKit supplies motion alternatives; no source quota is required.
 - For a narrow defect or small component change, query only the source that can resolve the observed problem.
 - Prefer the product's existing design system over adding a dependency. Recommend an external component only when it solves a named usability, interaction, or communication problem.
 - Record the source name, component or reference identifier, relevance, intended local target, and required adaptation. Recommendations do not authorize installation or copying.

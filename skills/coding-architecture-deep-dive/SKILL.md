@@ -7,7 +7,7 @@ description: "Assess one component's architecture, logic, implementation risks, 
 
 Purpose: produce a precise, evidence-based architectural assessment for one component or one current-versus-reference decision.
 
-Read-only unless the user separately asks for implementation.
+Use directly for `coding-workflow` Analyze. The assessment is read-only; an already authorized implementation can follow in the same task through the appropriate workflow.
 
 ## Inputs
 Required or inferable:
@@ -100,7 +100,7 @@ Unknowns: <blocking only>
 - No mandatory framework or pattern replacement.
 - No backward-compatibility work unless required by user or authoritative contract.
 - No implementation edits during review-only work.
-- Route a clear defect to `coding-repair`; route accepted structural change through the normal feature lifecycle.
+- For authorized implementation, route a clear defect or bounded behavior-preserving cleanup to `coding-workflow` Fix; material refactors use Shape/Ship with invariant or equivalence proof. Findings alone do not authorize implementation.
 
 ## Handoff
 Lead with the decision and highest-impact evidence. Keep the remediation staged and testable. Ask for input only when one missing product/workload/operational fact can change the decision.

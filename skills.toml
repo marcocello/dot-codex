@@ -106,11 +106,6 @@ kind = "owned"
 path = "second-brain-notion-api"
 
 [[skills]]
-name = "write-product-posts"
-kind = "owned"
-path = "write-product-posts"
-
-[[skills]]
 name = "zotero"
 kind = "plugin"
 selector = "zotero@openai-curated"
@@ -191,11 +186,6 @@ kind = "owned"
 path = "curate-job-search-directories"
 
 [[skills]]
-name = "writing-technical-content"
-kind = "owned"
-path = "writing-technical-content"
-
-[[skills]]
 name = "codex-manage-skills"
 kind = "owned"
 path = "codex-manage-skills"
@@ -224,8 +214,3 @@ path = "knowledge-capture"
 name = "keep-or-cringe"
 kind = "owned"
 path = "keep-or-cringe"
-
-[[skills]]
-name = "skills-registry-guide"
-kind = "owned"
-path = "skills-registry-guide"

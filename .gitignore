@@ -36,12 +36,6 @@ config.toml
 docs/features/**/proof/runs/**
 docs/features/**/tests/runs/**
 docs/interactions
-
-# BEGIN skill_inventory.py managed skills
-skills/bento-slides/
-skills/reui/
-# END skill_inventory.py managed skills
-
 # Preserve bundled photo-drop assets when renaming the owned skill.
 !/skills/app-photo-drop/assets/app/LICENSE
 !/skills/app-photo-drop/assets/app/backend/requirements.txt
@@ -52,3 +46,8 @@ skills/reui/
 !/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.png
 !/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.svg
 !/skills/app-photo-drop/assets/app/frontend/app/dist/images/shadcn-admin.png
+
+# BEGIN skill_inventory.py managed skills
+skills/bento-slides/
+skills/reui/
+# END skill_inventory.py managed skills

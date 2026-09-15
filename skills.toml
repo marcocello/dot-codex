@@ -120,11 +120,6 @@ source_path = "plugins/bento-slides/skills/bento-slides"
 path = "bento-slides"
 
 [[skills]]
-name = "plan-company-visit-itinerary"
-kind = "owned"
-path = "plan-company-visit-itinerary"
-
-[[skills]]
 name = "reui"
 kind = "bundle"
 url = "https://mcp.reui.io/api/skills/download"
@@ -166,29 +161,14 @@ kind = "owned"
 path = "career-search-jobs"
 
 [[skills]]
-name = "knowledge-rewrite-message"
-kind = "owned"
-path = "knowledge-rewrite-message"
-
-[[skills]]
 name = "knowledge-drawio-diagram"
 kind = "owned"
 path = "knowledge-drawio-diagram"
 
 [[skills]]
-name = "knowledge-first-principles"
-kind = "owned"
-path = "knowledge-first-principles"
-
-[[skills]]
 name = "knowledge-keep-or-cringe"
 kind = "owned"
 path = "knowledge-keep-or-cringe"
-
-[[skills]]
-name = "knowledge-review"
-kind = "owned"
-path = "knowledge-review"
 
 [[skills]]
 name = "knowledge-notion-api"
@@ -209,3 +189,18 @@ path = "app-photo-drop"
 name = "coding-review-workflow"
 kind = "owned"
 path = "coding-review-workflow"
+
+[[skills]]
+name = "knowledge-think-first-principles"
+kind = "owned"
+path = "knowledge-think-first-principles"
+
+[[skills]]
+name = "knowledge-notion-review"
+kind = "owned"
+path = "knowledge-notion-review"
+
+[[skills]]
+name = "knowledge-rewrite-natural-message"
+kind = "owned"
+path = "knowledge-rewrite-natural-message"

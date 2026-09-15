@@ -1,5 +1,5 @@
 ---
-name: knowledge-first-principles
+name: knowledge-think-first-principles
 description: "Analyze beliefs, decisions, conflicts, and confusing situations using first-principles reasoning, evidence grading, disconfirmation, and ego-aware reflection. Use for truth-seeking, assumption testing, rational decisions under uncertainty, or reducing confirmation and sunk-cost bias."
 ---
 

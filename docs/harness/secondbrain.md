@@ -67,13 +67,13 @@ Codex may inspect native sources when requested, then write concise derived reco
 Use these local skills for Second Brain work:
 
 - `knowledge-capture` (Second Brain mode: supplied material or requested source gathering)
-- `knowledge-review` (brief or weekly mode)
+- `knowledge-notion-review` (brief or weekly mode)
 - `knowledge-notion-api`
 
 User-facing workflow names:
 
 - `KNOWLEDGE | Capture` (Second Brain destination)
-- `KNOWLEDGE | Second Brain Review` (brief or weekly)
+- `KNOWLEDGE | Notion Review` (brief or weekly)
 - `KNOWLEDGE | Notion API`
 
 ## Operating Rules

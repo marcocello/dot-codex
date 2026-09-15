@@ -1,0 +1,67 @@
+---
+name: knowledge-notion-api
+description: Read or write Notion Second Brain tasks, deals, and ideas through the local Notion API when direct access is requested or MCP is unavailable.
+---
+
+# Second Brain Notion API
+
+Use this skill for direct Notion API operations on the Second Brain tables
+defined in `docs/harness/secondbrain.md`.
+
+## Safety
+
+- Never hardcode Notion credentials in repo files.
+- Read the integration token only from the local plaintext token file:
+  `$HOME/.config/codex/notion_secondbrain_token`.
+- Do not print, summarize, or persist the token.
+- If no token is available, stop and ask the user to create that file.
+- Use the script for reads and writes instead of manually retyping API requests.
+
+## Script
+
+Run:
+
+```bash
+python skills/knowledge-notion-api/scripts/notion_secondbrain.py --help
+```
+
+Common commands:
+
+```bash
+python skills/knowledge-notion-api/scripts/notion_secondbrain.py list tasks
+python skills/knowledge-notion-api/scripts/notion_secondbrain.py create-task \
+  --title "Follow up with Mario" --status Active --priority Medium
+python skills/knowledge-notion-api/scripts/notion_secondbrain.py create-idea \
+  --title "Granola insight" --source Granola --status Review
+```
+
+The script outputs compact JSON. Use `--raw` for full Notion API responses when
+debugging.
+
+## Tables
+
+Use only the canonical Second Brain tables unless the user explicitly asks for
+schema work:
+
+- `tasks` -> `SB - Tasks`
+- `deals` -> `SB - Deals`
+- `ideas` -> `SB - Ideas`
+
+At the beginning of each interaction, read or confirm the current data-source IDs for these
+tables from `docs/harness/secondbrain.md`, the live Notion structure, or user-provided context before
+running write operations.
+
+## Workflow
+
+1. Read `docs/harness/secondbrain.md` for the current table contract.
+2. Use the script with the token stored in
+   `$HOME/.config/codex/notion_secondbrain_token`.
+3. For writes, create the narrowest row that matches the user's request.
+4. For uncertain derived rows, use `Needs Review`, `Proposed`, or low confidence.
+5. Report the changed table, row title, and resulting page URL if available.
+
+## Fallback
+
+If the API rejects a property name or select value, do not invent a new schema.
+Return the exact attempted table, fields, values, and API error so the schema can
+be adjusted deliberately.

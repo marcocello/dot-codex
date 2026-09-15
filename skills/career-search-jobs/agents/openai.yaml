@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAREER | Search Jobs"
+  short_description: "Run and record a profile-aware job search"
+  default_prompt: "Use $career-search-jobs to search every configured source and merge new profile-matched vacancies into the findings CSV."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAREER | Curate Job Sources"
+  short_description: "Build a profile-aware job-source list"
+  default_prompt: "Use $career-curate-job-sources to create or refresh job_directories.csv from my professional profile and search objectives."

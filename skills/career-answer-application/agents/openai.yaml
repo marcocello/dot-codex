@@ -1,0 +1,4 @@
+interface:
+  display_name: "CAREER | Answer Application"
+  short_description: "Draft natural, evidence-based job answers"
+  default_prompt: "Use $career-answer-application to answer these application questions from the pasted company and role description."

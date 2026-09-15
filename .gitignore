@@ -41,3 +41,14 @@ docs/interactions
 skills/bento-slides/
 skills/reui/
 # END skill_inventory.py managed skills
+
+# Preserve bundled photo-drop assets when renaming the owned skill.
+!/skills/app-photo-drop/assets/app/LICENSE
+!/skills/app-photo-drop/assets/app/backend/requirements.txt
+!/skills/app-photo-drop/assets/app/frontend/app/dist/assets/index-DVxHorlm.css
+!/skills/app-photo-drop/assets/app/frontend/app/dist/assets/index-DwTMLTj4.js
+!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon.png
+!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon.svg
+!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.png
+!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.svg
+!/skills/app-photo-drop/assets/app/frontend/app/dist/images/shadcn-admin.png

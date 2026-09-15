@@ -53,4 +53,4 @@ Official proof and every supporting regression run used to justify feature compl
 
 Complete automatic lifecycle capture is not configured by this repository. Use supported capture where available and identify partial or unavailable evidence. Current proof capture also has limited write protection; its [documented boundary](../../skills/coding-workflow/references/proof.md#fixed-acceptance) explains what it can establish.
 
-The [improvement-review skill](../../skills/coding-app-improvement-review/SKILL.md) examines actual runs and proposes corrections supported by recurring failures or a demonstrated harness defect. Retaining evidence supports that review; changes to global instructions remain deliberate decisions.
+The [improvement-review skill](../../skills/coding-review-workflow/SKILL.md) examines actual runs and proposes corrections supported by recurring failures or a demonstrated harness defect. Retaining evidence supports that review; changes to global instructions remain deliberate decisions.

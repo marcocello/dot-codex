@@ -1,0 +1,4 @@
+interface:
+  display_name: "KNOWLEDGE | Draw.io Diagram"
+  short_description: "Create polished, editable Draw.io diagrams"
+  default_prompt: "Use $knowledge-drawio-diagram to create a polished, fully editable Draw.io diagram."

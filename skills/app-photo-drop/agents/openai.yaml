@@ -1,0 +1,4 @@
+interface:
+  display_name: "APP | Photo Drop"
+  short_description: "Start a private event photo upload portal"
+  default_prompt: "Use $app-photo-drop to start a 6-hour Rob & Mary wedding photo drop and give me the sharing URL."

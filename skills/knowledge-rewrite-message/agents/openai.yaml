@@ -1,0 +1,4 @@
+interface:
+  display_name: "KNOWLEDGE | Rewrite Message"
+  short_description: "Rewrite text like a casual human message"
+  default_prompt: "Use $knowledge-rewrite-message to make this sound casual and natural."

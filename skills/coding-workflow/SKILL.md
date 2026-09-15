@@ -45,3 +45,7 @@ An analysis or specification request ends at its requested deliverable. Already 
 Use an early read-only reviewer only for a concrete risk or explicit request. Material delivery requires one fresh separate final reviewer after successful proof and affected regression verification. It is distinct from implementer and proof author. A standalone focused Fix has no mandatory reviewer.
 
 Report outcome, changed surface, proof or focused check, final reviewer when required, runtime state, known gaps, and exact blocker. Review never grants mutation permission. A missing required capability or external dependency is surfaced explicitly; no fallback or backward-compatibility path is part of this workflow.
+
+## Research support
+
+For source verification during Shape or Analyze, read [Research](references/research.md). Research is a supporting mode, not a separate lifecycle.

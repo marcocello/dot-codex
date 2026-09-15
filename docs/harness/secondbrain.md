@@ -66,18 +66,14 @@ Codex may inspect native sources when requested, then write concise derived reco
 
 Use these local skills for Second Brain work:
 
-- `second-brain-capture-raw-input`
-- `second-brain-external-sweep`
-- `second-brain-activity-brief`
-- `second-brain-weekly-review`
+- `knowledge-capture` (Second Brain mode: supplied material or requested source gathering)
+- `second-brain-review` (brief or weekly mode)
 - `second-brain-notion-api`
 
 User-facing workflow names:
 
-- `SECOND BRAIN | Capture Raw Input`
-- `SECOND BRAIN | External Sweep`
-- `SECOND BRAIN | Activity Brief`
-- `SECOND BRAIN | Weekly Review`
+- `KNOWLEDGE | Capture` (Second Brain destination)
+- `SECOND BRAIN | Review` (brief or weekly)
 - `SECOND BRAIN | Notion API`
 
 ## Operating Rules
@@ -94,7 +90,7 @@ User-facing workflow names:
 
 ## Tooling
 
-Prefer the local `second-brain-notion-api` skill/script for Notion reads and writes when MCP table reads are unavailable, plan-gated, or too indirect.
+Prefer an available Notion connector for capture. Use the local `second-brain-notion-api` skill/script when its actual configuration and required operation are verified and MCP table reads are unavailable, plan-gated, or too indirect. Its current placeholder IDs and limited CLI do not establish usable read/write access; incomplete reads cannot establish that a record is absent. If the required operation is unavailable, return exact manual proposals instead.
 
 Never hardcode Notion credentials in repo files. The local API script must read the local plaintext token file outside the repo. If no Notion write access exists in the current session, do not pretend records were changed. Return the exact Notion table, fields, and values the user should create or update.
 

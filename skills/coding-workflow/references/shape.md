@@ -27,3 +27,7 @@ If independent authorship is unavailable, surface that required capability rathe
 Planning, analysis, specification, and proof-authoring requests stop at the requested deliverable. A build request retains its existing implementation authorization through discovery. When ready, read [ship.md](ship.md), claim the feature, establish authorized native Goal execution, and continue.
 
 Later behavior requests normally start a new change cycle after the current one completes. Preserve original run evidence. Honor user interruption. A necessary acceptance decision during Ship pauses dependent work until resolved with the user before revising specification, separate author's proof, and Goal. Compatible guidance and independent test-setup repairs under [proof.md](proof.md#fixed-acceptance) stay in Ship without reopening Shape.
+
+## External research
+
+When a planning or analysis decision depends on external product, domain, library, or API evidence, use [Research](research.md). Keep research bounded to that decision and preserve fixed acceptance.

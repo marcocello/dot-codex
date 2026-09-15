@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | Research"
-  short_description: "Gather external evidence with Context7 first and live web search only when needed."
-  default_prompt: "Use $coding-research to resolve this concrete question from repository context and authoritative current sources, then explain the evidence and its implication for the accepted design."
-policy:
-  allow_implicit_invocation: true

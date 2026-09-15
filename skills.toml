@@ -1,19 +1,9 @@
 schema = 1
 
 [[skills]]
-name = "casual-message-rewriter"
-kind = "owned"
-path = "casual-message-rewriter"
-
-[[skills]]
 name = "coding-antipattern-review"
 kind = "owned"
 path = "coding-antipattern-review"
-
-[[skills]]
-name = "coding-app-improvement-review"
-kind = "owned"
-path = "coding-app-improvement-review"
 
 [[skills]]
 name = "coding-architecture-deep-dive"
@@ -66,21 +56,6 @@ kind = "owned"
 path = "coding-wordpress"
 
 [[skills]]
-name = "drawio-diagram-design"
-kind = "owned"
-path = "drawio-diagram-design"
-
-[[skills]]
-name = "first-principles-clarity"
-kind = "owned"
-path = "first-principles-clarity"
-
-[[skills]]
-name = "launch-photo-drop"
-kind = "owned"
-path = "launch-photo-drop"
-
-[[skills]]
 name = "prospecting-linkedin-content-manager"
 kind = "owned"
 path = "prospecting-linkedin-content-manager"
@@ -94,16 +69,6 @@ path = "prospecting-signal-context-builder"
 name = "prospecting-signal-detector"
 kind = "owned"
 path = "prospecting-signal-detector"
-
-[[skills]]
-name = "pull-codex-config"
-kind = "owned"
-path = "pull-codex-config"
-
-[[skills]]
-name = "second-brain-notion-api"
-kind = "owned"
-path = "second-brain-notion-api"
 
 [[skills]]
 name = "zotero"
@@ -160,40 +125,10 @@ kind = "owned"
 path = "plan-company-visit-itinerary"
 
 [[skills]]
-name = "answer-job-application"
-kind = "owned"
-path = "answer-job-application"
-
-[[skills]]
 name = "reui"
 kind = "bundle"
 url = "https://mcp.reui.io/api/skills/download"
 path = "reui"
-
-[[skills]]
-name = "run-job-search"
-kind = "owned"
-path = "run-job-search"
-
-[[skills]]
-name = "build-professional-profile"
-kind = "owned"
-path = "build-professional-profile"
-
-[[skills]]
-name = "curate-job-search-directories"
-kind = "owned"
-path = "curate-job-search-directories"
-
-[[skills]]
-name = "codex-manage-skills"
-kind = "owned"
-path = "codex-manage-skills"
-
-[[skills]]
-name = "second-brain-review"
-kind = "owned"
-path = "second-brain-review"
 
 [[skills]]
 name = "coding-ui-toolkit"
@@ -211,6 +146,66 @@ kind = "owned"
 path = "knowledge-capture"
 
 [[skills]]
-name = "keep-or-cringe"
+name = "career-answer-application"
 kind = "owned"
-path = "keep-or-cringe"
+path = "career-answer-application"
+
+[[skills]]
+name = "career-build-profile"
+kind = "owned"
+path = "career-build-profile"
+
+[[skills]]
+name = "career-curate-job-sources"
+kind = "owned"
+path = "career-curate-job-sources"
+
+[[skills]]
+name = "career-search-jobs"
+kind = "owned"
+path = "career-search-jobs"
+
+[[skills]]
+name = "knowledge-rewrite-message"
+kind = "owned"
+path = "knowledge-rewrite-message"
+
+[[skills]]
+name = "knowledge-drawio-diagram"
+kind = "owned"
+path = "knowledge-drawio-diagram"
+
+[[skills]]
+name = "knowledge-first-principles"
+kind = "owned"
+path = "knowledge-first-principles"
+
+[[skills]]
+name = "knowledge-keep-or-cringe"
+kind = "owned"
+path = "knowledge-keep-or-cringe"
+
+[[skills]]
+name = "knowledge-review"
+kind = "owned"
+path = "knowledge-review"
+
+[[skills]]
+name = "knowledge-notion-api"
+kind = "owned"
+path = "knowledge-notion-api"
+
+[[skills]]
+name = "harness-manage-skills"
+kind = "owned"
+path = "harness-manage-skills"
+
+[[skills]]
+name = "app-photo-drop"
+kind = "owned"
+path = "app-photo-drop"
+
+[[skills]]
+name = "coding-review-workflow"
+kind = "owned"
+path = "coding-review-workflow"

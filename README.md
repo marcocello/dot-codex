@@ -38,7 +38,7 @@ export CODEX_HOME=/path/to/dot-codex
 cp "$CODEX_HOME/config.template.toml" "$CODEX_HOME/config.toml"
 ```
 
-Review machine-specific paths and permissions. The template enables multiple agents for separate proof authorship and final review. Start a fresh Codex task to load updated skill discovery. Use `$codex-manage-skills sync` to reconcile declared dependencies and `$codex-manage-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
+Review machine-specific paths and permissions. The template enables multiple agents for separate proof authorship and final review. Start a fresh Codex task to load updated skill discovery. Use `$harness-manage-skills sync` to reconcile declared dependencies and `$harness-manage-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
 
 Validate the repository:
 

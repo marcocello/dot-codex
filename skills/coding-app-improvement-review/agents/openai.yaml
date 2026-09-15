@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | App Improvement Review"
-  short_description: "Learn from coding runs and suggest focused improvements"
-  default_prompt: "Use $coding-app-improvement-review to inspect relevant dialogue, corrections, and successful, failed, or interrupted coding runs, then propose the smallest supported project or harness improvements without applying them."
-policy:
-  allow_implicit_invocation: true

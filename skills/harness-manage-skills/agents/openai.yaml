@@ -1,0 +1,4 @@
+interface:
+  display_name: "HARNESS | Manage Skills"
+  short_description: "Inspect, change, or reconcile skill dependencies"
+  default_prompt: "Use $harness-manage-skills to inspect or manage the skills.toml inventory."

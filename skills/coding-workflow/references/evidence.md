@@ -38,7 +38,7 @@ Keep user corrections and discussions in the native conversation. Record accepte
 
 ## Learn Deliberately
 
-Use `coding-app-improvement-review` on selected real runs. Compare the original request and corrections with current code, accepted contracts, failed/passing attempts, reviews, and outcomes. Current verified evidence outranks historical assistant claims. Distinguish product decisions, discovery mistakes, code/proof defects, environment issues, and reusable harness problems.
+Use `coding-review-workflow` on selected real runs. Compare the original request and corrections with current code, accepted contracts, failed/passing attempts, reviews, and outcomes. Current verified evidence outranks historical assistant claims. Distinguish product decisions, discovery mistakes, code/proof defects, environment issues, and reusable harness problems.
 
 Propose the smallest change supported by recurring evidence or a demonstrated harness defect. Pick one owner for the correction: a skill, document, script, test, or configuration. Validate it on the motivating case and a separate case before promoting it; keep, revise, or revert it based on the results. Retained attempts, the diff, checks, and a short rationale suffice; no separate evolution manifest or transition schema is needed. Automatic recording does not authorize automatic global prompt changes. No extra reviewer or learning loop is required on every small fix.
 

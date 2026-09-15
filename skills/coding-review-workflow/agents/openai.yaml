@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Review Workflow"
+  short_description: "Learn from coding runs and suggest focused improvements"
+  default_prompt: "Use $coding-review-workflow to inspect relevant dialogue, corrections, and successful, failed, or interrupted coding runs, then propose the smallest supported project or harness improvements without applying them."
+policy:
+  allow_implicit_invocation: true

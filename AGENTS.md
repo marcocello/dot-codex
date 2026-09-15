@@ -4,8 +4,8 @@
 
 - `docs/harness/coding-workflow.md` is the coding design. `coding-workflow` owns lifecycle; domain skills own technique; scripts own command contracts; repository docs own product context.
 - Invoke shared tools as `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>"`; do not copy them into target repositories.
-- Route non-coding personal operations through `docs/harness/secondbrain.md` and the matching `second-brain-*` skill.
-- `skills.toml` owns the desired skill inventory. Use `codex-manage-skills` through `skill_inventory.py`; `docs/harness/skill-management.md` defines ownership, reconciliation, and updates.
+- Route non-coding personal operations through `docs/harness/secondbrain.md` and the matching `knowledge-*` skill.
+- `skills.toml` owns the desired skill inventory. Use `harness-manage-skills` through `skill_inventory.py`; `docs/harness/skill-management.md` defines ownership, reconciliation, and updates.
 - `docs/harness/` describes current operating rules. `docs/features/` records dot-codex changes, accepted decisions, and verification evidence; earlier specifications remain change history.
 
 ## Start And Route
@@ -39,6 +39,6 @@
 
 ## Evidence And Handoff
 
-- Retain relevant native dialogue/corrections, skill versions, role/Goal links, proof attempts, regressions, review, and outcome. Mark missing capture as partial; never fabricate history. `coding-app-improvement-review` proposes deliberate improvements from actual runs. Capture official proof and completion-supporting feature regressions through the separate modes of `proof_run_capture`. Follow `skills/coding-workflow/references/evidence.md` for the detailed evidence and learning procedure.
+- Retain relevant native dialogue/corrections, skill versions, role/Goal links, proof attempts, regressions, review, and outcome. Mark missing capture as partial; never fabricate history. `coding-review-workflow` proposes deliberate improvements from actual runs. Capture official proof and completion-supporting feature regressions through the separate modes of `proof_run_capture`. Follow `skills/coding-workflow/references/evidence.md` for the detailed evidence and learning procedure.
 - Lead with outcome, changed surface, proof or focused regression, required final review, runtime state, gaps, and exact blocker. Local verification does not resolve a deployed incident; verify the original symptom after deployment.
 - Ask each necessary question once and retain the pending decision. Use `NEED_INPUT: <question>` only if it has not already been asked; automatic continuations must not repeat it or unchanged rule explanations. Follow native blocked-state criteria when no independent work remains. Approval and operational details: `docs/harness/safety.md`.

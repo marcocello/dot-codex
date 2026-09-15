@@ -22,7 +22,7 @@ extends = ":workspace"
 enabled = true
 
 [features]
-multi_agent = false
+multi_agent = true
 
 [mcp_servers.shadcn]
 command = "npx"

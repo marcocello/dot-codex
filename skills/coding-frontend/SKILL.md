@@ -9,6 +9,8 @@ metadata:
 
 Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the repo's design system and frontend conventions.
 
+`coding-workflow` owns routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; invoking it does not bypass Shape for undefined behavior or require a feature package for a focused Fix.
+
 ## Scope
 - Applies when:
   - The feature affects UI
@@ -45,24 +47,17 @@ Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while 
 - Ensure layout works on desktop and mobile
 
 ## Implementation rules
-- Before installing packages, starting dev servers, or running frontend checks, use `coding-prepare-environment`.
+- Use `coding-prepare-environment` when setup or readiness is unknown; reuse a prepared environment.
 - Reuse existing components before creating new ones
 - Follow existing lint/build conventions
 - No large refactors unless required
 - Avoid backward compatibility work by default; do it only when explicitly requested
 
-## Tests (required if repo has frontend tests)
-- Extend existing test setup (vitest/jest) if present
-- Red phase: add/update the smallest relevant frontend test and confirm it fails first
-- Green phase: implement the minimal UI/code change and make that same test pass
-- Add meaningful assertions for new behavior
-- Do not weaken or delete tests
-
-## Feature Proof (if feature includes UI behavior)
-- If `FEATURE_DIR/PROOF.md` is missing or weak, use `coding-proof-author`.
-- For user-facing UI behavior, prefer browser E2E proof that exercises the app as a user.
-  - Prefer test-based verification over snapshot-only tests.
-- Tests must assert observable behavior such as DOM state, navigation, persisted data, or API effects.
+## Verification
+- Reuse the existing test setup and select checks for affected components, shared hooks/state, API clients, and consuming screens.
+- Add a focused regression test when a concrete behavior risk lacks coverage; reproduce the failure when practical. Small copy, spacing, or internal cleanup does not automatically require a new test.
+- For material UI features, the separate proof author should exercise the real browser journey and assert observable DOM state, navigation, persisted data, or API effects. Screenshots alone do not establish interaction correctness.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../coding-workflow/references/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
 
 ## Reference repos (Frontend)
 Use only when the current repository lacks a needed pattern.

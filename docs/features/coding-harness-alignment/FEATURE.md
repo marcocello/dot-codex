@@ -1,0 +1,27 @@
+# Coding harness alignment
+
+## Outcome
+
+Make the coding skills and operating instructions follow the accepted workflow in `docs/harness/README.md`. The user authorized this migration, removal of unnecessary coding workflow pieces, and no fallback or backward-compatibility mechanisms.
+
+## Accepted behavior
+
+- One `coding-workflow` owns Shape, Ship, Fix, Analyze, and Operate. An invoked skill does not bypass assessment of the actual request. Known defects and small maintenance stay light; new capability, changed behavior, and material structural changes use specification and proof. Useful domain and analytical skills remain directly invocable.
+- Shape investigates existing behavior and asks consequential questions about journeys, boundaries, use cases, corner cases, and compatibility. It writes `FEATURE.md` and a brief note on existing behavior to preserve. Existing implementation authorization carries through discovery; analysis/specification-only requests stop at their deliverable. Human document sign-off is optional.
+- A separate agent receives the specification, original request and corrections, repository context, and target; it authors `PROOF.md`, realistic dedicated acceptance tests, and executable `proof/run.sh` before implementation. Missing decisions return to the main agent. The implementer cannot substitute self-authored acceptance when this capability is absent.
+- Material Ship uses a native Goal when explicitly authorized by the user or higher-priority runtime instructions, following the actual tool authority and user/system budget controls. Never infer Goal authorization from an ordinary build request, invent a numeric budget, emulate a Goal with a loop, or silently reset an allowance. Document the required native capability and how missing authorization/capability is surfaced before dependent work. Repairs share the current Goal and allowance; stopping is not completion.
+- Specification and all inputs determining acceptance are fixed during implementation. Normal later changes start a new change cycle while original run evidence is retained. An explicit user change or necessary acceptance correction pauses implementation for a user decision; revised specification, independently authored proof, and Goal must agree before resuming. Difficulty passing valid proof never authorizes rewriting it. Existing capture checks must be described accurately, without claiming hostile-writer isolation they do not provide.
+- Regression checks follow likely and actual impact. Run affected existing checks or all checks when cheap/broadly justified. No mandatory pre-change suite. Introduced regressions are repaired within the active feature run, with focused additional tests if necessary, without extra packages/reviewers per affected feature. Evidenced unrelated pre-existing failures are reported separately. Recheck current feature proof and affected behavior on the final candidate.
+- A fresh separate read-only final reviewer, distinct from implementer and proof author, checks material delivery after successful verification. Extra early review is discretionary for a concrete risk or user request. Completion requires valid proof on the named target, regression verification, final review, and unchanged relevant inputs. Local verification does not establish resolution of an incident on a deployed runtime.
+- Instructions retain relevant dialogue/corrections, roles, skill versions, proof attempts, regressions, review, outcome, and Goal linkage for deliberate improvement review. Use Codex's actual history and supported lifecycle capture; missing dialogue capture is explicitly partial and does not become fabricated evidence or block otherwise valid coding. No second-brain mutation is required for coding reflection. Do not introduce a replacement event store or runtime.
+- AGENTS.md remains compact, the root README points to the accepted design, and active domain guidance has one lifecycle owner. Retired lifecycle skills, aliases, obsolete references, and contradictory phrase-check tests are removed rather than supported through shims. Historical feature contracts and retained results remain history, not active instructions.
+
+## Target and boundaries
+
+Target: the authored skills, instructions, inventory, and supporting validation in this checkout, which is the installed Codex home. Preserve unrelated dirty work and useful domain expertise. A running task's boot-time catalog cannot establish fresh-session skill discovery. Native runtime permissions, Goal controls, event delivery, and protected filesystem boundaries remain owned by Codex; this migration must state their limits rather than build substitutes.
+
+Shared impact: workflow references, AGENTS.md, root and harness documentation, coding domain skills, and tests that validate the retired four-mode instruction structure. Preserve working status ownership, proof process cleanup, exact-target evidence, and non-coding workflows. No deployments, external account changes, commits, pushes, or global installations are required.
+
+## Validation
+
+Use independently authored executable acceptance for discoverability, active reference integrity, and retained supporting command behavior, plus realistic independent workflow exercises for routing, fixed acceptance, regressions, and completion decisions. Static wording checks alone cannot establish future agent behavior. Run affected regressions and the repository gate separately from the feature proof.

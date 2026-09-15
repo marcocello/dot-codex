@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Professional Profile"
+  short_description: "Build an evidence-backed career dossier"
+  default_prompt: "Use $build-professional-profile to turn my career evidence and objectives into a professional-profile dossier."

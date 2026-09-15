@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run Job Search"
+  short_description: "Run and record a profile-aware job search"
+  default_prompt: "Use $run-job-search to search every configured source and merge new profile-matched vacancies into the findings CSV."

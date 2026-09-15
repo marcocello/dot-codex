@@ -1,5 +1,5 @@
 ---
-name: knowledge-review
+name: knowledge-notion-review
 description: Review Notion Second Brain tasks, deals, and ideas as a concise activity brief or a deeper weekly review, surfacing waiting items, stale work, and proposed next steps.
 ---
 

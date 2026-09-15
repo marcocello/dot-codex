@@ -1,5 +1,5 @@
 ---
-name: knowledge-rewrite-message
+name: knowledge-rewrite-natural-message
 description: Rewrite chat, DMs, email snippets, replies, or spoken notes to sound shorter, more casual, natural, and human without changing their meaning.
 ---
 

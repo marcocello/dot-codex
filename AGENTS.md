@@ -5,7 +5,7 @@
 - `docs/harness/coding-workflow.md` is the coding design. `coding-workflow` owns lifecycle; domain skills own technique; scripts own command contracts; repository docs own product context.
 - Invoke shared tools as `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>"`; do not copy them into target repositories.
 - Route non-coding personal operations through `docs/harness/secondbrain.md` and the matching `second-brain-*` skill.
-- `skills.toml` owns the desired skill inventory. Use `manage-codex-skills` and `sync-codex-skills` through `skill_inventory.py`; `docs/harness/skill-management.md` defines ownership, reconciliation, and updates.
+- `skills.toml` owns the desired skill inventory. Use `codex-manage-skills` through `skill_inventory.py`; `docs/harness/skill-management.md` defines ownership, reconciliation, and updates.
 - `docs/harness/` describes current operating rules. `docs/features/` records dot-codex changes, accepted decisions, and verification evidence; earlier specifications remain change history.
 
 ## Start And Route

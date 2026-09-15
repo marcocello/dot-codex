@@ -7,3 +7,7 @@ Answer the user's question through investigation. Architecture deep dives, archi
 3. Give findings, implications, limitations, and the smallest useful recommendations. Retain relevant evidence through [evidence.md](evidence.md).
 
 An analysis-only request does not create a feature package, start a development Goal, run unrelated suites, or implement suggestions. A request that already authorizes implementation can continue in the same task through Shape/Ship or Fix after the analysis; do not require a new task or repeat authorization. Unresolved consequential behavior choices still need conversation.
+
+## External research
+
+When a planning or analysis decision depends on external product, domain, library, or API evidence, use [Research](research.md). Keep research bounded to that decision and preserve fixed acceptance.

@@ -1,0 +1,28 @@
+interface:
+  display_name: "CODING | UI Toolkit"
+  short_description: "Select UI approaches and specialist skills."
+  default_prompt: "Use $coding-ui-toolkit to select and coordinate suitable UI approaches and specialist skills for my task."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "agentation"
+      description: "Read visual feedback annotations from the running interface."
+      transport: "stdio"
+      url: "npm:agentation-mcp@1.2.0"
+    - type: "mcp"
+      value: "landingfolio"
+      description: "Search curated screenshots of shipped landing-page sections and patterns."
+      transport: "streamable_http"
+      url: "https://mcp.landingfolio.com/mcp"
+    - type: "mcp"
+      value: "shadcn"
+      description: "Browse shadcn, Canvas UI, and React Bits component registries."
+      transport: "stdio"
+      url: "npm:shadcn@latest"
+    - type: "mcp"
+      value: "originkit"
+      description: "Search and retrieve OriginKit components and implementation metadata."
+      transport: "streamable_http"
+      url: "https://mcp.originkit.dev/mcp"
+policy:
+  allow_implicit_invocation: true

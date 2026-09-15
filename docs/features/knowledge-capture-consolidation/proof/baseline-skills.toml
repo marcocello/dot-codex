@@ -1,6 +1,11 @@
 schema = 1
 
 [[skills]]
+name = "capture-note"
+kind = "owned"
+path = "capture-note"
+
+[[skills]]
 name = "casual-message-rewriter"
 kind = "owned"
 path = "casual-message-rewriter"
@@ -66,6 +71,16 @@ kind = "owned"
 path = "coding-wordpress"
 
 [[skills]]
+name = "customer-tech-requirements"
+kind = "owned"
+path = "customer-tech-requirements"
+
+[[skills]]
+name = "create-cli-toolkit-kit"
+kind = "owned"
+path = "create-cli-toolkit-kit"
+
+[[skills]]
 name = "drawio-diagram-design"
 kind = "owned"
 path = "drawio-diagram-design"
@@ -101,6 +116,16 @@ kind = "owned"
 path = "pull-codex-config"
 
 [[skills]]
+name = "second-brain-capture-raw-input"
+kind = "owned"
+path = "second-brain-capture-raw-input"
+
+[[skills]]
+name = "second-brain-external-sweep"
+kind = "owned"
+path = "second-brain-external-sweep"
+
+[[skills]]
 name = "second-brain-notion-api"
 kind = "owned"
 path = "second-brain-notion-api"
@@ -109,6 +134,11 @@ path = "second-brain-notion-api"
 name = "write-product-posts"
 kind = "owned"
 path = "write-product-posts"
+
+[[skills]]
+name = "zotero-capture-source"
+kind = "owned"
+path = "zotero-capture-source"
 
 [[skills]]
 name = "zotero"
@@ -214,8 +244,3 @@ path = "coding-ui-toolkit"
 name = "harness-capture-interactions"
 kind = "owned"
 path = "harness-capture-interactions"
-
-[[skills]]
-name = "knowledge-capture"
-kind = "owned"
-path = "knowledge-capture"

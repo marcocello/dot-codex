@@ -216,6 +216,24 @@
       "owner": null,
       "proof_run": "docs/features/feature-verification-capture/proof/runs/20260914T200739934657Z",
       "notes": "Installed proof/regression capture verified: 9 independent real-CLI scenarios PASS; captured gate regression PASS; fresh separate reviewer /root/capture_review PASS on unchanged candidate. User explicitly authorized execution without Goal."
+    },
+    {
+      "id": "skill-portfolio-consolidation",
+      "feature_dir": "docs/features/skill-portfolio-consolidation",
+      "priority": 25,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/skill-portfolio-consolidation/proof/runs/20260915T093621540288Z",
+      "notes": "Four consolidations and UI meta toolkit; independent proof and final review PASS at local discovery boundary."
+    },
+    {
+      "id": "knowledge-capture-consolidation",
+      "feature_dir": "docs/features/knowledge-capture-consolidation",
+      "priority": 26,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-capture-consolidation/proof/runs/20260915T122047577247Z",
+      "notes": "Capture consolidation verified: 44 dependencies; independent proof, affected checks and final review PASS."
     }
   ]
 }

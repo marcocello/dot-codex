@@ -1,0 +1,6 @@
+interface:
+  display_name: "HARNESS | Capture Interactions"
+  short_description: "Save Codex dialogue into project interaction records"
+  default_prompt: "Use $harness-capture-interactions to synchronize app-visible project chats."
+policy:
+  allow_implicit_invocation: false

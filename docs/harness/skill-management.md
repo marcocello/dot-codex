@@ -14,7 +14,7 @@
 
 Downloaded Git, URL, and bundle skills remain uncommitted. The manager derives a marked block in `.gitignore` from the manifest. This repository uses whitelist negations that override `.git/info/exclude`, so the tracked generated block is required to keep the same clean behavior on every clone. The block and each `.codex-skill-source.json` are derived state, not authorities; edit the manifest, never the block.
 
-Codex system skills and plugins from `openai-primary-runtime` are runtime-owned. They stay out of `skills.toml`, are neither installed nor verified by this manager, and must not be added through `manage-codex-skills`.
+Codex system skills and plugins from `openai-primary-runtime` are runtime-owned. They stay out of `skills.toml`, are neither installed nor verified by this manager, and must not be added through `codex-manage-skills`.
 
 ## Commands
 
@@ -38,6 +38,8 @@ A Codex plugin is a first-class bundle. Codex reads its plugin manifest, install
 Impeccable uses the already-installed native plugin. Its separate Git-skill declaration has been removed; do not recreate a raw-skill fallback. Its optional npm installer and project hooks remain a separate, explicit workflow.
 
 ## Update policy
+
+For presentation selection and locally owned narrative guidance, see [Presentation Guidance](presentations.md). Bento is the preferred browser-deck workflow; the separate `html-presentations` skill has been retired.
 
 - Owned skills change through normal Git review.
 - Git skills follow current repository `HEAD`; `sync` detects and installs a changed resolved commit.

@@ -12,12 +12,6 @@
 !/skills/
 !/skills/**/
 
-!/tests/
-!/tests/**/
-
-!/evals/
-!/evals/**/
-
 # 3. Allow specific files and file extensions
 !.gitignore
 !*.md
@@ -27,6 +21,7 @@
 !*.yaml
 !*.sh
 !scripts/gate
+!scripts/feature_status
 !scripts/proof_run_capture
 !docs/features/status.json
 !skills/**/*.html
@@ -39,6 +34,7 @@
 skills/.system/
 config.toml
 docs/features/**/proof/runs/**
+docs/features/**/tests/runs/**
 docs/interactions
 
 # BEGIN skill_inventory.py managed skills

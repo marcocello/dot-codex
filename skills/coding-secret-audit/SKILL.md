@@ -7,13 +7,15 @@ description: Audit tracked and non-ignored untracked checkout files for hardcode
 
 Purpose: detect exposed credentials and personal information, keep credentials redacted, and show exact personal-information matches in the conversation.
 
+This is a focused supporting audit, not a mandatory stage for every coding task. `coding-workflow` owns any active feature's acceptance and completion; an audit result does not replace its proof or final review.
+
 ## Workflow
 
 1. Confirm the repository:
    - `git rev-parse --show-toplevel`
    - `git status --short`
 2. Run the bundled lifecycle:
-   - `python skills/coding-secret-audit/scripts/run_gitguardian_audit.py --root <repo-root>`
+   - `python "${CODEX_HOME:-$HOME/.codex}/skills/coding-secret-audit/scripts/run_gitguardian_audit.py" --root <repo-root>`
    - Use `GGMCP_URL` only for an explicitly managed server; otherwise the runner installs or reuses ggmcp through `uvx`, starts it on loopback, scans, and stops it.
    - Require `GITGUARDIAN_PERSONAL_ACCESS_TOKEN`. Missing authentication blocks the explicit audit; never report it as a skip or gate result.
 3. Review the structured report:

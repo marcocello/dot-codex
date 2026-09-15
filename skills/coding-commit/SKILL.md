@@ -7,6 +7,8 @@ description: Stage coherent repository change sets and create one or more local 
 
 Purpose: inspect repository changes, select scope from the user's current request and Git state, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit.
 
+Committing is a supporting action, not a new feature workflow or a completion verdict. Preserve `coding-workflow` acceptance and retained evidence; do not reopen proof or claim a feature complete solely because a commit succeeds. Keep private dialogue out of commits and reference its retained capture instead.
+
 ## Default behavior
 - Never push. Do not run `git push`.
 - Create local commits only when the user explicitly asks to commit.
@@ -81,7 +83,11 @@ Purpose: inspect repository changes, select scope from the user's current reques
    - Before committing, inspect `git diff --cached --stat` and inspect `git diff --cached` to confirm the index contains exactly that group and no ignored path is being newly introduced.
    - Run `git commit` with that group's final message to create that group's commit.
    - After each commit, re-run `git status --short` and confirm the remaining changes still match the plan.
-9. Stop immediately if staging or committing a group fails. Report the commits already created and the exact remaining issue; do not continue into later groups.
+9. If staging or committing fails, resolve the current group's failure before proceeding to later groups:
+   - For an explicit sandbox permission denial writing Git metadata (for example, `.git/index.lock` with `Operation not permitted`), use the runtime's supported approval/escalation flow for the same scoped Git command when available. The user's commit request authorizes the local operation, but does not bypass runtime approval. Explain that the sandbox denied Git metadata writes; do not stop before attempting the available approval flow.
+   - Before retrying, inspect Git status and, after a failed commit, HEAD to establish whether the operation took effect. Preserve the planned index content and avoid duplicate commits.
+   - Do not delete lock files, change filesystem permissions, relocate Git metadata, or weaken the sandbox to work around a denial. A lock that already exists is a different error and requires diagnosis.
+   - If approval is rejected or unavailable, or another failure remains unresolved, stop and report commits already created, the exact remaining issue, and any approval-review rejection reason.
 10. Do not push.
 
 ## Output

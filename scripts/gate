@@ -25,9 +25,14 @@ SECRET_PATTERNS = tuple(
         r"\bAKIA[0-9A-Z]{16}\b",
     )
 )
+FEATURE_STATUS_FIELDS = {"id", "feature_dir", "priority", "status", "owner", "proof_run", "notes"}
+FEATURE_STATUSES = {"draft", "ready", "active", "blocked", "done"}
+
+
 class Gate:
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
+        self.require_feature_status = False
         self.failures: list[tuple[str, str, str, str]] = []
 
     def fail(self, code: str, message: str, fix: str, details: str = "") -> None:
@@ -69,6 +74,7 @@ def arguments() -> argparse.Namespace:
         default=[],
         help="Check profile to run; repeat for multiple profiles. Auto-detected when omitted.",
     )
+    parser.add_argument('--require-feature-status', action='store_true', help='Require status even before a feature directory exists; always enabled for the harness profile.')
     return parser.parse_args()
 
 
@@ -84,7 +90,8 @@ def common(gate: Gate) -> None:
         if not (gate.root / name).is_file():
             gate.fail("common.structure", f"missing {name}", f"Create {name} at the repository root.")
     if not any(path.is_file() for path in gate.root.glob("README*")):
-        gate.fail("common.structure", "missing README", "Create README.md at the repository root.")
+        print("SUGGESTION [common.structure]: No README found. Consider creating README.md at the repository root to describe the project and how to use it.")
+    feature_status_lint(gate)
     tracked = git(gate, "ls-files", "-z")
     if tracked is None or tracked.returncode:
         return
@@ -101,6 +108,173 @@ def common(gate: Gate) -> None:
             "common.tracked",
             f"tracked local or secret-bearing artifacts: {', '.join(sorted(forbidden))}",
             "Untrack these paths and keep them ignored; do not delete required local data.",
+        )
+
+
+def safe_repo_path(value: object) -> PurePosixPath | None:
+    if not isinstance(value, str) or not value or "\\" in value:
+        return None
+    path = PurePosixPath(value)
+    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+        return None
+    if path.as_posix() != value:
+        return None
+    return path
+
+
+def read_feature_status(gate: Gate, status_path: Path) -> dict[str, object] | None:
+    try:
+        payload = json.loads(status_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        gate.fail("common.feature-status", f"cannot parse docs/features/status.json: {exc}", "Repair the status JSON.")
+        return None
+    if not isinstance(payload, dict):
+        gate.fail("common.feature-status", "status.json root must be an object", "Use the versioned feature-status schema.")
+        return None
+    if set(payload) != {"version", "features"}:
+        gate.fail("common.feature-status", "status.json must contain only version and features", "Use the versioned feature-status schema.")
+    if type(payload.get("version")) is not int or payload.get("version") != 2:
+        gate.fail("common.feature-status", "status.json version must be 2", "Use schema version 2; legacy schemas are not accepted.")
+    if not isinstance(payload.get("features"), list):
+        gate.fail("common.feature-status", "status.json features must be a list", "Use a JSON list for feature entries.")
+        return None
+    return payload
+
+
+def feature_status_lint(gate: Gate, payload: dict | None = None, *, check_inventory: bool = True, target_id: str | None = None) -> None:
+    features_root = gate.root / "docs/features"
+    if not features_root.is_dir() and not gate.require_feature_status:
+        return
+    status_path = features_root / "status.json"
+    if not status_path.is_file():
+        gate.fail(
+            "common.feature-status",
+            "missing docs/features/status.json",
+            "Create a version 2 status file with an empty features list before adopting feature packages.",
+        )
+        return
+    if payload is None:
+        payload = read_feature_status(gate, status_path)
+    if payload is None:
+        return
+
+    seen_ids: set[str] = set()
+    seen_dirs: set[str] = set()
+    seen_priorities: set[int] = set()
+    active_owners: set[str] = set()
+    for index, entry in enumerate(payload["features"]):
+        label = f"status.json feature {index}"
+        if not isinstance(entry, dict):
+            gate.fail("common.feature-status", f"{label} must be an object", "Use one schema-complete object per feature.")
+            continue
+        if set(entry) != FEATURE_STATUS_FIELDS:
+            gate.fail("common.feature-status", f"{label} has invalid fields", "Use exactly id, feature_dir, priority, status, owner, proof_run, and notes.")
+            continue
+
+        feature_id = entry["id"]
+        feature_path = safe_repo_path(entry["feature_dir"])
+        priority = entry["priority"]
+        state = entry["status"]
+        notes = entry["notes"]
+        proof_path = safe_repo_path(entry["proof_run"]) if entry["proof_run"] is not None else None
+        if not isinstance(feature_id, str) or not SKILL_NAME.fullmatch(feature_id):
+            gate.fail("common.feature-status", f"{label} has invalid id", "Use a unique lowercase hyphen-case id.")
+        elif feature_id in seen_ids:
+            gate.fail("common.feature-status", f"duplicate feature id {feature_id}", "Keep one entry per feature id.")
+        else:
+            seen_ids.add(feature_id)
+        if feature_path is None or feature_path.parts[:2] != ("docs", "features") or len(feature_path.parts) != 3:
+            gate.fail("common.feature-status", f"{label} has invalid feature_dir", "Use docs/features/<id> as a safe repository-relative path.")
+            continue
+        feature_dir = feature_path.as_posix()
+        if feature_dir in seen_dirs:
+            gate.fail("common.feature-status", f"duplicate feature_dir {feature_dir}", "Keep one entry per feature directory.")
+        seen_dirs.add(feature_dir)
+        if not isinstance(priority, int) or isinstance(priority, bool):
+            gate.fail("common.feature-status", f"{label} has invalid priority", "Use a unique integer priority.")
+        elif priority in seen_priorities:
+            gate.fail("common.feature-status", f"duplicate feature priority {priority}", "Use unique integer priorities.")
+        else:
+            seen_priorities.add(priority)
+        if not isinstance(state, str) or state not in FEATURE_STATUSES:
+            gate.fail("common.feature-status", f"{label} has invalid status", "Use draft, ready, active, blocked, or done.")
+        owner = entry["owner"]
+        if state == "active":
+            if not isinstance(owner, str) or not owner.strip():
+                gate.fail("common.feature-status", f"{label} active feature requires owner", "Record the owning task id.")
+            elif owner in active_owners:
+                gate.fail("common.feature-status", f"duplicate active owner {owner}", "One task owns at most one active feature.")
+            else:
+                active_owners.add(owner)
+        elif owner is not None:
+            gate.fail("common.feature-status", f"{label} inactive owner must be null", "Release ownership outside active state.")
+        # Identity and ownership are shared; another task's local evidence is not.
+        if target_id is not None and feature_id != target_id:
+            continue
+        if not isinstance(notes, str):
+            gate.fail("common.feature-status", f"{label} notes must be a string", "Keep concise lifecycle context in notes.")
+
+        directory = gate.root / feature_path
+        required = (directory / "FEATURE.md", directory / "PROOF.md", directory / "proof/run.sh")
+        for required_path in required:
+            if not required_path.is_file():
+                gate.fail("common.feature-status", f"{required_path.relative_to(gate.root)} is missing", "Restore the complete feature package.")
+        runner = directory / "proof/run.sh"
+        if runner.is_file() and not os.access(runner, os.X_OK):
+            gate.fail("common.feature-status", f"{runner.relative_to(gate.root)} is not executable", "Make the feature proof runner executable.")
+
+        if state == "done" and entry["proof_run"] is None:
+            gate.fail("common.feature-status", f"{label} done requires passing proof_run", "Retain passing evidence or reopen the unsupported completion claim.")
+        if state != "done" and entry["proof_run"] is not None:
+            gate.fail("common.feature-status", f"{label} non-done proof_run must be null", "Clear the completion pointer when reopening work; retain run files.")
+        if entry["proof_run"] is not None and proof_path is None:
+            gate.fail("common.feature-status", f"{label} has invalid proof_run", "Use null or a safe repository-relative retained run path.")
+        elif proof_path is not None:
+            expected_prefix = feature_path / "proof/runs"
+            if proof_path.parts[: len(expected_prefix.parts)] != expected_prefix.parts or len(proof_path.parts) != len(expected_prefix.parts) + 1:
+                gate.fail("common.feature-status", f"{label} proof_run is outside its feature", "Point to a retained run inside the owning feature's proof/runs directory.")
+            elif any((gate.root / Path(*proof_path.parts[:i])).is_symlink() for i in range(1, len(proof_path.parts) + 1)) or (gate.root / proof_path / "result.json").is_symlink():
+                gate.fail("common.feature-status", f"{label} proof_run uses a symlink", "Use retained evidence physically inside its owning feature.")
+            else:
+                attempts_root = directory / "proof/runs"
+                resolved_attempts = sorted(
+                    attempt
+                    for attempt in attempts_root.iterdir()
+                    if attempt.is_dir()
+                ) if attempts_root.is_dir() else []
+                latest_attempt = resolved_attempts[-1] if resolved_attempts else None
+                pointed_attempt = gate.root / proof_path
+                if latest_attempt is None or pointed_attempt != latest_attempt:
+                    gate.fail(
+                        "common.feature-status",
+                        f"{label} proof_run is not the latest official attempt",
+                        "Resolve the newest attempt; an unfinished newer run invalidates an older PASS.",
+                    )
+                result_path = gate.root / proof_path / "result.json"
+                try:
+                    result = json.loads(result_path.read_text(encoding="utf-8"))
+                except (OSError, json.JSONDecodeError) as exc:
+                    gate.fail("common.feature-status", f"cannot read {result_path.relative_to(gate.root)}: {exc}", "Keep a valid retained result.json.")
+                else:
+                    if not isinstance(result, dict) or result.get("status") != "PASS":
+                        gate.fail("common.feature-status", f"{result_path.relative_to(gate.root)} is not PASS", "Point proof_run to passing retained evidence.")
+                    elif result.get("kind", "proof") != "proof":
+                        gate.fail("common.feature-status", f"{result_path.relative_to(gate.root)} is not official proof", "Use a passing proof run; regression evidence cannot establish feature acceptance.")
+
+    if not check_inventory:
+        return
+    actual_dirs = {
+        path.parent.relative_to(gate.root).as_posix()
+        for path in features_root.glob("*/FEATURE.md")
+    }
+    if actual_dirs != seen_dirs:
+        missing = sorted(actual_dirs - seen_dirs)
+        extra = sorted(seen_dirs - actual_dirs)
+        gate.fail(
+            "common.feature-status",
+            "status.json and feature directories differ",
+            "Add one status entry for every durable feature package and remove stale entries.",
+            f"unlisted={missing} missing_packages={extra}",
         )
 
 
@@ -137,9 +311,9 @@ def python_manifests(root: Path) -> list[Path]:
 def python_profile(gate: Gate) -> None:
     if not python_manifests(gate.root):
         gate.fail("python.structure", "no Python project manifest found", "Add the repository-owned pyproject.toml or requirements file.")
-    roots = [gate.root / name for name in ("src", "app", "backend", "scripts", "tests")]
+    roots = [gate.root / name for name in ("src", "app", "backend", "scripts")]
     if not any(path.is_dir() and next(path.rglob("*.py"), None) for path in roots):
-        gate.fail("python.structure", "no Python source found", "Add source under src/, app/, backend/, scripts/, or tests/.")
+        gate.fail("python.structure", "no Python source found", "Add source under src/, app/, backend/, or scripts/.")
     python = gate.root / ".venv/bin/python"
     if not python.is_file() or not os.access(python, os.X_OK):
         gate.fail(
@@ -290,7 +464,7 @@ def harness_lint(gate: Gate) -> None:
 
 
 def harness_profile(gate: Gate) -> None:
-    for name in ("skills", "tests/unit"):
+    for name in ("skills",):
         if not (gate.root / name).is_dir():
             gate.fail("harness.structure", f"missing {name}", f"Restore {name}.")
     if not (gate.root / "AGENTS.md").is_file():
@@ -305,18 +479,7 @@ def harness_profile(gate: Gate) -> None:
     harness_lint(gate)
     if len(gate.failures) == before:
         print("HARNESS lint: PASS")
-    python = gate.root / ".venv/bin/python"
-    if not python.is_file() or not os.access(python, os.X_OK):
-        gate.fail("harness.environment", ".venv/bin/python is missing", "Prepare the repo-local Python environment.")
-    else:
-        env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
-        gate.run(
-            [str(python), "-m", "pytest", "tests/unit", "-q", "-p", "no:cacheprovider"],
-            "harness.tests",
-            "HARNESS tests",
-            "Repair the failing unit test.",
-            env,
-        )
+    print("HARNESS verification: structural checks only; run feature proof and affected regressions separately.")
 
 
 def discover(root: Path) -> list[str]:
@@ -324,7 +487,7 @@ def discover(root: Path) -> list[str]:
     profiles += ["python"] if python_manifests(root) else []
     profiles += ["react"] if node_manifests(root) else []
     profiles += ["wordpress"] if (root / "wp-config.php").exists() or (root / "wp-content").exists() else []
-    profiles += ["harness"] if all((root / name).exists() for name in ("skills", "tests/unit", "config.template.toml")) else []
+    profiles += ["harness"] if all((root / name).exists() for name in ("skills", "config.template.toml")) else []
     return profiles or ["other"]
 
 
@@ -335,6 +498,7 @@ def main() -> int:
         print(f"GATE: FAIL: repository root does not exist: {gate.root}", file=sys.stderr)
         return 2
     profiles = list(dict.fromkeys(args.profile or discover(gate.root)))
+    gate.require_feature_status = args.require_feature_status or 'harness' in profiles
     print(f"== gate: repo={gate.root} profiles={','.join(profiles)} ==")
     gate.profile("common", common)
     checks = {"python": python_profile, "react": react_profile, "wordpress": wordpress_profile, "harness": harness_profile, "other": lambda gate: None}

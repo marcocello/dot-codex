@@ -1,66 +1,44 @@
 # AGENTS.md - Marco Dev Operating Kernel
 
 ## Authority
-- This file is the compact router for Codex work in this repository. Skills own task procedures; scripts own command contracts; harness docs own rationale and threat models; target-repository docs own product and architecture context.
-- Shared harness executables are invoked from any checkout through `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>"`. Do not copy or wrap them in target repositories.
-- Non-coding or personal operating work routes through `docs/secondbrain.md` and the matching `second-brain-*` skill.
-- State a rule once at its smallest owner. Cross-reference it instead of repeating workflows here.
 
-## Start
-- Rename each task only once, on the first turn, with the task-title tool as `TYPE: concise outcome`, under 60 characters and without trailing punctuation. Do not rename it again later in the conversation.
-- Use `FEAT`, `FIX`, `REFACTOR`, `DOCS`, `TEST`, `CHORE`, `REVIEW`, `RESEARCH`, or `OPS`. Prefer `FIX` when restoring intended behavior.
-- Select one assurance category before editing:
-  - `focused`: clear isolated reversible repair; use a focused regression or narrow check.
-  - `standard`: material product behavior; use realistic proof and fresh final review.
-  - `sensitive`: standard assurance plus fresh preflight for data/migrations, authorization/security, destructive or paid external effects, durable cross-component ownership, or material proof-target ambiguity.
-- Autonomous work is a continuation mode, not an assurance category; apply the selected feature assurance serially.
-- One accountable parent owns one active issue or `FEATURE_DIR`, its decisions, implementation, proof, evaluation, queue state, and completion.
+- `docs/harness/coding-workflow.md` is the coding design. `coding-workflow` owns lifecycle; domain skills own technique; scripts own command contracts; repository docs own product context.
+- Invoke shared tools as `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>"`; do not copy them into target repositories.
+- Route non-coding personal operations through `docs/harness/secondbrain.md` and the matching `second-brain-*` skill.
+- `skills.toml` owns the desired skill inventory. Use `codex-manage-skills` through `skill_inventory.py`; `docs/harness/skill-management.md` defines ownership, reconciliation, and updates.
+- `docs/harness/` describes current operating rules. `docs/features/` records dot-codex changes, accepted decisions, and verification evidence; earlier specifications remain change history.
 
-## Route
-- Product input of any maturity or cardinality, including app-level decisions -> `coding-product-partner`.
-- Proof -> `coding-proof-author`.
-- Implementation -> `coding-feature-execute`.
-- Clear defect or failing check -> `coding-repair`.
-- Autonomous queue or repeated repair -> `coding-autonomous-execute`.
-- Queue state -> `coding-feature-queue`; environment -> `coding-prepare-environment`; commit -> `coding-commit` only when asked.
-- Use the relevant frontend, backend, Laravel, PHP, WordPress, operations, or research skill for stack details.
-- Route by the requested deliverable. Shaping, specification, planning, and proof authoring stop after their decision-ready artifacts; discovery answers preserve the request's existing authorization but do not expand it. Building product behavior requires an explicit implementation request.
-- New or materially changed product behavior without a clear owner receives `docs/features/<slug>/FEATURE.md`, `PROOF.md`, and executable proof. A clear defect uses its existing feature owner or the smallest local regression; do not create a feature package merely because the harness exists.
+## Start And Route
 
-## Context And Decisions
-- Apply relevant current sections of `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` when present. Do not load superseded history unless the active migration needs it.
-- Before a consequential edit, state the accepted behavior, the material alternative rejected, and the consequence. After a user correction, restate the corrected direction before editing again.
-- Ask for unresolved user-owned context or choices when the answers materially improve problem understanding, user implications, behavior, architecture, scope, safety, cost, data, permissions, external effects, or proof feasibility. Otherwise decide, disclose, and proceed.
+- Rename a task once on its first turn as `TYPE: concise outcome`, under 60 characters. Use `FEAT`, `FIX`, `REFACTOR`, `DOCS`, `TEST`, `CHORE`, `REVIEW`, `RESEARCH`, or `OPS`.
+- Use `coding-workflow`: Shape new or unclear behavior; Ship an authorized ready feature; Fix known broken behavior or small maintenance; Analyze a question or architecture; Operate a runtime symptom. An explicitly invoked skill never bypasses this assessment.
+- Read only the active mode reference and its relevant shared references. Direct analytical skills remain available.
+- Shape uses conversation to resolve consequential journeys, corner cases, boundaries, and compatibility. Record accepted behavior and existing behavior to preserve in `FEATURE.md`. Human document sign-off is optional; existing build authorization carries through discovery. Analysis/specification-only requests stop at their deliverable.
+- Organize tests with the features they verify. Keep dedicated acceptance in the feature's `proof/` directory and internal regression tests alongside the owning feature, separately from frozen acceptance; follow `skills/coding-workflow/references/proof.md` for placement and ownership.
+- A separate agent writes `PROOF.md`, dedicated acceptance tests, and executable `proof/run.sh` from the specification, original conversation/corrections, and target before implementation. Missing decisions return to Shape; unavailable independent authorship must not be replaced by implementer-authored acceptance.
+- Every material feature has one package and status entry; `docs/features/status.json` is mandatory after adoption. Automatically migrate an existing old-format index to the current schema without asking permission; follow `skills/coding-workflow/references/status.md`. A standalone focused Fix or Analyze needs no package. Use `feature_status` for atomic claims and transitions after migration.
+- Independent tasks may share a checkout, with one owner per active feature and one active feature per task. Coordinate overlapping writes and shared runtime changes; never displace another task. Global priority applies only to requested queue continuation.
 
-## Completion
-- Focused work is complete after its focused regression or narrow check passes.
-- Standard and sensitive work require passing realistic proof followed by fresh read-only `coding-feature-review` final `PASS` on the unchanged candidate. Any relevant edit makes that evidence stale; `coding-feature-execute` owns reruns and repair.
-- A green proof followed by observed broken behavior is a proof defect. Strengthen the owning scenario around the missed activation, existing state, visible read-back, affected consumer, or runtime boundary; demonstrate the miss when practical; repair; rerun proof; reevaluate.
-- Name the consumption target before proof. When it is an existing local or deployed runtime, isolated source proof is intermediate and the feature cannot reach `done` until that exact runtime works. Continue safe local rebuild, restart, and verification autonomously; if approval or an external dependency remains after recovery, mark `blocked` with the exact action instead of converting it to source-only completion.
-- `NEED_INPUT` is valid only after safe local recovery is exhausted and the remaining requirement is user-owned or external.
-- Proof execution and retained attempts follow `coding-proof-author`, `docs/harness/proof-lifecycle.md`, and `proof_run_capture`. Queue completion follows `coding-feature-queue`.
+## Execution And Acceptance
 
-## Scaffold Boundaries
-- Stack/domain skills own application source structure, framework starter, and code layout before hosting or deployment capabilities are selected.
-- Sites is opt-in for application construction: use it only when the user explicitly requests Sites or `.openai/hosting.json` existed before the task began.
-- A platform manifest created during the current task cannot retroactively authorize that platform, replace the selected stack skill, or redefine application structure.
-- Do not create `AGENTS.md` or `AGENTS.override.md` in target repositories. Preserve pre-existing project instruction files. Their absence must not be treated as a gate failure.
+- Apply relevant current `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md` sections. Investigate facts; ask when choices materially change behavior, ownership, scope, compatibility, cost, data, permissions, external effects, or proof feasibility.
+- Use native Goals for material Ship within explicit user/runtime authorization and supported tool controls. A normal build request alone does not authorize Goal creation. Honor the user's configured allowance; never invent, reset, or extend a budget or emulate persistence with another loop. Stop at the runtime limit or user interruption. Missing input/access pauses dependent work; continue authorized independent work. Stopped is not complete.
+- Keep `FEATURE.md`, `PROOF.md`, and acceptance requirements fixed. Only the independent proof author may repair demonstrably faulty test setup without approval, preserving scenarios, assertions, outcomes, and test boundaries; retain the correction and rerun proof under `skills/coding-workflow/references/proof.md`. Implementers cannot edit frozen proof inputs. Acceptance changes or unresolved meaning require a user decision; switching modes cannot bypass this rule.
+- Normally complete the agreed feature before a later behavior request starts a new change cycle. Preserve previous specifications and evidence. After correction, restate the accepted direction before editing.
+- During implementation, select regression checks from actual impact; run all when cheap or broadly justified. Repair introduced regressions inside the current feature's Goal and allowance. Do not create a package/reviewer per affected feature. Evidenced unrelated pre-existing failures are reported separately.
+- Material completion requires realistic proof on the named consumption target, affected regression verification, and one fresh separate read-only final reviewer PASS on unchanged relevant inputs. The reviewer is distinct from the implementer and proof author. Early review is discretionary for a concrete risk or explicit request.
+- A standalone focused Fix completes after its focused check and affected regressions. A defect invalidating delivered feature behavior reopens its existing proof/review obligations; regressions introduced during active Ship remain in that run.
+- Observed broken behavior overrides green evidence. Preserve the failed claim and distinguish code repair, independent test-setup repair, and a user-owned acceptance decision. Generic tests, gates, builds, and lint support verification but never replace feature proof.
 
-## Safety
-- Explicit approval is required for global installs, paid resources, destructive commands, deployments, force pushes, secret edits, credential entry, and external account or service mutations.
-- Repository-local setup needed for requested work is pre-authorized: `git init`, skill-prescribed starter/reference cloning, local virtual environments, and project-declared dependencies in `.venv`, `node_modules`, or `vendor`.
-- Preserve unrelated dirty-tree work. Reuse existing code, make the smallest coherent change, and use red/green TDD for implementation and defects. Never weaken proof for green.
-- Unless the repository is stricter: keep functions within 100 lines, cyclomatic complexity within 8 where tooling exists, and positional parameters within 5. Do not add tooling solely to enforce these guidelines.
-- Do not hard-wrap Markdown prose.
-- Validate dot-codex changes with `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$PWD"`. The gate validates the harness; it is not product proof.
+## Boundaries
 
-## Handoff
-- Keep the receipt short: outcome, changed surface, realistic proof or focused check, final review verdict when required, active-runtime status, known gaps, and blockers.
-- Do not label lint, build, a generic gate, source inspection, or a reviewer as feature proof.
-- If blocked after recovery, end with `NEED_INPUT: <question>`.
+- Stack/domain skills own application source structure. Sites is opt-in for application construction: use it only when explicitly requested or `.openai/hosting.json` existed before the task began. A platform manifest created during the current task cannot retroactively authorize that platform.
+- Do not create `AGENTS.md` or `AGENTS.override.md` in target repositories. Preserve existing instructions; their absence must not be treated as a gate failure.
+- Preserve unrelated dirty work. Repository-local setup and declared dependencies are authorized. Global installs, paid resources, destructive operations, deployments, force pushes, secret edits, credential entry, and external mutations require applicable explicit authorization. Review is not mutation permission.
+- Do not hard-wrap Markdown prose. Validate this repository with `"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$PWD"`. The gate checks repository structure, feature-status records, skill metadata and references, configuration hygiene, and applicable runtime prerequisites. Run feature proof and affected regressions separately; gate PASS does not imply test-suite execution.
 
-## Reference
-- Design: `docs/harness/deep-dive.md`
-- Proof and false-green risk: `docs/harness/proof-lifecycle.md`, `docs/harness/oracle-scope.md`
-- Autonomy and learning: `docs/harness/autonomous-execution.md`, `docs/harness/repo-autonomy.md`
-- Destructive proof and handoff: `docs/harness/destructive-proof-allowlist.md`, `docs/harness/handoff.md`
+## Evidence And Handoff
+
+- Retain relevant native dialogue/corrections, skill versions, role/Goal links, proof attempts, regressions, review, and outcome. Mark missing capture as partial; never fabricate history. `coding-app-improvement-review` proposes deliberate improvements from actual runs. Capture official proof and completion-supporting feature regressions through the separate modes of `proof_run_capture`. Follow `skills/coding-workflow/references/evidence.md` for the detailed evidence and learning procedure.
+- Lead with outcome, changed surface, proof or focused regression, required final review, runtime state, gaps, and exact blocker. Local verification does not resolve a deployed incident; verify the original symptom after deployment.
+- Ask each necessary question once and retain the pending decision. Use `NEED_INPUT: <question>` only if it has not already been asked; automatic continuations must not repeat it or unchanged rule explanations. Follow native blocked-state criteria when no independent work remains. Approval and operational details: `docs/harness/safety.md`.

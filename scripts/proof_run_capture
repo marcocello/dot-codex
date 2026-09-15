@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import platform
 import signal
@@ -26,8 +27,8 @@ def positive_seconds(value: str) -> float:
         seconds = float(value)
     except ValueError as exc:
         raise argparse.ArgumentTypeError("timeout must be positive") from exc
-    if seconds <= 0:
-        raise argparse.ArgumentTypeError("timeout must be positive")
+    if not math.isfinite(seconds) or seconds <= 0:
+        raise argparse.ArgumentTypeError("timeout must be finite and positive")
     return seconds
 
 
@@ -41,8 +42,8 @@ def nonempty_note(value: str) -> str:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Run FEATURE_DIR/proof/run.sh in a contained process group and create one "
-            "retained attempt."
+            "Capture an official feature proof or a regression command in a contained "
+            "process group, retaining separate execution evidence."
         ),
         epilog=(
             "Output: prints the retained attempt directory. Exit status: runner status; "
@@ -54,13 +55,13 @@ def parse_args() -> argparse.Namespace:
         "--feature-dir",
         required=True,
         type=Path,
-        help="Repository-relative feature directory containing FEATURE.md, PROOF.md, and proof/run.sh.",
+        help="Feature directory containing FEATURE.md and PROOF.md; proof mode also requires proof/run.sh.",
     )
     parser.add_argument(
         "--timeout-seconds",
         required=True,
         type=positive_seconds,
-        help="Positive wall-clock limit for the complete proof runner.",
+        help="Finite positive wall-clock limit for the complete command.",
     )
     parser.add_argument(
         "--note",
@@ -68,7 +69,17 @@ def parse_args() -> argparse.Namespace:
         type=nonempty_note,
         help="Non-empty reason retained with this attempt.",
     )
-    return parser.parse_args()
+    parser.add_argument("--kind", choices=("proof", "regression"), default="proof")
+    parser.add_argument("--cwd", type=Path, help="Regression working directory within the repository; defaults to its root.")
+    parser.add_argument("command", nargs=argparse.REMAINDER, help="Regression command and arguments after --; executed without an implicit shell.")
+    args = parser.parse_args()
+    if args.command[:1] == ["--"]:
+        args.command = args.command[1:]
+    if args.kind == "proof" and (args.command or args.cwd is not None):
+        parser.error("proof mode uses proof/run.sh from the repository root; command and --cwd are regression-only")
+    if args.kind == "regression" and (not args.command or not args.command[0].strip()):
+        parser.error("regression mode requires a command after --")
+    return args
 
 
 def now() -> str:
@@ -232,20 +243,34 @@ def changed_proof_inputs(
 def main() -> int:
     args = parse_args()
     root = repository_root(Path.cwd())
-    feature_dir = (
+    unresolved_feature = (
         args.feature_dir if args.feature_dir.is_absolute() else root / args.feature_dir
-    ).resolve()
+    )
+    feature_dir = unresolved_feature.resolve()
     try:
         feature_dir.relative_to(root)
     except ValueError:
         print("proof_run_capture: feature directory escapes repository root", file=sys.stderr)
         return 2
+    if uses_symlink(unresolved_feature):
+        print("proof_run_capture: feature directory must not use symlinks", file=sys.stderr)
+        return 2
+
+    cwd = root
+    if args.cwd is not None:
+        requested_cwd = args.cwd if args.cwd.is_absolute() else root / args.cwd
+        if not requested_cwd.is_dir() or not resolves_within(requested_cwd, root) or uses_symlink(requested_cwd):
+            print("proof_run_capture: cwd must be an existing non-symlink directory within the repository", file=sys.stderr)
+            return 2
+        cwd = requested_cwd.resolve()
 
     feature = feature_dir / "FEATURE.md"
     proof = feature_dir / "PROOF.md"
     runner = feature_dir / "proof" / "run.sh"
-    inputs = (("FEATURE.md", feature), ("PROOF.md", proof), ("run.sh", runner))
-    for label, path in (("FEATURE.md", feature), ("PROOF.md", proof), ("proof/run.sh", runner)):
+    inputs = (("FEATURE.md", feature), ("PROOF.md", proof))
+    if args.kind == "proof":
+        inputs += (("run.sh", runner),)
+    for label, path in inputs:
         if not path.is_file():
             print(f"proof_run_capture: missing {label}: {path}", file=sys.stderr)
             return 2
@@ -261,11 +286,12 @@ def main() -> int:
                 file=sys.stderr,
             )
             return 2
-    if not runner.stat().st_mode & 0o111:
+    if args.kind == "proof" and not runner.stat().st_mode & 0o111:
         print(f"proof_run_capture: runner not executable: {runner}", file=sys.stderr)
         return 2
 
-    unresolved_attempt_base = feature_dir / "proof" / "runs"
+    evidence_area = "proof" if args.kind == "proof" else "tests"
+    unresolved_attempt_base = feature_dir / evidence_area / "runs"
     attempt_base = unresolved_attempt_base.resolve()
     if not resolves_within(attempt_base, root):
         print("proof_run_capture: attempt directory escapes repository root", file=sys.stderr)
@@ -275,21 +301,21 @@ def main() -> int:
         return 2
     run_dir = attempt_base / timestamp()
     run_dir.mkdir(parents=True)
-    command = [runner.relative_to(root).as_posix()]
+    command = [runner.relative_to(root).as_posix()] if args.kind == "proof" else args.command
     started_at = now()
     started_clock = time.monotonic()
     execution: dict[str, Any] = {
         "capture_pid": os.getpid(),
+        "kind": args.kind,
         "command": command,
-        "cwd": str(root),
+        "cwd": str(cwd),
         "runtime": runtime_context(),
         "started_at": started_at,
         "timeout_seconds": args.timeout_seconds,
     }
     write_json(run_dir / "attempt-start.json", {**execution, "status": "STARTED"})
-    shutil.copy2(feature, run_dir / "FEATURE.md")
-    shutil.copy2(proof, run_dir / "PROOF.md")
-    shutil.copy2(runner, run_dir / "run.sh")
+    for label, path in inputs:
+        shutil.copy2(path, run_dir / label)
     (run_dir / "notes.md").write_text(args.note + "\n", encoding="utf-8")
     input_baselines = capture_input_baselines(run_dir, inputs)
 
@@ -311,7 +337,7 @@ def main() -> int:
         try:
             process = subprocess.Popen(
                 command,
-                cwd=root,
+                cwd=cwd,
                 stdout=stdout,
                 stderr=stderr,
                 start_new_session=True,

@@ -1,6 +1,0 @@
-interface:
-  display_name: "CODING | Product Partner"
-  short_description: "Clarify ideas into practical product decisions."
-  default_prompt: "Use $coding-product-partner to analyze my idea deeply but respond with a one-screen practical brief: what you understand, one recommended direction, what is missing, and short focused questions."
-policy:
-  allow_implicit_invocation: true

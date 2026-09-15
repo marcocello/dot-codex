@@ -66,4 +66,4 @@ Distinguish test-code maintainability from false confidence. Prioritize smells t
 
 - Signal: failing tests, fixtures, or gates are deleted, skipped, broadened, or made less specific to obtain a pass.
 - Confirm with: reduced contract coverage or unchanged product behavior after the test change.
-- Reject when: the old assertion was demonstrably incorrect and the corrected contract is independently proved.
+- Reject when: faulty setup is corrected by the independent proof author under `coding-workflow/references/proof.md`, preserving agreed scenarios, assertions, outcomes, and test boundaries with a retained rationale and rerun. Changing a required acceptance assertion or resolving ambiguous meaning still needs a user decision and separate author; an implementer cannot approve that change by switching modes. For ordinary internal tests, a demonstrably incorrect assertion may be repaired against the existing contract.

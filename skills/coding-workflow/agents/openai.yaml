@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Workflow"
+  short_description: "Shape, ship, fix, analyze, or operate with proof."
+  default_prompt: "Use $coding-workflow to select the appropriate path, clarify behavior, preserve independently authored fixed acceptance, use authorized native Goals for material work, and verify the named target with affected regression checks."
+policy:
+  allow_implicit_invocation: true

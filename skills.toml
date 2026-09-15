@@ -26,16 +26,6 @@ kind = "owned"
 path = "coding-frontend"
 
 [[skills]]
-name = "coding-laravel-feature-builder"
-kind = "owned"
-path = "coding-laravel-feature-builder"
-
-[[skills]]
-name = "coding-php-legacy-maintainer"
-kind = "owned"
-path = "coding-php-legacy-maintainer"
-
-[[skills]]
 name = "coding-prepare-environment"
 kind = "owned"
 path = "coding-prepare-environment"
@@ -49,11 +39,6 @@ path = "coding-python-backend"
 name = "coding-secret-audit"
 kind = "owned"
 path = "coding-secret-audit"
-
-[[skills]]
-name = "coding-wordpress"
-kind = "owned"
-path = "coding-wordpress"
 
 [[skills]]
 name = "prospecting-linkedin-content-manager"

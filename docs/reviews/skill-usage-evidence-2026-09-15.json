@@ -1,0 +1,61 @@
+{
+  "scope": {
+    "recentTaskOrChatSummaries": 50,
+    "recentCodexTasks": 36,
+    "archivedLocalTasks": 77,
+    "archivedPaginationExhausted": true,
+    "fullNonArchivedHistory": false,
+    "rawSessionScan": false
+  },
+  "verifiedSamples": [
+    {
+      "skill": "run-job-search",
+      "taskId": "01a09ee4-405b-71f3-84e8-270f529af603",
+      "title": "RESEARCH: Offerte di lavoro e aggiornamento CSV",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit invocation or skill file read observed; final response inspected"
+    },
+    {
+      "skill": "second-brain-capture-interactions",
+      "taskId": "01a08b32-6af5-7523-8491-b437b23c19eb",
+      "title": "Capture Codex interactions",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit invocation or skill file read observed; final response inspected"
+    },
+    {
+      "skill": "impeccable",
+      "taskId": "01a0719b-8e20-7702-80d4-d02ec83b0f22",
+      "title": "RESEARCH: Shape an AI dispute resolution platform (2)",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit user request; completion not established in sampled turns"
+    },
+    {
+      "skill": "reui",
+      "taskId": "01a02b2b-33d3-7770-805f-4d6a7b8972ec",
+      "title": "FEAT: build audit log data grid",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit user request; completion not established in sampled turns"
+    },
+    {
+      "skill": "coding-commit",
+      "taskId": "01a0a48b-8dbd-7783-abd2-1630a3f66762",
+      "title": "CHORE: commit repository changes",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit invocation or skill file read observed; final response inspected"
+    },
+    {
+      "skill": "write-product-posts",
+      "taskId": "01a05c24-6bb6-7e51-921a-9e348999ca2e",
+      "title": "DOCS: Draft Skill Registry launch post",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit invocation or skill file read observed; final response inspected"
+    },
+    {
+      "skill": "build-professional-profile",
+      "taskId": "01a09034-7bb6-7ba1-ac0d-87bc3d084aa7",
+      "title": "REVIEW: LinkedIn builder positioning",
+      "scope": "Recent selected turns, not full lifecycle",
+      "evidence": "Explicit invocation or skill file read observed; final response inspected"
+    }
+  ]
+}

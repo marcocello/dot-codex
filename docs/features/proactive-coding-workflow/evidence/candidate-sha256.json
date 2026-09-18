@@ -1,0 +1,16 @@
+{
+  "AGENTS.md": "60a5aedc74e079ea3a5b10a7ea4e38292643b2983556f71d3f876f2fc5b1afc9",
+  "README.md": "085ecbbcf785af1597401b4c8929bc8d417605eadb3de1600fd24f8dc1f0343a",
+  "docs/harness/coding/evidence.md": "598734675b1e5d03380f67762fe0de26a2a352ea241af57a643c945f3d6c93aa",
+  "docs/harness/coding/proof.md": "3e7cc98e8525b78f5e32608aa20ec058c925e6839213f64f65944b4218276a73",
+  "docs/harness/coding/rules.md": "f60873b92df12c95cc724bab696efa59a53c667a2fe999f3979abd668d79b945",
+  "docs/harness/coding/status.md": "84fe9f72376038f5fc0937dd472c9bf6283210332e6d40152fb91cc16af7acc1",
+  "docs/harness/safety.md": "97adb1f4c06512691dd7e97a4b42e59982be52e4f0bfa4afa9bed8f26e6f3d2a",
+  "docs/harness/workflow.md": "b69078ff41862bffd2c3b7e96d27163f00da8e242615614d543259915ab390cd",
+  "skills/coding-fix/SKILL.md": "9ddbba677656e82b51f8575ccb67ca4055a1ae5e009b84419114cd5d613b00fd",
+  "skills/coding-operate/SKILL.md": "089566021aeb83957f28bbf1e022fe154eee68bf52d49faa7b6a5de404d99221",
+  "skills/coding-shape/SKILL.md": "c7eb3e441a353ee0f7d470dc5d24916c4adc7f89885cda32d33094c0c2474a5a",
+  "skills/coding-shape/agents/openai.yaml": "a4613cd8d8a0e2d9f687537b2a0160d74c3958b8cfecd32917edc531706f911b",
+  "skills/coding-ship/SKILL.md": "3b404eb5f09c7b87ac4c371f62eedf9bf76598d78440b297f58851f6b1a2de72",
+  "skills/coding-ship/agents/openai.yaml": "c46ea07537598e3d015873b763571d1132ae7d2dcda8c26addb723faf89cfa2f"
+}

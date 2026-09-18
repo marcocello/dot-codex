@@ -1,0 +1,16 @@
+{
+  "reviewer": "/root/lean_final_review",
+  "verdict": "PASS",
+  "blocking_findings": [],
+  "read_only": true,
+  "proof_run": "docs/features/lean-harness-instructions/proof/runs/20260917T162423146841Z",
+  "findings": [
+    "AGENTS owns routing; focused skills own procedures",
+    "Four redundant guides removed; three conditional references have justified callers",
+    "Candidate and seven frozen acceptance hashes match; 743 protected files unchanged",
+    "Captured proof, gate, and metadata checks pass; no stale active links",
+    "Eight independent semantic cases and preserved safeguards pass"
+  ],
+  "limitation": "Source structure and semantic preservation; no guarantee of future agent behavior",
+  "source": "Native final message from /root/lean_final_review in this task"
+}

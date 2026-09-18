@@ -7,7 +7,7 @@ python_bin="$repo_root/.venv/bin/python"
 
 echo "python=$python_bin"
 "$python_bin" --version
-echo "gate=$repo_root/scripts/gate"
+echo "gate=$repo_root/scripts/gate.py"
 "$python_bin" - <<'PY'
 from pathlib import Path
 import tomllib

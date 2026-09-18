@@ -1,0 +1,115 @@
+test_completion_boundary (__main__.CaptureAcceptance.test_completion_boundary) ... FAIL
+test_containment (__main__.CaptureAcceptance.test_containment) ... ok
+test_default_and_explicit_proof_compatibility (__main__.CaptureAcceptance.test_default_and_explicit_proof_compatibility) ... ERROR
+test_failures_and_timeout (__main__.CaptureAcceptance.test_failures_and_timeout) ... FAIL
+test_input_changes (__main__.CaptureAcceptance.test_input_changes) ... 
+  test_input_changes (__main__.CaptureAcceptance.test_input_changes) (retained=False) ... FAIL
+  test_input_changes (__main__.CaptureAcceptance.test_input_changes) (retained=True) ... FAIL
+test_interruption (__main__.CaptureAcceptance.test_interruption) ... FAIL
+test_invalid_requests_execute_nothing (__main__.CaptureAcceptance.test_invalid_requests_execute_nothing) ... ok
+test_regression_argv_context_and_separate_storage (__main__.CaptureAcceptance.test_regression_argv_context_and_separate_storage) ... FAIL
+test_regression_without_runner (__main__.CaptureAcceptance.test_regression_without_runner) ... FAIL
+
+======================================================================
+ERROR: test_default_and_explicit_proof_compatibility (__main__.CaptureAcceptance.test_default_and_explicit_proof_compatibility)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 88, in test_default_and_explicit_proof_compatibility
+    self.assertEqual(result['kind'], 'proof')
+                     ~~~~~~^^^^^^^^
+KeyError: 'kind'
+
+======================================================================
+FAIL: test_completion_boundary (__main__.CaptureAcceptance.test_completion_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 222, in test_completion_boundary
+    self.assert_pass(self.regression('print("newer regression")'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 52, in assert_pass
+    self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: proof_run_capture [-h] --feature-dir FEATURE_DIR
+                         --timeout-seconds TIMEOUT_SECONDS --note NOTE
+proof_run_capture: error: unrecognized arguments: --kind regression -- /usr/local/bin/python3 -c print("newer regression")
+
+
+======================================================================
+FAIL: test_failures_and_timeout (__main__.CaptureAcceptance.test_failures_and_timeout)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 109, in test_failures_and_timeout
+    self.assertEqual(failed.returncode, 7, failed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 7 : usage: proof_run_capture [-h] --feature-dir FEATURE_DIR
+                         --timeout-seconds TIMEOUT_SECONDS --note NOTE
+proof_run_capture: error: unrecognized arguments: --kind regression -- /usr/local/bin/python3 -c import sys; print("kept output"); print("kept error",file=sys.stderr); sys.exit(7)
+
+
+======================================================================
+FAIL: test_input_changes (__main__.CaptureAcceptance.test_input_changes) (retained=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 161, in test_input_changes
+    _, result = self.result('regression')
+                ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 45, in result
+    self.assertTrue(runs, f'no retained {kind} attempt')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : no retained regression attempt
+
+======================================================================
+FAIL: test_input_changes (__main__.CaptureAcceptance.test_input_changes) (retained=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 161, in test_input_changes
+    _, result = self.result('regression')
+                ~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 45, in result
+    self.assertTrue(runs, f'no retained {kind} attempt')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : no retained regression attempt
+
+======================================================================
+FAIL: test_interruption (__main__.CaptureAcceptance.test_interruption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 139, in test_interruption
+    self.assertIsNone(process.poll(), 'capture exited before interruption')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 is not None : capture exited before interruption
+
+======================================================================
+FAIL: test_regression_argv_context_and_separate_storage (__main__.CaptureAcceptance.test_regression_argv_context_and_separate_storage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 60, in test_regression_argv_context_and_separate_storage
+    self.assert_pass(self.invoke(['--kind', 'regression', '--cwd', 'sub dir', '--', *command]))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 52, in assert_pass
+    self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: proof_run_capture [-h] --feature-dir FEATURE_DIR
+                         --timeout-seconds TIMEOUT_SECONDS --note NOTE
+proof_run_capture: error: unrecognized arguments: --kind regression --cwd sub dir -- /usr/local/bin/python3 -c import json,os,sys; print(json.dumps({"argv":sys.argv[1:],"cwd":os.getcwd()})); print("separate error",file=sys.stderr) space value $(touch UNWANTED) ;touch UNWANTED  quote"and'apostrophe --flag λ
+
+
+======================================================================
+FAIL: test_regression_without_runner (__main__.CaptureAcceptance.test_regression_without_runner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 98, in test_regression_without_runner
+    self.assert_pass(self.regression('print("without runner")'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/feature-verification-capture/proof/acceptance.py", line 52, in assert_pass
+    self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : usage: proof_run_capture [-h] --feature-dir FEATURE_DIR
+                         --timeout-seconds TIMEOUT_SECONDS --note NOTE
+proof_run_capture: error: unrecognized arguments: --kind regression -- /usr/local/bin/python3 -c print("without runner")
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.006s
+
+FAILED (failures=7, errors=1)

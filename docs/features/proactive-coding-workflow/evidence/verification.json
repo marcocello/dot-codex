@@ -1,0 +1,10 @@
+{
+  "proof_run": "docs/features/proactive-coding-workflow/proof/runs/20260917T160659786622Z",
+  "regression_runs": [
+    "docs/features/proactive-coding-workflow/tests/runs/20260917T160436807827Z",
+    "docs/features/proactive-coding-workflow/tests/runs/20260917T160436833422Z"
+  ],
+  "behavioral_result": "11 blind forward-response cases / 34 independently assessed outcomes PASS",
+  "boundary": "Bounded responses and next-action traces; no live product rerun or full autonomous implementation guarantee.",
+  "final_review": "PASS /root/proactive_final_review; final-review.json"
+}

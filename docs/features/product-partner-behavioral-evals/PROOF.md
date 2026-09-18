@@ -9,7 +9,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/product-partner-behavioral-evals --timeout-seconds 60 --note "verify retained semantic product-partner evaluations"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/product-partner-behavioral-evals --timeout-seconds 60 --note "verify retained semantic product-partner evaluations"
 ```
 
 ## Scenario: Representative outputs remain inspectable

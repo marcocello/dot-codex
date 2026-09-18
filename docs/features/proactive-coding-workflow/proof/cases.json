@@ -1,0 +1,57 @@
+[
+  {
+    "id": "model_defaults",
+    "request": "When a team is created and a kit is associated, you need to default or auto-select the booth model, default one. And then, I mean, you can select, user can select, admin can select and change, but the default is there.",
+    "context": "Repository inspection: kit association deliberately persists empty execution and vision model selections. Runtime has one configured default for each. Model editing is Admin-only. User has not asked elsewhere to change roles. The word booth has no domain meaning. Native Goal tools are available; no current Goal."
+  },
+  {
+    "id": "animation",
+    "request": "Use the existing Conversations loading animation in team chat while a response is being generated. Please implement it.",
+    "context": "Repository inspection: a shared accessible animation component already exists, with reduced-motion support. Team chat has a reliable response-pending state. No design or permission differences. Independent proof author and final reviewer are available. Native Goal tools available; no current Goal."
+  },
+  {
+    "id": "roles",
+    "request": "Allow ordinary team members to change the execution model too, like admins can. Implement it.",
+    "context": "Repository inspection: members and admins already see the same execution-model selector; members currently lack server write permission. This request applies only to execution model; vision editing remains Admin-only. Roles have no billing implications. Native Goal tools available; no current Goal."
+  },
+  {
+    "id": "fix",
+    "request": "Fix the download filename: clicking Export report currently gives report.cvs but should give report.csv.",
+    "context": "Repository inspection: a single filename literal is misspelled; MIME type and CSV contents are already correct, existing focused test covers download filename. No accepted feature behavior needs reopening, no runtime incident. Native Goal tools available; no current Goal."
+  },
+  {
+    "id": "analysis",
+    "request": "Explain the tradeoffs of our current single-queue worker architecture. Do not implement anything.",
+    "context": "Repository inspection: persisted jobs use a single FIFO queue and one consumer. Architecture assessment skill is available. No observed incident. Native Goal tools available; no current Goal."
+  },
+  {
+    "id": "spec_only",
+    "request": "Write a specification for adding a reusable saved-search feature. Stop at the specification; do not build it.",
+    "context": "User supplied decisions: private per-user saved name plus search expression; create/update/delete from existing search UI, no sharing, current search syntax unchanged. Existing conventions supply validation and permissions. Native Goal tools available; no current Goal. Independent proof author available."
+  },
+  {
+    "id": "direct_ship",
+    "request": "Implement the ready CSV export feature in docs/features/csv-export. The accepted specification and independently authored proof are ready.",
+    "context": "Inspection confirms feature status ready, requirements complete, independent frozen proof runnable, no competing owner; local implementation and verification authorized. Current native Goal: none. Native Goal tools available. No separate Goal request."
+  },
+  {
+    "id": "missing_tools",
+    "request": "Add a Clear filters button next to the existing filter controls. Implement it.",
+    "context": "Repository inspection: established reset action restores the documented default filter state; layout conventions unambiguous. Native Goal tools unavailable. Independent proof/review available. Local work can proceed."
+  },
+  {
+    "id": "occupied_goal",
+    "request": "Add a Retry button to failed local file previews. Implement it.",
+    "context": "Repository inspection: existing retry function and standard button component can be reused, failure state identified, no network/external effects. Native Goal tools available. An unfinished Goal belongs to another unrelated feature (email digest) with another owner. Independent proof/review available."
+  },
+  {
+    "id": "shorthand_pr",
+    "request": "PR #81 \u2014 weird, approving the invoice seems to send two receipts now. Have a look.",
+    "context": "The user supplied PR #81 as relevant context. Read-only PR inspection is available but has not happened yet. No invoice code, PR diff or runtime logs have been inspected. Production action or code changes were not requested. Goal tools available; no active Goal."
+  },
+  {
+    "id": "deep_shape",
+    "request": "Build a customer reminder feature so people do not forget renewals.",
+    "context": "Repository inspection: customers have multiple subscriptions, timezone and email fields; email delivery service exists. Nothing specifies reminder timing, which subscriptions qualify, opt-out preferences, repeat delivery, or behavior after cancellation. No established reminders feature or accepted product decisions. Native Goal tools available; no current Goal. Read-only discovery can continue without sending email."
+  }
+]

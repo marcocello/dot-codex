@@ -7,7 +7,7 @@ description: "Review coding runs, proof attempts, and user corrections to propos
 
 Purpose: extract useful improvements from actual coding runs, including successful, failed, and interrupted work. Separate discovery, implementation, proof, environment, and reusable harness issues.
 
-Use directly for `coding-workflow` Analyze. Review is read-only: no status changes, acceptance edits, or automatic global rule changes. Authorized improvements can follow in the same task through the appropriate workflow. Recording belongs to `coding-workflow`; this skill reads linked evidence without duplicating dialogue or requiring a second-brain action.
+Use directly for analysis. Review is read-only: no status changes, acceptance edits, or automatic global rule changes. Authorized improvements can follow in the same task through the appropriate workflow. Recording belongs to the coding lifecycle skills; this skill reads linked evidence without duplicating dialogue or requiring a second-brain action.
 
 ## Inputs
 - Target repository and optional feature scope.
@@ -69,7 +69,7 @@ Suggest, but do not write, the destination:
 
 - Product behavior -> `FEATURE.md` or new accepted feature package.
 - Architecture/convention -> repository architecture/convention docs.
-- Proof gap -> proposed correction to the owning proof or testing guidance. Distinguish independent setup repair under `coding-workflow/references/proof.md` from changes to acceptance or unresolved meaning requiring a user decision. Review itself remains read-only.
+- Proof gap -> proposed correction to the owning proof or testing guidance. Distinguish independent setup repair under [shared proof procedure](../../docs/harness/coding/proof.md) from changes to acceptance or unresolved meaning requiring a user decision. Review itself remains read-only.
 - Setup friction -> repository setup scripts/docs/tasks.
 - Cross-feature harness gap -> smallest relevant skill, harness doc, script, or regression.
 - Stable preference -> smallest appropriate user or project instruction; reference existing dialogue capture instead of copying it.

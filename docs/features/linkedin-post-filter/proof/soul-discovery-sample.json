@@ -1,0 +1,11 @@
+{
+  "response": "CRINGE\nThe substance sounds real, but Kubernetes autoscaling is explicitly deferred this quarter, making even reproducible benchmarks a distraction from current priorities. Skip for now.",
+  "provenance": {
+    "source": "isolated current-skill invocation with local context discovery",
+    "agent_id": "01a06def-111e-7af0-be2d-ca26ad555766",
+    "captured_at": "2026-09-04T16:05:00Z",
+    "skill_path": "skills/keep-or-cringe/SKILL.md",
+    "workspace": "docs/features/linkedin-post-filter/proof/fixtures",
+    "invocation": "post supplied without embedding the workspace SOUL.md contents"
+  }
+}

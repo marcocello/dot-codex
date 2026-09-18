@@ -1,0 +1,62 @@
+{
+  "task": "01a0af8c-7363-7390-8e1f-a0d60b3d0d0e",
+  "goal": "Native Goal on this task: simplify harness instruction architecture",
+  "implementer": "/root",
+  "proof_author": "/root/lean_proof",
+  "final_reviewer": "/root/lean_final_review",
+  "changed_from_feature_baseline": [
+    "AGENTS.md",
+    "README.md",
+    "docs/harness/coding/proof.md",
+    "docs/harness/coding/evidence.md",
+    "docs/harness/coding/status.md",
+    "skills/coding-python-backend/SKILL.md",
+    "skills/coding-antipattern-review/SKILL.md",
+    "skills/coding-shape/SKILL.md",
+    "skills/coding-commit/SKILL.md",
+    "skills/coding-frontend/SKILL.md",
+    "skills/coding-ship/SKILL.md",
+    "skills/coding-architecture-deep-dive/SKILL.md",
+    "skills/coding-prepare-environment/SKILL.md",
+    "skills/coding-fix/SKILL.md",
+    "skills/coding-ui-toolkit/SKILL.md",
+    "skills/coding-review-workflow/SKILL.md",
+    "skills/coding-operate/SKILL.md",
+    "skills/coding-secret-audit/SKILL.md"
+  ],
+  "removed_from_feature_baseline": [
+    "docs/harness/safety.md",
+    "docs/harness/workflow.md",
+    "docs/harness/coding/research.md",
+    "docs/harness/coding/rules.md"
+  ],
+  "skills_used": {
+    "skill-creator": {
+      "path": "skills/.system/skill-creator/SKILL.md",
+      "sha256": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66"
+    },
+    "coding-shape": {
+      "path": "skills/coding-shape/SKILL.md",
+      "sha256": "a2a7ce85c5cc43d9310f8eda11ed19a327d94bae0288c55442297ced8c6c71af"
+    },
+    "coding-ship": {
+      "path": "skills/coding-ship/SKILL.md",
+      "sha256": "3a8ea5a2f4d53a3d5cbed2027f211d76643f261c9f44d4ee4e9f7028767bc968"
+    }
+  },
+  "capture": "partial; relevant dialogue retained in native task history, no complete dialogue export",
+  "target": "on-disk instruction consumption and navigation; not a live model behavioral replay",
+  "proof_run": "docs/features/lean-harness-instructions/proof/runs/20260917T162423146841Z",
+  "supporting_regressions": [
+    "docs/features/lean-harness-instructions/tests/runs/20260917T162313545034Z",
+    "docs/features/lean-harness-instructions/tests/runs/20260917T162321934486Z"
+  ],
+  "core_words": {
+    "before": 11748,
+    "after": 4084
+  },
+  "shared_reference_words": {
+    "before": 3784,
+    "after": 1433
+  }
+}

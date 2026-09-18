@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Ship"
+  short_description: "Deliver a specified feature with fixed proof."
+  default_prompt: "Use $coding-ship to implement and verify the ready feature against fixed independent proof, continue any matching Shape Goal, and complete affected checks and final review without renewed implementation approval."
+policy:
+  allow_implicit_invocation: true

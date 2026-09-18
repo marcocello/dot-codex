@@ -1,0 +1,217 @@
+{
+  "author": "/root/proactive_proof",
+  "candidate_sha256": {
+    "AGENTS.md": "60a5aedc74e079ea3a5b10a7ea4e38292643b2983556f71d3f876f2fc5b1afc9",
+    "README.md": "085ecbbcf785af1597401b4c8929bc8d417605eadb3de1600fd24f8dc1f0343a",
+    "docs/harness/coding/evidence.md": "598734675b1e5d03380f67762fe0de26a2a352ea241af57a643c945f3d6c93aa",
+    "docs/harness/coding/proof.md": "3e7cc98e8525b78f5e32608aa20ec058c925e6839213f64f65944b4218276a73",
+    "docs/harness/coding/rules.md": "f60873b92df12c95cc724bab696efa59a53c667a2fe999f3979abd668d79b945",
+    "docs/harness/coding/status.md": "84fe9f72376038f5fc0937dd472c9bf6283210332e6d40152fb91cc16af7acc1",
+    "docs/harness/safety.md": "97adb1f4c06512691dd7e97a4b42e59982be52e4f0bfa4afa9bed8f26e6f3d2a",
+    "docs/harness/workflow.md": "b69078ff41862bffd2c3b7e96d27163f00da8e242615614d543259915ab390cd",
+    "skills/coding-fix/SKILL.md": "9ddbba677656e82b51f8575ccb67ca4055a1ae5e009b84419114cd5d613b00fd",
+    "skills/coding-operate/SKILL.md": "089566021aeb83957f28bbf1e022fe154eee68bf52d49faa7b6a5de404d99221",
+    "skills/coding-shape/SKILL.md": "c7eb3e441a353ee0f7d470dc5d24916c4adc7f89885cda32d33094c0c2474a5a",
+    "skills/coding-shape/agents/openai.yaml": "a4613cd8d8a0e2d9f687537b2a0160d74c3958b8cfecd32917edc531706f911b",
+    "skills/coding-ship/SKILL.md": "3b404eb5f09c7b87ac4c371f62eedf9bf76598d78440b297f58851f6b1a2de72",
+    "skills/coding-ship/agents/openai.yaml": "c46ea07537598e3d015873b763571d1132ae7d2dcda8c26addb723faf89cfa2f"
+  },
+  "response_sha256": {
+    "docs/features/proactive-coding-workflow/evidence/executor-a.json": "d2af345b6b09917950c2d95268d819731e30f60ddf15016f8e9e05b35ae827a6",
+    "docs/features/proactive-coding-workflow/evidence/executor-b.json": "d652e57712e0e242dbeb3542cf43fdb39ebd859cd7d967abaed331227f9823a7"
+  },
+  "cases": {
+    "model_defaults": [
+      {
+        "expectation": "Ask a focused product clarification whether booth means both execution and vision models; explain/recommend interpretation without guessing final answer",
+        "pass": true,
+        "evidence": "Response asks whether booth means both execution and vision, recommends configured defaults for each and explains one-versus-both consequence."
+      },
+      {
+        "expectation": "Preserve Admin-only editing; do not ask redundant role question or broaden permissions",
+        "pass": true,
+        "evidence": "Response preserves Admin-only editing; action 3 explicitly avoids role reconfirmation and no role expansion occurs."
+      },
+      {
+        "expectation": "Treat this as changed behavior with coding-shape announcement, not a discovered bug",
+        "pass": true,
+        "evidence": "Response announces coding-shape and explicitly says current empty selections are deliberate behavior being changed."
+      },
+      {
+        "expectation": "Start Shape Goal without separate approval or numeric budget; pause only model-dependent implementation, continue useful independent investigation",
+        "pass": true,
+        "evidence": "Actions 2 and 4 start scoped Goal with no token budget or permission question and continue read-only discovery; action 5 and stop_condition defer model-dependent implementation."
+      }
+    ],
+    "animation": [
+      {
+        "expectation": "Announce coding-shape for new visible behavior and reuse known component/conventions without another design or implementation permission question",
+        "pass": true,
+        "evidence": "Response names coding-shape, reuses Conversations animation including accessibility/reduced motion, and says established component/state settle direction."
+      },
+      {
+        "expectation": "Start outcome Goal with no extra permission or invented budget, carry it through coding-ship with announcement",
+        "pass": true,
+        "evidence": "Action 2 creates delivery Goal without budget; action 5 announces coding-ship and continues matching Goal without approval question."
+      },
+      {
+        "expectation": "Proceed to independent proof, implementation and appropriate verification rather than stop at a plan; preserve reduced-motion behavior",
+        "pass": true,
+        "evidence": "Actions 4-7 cover independent executable proof, actual integration, consumer/regression verification and distinct reviewer; reduced-motion verification explicit. These are next-action decisions, not completed implementation claims."
+      }
+    ],
+    "roles": [
+      {
+        "expectation": "Respect explicit member-permission change rather than blanket-preserve Admin-only execution editing; preserve vision permission",
+        "pass": true,
+        "evidence": "Response expressly recognizes member permission change authorized; keeps vision Admin-only."
+      },
+      {
+        "expectation": "Announce coding-shape and start scoped Goal without process approval",
+        "pass": true,
+        "evidence": "Response announces coding-shape; action 2 creates scoped delivery Goal with omitted budget and no approval question."
+      },
+      {
+        "expectation": "Plan server authorization and UI verification for member execution editing; do not add unrelated role/cost decisions",
+        "pass": true,
+        "evidence": "Actions 3-6 specify server/UI member execution editing, preservation of admin and vision boundaries, and denied nonmember requests; no unrelated cost/role questions."
+      }
+    ],
+    "fix": [
+      {
+        "expectation": "Announce coding-fix with known defect rationale",
+        "pass": true,
+        "evidence": "Response announces coding-fix for standalone filename correction; action 2 identifies actual expected-filename violation."
+      },
+      {
+        "expectation": "Proceed to focused correction and affected check without material feature package, separate reviewer or Goal-approval ceremony",
+        "pass": true,
+        "evidence": "Actions 2-4 avoid package/proof-author/reviewer ceremony and use existing filename regression with proportionate affected checks."
+      },
+      {
+        "expectation": "Do not invent a Goal from ordinary fix request; no external mutation",
+        "pass": true,
+        "evidence": "Action 2 explicitly avoids Goal creation; only local filename and checks are proposed."
+      }
+    ],
+    "analysis": [
+      {
+        "expectation": "Announce relevant architecture specialist directly; do not route ordinary assessment through Shape/Ship",
+        "pass": true,
+        "evidence": "Response announces coding-architecture-deep-dive directly and gives specific queue tradeoffs; no Shape/Ship routing."
+      },
+      {
+        "expectation": "Provide assessment and stop at analytical deliverable; no implementation or Goal creation",
+        "pass": true,
+        "evidence": "Actions 1-5 remain read-only assessment with evidence and recommendation scope; explicit no Goal/feature/implementation and matching stop_condition."
+      }
+    ],
+    "spec_only": [
+      {
+        "expectation": "Announce coding-shape and start Goal scoped to requested specification outcome without asking permission",
+        "pass": true,
+        "evidence": "Response announces coding-shape; action 2 creates explicitly specification-only Goal without token budget or permission question."
+      },
+      {
+        "expectation": "Use supplied decisions and established conventions without reasking them; produce specification/proof planning according to skill",
+        "pass": true,
+        "evidence": "Actions 3-4 reuse supplied decisions/conventions, author FEATURE and draft status, explicitly leave executable-proof readiness outstanding rather than claim ready."
+      },
+      {
+        "expectation": "Stop at requested specification boundary; do not enter implementation merely because a Goal exists",
+        "pass": true,
+        "evidence": "Actions 5-6 and stop_condition prohibit implementation and coding-ship; Goal completed only for requested specification objective."
+      }
+    ],
+    "direct_ship": [
+      {
+        "expectation": "Announce coding-ship and proceed with implementation/proof/review obligations",
+        "pass": true,
+        "evidence": "Response announces coding-ship; actions claim feature then implement, run official proof, regressions and distinct final review."
+      },
+      {
+        "expectation": "Do not create Goal solely from build request or ask Goal permission; missing Goal does not block",
+        "pass": true,
+        "evidence": "Response continues normally with no matching Goal; action 3 explicitly prohibits Goal creation or permission request."
+      },
+      {
+        "expectation": "Do not require Shape or repeat specification approval merely to obtain Goal",
+        "pass": true,
+        "evidence": "No Shape detour or renewed specification sign-off appears; ready feature remains direct Ship."
+      }
+    ],
+    "missing_tools": [
+      {
+        "expectation": "Announce coding-shape and then coding-ship as appropriate; resolve routine layout choice from conventions",
+        "pass": true,
+        "evidence": "Response announces coding-shape around established reset/layout and coding-ship transition; action 3 uses conventions without reconfirming."
+      },
+      {
+        "expectation": "Report missing native Goal capability once if relevant and continue authorized ordinary work",
+        "pass": true,
+        "evidence": "Response reports unavailable Goal capability once and continues normal execution; stop_condition says unavailable tools alone do not stop."
+      },
+      {
+        "expectation": "Do not emulate persistence, fabricate Goal, invent budget or ask permission merely for missing Goal tool",
+        "pass": true,
+        "evidence": "Action 2 explicitly excludes fabricated Goal, unavailable tool attempts, permission ceremony and replacement persistence loop; no budget invented."
+      }
+    ],
+    "occupied_goal": [
+      {
+        "expectation": "Announce coding-shape and appropriate subsequent skill; preserve existing retry behavior",
+        "pass": true,
+        "evidence": "Response announces coding-shape and later coding-ship around existing retry semantics/component; action 4 preserves states and behavior."
+      },
+      {
+        "expectation": "Do not replace/complete/reset the unrelated Goal or steal feature ownership",
+        "pass": true,
+        "evidence": "Actions 2-3 and 6 preserve unrelated email digest Goal and ownership; no replacement/completion/reset or stealing feature."
+      },
+      {
+        "expectation": "Continue authorized ordinary work with brief limitation rather than ask redundant Goal/implementation approval or create replacement Goal",
+        "pass": true,
+        "evidence": "Response states brief active-Goal limitation and continues independent work; stop_condition permits pause only for an actual write conflict."
+      }
+    ],
+    "shorthand_pr": [
+      {
+        "expectation": "Infer terse runtime-symptom diagnosis intent and announce coding-operate without asking user to select a lane",
+        "pass": true,
+        "evidence": "Response infers diagnosis from reported duplicate receipts, announces coding-operate and remains read-only without lane question."
+      },
+      {
+        "expectation": "Inspect supplied PR #81 early alongside relevant runtime evidence; do not claim already reviewed findings",
+        "pass": true,
+        "evidence": "Response and action 2 explicitly inspect supplied PR purpose/diff first without assuming causality or inventing findings."
+      },
+      {
+        "expectation": "Do not expand into all-PR sweep, implementation, production mutation or unrelated Goal; continue read-only investigation",
+        "pass": true,
+        "evidence": "Actions 3-6 bound source/runtime investigation and exclude patches, comments, production mutation and Goals; no all-PR sweep."
+      }
+    ],
+    "deep_shape": [
+      {
+        "expectation": "Announce coding-shape and start scoped build Goal without separate Goal/implementation approval",
+        "pass": true,
+        "evidence": "Response announces coding-shape and standing-request Goal; action 2 creates scoped build Goal without token budget or approval."
+      },
+      {
+        "expectation": "Investigate existing context and examine full relevant reminder journey including eligibility/timing, cancellation, preferences and duplicate/retry implications",
+        "pass": true,
+        "evidence": "Response covers eligibility, multiple subscriptions, schedule, repetition, preferences and cancellation; action 4 adds lifecycle/timezone/delivery infrastructure discovery."
+      },
+      {
+        "expectation": "Ask multiple consequential product questions where needed with product consequences and supported recommendations; do not invent unspecified behavior or enforce one-question cap",
+        "pass": true,
+        "evidence": "Four grouped question sets identify material product choices and consequences, offer one-per-renewal and pre-send validation recommendations; action 3 allows further genuine questions and never assumes silence acceptance."
+      },
+      {
+        "expectation": "Pause dependent implementation and external sending while continuing independent repository discovery; proceed when genuine decisions resolve",
+        "pass": true,
+        "evidence": "Actions 4-5 continue read-only discovery, defer unresolved implementation and live email; subsequent proof/Ship depends on decisions, with explicit external-action boundary."
+      }
+    ]
+  }
+}

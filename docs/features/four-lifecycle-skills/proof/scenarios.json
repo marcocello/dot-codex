@@ -1,0 +1,137 @@
+[
+  {
+    "id": "new_export",
+    "prompts": [
+      "Add CSV export; format decisions are open.",
+      "Build a new export capability, but we have not settled its columns."
+    ],
+    "expected_route": "coding-shape",
+    "required_outcome": "Resolve behavior then proceed to Ship under existing build authorization; independent proof before implementation."
+  },
+  {
+    "id": "ready_feature",
+    "prompts": [
+      "Implement the accepted feature with its independent executable proof ready.",
+      "Ship the specified capability; acceptance is already frozen."
+    ],
+    "expected_route": "coding-ship",
+    "required_outcome": "Fixed specification and independent proof; proportional regressions and distinct fresh final reviewer; no invented Goal authorization or budget."
+  },
+  {
+    "id": "standalone_fix",
+    "prompts": [
+      "Correct a misspelled button label.",
+      "The README command has an isolated typo; correct it."
+    ],
+    "expected_route": "coding-fix",
+    "required_outcome": "Focused check and affected regressions; no material feature package or mandatory reviewer merely for small maintenance."
+  },
+  {
+    "id": "reopen_fix",
+    "prompts": [
+      "A delivered feature violates its accepted export contract.",
+      "Fix a regression that invalidates previously delivered feature behavior."
+    ],
+    "expected_route": "coding-fix",
+    "required_outcome": "Reopen owning feature proof/review obligations; patch size cannot waive them."
+  },
+  {
+    "id": "active_ship_regression",
+    "prompts": [
+      "During this feature implementation an affected regression fails.",
+      "The new feature broke an existing neighboring behavior."
+    ],
+    "expected_route": "coding-ship",
+    "required_outcome": "Repair within current feature scope, allowance, and review; no separate package per regression."
+  },
+  {
+    "id": "runtime_diagnosis",
+    "prompts": [
+      "Analyze why the production job stopped; diagnosis only.",
+      "Understand this running service timeout without changing anything."
+    ],
+    "expected_route": "coding-operate",
+    "required_outcome": "Read-only runtime evidence, follow owning service across repos; no unauthorized mutation and stop with findings."
+  },
+  {
+    "id": "runtime_repair",
+    "prompts": [
+      "Repair the diagnosed production issue within the explicitly authorized target.",
+      "Apply the authorized operational correction and check the affected user flow."
+    ],
+    "expected_route": "coding-operate",
+    "required_outcome": "Live affected consumer read-back; local success cannot claim production recovery; known code defects may transition to Fix."
+  },
+  {
+    "id": "architecture",
+    "prompts": [
+      "Assess this component architecture and its tradeoffs.",
+      "Compare our service boundaries with this reference design."
+    ],
+    "expected_route": "coding-architecture-deep-dive",
+    "required_outcome": "Direct specialist assessment without generic analysis skill, lifecycle package, or implied implementation."
+  },
+  {
+    "id": "antipattern",
+    "prompts": [
+      "Review recurring code smells and fragile test boundaries.",
+      "Check these functions for maintainability anti-patterns."
+    ],
+    "expected_route": "coding-antipattern-review",
+    "required_outcome": "Direct evidence-backed specialist review; read-only scope unless separately authorized."
+  },
+  {
+    "id": "workflow_review",
+    "prompts": [
+      "Review this completed coding run and user corrections.",
+      "Assess what the proof attempts tell us about our harness."
+    ],
+    "expected_route": "coding-review-workflow",
+    "required_outcome": "Direct specialist reflection on retained evidence; recommendations do not authorize changes."
+  },
+  {
+    "id": "explanation",
+    "prompts": [
+      "Explain how this Python endpoint works.",
+      "Walk me through the existing React state flow."
+    ],
+    "expected_route": "domain-expertise",
+    "required_outcome": "Answer requested explanation using relevant expertise; no generic analysis lifecycle or automatic implementation."
+  },
+  {
+    "id": "acceptance_change",
+    "prompts": [
+      "Change an accepted outcome while Ship is running.",
+      "The frozen requirement is ambiguous; adjust the proof to what implementation does."
+    ],
+    "expected_route": "user-decision",
+    "required_outcome": "Pause dependent work for behavior decision, retain evidence and independence; never let implementer rewrite frozen acceptance or use mode switches to bypass it."
+  },
+  {
+    "id": "announce_first_use",
+    "prompts": [
+      "Start shaping the requested feature; tell the user which skill you are using.",
+      "Begin a direct architecture assessment and select any supporting skill needed."
+    ],
+    "expected_route": "explicit-skill-announcement",
+    "required_outcome": "Before first use, user-visible commentary names each actual lifecycle, specialist, or supporting skill exactly and briefly explains its task-specific purpose. Generic lane labels or \u201crelevant skills\u201d do not satisfy this. Direct analysis is included; merely mentioned, unused skills are not claimed as used."
+  },
+  {
+    "id": "announce_transition_and_selection",
+    "prompts": [
+      "Shape is complete: switch to Ship and select the Python backend skill.",
+      "During an operation, the confirmed code defect requires Fix and a newly selected domain specialist."
+    ],
+    "expected_route": "explicit-skill-announcement",
+    "required_outcome": "Before transition work or newly selected skill work starts, announce exact lifecycle and new specialist names and their roles. One concise combined announcement may name multiple skills and explain each role."
+  },
+  {
+    "id": "announce_without_noise",
+    "prompts": [
+      "Continue tool calls using the same skills already announced.",
+      "Mention an alternative skill while continuing the current skill without invoking the alternative."
+    ],
+    "expected_route": "no-redundant-announcement",
+    "required_outcome": "Do not repeat unchanged skill-use announcements per tool call; do not falsely claim use of merely mentioned skills. AGENTS and shared rules provide the common policy without duplicating it into every skill."
+  }
+]

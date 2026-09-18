@@ -11,7 +11,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/four-mode-coding-workflow --timeout-seconds 120 --note "verify four-mode coding workflow v2"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/four-mode-coding-workflow --timeout-seconds 120 --note "verify four-mode coding workflow v2"
 ```
 
 ## Scenario: One progressively disclosed lifecycle replaces orchestration handoffs

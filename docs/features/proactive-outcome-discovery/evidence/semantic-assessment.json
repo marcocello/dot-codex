@@ -1,0 +1,67 @@
+{
+  "author": "/root/outcome_proof",
+  "method": "blind source-conditioned response exercise with independent assessment; not app replay",
+  "executor": "/root/outcome_proof/blind_outcomes",
+  "candidate_hashes": {
+    "AGENTS.md": "662ceaeeb5409c72864c5d12b132e7362c5e8dfcead4ba462e5cefb0ea757202",
+    "README.md": "4832a8102f06053a3a3fc59d9f44c8a9a9b8964024bdb3114598f9790fb70706",
+    "skills/coding-shape/SKILL.md": "92ba8e97a2de90163091d94b7bdf7d3cf8e817f97fb81634038edbaca0ed029d",
+    "skills/coding-ship/SKILL.md": "6d9b4a62415c69804a78816f118cfdbe9f87876999747a4405fa0925cd960c8c",
+    "docs/harness/coding/proof.md": "d15e37302e330b68502352fff207b0158383fe741d990eb25c0fc696514046c7"
+  },
+  "blind_responses_sha256": "fcee7dac462c04a0da315eaadeed55da9388565e20b014e7b0bef9aa2b574a09",
+  "cases": [
+    {
+      "id": "model-default",
+      "verdict": "PASS",
+      "proposed_response": "I’m using coding-shape to define automatic model selection across team creation, kit association, and delayed provisioning. The intended result is that both models become usable without setup, while saved admin choices survive later provisioning or association events. Fresh teams currently have no vision default, so copying defaults alone leaves that result incomplete. When no vision default exists, should the vision-capable execution model also be selected for vision? I recommend that fallback after checking that it is eligible for the kit and team. I’ll trace the association and provisioning paths and override storage while that decision is pending.",
+      "reasoning": "The response interprets the intended usable outcome, catches fresh null vision_default before completion, proposes the known vision-capable execution model as a question rather than silently inventing policy, preserves overrides, and explicitly includes independent fresh-state/provisioning/repeated-action proof. It investigates unsupported defaults and existing stored choices without unnecessary implementation authorization.",
+      "instruction_evidence": "Shape Discover And Decide: usable first use, implementation fact versus desired policy, fallback question and no arbitrary alternative; Specify And Prepare Proof: accepted discovery cases.",
+      "limitations": "No actual model registry inspected. Existing-record migration is not settled explicitly; retained overrides and repeated association are covered, and this exercise does not imply approval for backfilling existing teams."
+    },
+    {
+      "id": "first-use-notifications",
+      "verdict": "PASS",
+      "proposed_response": "I’m using coding-shape to work out a reminder flow that works for new members. Old-account defaults won’t help somebody who has neither preferences nor a verified destination. I recommend prompting those members to choose and verify a destination when they join, then activating reminders after they explicitly enable them; returning members’ opt-outs should remain in effect. Should joining include that setup step, or should reminders stay pending with a visible setup prompt afterward? I’ll inspect the existing verification and preference flows so we can reuse them. Live email delivery needs your explicit authorization before any real messages are sent.",
+      "reasoning": "Finds missing preferences and verified destination, proposes a setup/activation direction, asks a concrete timing decision, preserves opt-outs, and keeps real email behind applicable authorization. Carries first-use, returning opted-out and repeated join conditions into independent proof rather than copying historical defaults.",
+      "instruction_evidence": "Shape Discover And Decide; AGENTS Global Boundaries; proof Required Boundary.",
+      "limitations": "Consent is proposed policy, not claimed discovered law or product requirement. No real email delivery or UI verification performed."
+    },
+    {
+      "id": "costly-fallback",
+      "verdict": "PASS",
+      "proposed_response": "I’m using coding-shape because this adds backup fallback behavior. There is currently no authorized destination to fall back to: the alternatives require a paid subscription, and deleting retained backups would break the retention policy. I recommend supporting an explicitly configured secondary destination while retaining existing backups; until one is available, a full destination should produce a clear failure with a recovery action. Which secondary destination and spending limit do you authorize, or should the feature stop at configuration and a clear blocked-backup state for now? I’ll inspect capacity detection and backup retry behavior while that choice is pending.",
+      "reasoning": "Distinguishes desired backup reliability from available paid destinations and retention constraints. Recommends configured secondary storage plus explicit blocked behavior, asks destination/budget or scoped alternative, and continues capacity/retry investigation without buying or deleting.",
+      "instruction_evidence": "AGENTS Understand And Route and Global Boundaries; Shape fallback policy limits.",
+      "limitations": "This is future fallback behavior, not a supplied running incident. A concrete live incident would route Operate first. Real prices/providers were not researched."
+    },
+    {
+      "id": "bounded-repair",
+      "verdict": "PASS",
+      "proposed_response": "I’m using coding-fix for this focused repair. I’ll refresh validation when the title changes so correcting an invalid title enables Save again, while unchanged or invalid titles remain disabled. I’ll reproduce the invalid-to-valid sequence and verify that saving persists the corrected title.",
+      "reasoning": "Uses focused Fix and a concrete invalid-to-valid/persisted read-back plan without a product questionnaire, arbitrary Goal gate or renewed approval. Checks reopened obligations while retaining proportionality.",
+      "instruction_evidence": "AGENTS routing table, ordinary local diagnosis/repair authority and prohibition on turning every request into an interview.",
+      "limitations": "Fix skill details were not part of the five-file exercise packet; response scope is judged from supplied current routing and scenario facts. No actual repair performed."
+    },
+    {
+      "id": "analysis-only",
+      "verdict": "PASS",
+      "proposed_response": "I’m using coding-antipattern-review to explain the preview’s misleading success state. The preview counts only rows that parsed successfully, so skipped rows disappear from the population used to decide success. That makes success describe the parsed subset rather than the full input. The existing specification also leaves partial success undefined. I recommend reporting total, accepted, and skipped rows separately and showing a distinct partial-success state when anything is skipped. This is an analysis finding and a proposed policy; I won’t change code.",
+      "reasoning": "Stays analytical, explains parsed-subset accounting versus entire-input outcome, proposes partial success and skipped counts, and preserves explicit no-code scope. No package or implementation permission inferred.",
+      "instruction_evidence": "AGENTS analytical route and explicit scope control; README original practical outcome.",
+      "limitations": "This case supplies the causal fact; source references are planned rather than fabricated. A useful policy question can be deferred because user requested explanation only."
+    },
+    {
+      "id": "delivery-gap",
+      "verdict": "PASS",
+      "proposed_response": "No. A fresh team still has a blank vision selection, so the requested result is missing despite the passing tests. I’m using coding-ship to assess that completion gap against the frozen acceptance. The preconfigured fixtures miss the ordinary first-use state. I’ll preserve the existing results and ask the independent proof author to assess coverage of fresh teams. The missing fallback policy also needs a decision before dependent implementation: when vision_default is empty, should the system reuse an eligible vision-capable execution model? I recommend that if it satisfies the team and kit requirements; I’ll verify those requirements before changing behavior.",
+      "reasoning": "Rejects completion despite tests; explicitly detects ordinary null-default fixture gap, preserves prior evidence, checks accepted policy and routes missing decisions through Shape/independent proof instead of implementer rewriting frozen acceptance. Requires real visible/persisted result and fresh review.",
+      "instruction_evidence": "Ship Verify And Review original-outcome comparison; proof Separate Authorship, Required Boundary and Fixed Acceptance.",
+      "limitations": "The response asks about a fallback before its planned check for an already accepted policy; better sequencing would inspect that first. The conditional next actions retain the correct boundary and do not require a new answer if policy already exists. This is a communication refinement, not failure of the required incomplete-result or fixed-acceptance safeguards."
+    }
+  ],
+  "invariants": {
+    "verdict": "PASS",
+    "reasoning": "Inspected each five-file diff against frozen baseline. Changes add 342 words total: routing intent 33, README explanation 49, Shape discovery/specification 153, Ship outcome comparison 48 and proof challenge 59. Each addition belongs to its existing owner; no new guide, mandatory questionnaire, lifecycle gate or duplicated routing was introduced. Existing explicit Shape Goal authorization and direct-Ship/no-tools behavior remain intact. Existing permissions, analytical scope, independent proof authorship, fixed acceptance and separate final review remain unchanged. Added questions concern unresolved consequential policy; discoverable facts still belong to investigation. Candidate navigation and prior protected histories/scripts/inventory are checked executably. Semantic exercise demonstrates bounded responses under explicit instruction loading, not universal spontaneous compliance."
+  }
+}

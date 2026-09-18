@@ -1,0 +1,21 @@
+Target: local checkout skill inventory and current instruction consumers at /Users/marcocello/software/marcocello/dot-codex
+Fresh application-task discovery is outside this executable target.
+PASS Inventory names are unique
+FAIL Desired inventory replaces workflow with exactly four lifecycle entries
+FAIL Unrelated desired inventory entries preserved
+PASS Real inventory list command succeeds
+FAIL Inventory consumer reads four lifecycle skills without retired entries
+FAIL coding-fix has discoverable entrypoint and UI metadata
+FAIL coding-operate has discoverable entrypoint and UI metadata
+FAIL coding-shape has discoverable entrypoint and UI metadata
+FAIL coding-ship has discoverable entrypoint and UI metadata
+FAIL Retired workflow and generic Analyze are not discoverable directories
+PASS coding-antipattern-review remains directly available
+PASS coding-architecture-deep-dive remains directly available
+PASS coding-review-workflow remains directly available
+FAIL Current guidance has no retired skill paths/invocations: AGENTS.md; README.md; docs/harness/coding-workflow.md; docs/harness/safety.md; skills/coding-frontend/SKILL.md; skills/coding-python-backend/SKILL.md
+PASS Current guidance local Markdown links resolve: 
+FAIL Operational preflight helper moved without behavior changes
+PASS Historical feature contracts and runners preserved: 
+FAIL Independent semantic assessment available
+11 acceptance failure(s)

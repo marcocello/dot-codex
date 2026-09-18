@@ -1,0 +1,86 @@
+exit_code=1
+STDOUT
+repo_root=/Users/marcocello/software/marcocello/dot-codex
+python=/Users/marcocello/software/marcocello/dot-codex/.venv/bin/python
+Python 3.13.3
+manager=/Users/marcocello/software/marcocello/dot-codex/scripts/skill_inventory.py
+manifest=/Users/marcocello/software/marcocello/dot-codex/skills.toml
+F..F                                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_sync_bootstraps_current_sources_and_plugin_without_pruning ________
+
+tmp_path = PosixPath('/private/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/pytest-of-marcocello/pytest-1218/test_sync_bootstraps_current_s0')
+
+    def test_sync_bootstraps_current_sources_and_plugin_without_pruning(tmp_path: Path) -> None:
+        git(tmp_path, "init")
+        skills_root = tmp_path / "skills"
+        (skills_root / "owned").mkdir(parents=True)
+        (skills_root / "owned" / "SKILL.md").write_text("owned")
+        (skills_root / "extra").mkdir()
+        (skills_root / "extra" / "SKILL.md").write_text("preserve me")
+        source_repo, _, _ = make_git_skill(tmp_path)
+        http_root = tmp_path / "http"
+        http_root.mkdir()
+        http_content = b"---\nname: url-skill\ndescription: pinned\n---\n"
+        (http_root / "SKILL.md").write_bytes(http_content)
+        bundle_content = {
+            "version": "bundle-v1",
+            "files": [
+                {
+                    "path": "SKILL.md",
+                    "content": "---\nname: bundle-skill\ndescription: remote bundle\n---\n",
+                },
+                {"path": "rules/workflow.md", "content": "# Workflow\n"},
+            ],
+        }
+        (http_root / "bundle.json").write_text(json.dumps(bundle_content))
+>       server, url = start_http(http_root)
+                      ^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_skill_inventory.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/unit/test_skill_inventory.py:132: in start_http
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socketserver.py:457: in __init__
+    self.server_bind()
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/http/server.py:136: in server_bind
+    socketserver.TCPServer.server_bind(self)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <http.server.ThreadingHTTPServer object at 0x10a2c2e40>
+
+    def server_bind(self):
+        """Called by constructor to bind the socket.
+    
+        May be overridden.
+    
+        """
+        if self.allow_reuse_address and hasattr(socket, "SO_REUSEADDR"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # Since Linux 6.12.9, SO_REUSEPORT is not allowed
+        # on other address families than AF_INET/AF_INET6.
+        if (
+            self.allow_reuse_port and hasattr(socket, "SO_REUSEPORT")
+            and self.address_family in (socket.AF_INET, socket.AF_INET6)
+        ):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+>       self.socket.bind(self.server_address)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/socketserver.py:478: PermissionError
+___________ test_repository_manifest_covers_only_user_managed_skills ___________
+
+    def test_repository_manifest_covers_only_user_managed_skills() -> None:
+        data = tomllib.loads((ROOT / "skills.toml").read_text())
+>       assert len(data["skills"]) == 57
+E       AssertionError: assert 44 == 57
+E        +  where 44 = len([{'kind': 'owned', 'name': 'casual-message-rewriter', 'path': 'casual-message-rewriter'}, {'kind': 'owned', 'name': 'c...coding-commit', 'path': 'coding-commit'}, {'kind': 'owned', 'name': 'coding-workflow', 'path': 'coding-workflow'}, ...])
+
+tests/unit/test_skill_inventory.py:485: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_skill_inventory.py::test_sync_bootstraps_current_sources_and_plugin_without_pruning
+FAILED tests/unit/test_skill_inventory.py::test_repository_manifest_covers_only_user_managed_skills
+2 failed, 2 passed in 2.06s
+
+STDERR

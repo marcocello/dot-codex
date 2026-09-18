@@ -1,0 +1,17 @@
+{
+  "task": "01a0a3bf-2a2c-7620-a319-6fb0ce8cad4a",
+  "workflow": "Shape -> Ship",
+  "goal": "Native Goal: Implement the accepted skill portfolio consolidation",
+  "proof_author": "/root/proof_author",
+  "reviewer": "/root/final_reviewer",
+  "dialogue_capture": "partial; native conversation is the source, no exported transcript",
+  "target": "local dot-codex discovery documents and inventory; app reload not asserted",
+  "skills": {
+    "skills/coding-workflow/SKILL.md": "d8a9db4b867a1e271eb90ab05b6740e81d7538f12fe8d917a0fc615097532c9c",
+    "skills/.system/skill-creator/SKILL.md": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66",
+    "skills/codex-manage-skills/SKILL.md": "b5cfc32012c5efd4b32ec5563ba00ae7c534b5d4c9163c640daf262ba9b0b8df"
+  },
+  "regression_run": "docs/features/skill-portfolio-consolidation/tests/runs/20260915T093621719405Z",
+  "known_preexisting_gap": "Historical managed-skill-inventory proof references absent tests/unit/test_skill_inventory.py; not run or rewritten. Unchanged engine preserved by independent baseline hash.",
+  "proof_run": "docs/features/skill-portfolio-consolidation/proof/runs/20260915T093621540288Z"
+}

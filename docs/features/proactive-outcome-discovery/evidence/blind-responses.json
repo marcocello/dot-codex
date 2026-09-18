@@ -1,0 +1,66 @@
+[
+  {
+    "id": "model-default",
+    "response": "I’m using coding-shape to define automatic model selection across team creation, kit association, and delayed provisioning. The intended result is that both models become usable without setup, while saved admin choices survive later provisioning or association events. Fresh teams currently have no vision default, so copying defaults alone leaves that result incomplete. When no vision default exists, should the vision-capable execution model also be selected for vision? I recommend that fallback after checking that it is eligible for the kit and team. I’ll trace the association and provisioning paths and override storage while that decision is pending.",
+    "next_actions": [
+      "Inspect creation, association, delayed provisioning, model eligibility, and persistence paths; determine how explicit overrides are distinguished from unset values.",
+      "Resolve the missing vision fallback policy before implementing dependent selection behavior; investigate invalid or unavailable configured models without inventing a second fallback.",
+      "Record accepted outcomes for fresh teams with no vision default, configured defaults, saved admin choices, delayed provisioning, and repeated association/provisioning events.",
+      "Have a separate proof author exercise real association and provisioning entry points and read back both usable selections and preserved overrides, including a fresh team with null vision_default.",
+      "Once decision-complete proof is ready, implement through coding-ship and verify the visible and persisted result before claiming completion."
+    ]
+  },
+  {
+    "id": "first-use-notifications",
+    "response": "I’m using coding-shape to work out a reminder flow that works for new members. Old-account defaults won’t help somebody who has neither preferences nor a verified destination. I recommend prompting those members to choose and verify a destination when they join, then activating reminders after they explicitly enable them; returning members’ opt-outs should remain in effect. Should joining include that setup step, or should reminders stay pending with a visible setup prompt afterward? I’ll inspect the existing verification and preference flows so we can reuse them. Live email delivery needs your explicit authorization before any real messages are sent.",
+    "next_actions": [
+      "Trace project joining, preference creation, destination verification, reminder scheduling, and how explicit opt-outs are represented.",
+      "Resolve the user-facing setup timing and activation policy; do not infer notification consent from project membership or migrate opted-out members into enabled delivery.",
+      "Specify observable outcomes for first-time members without configuration, returning opted-out members, verified opted-in members, incomplete verification, and repeated joins.",
+      "Delegate independent proof using the real join, preference, and scheduling boundaries, with email delivery faked only at the external sending edge.",
+      "Implement the accepted local behavior after proof is ready; obtain explicit authorization for any live email verification exercise and report local versus live evidence accurately."
+    ]
+  },
+  {
+    "id": "costly-fallback",
+    "response": "I’m using coding-shape because this adds backup fallback behavior. There is currently no authorized destination to fall back to: the alternatives require a paid subscription, and deleting retained backups would break the retention policy. I recommend supporting an explicitly configured secondary destination while retaining existing backups; until one is available, a full destination should produce a clear failure with a recovery action. Which secondary destination and spending limit do you authorize, or should the feature stop at configuration and a clear blocked-backup state for now? I’ll inspect capacity detection and backup retry behavior while that choice is pending.",
+    "next_actions": [
+      "Inspect the backup destination abstraction, capacity failure handling, retention policy, integrity checks, and retry behavior without modifying retained backups or provider accounts.",
+      "Investigate available supported destinations and their requirements; do not subscribe, provision paid storage, delete backups, or silently choose a provider.",
+      "Keep destination selection, cost authorization, and any external provisioning pending; proceed with independent analysis of configuration and safe failure behavior.",
+      "Once the policy is agreed, specify full-primary behavior, missing-secondary behavior, fallback integrity, repeated retries, and durable restoration/read-back expectations.",
+      "Use independent proof through the actual backup path with paid provider edges safely simulated; implementation and any live provider actions must stay within the accepted scope and explicit authorization."
+    ]
+  },
+  {
+    "id": "bounded-repair",
+    "response": "I’m using coding-fix for this focused repair. I’ll refresh validation when the title changes so correcting an invalid title enables Save again, while unchanged or invalid titles remain disabled. I’ll reproduce the invalid-to-valid sequence and verify that saving persists the corrected title.",
+    "next_actions": [
+      "Inspect title validation and save-button state, reproduce the stale validation transition, and check whether this reopens an existing feature obligation.",
+      "Repair the stale state using the established validation contract without introducing product-policy questions or unrelated refactoring.",
+      "Verify the actual form sequence: invalid changed title, corrected valid title, enabled Save, successful save, and persisted title read-back; also check unchanged and invalid titles remain disabled.",
+      "Run relevant existing checks and report the focused fix and verification."
+    ]
+  },
+  {
+    "id": "analysis-only",
+    "response": "I’m using coding-antipattern-review to explain the preview’s misleading success state. The preview counts only rows that parsed successfully, so skipped rows disappear from the population used to decide success. That makes success describe the parsed subset rather than the full input. The existing specification also leaves partial success undefined. I recommend reporting total, accepted, and skipped rows separately and showing a distinct partial-success state when anything is skipped. This is an analysis finding and a proposed policy; I won’t change code.",
+    "next_actions": [
+      "Trace row parsing, skipped-row accounting, preview aggregation, and the success-message condition through source and existing tests.",
+      "Provide precise source references and a concrete mixed-input example showing how skipped rows are omitted from the success calculation.",
+      "Distinguish the demonstrated current behavior from the undefined partial-success product policy, including any uncertainty about downstream import behavior.",
+      "Deliver the explanation and bounded recommendation without editing code, changing acceptance, starting implementation, or mutating a runtime."
+    ]
+  },
+  {
+    "id": "delivery-gap",
+    "response": "No. A fresh team still has a blank vision selection, so the requested result is missing despite the passing tests. I’m using coding-ship to assess that completion gap against the frozen acceptance. The preconfigured fixtures miss the ordinary first-use state. I’ll preserve the existing results and ask the independent proof author to assess coverage of fresh teams. The missing fallback policy also needs a decision before dependent implementation: when vision_default is empty, should the system reuse an eligible vision-capable execution model? I recommend that if it satisfies the team and kit requirements; I’ll verify those requirements before changing behavior.",
+    "next_actions": [
+      "Keep the feature incomplete and retain the passing test evidence alongside the observed fresh-team failure.",
+      "Compare frozen acceptance, original dialogue, model eligibility, and the fresh-team UI/state to establish whether an already accepted fallback policy exists.",
+      "If fallback behavior remains unspecified, return that consequential decision through Shape and pause dependent implementation; do not weaken selecting-both acceptance to match current behavior.",
+      "Have the independent proof author revise coverage through the fixed-acceptance process after the decision, preserving previous inputs and results and adding genuine fresh-team activation and visible/persisted read-back.",
+      "Repair application behavior, run complete captured proof and affected regressions on the intended target, obtain a fresh independent review, and mark done only after both model selections work in the accepted starting states."
+    ]
+  }
+]

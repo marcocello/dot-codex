@@ -9,7 +9,7 @@
 
 ## Command
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/ui-improvement-advisory-only --timeout-seconds 60 --note "reason"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/ui-improvement-advisory-only --timeout-seconds 60 --note "reason"
 ```
 
 ## Scenario: advisory contract survives implementation-shaped requests

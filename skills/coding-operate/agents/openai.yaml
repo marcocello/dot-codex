@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Operate"
+  short_description: "Diagnose runtime symptoms and verify recovery."
+  default_prompt: "Use $coding-operate to diagnose running-system symptoms from runtime evidence, perform explicitly authorized remediation, and verify recovery on the affected consumer."
+policy:
+  allow_implicit_invocation: true

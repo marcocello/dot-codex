@@ -1,0 +1,12 @@
+{
+  "author": "/root/split_proof",
+  "phase": "before implementation",
+  "sha256": {
+    "docs/features/four-lifecycle-skills/FEATURE.md": "cd62aadef2a80fc00bd79861a7b144b1dc8e0a5733fe20c06085817078bf877c",
+    "docs/features/four-lifecycle-skills/PROOF.md": "0f0b75632c40f752cd2c992c9fe122c368718fb618790ebf2018a734c919bf84",
+    "docs/features/four-lifecycle-skills/proof/baseline.json": "20bafc46d02b3b5b03c06c9567e1a22cfd553b5b2e3f8d8dbc322d4752fcd895",
+    "docs/features/four-lifecycle-skills/proof/check_split.py": "b3b481401c64967b2ea14c73e7c400a77da8991171473effe55b40e507d724ba",
+    "docs/features/four-lifecycle-skills/proof/run.sh": "900b3429ac725c714a5ec6f03c1d00afb4e409895fa48143b79463904b4af316",
+    "docs/features/four-lifecycle-skills/proof/scenarios.json": "3af7d512d9ae468b7213cc272cfa7f4850ee193fb32aca749e1943765b697566"
+  }
+}

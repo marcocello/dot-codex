@@ -1,0 +1,97 @@
+{
+  "evaluator": {
+    "agent_id": "01a06df0-c01a-7890-b608-f17af4dead8f",
+    "captured_at": "2026-09-04T16:08:00Z",
+    "method": "Fresh semantic comparison of each two-line response against its case, user-value requirement, prohibited reasoning, and no-em-dash contract.",
+    "evidence_order": [
+      "cases.json",
+      "samples.json"
+    ]
+  },
+  "judgments": [
+    {
+      "id": "agent-stack-course-funnel-it",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response identifies status signalling, the absent reusable method, and the sales pitch, then explains that the post teaches this user nothing about reliable agent workflows without attacking the author."
+    },
+    {
+      "id": "solo-revenue-anecdote-en",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response names the missing operating context and explains that the recycled hiring advice has no immediate value because the user is not making a hiring decision."
+    },
+    {
+      "id": "boastful-reproducible-engineering",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response grounds KEEP in reproducible evidence and failure conditions, then connects that transferable material directly to the user's performance-diagnosis learning goal."
+    },
+    {
+      "id": "agreeable-empty-motivation",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response calls out the recycled truism and explains the lack of evidence, sharper model, concrete action, and attention value without rewarding positive sentiment."
+    },
+    {
+      "id": "excellent-but-out-of-scope",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response preserves the material's possible quality but explains that its timing would steal the user's attention from product discovery and local AI-agent reliability."
+    },
+    {
+      "id": "bounded-author-pattern",
+      "verdict_supported": true,
+      "decisive_pressure_addressed": true,
+      "prohibited_reasoning_absent": true,
+      "output_is_compact": true,
+      "direct_no_fluff": true,
+      "no_ritual_sections": true,
+      "no_forced_salvage_or_flattery": true,
+      "user_value_explained": true,
+      "verdict_alone_first_line": true,
+      "no_em_dash": true,
+      "evidence": "The response uses the supplied recent-post pattern to identify repeated withholding and explains that there is nothing concrete for the user to extract without judging the author's character."
+    }
+  ]
+}

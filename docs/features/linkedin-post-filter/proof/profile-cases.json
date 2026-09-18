@@ -1,0 +1,81 @@
+{
+  "cases": [
+    {
+      "id": "linkedin-cringe-post-keep-profile",
+      "source_type": "LinkedIn",
+      "input": "I now run 30 autonomous AI agents at once. The system is insane. I may explain it later, but first join my paid masterclass.",
+      "personal_context": "Building reliable agent workflows and wants concrete methods, failure cases, and evidence.",
+      "profile_target": "Example agent-systems author",
+      "profile_items": [
+        {"date": "2026-09-01", "title": "30 autonomous agents", "summary": "Tool-count flex that withholds the system and promotes a masterclass."},
+        {"date": "2026-08-19", "title": "Duplicate agent writes incident review", "summary": "Shows traces, root cause, failed mitigation, final lock design, and code."},
+        {"date": "2026-08-02", "title": "Model-router retry benchmark", "summary": "Publishes scripts, raw results, cost tradeoffs, and failure thresholds."},
+        {"date": "2026-07-11", "title": "Human escalation queue failures", "summary": "Explains ticket schema, three failed designs, and operational constraints."},
+        {"date": "2026-06-28", "title": "Course launch", "summary": "Pure promotion with no standalone method."},
+        {"date": "2026-06-06", "title": "Agent memory migration", "summary": "Documents migration steps, rollback conditions, and measured failure rates."}
+      ],
+      "coverage": {"inspected": 6, "date_range": "2026-06-06 to 2026-09-01", "kind": "sampled"},
+      "expected_item_verdict": "CRINGE",
+      "expected_profile_verdict": "KEEP",
+      "decisive_profile_pressure": "The cited post is empty promotion, but four of six inspected posts contain concrete, reusable engineering evidence aligned with the user.",
+      "must_not_reason": "CRINGE profile because one post is boastful, or KEEP post because the wider profile is useful."
+    },
+    {
+      "id": "x-keep-post-cringe-profile",
+      "source_type": "X/Twitter",
+      "input": "Thread: our queue change cut p95 latency from 940 ms to 310 ms. Repository, traces, failed variants, workload, and the case where it regresses are linked below.",
+      "personal_context": "Optimizing data-heavy agent systems and values reproducible performance work.",
+      "profile_target": "Example AI commentary account",
+      "profile_items": [
+        {"date": "2026-09-02", "title": "Queue latency benchmark", "summary": "Reproducible benchmark with traces, failures, and limits."},
+        {"date": "2026-08-29", "title": "AI replaces SaaS", "summary": "Absolute prediction with no evidence or mechanism."},
+        {"date": "2026-08-23", "title": "My ten essential AI tools", "summary": "Affiliate list with no evaluation method."},
+        {"date": "2026-08-17", "title": "You are already behind", "summary": "Urgency bait ending in a newsletter signup."},
+        {"date": "2026-08-10", "title": "One-person unicorn", "summary": "Revenue screenshot with no source, costs, or workload."},
+        {"date": "2026-08-04", "title": "Prompt secret", "summary": "Teaser withholding the prompt for a paid cohort."},
+        {"date": "2026-07-28", "title": "Agents changed everything", "summary": "Generic claim with no implementation details."},
+        {"date": "2026-07-20", "title": "Build faster", "summary": "Motivational slogan with no model or action."}
+      ],
+      "coverage": {"inspected": 8, "date_range": "2026-07-20 to 2026-09-02", "kind": "sampled"},
+      "expected_item_verdict": "KEEP",
+      "expected_profile_verdict": "CRINGE",
+      "decisive_profile_pressure": "The current thread is useful, but seven of eight inspected items are unsupported hot takes, affiliate lists, urgency bait, or withheld-value funnels.",
+      "must_not_reason": "KEEP profile because the cited thread is excellent, or CRINGE post because the wider profile is weak."
+    },
+    {
+      "id": "blog-keep-article-keep-author",
+      "source_type": "technical blog",
+      "input": "Designing idempotent agent jobs: a detailed article with state diagrams, duplicate-delivery traces, implementation code, failed approaches, and recovery tests.",
+      "personal_context": "Building reliable local agent orchestration and currently working on job lifecycle correctness.",
+      "profile_target": "Example reliability engineer blog",
+      "profile_items": [
+        {"date": "2026-08-25", "title": "Designing idempotent agent jobs", "summary": "Detailed method, code, failures, and recovery tests."},
+        {"date": "2026-07-14", "title": "Lease expiry under clock skew", "summary": "Reproducible simulation and bounded mitigation."},
+        {"date": "2026-05-30", "title": "Why our retry policy amplified outages", "summary": "Incident evidence, denominator, and corrected policy."},
+        {"date": "2026-03-09", "title": "Queue cancellation semantics", "summary": "State model, race cases, and executable tests."},
+        {"date": "2025-12-18", "title": "When not to use durable workers", "summary": "Clear tradeoffs and counterexamples."}
+      ],
+      "coverage": {"inspected": 5, "date_range": "2025-12-18 to 2026-08-25", "kind": "complete"},
+      "expected_item_verdict": "KEEP",
+      "expected_profile_verdict": "KEEP",
+      "decisive_profile_pressure": "The complete five-article archive repeatedly provides evidence, methods, failures, and directly relevant reliability knowledge.",
+      "must_not_reason": "KEEP merely because the site looks technical or the author has an engineering title."
+    },
+    {
+      "id": "blog-cringe-article-profile-unrated",
+      "source_type": "blog",
+      "input": "How we shipped 10x faster with AI. The article repeats the headline but provides no baseline, workflow, evidence, constraints, or implementation details.",
+      "personal_context": "Experienced builder looking for reproducible product and engineering methods.",
+      "profile_target": "Example founder blog",
+      "profile_items": [
+        {"date": "2026-08-30", "title": "How we shipped 10x faster with AI", "summary": "Unsupported speed claim with no method."},
+        {"date": "2026-07-01", "title": "Join my founder cohort", "summary": "Promotion without standalone substance."}
+      ],
+      "coverage": {"inspected": 2, "date_range": "2026-07-01 to 2026-08-30", "kind": "partial"},
+      "expected_item_verdict": "CRINGE",
+      "expected_profile_verdict": null,
+      "decisive_profile_pressure": "Only two items are accessible and the archive is known to be partial, so a profile verdict would overclaim.",
+      "must_not_reason": "CRINGE profile from two weak items or pretend the partial archive is complete."
+    }
+  ]
+}

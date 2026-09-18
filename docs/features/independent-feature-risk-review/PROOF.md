@@ -10,7 +10,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/independent-feature-risk-review --timeout-seconds 60 --note "verify independent bounded feature risk discovery"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/independent-feature-risk-review --timeout-seconds 60 --note "verify independent bounded feature risk discovery"
 ```
 
 ## Scenario: Preflight independently discovers relevant contract risk

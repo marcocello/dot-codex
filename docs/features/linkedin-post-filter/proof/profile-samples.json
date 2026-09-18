@@ -1,0 +1,56 @@
+{
+  "samples": [
+    {
+      "id": "linkedin-cringe-post-keep-profile",
+      "item_verdict": "CRINGE",
+      "profile_verdict": "KEEP",
+      "response": "POST\nCRINGE\nFlex disguised as insight. “30 agents” is status theatre with no architecture, failure cases, costs, or evidence, followed by a paid-masterclass pitch. There is nothing useful to extract for building reliable agent workflows.\n\nPROFILE\nKEEP\nThe current post is content-free funnel bait, but the sampled work repeatedly provides concrete methods, operational failures, reproducible artifacts, and measured tradeoffs. Worth following selectively while skipping promotional posts.\n\nExamples\n- 2026-08-19, “Duplicate agent writes incident review”: traces, root cause, failed mitigation, final lock design, and code.\n- 2026-08-02, “Model-router retry benchmark”: scripts, raw results, cost tradeoffs, and explicit failure thresholds.\n- 2026-07-11, “Human escalation queue failures”: ticket schema, three failed designs, and operational constraints.\n- 2026-06-06, “Agent memory migration”: migration steps, rollback conditions, and measured failure rates.\n\nCoverage\n6 sampled items from 2026-06-06 to 2026-09-01; sampled coverage.",
+      "provenance": {
+        "source": "isolated current-skill invocation",
+        "agent_id": "01a06e6b-1c78-7b13-984d-b1b4b51c1e01",
+        "captured_at": "2026-09-04T21:55:30Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "LinkedIn-style item plus six-item sampled profile corpus; no expected verdict supplied"
+      }
+    },
+    {
+      "id": "x-keep-post-cringe-profile",
+      "item_verdict": "KEEP",
+      "profile_verdict": "CRINGE",
+      "response": "POST\nKEEP\nThe repository, traces, failed variants, workload, and regression case make the p95 drop from 940 ms to 310 ms interpretable and reproducible. That is directly useful for optimizing data-heavy agent systems.\n\nPROFILE\nCRINGE\nOne rigorous benchmark cannot rescue a feed dominated by unsupported certainty, status theatre, generic commentary, and funnels that withhold substance. Expected future attention value is low.\n\nExamples\n- 2026-09-02: Reproducible queue benchmark with artifacts, failures, workload, and limits.\n- 2026-08-29: Absolute AI-replaces-SaaS prediction without evidence.\n- 2026-08-10: One-person-unicorn revenue screenshot omitting costs and workload.\n- 2026-08-04: Content-free prompt teaser directing readers to a paid cohort.\n\nCoverage\n8 sampled items, 2026-07-20 to 2026-09-02, sampled coverage.",
+      "provenance": {
+        "source": "isolated current-skill invocation",
+        "agent_id": "01a06e6b-1b75-7770-8d41-ca4794d54802",
+        "captured_at": "2026-09-04T21:55:30Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "X-style item plus eight-item sampled profile corpus; no expected verdict supplied"
+      }
+    },
+    {
+      "id": "blog-keep-article-keep-author",
+      "item_verdict": "KEEP",
+      "profile_verdict": "KEEP",
+      "response": "POST\nKEEP\nState diagrams, duplicate-delivery traces, implementation code, failed approaches, and recovery tests make this directly usable for your current job-lifecycle correctness work.\n\nPROFILE\nKEEP\nThis archive repeatedly delivers concrete failure models, reproducible evidence, bounded mitigations, and executable tests. It is unusually aligned with reliable local agent orchestration and worth following.\n\nExamples\n- “Lease expiry under clock skew” pairs a reproducible simulation with a bounded mitigation.\n- “Why our retry policy amplified outages” uses incident evidence, a denominator, and a corrected policy.\n- “Queue cancellation semantics” covers state transitions, race cases, and executable tests.\n- “When not to use durable workers” supplies tradeoffs and counterexamples instead of defaulting to infrastructure hype.\n\nCoverage\n5 items inspected, 2025-12-18 to 2026-08-25, complete archive.",
+      "provenance": {
+        "source": "isolated current-skill invocation",
+        "agent_id": "01a06e6b-1bf2-7793-84f5-1e139d7aeacc",
+        "captured_at": "2026-09-04T21:55:30Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "technical-blog article plus complete five-item author archive; no expected verdict supplied"
+      }
+    },
+    {
+      "id": "blog-cringe-article-profile-unrated",
+      "item_verdict": "CRINGE",
+      "profile_verdict": null,
+      "response": "POST\nCRINGE\nFake specificity and flex disguised as insight. “10x faster” has no baseline, workflow, evidence, constraints, or implementation details, so there is no reproducible method worth extracting.\n\nPROFILE\nNot enough evidence for a profile verdict.\n\nExamples\n- 2026-08-30, “How we shipped 10x faster with AI”: unsupported speed claim without usable detail.\n- 2026-07-01, “Join my founder cohort”: promotion without standalone substance.\n\nCoverage\n2 items inspected, 2026-07-01 to 2026-08-30, partial coverage.",
+      "provenance": {
+        "source": "isolated current-skill invocation",
+        "agent_id": "01a06e6b-1cee-7fb2-bf42-f355e0e4613d",
+        "captured_at": "2026-09-04T21:55:30Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "blog article plus two-item partial profile corpus; no expected verdict supplied"
+      }
+    }
+  ]
+}

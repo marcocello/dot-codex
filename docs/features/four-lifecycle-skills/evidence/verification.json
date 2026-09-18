@@ -1,0 +1,12 @@
+{
+  "proof_run": "docs/features/four-lifecycle-skills/proof/runs/20260917T154103710409Z",
+  "regression_runs": [
+    "docs/features/four-lifecycle-skills/tests/runs/20260917T153935807364Z",
+    "docs/features/four-lifecycle-skills/tests/runs/20260917T154014356188Z",
+    "docs/features/four-lifecycle-skills/tests/runs/20260917T154044207882Z"
+  ],
+  "retained_failed_regression": "docs/features/four-lifecycle-skills/tests/runs/20260917T153935823917Z",
+  "failure_resolution": "Old guide filename matched retired skill name in gate; renamed current design guide and updated current links. Gate unchanged.",
+  "scope": "On-disk skill discovery and current instructions; no fresh app-task reload exercised. Historical contracts/runners preserved byte-for-byte against baseline.",
+  "review": "PASS /root/split_final_review; evidence/final-review.json"
+}

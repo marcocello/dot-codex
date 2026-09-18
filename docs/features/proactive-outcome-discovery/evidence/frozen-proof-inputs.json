@@ -1,0 +1,13 @@
+{
+  "docs/features/proactive-outcome-discovery/FEATURE.md": "a000b5f87d5846a3f41b360019b9cff9de6ca1bba765c484fd7c9f19c6978816",
+  "docs/features/proactive-outcome-discovery/PROOF.md": "54f041d16b70d67e4be9d3ace1b616cf630985861bd7d40a506c8ce352018fe9",
+  "docs/features/proactive-outcome-discovery/proof/check.py": "a49728b0ab422dcf4863186e588ab18fba51bcd07baed0ce5cb76d4348969d9a",
+  "docs/features/proactive-outcome-discovery/proof/run.sh": "63a9103854258add3b979912babcce0b98c30bc96e17b00d1982cd812789ad2f",
+  "docs/features/proactive-outcome-discovery/proof/cases.json": "e51cf049b05d67814fc609309ea92319ed1839da7f7613c2498152abd073b2a9",
+  "docs/features/proactive-outcome-discovery/proof/protected.json": "f79700321f1d35fa81d13e60ce85898dbc6a3d3008cdb8281f623d0846832a3e",
+  "docs/features/proactive-outcome-discovery/evidence/baseline/README.md": "015357bb2eb0d758b85e945dd93662847a01a427dbf1cd252cb730581dd16d6f",
+  "docs/features/proactive-outcome-discovery/evidence/baseline/AGENTS.md": "538e745859259201ed3684d7a1f51e5e7293a5675ae65522db7c04b8230a6d00",
+  "docs/features/proactive-outcome-discovery/evidence/baseline/skills/coding-shape/SKILL.md": "a2a7ce85c5cc43d9310f8eda11ed19a327d94bae0288c55442297ced8c6c71af",
+  "docs/features/proactive-outcome-discovery/evidence/baseline/skills/coding-ship/SKILL.md": "3a8ea5a2f4d53a3d5cbed2027f211d76643f261c9f44d4ee4e9f7028767bc968",
+  "docs/features/proactive-outcome-discovery/evidence/baseline/docs/harness/coding/proof.md": "fa289e0a3dd297d9ed209fdd4e86746cea77ce4f86a675bbe875fd06c1c65c5b"
+}

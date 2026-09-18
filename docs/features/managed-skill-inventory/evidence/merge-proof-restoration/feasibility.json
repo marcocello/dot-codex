@@ -1,0 +1,15 @@
+{
+  "author": "/root/proof_author",
+  "timestamp_utc": "2026-09-15T12:44:41.912762+00:00",
+  "kind": "nonofficial-feasibility",
+  "command": "bash docs/features/managed-skill-inventory/proof/run.sh",
+  "execution": "approved sandbox escalation for temporary loopback HTTP fixture",
+  "exit_code": 0,
+  "observed": "4 passed in 2.90s; Skill is valid!",
+  "scope": "Real manager CLI and local Git/filesystem with fake external provider boundaries; no live installation changed.",
+  "inputs": {
+    "PROOF.md": "6ce414dbabd30a6a611edd9fd48f4e51b7d0c9e68e05ebb9599f47455852bd71",
+    "proof/run.sh": "edb416ff1d1be090084143285bd644e95de19379ac841c218204acd08820921c",
+    "proof/test_skill_inventory.py": "640344f280ce807bc0a98ce94950ba2cc02adf22acf12dda79329754961bcf89"
+  }
+}

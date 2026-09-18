@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-09-04T15:38:39Z",
+  "browser": "Codex In-app Browser",
+  "url": "https://www.linkedin.com/feed/update/urn:li:activity:0000000000000000000/",
+  "title": "Post | LinkedIn",
+  "visible_status": "Post not found. This post was deleted or removed.",
+  "actions": [
+    "navigate directly to the supplied URL",
+    "read the visible page status"
+  ],
+  "mutation_actions": [],
+  "retained_personal_data": false
+}

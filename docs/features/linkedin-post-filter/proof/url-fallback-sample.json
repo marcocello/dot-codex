@@ -1,0 +1,11 @@
+{
+  "response": "LinkedIn says the post was deleted or removed. Paste the post text for a verdict.",
+  "provenance": {
+    "source": "isolated current-skill invocation with read-only browser access",
+    "agent_id": "01a06d12-d217-78d2-8efe-531ccf2340cb",
+    "captured_at": "2026-09-04T15:40:00Z",
+    "skill_path": "skills/keep-or-cringe/SKILL.md",
+    "invocation": "user-supplied LinkedIn URL with no pasted post text",
+    "browser_trace": "proof/url-browser-trace.json"
+  }
+}

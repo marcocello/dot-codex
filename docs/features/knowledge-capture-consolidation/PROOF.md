@@ -6,7 +6,7 @@ The agreed 44-entry inventory exposes one knowledge-capture entrypoint with thre
 
 ## Command
 
-Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/knowledge-capture-consolidation --timeout-seconds 120 --note "knowledge capture discovery, instructions and offline helper"`. Dedicated runner: `proof/run.sh`; selected test: `proof/acceptance.py`. Gate, metadata validators and affected regressions remain separate.
+Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/knowledge-capture-consolidation --timeout-seconds 120 --note "knowledge capture discovery, instructions and offline helper"`. Dedicated runner: `proof/run.sh`; selected test: `proof/acceptance.py`. Gate, metadata validators and affected regressions remain separate.
 
 ## Environment and target
 

@@ -1,0 +1,64 @@
+--- original-test_skill_inventory.py
++++ proof/test_skill_inventory.py
+@@ -13,7 +13,7 @@
+ import tomllib
+ 
+ 
+-ROOT = Path(__file__).resolve().parents[2]
++ROOT = Path(__file__).resolve().parents[4]
+ SCRIPT = ROOT / "scripts" / "skill_inventory.py"
+ 
+ 
+@@ -482,7 +482,7 @@
+ 
+ def test_repository_manifest_covers_only_user_managed_skills() -> None:
+     data = tomllib.loads((ROOT / "skills.toml").read_text())
+-    assert len(data["skills"]) == 57
++    assert len(data["skills"]) == 44
+     assert all(
+         "revision" not in entry and "version" not in entry for entry in data["skills"]
+     )
+--- original-run.txt
++++ proof/run.sh
+@@ -12,7 +12,6 @@
+ printf 'manager=%s\n' "$repo_root/scripts/skill_inventory.py"
+ printf 'manifest=%s\n' "$repo_root/skills.toml"
+ 
+-"$python_bin" -m pytest tests/unit/test_skill_inventory.py -q -p no:cacheprovider
+-"$python_bin" "$validator" "$repo_root/skills/sync-codex-skills"
+-"$python_bin" "$validator" "$repo_root/skills/manage-codex-skills"
++"$python_bin" -m pytest "$feature_dir/proof/test_skill_inventory.py" -q -p no:cacheprovider
++"$python_bin" "$validator" "$repo_root/skills/codex-manage-skills"
+ 
+--- original-PROOF.md
++++ PROOF.md
+@@ -7,8 +7,8 @@
+ - A second synchronization is idempotent and undeclared directories are not pruned.
+ - Forbidden manifest `revision`/`version` fields, `kind = "system"`, `@openai-primary-runtime` selectors, unsafe paths, missing owned skills, plugin enablement drift, and unmanaged destination collisions fail visibly.
+ - Symlinked destination parents and Git source paths cannot escape their selected roots.
+-- The repository manifest covers every authored skill and the migrated Bento, Impeccable, and Remotion dependencies, contains no runtime-owned system or primary-runtime entries, and Git-ignores raw external paths with generated rules.
+-- Both routing skills pass the native skill validator.
++- The repository manifest covers every authored skill and the migrated Bento and Remotion dependencies, with Impeccable retained through its native plugin, contains no runtime-owned system or primary-runtime entries, and Git-ignores raw external paths with generated rules.
++- The consolidated routing skill passes the native skill validator.
+ 
+ ## Evidence Method
+ - Build a temporary local Git repository containing a real `SKILL.md`, install its current `HEAD`, advance the repository, then require `update` to refresh to the new `HEAD`.
+@@ -20,7 +20,7 @@
+ - Create temporary destination-parent and Git-source symlink escapes and require reconciliation to fail without materializing content outside either root.
+ - Run focused pytest coverage against failure and mutation paths.
+ - Parse the repository's real manifest, compare owned entries with Git-tracked skill directories, require the expected managed entries including ReUI's external bundle, and reject any system kind or primary-runtime selector.
+-- Run `quick_validate.py` against both new skill directories.
++- Run `quick_validate.py` against the current `codex-manage-skills` directory.
+ 
+ ## False-Green Risks
+ - A mocked network or marketplace cannot prove public provider availability; the proof limits the fake to those external boundaries and exercises the real reconciliation, filesystem, hashing, Git, TOML, and subprocess logic.
+@@ -38,3 +38,9 @@
+ - Runner: `docs/features/managed-skill-inventory/proof/run.sh`
+ - Official timeout: 120 seconds.
+ - The runner uses isolated temporary homes and provider state; it does not mutate the live Codex installation.
++
++## Authorized merge restoration
++
++The user approved preserving useful conflicted inventory tests in this feature, retiring the obsolete tests/unit location, validating codex-manage-skills instead of its retired predecessors, and the resolved 44-entry inventory (incoming 42 plus keep-or-cringe and the retained skills-registry-guide). The independent proof restorer `/root/proof_author` copied the stage-2 test without behavioral changes except the explicitly authorized current inventory count and adjusted its repository-root resolution for the new location. All four test functions, real CLI/Git/filesystem boundaries, loopback provider, fake marketplace state, and provider/safety assertions remain intact.
++
++Path mapping: `tests/unit/test_skill_inventory.py` → `docs/features/managed-skill-inventory/proof/test_skill_inventory.py`; retired validator targets → `skills/codex-manage-skills`. Original proof, runner, stage-2 test, observed pre-restoration failure, exact restoration diff and input hashes are retained under `evidence/merge-proof-restoration/`. The original failure combines obsolete expected inventory size with sandbox-denied loopback binding; the latter requires a permitted local-listener execution environment, not a weakened provider test. No live provider install or external account mutation is part of this proof.

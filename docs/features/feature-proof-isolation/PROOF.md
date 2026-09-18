@@ -9,7 +9,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/feature-proof-isolation --timeout-seconds 30 --note "verify feature-local executable proof"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/feature-proof-isolation --timeout-seconds 30 --note "verify feature-local executable proof"
 ```
 
 ## Scenario: Active proof stays feature-local

@@ -1,0 +1,14 @@
+{
+  "task": "01a0af8c-7363-7390-8e1f-a0d60b3d0d0e",
+  "implementer": "/root",
+  "proof_author": "/root/proactive_proof",
+  "goal": "Native Goal active for this feature under explicit user correction: goal should be default for shape. No numeric budget requested.",
+  "authorization": "User requested harness change, corrected default Goal handling, and extended contextual intake/deep shaping.",
+  "capture": "Partial native dialogue references; no full private transcript export fabricated.",
+  "baseline": "/tmp/proactive-coding-workflow-baseline",
+  "behavioral_target": "Blind isolated response and externally observable decision exercises; no live TWYD rerun or real exercise Goal mutation.",
+  "regressions": [
+    "tests/runs/20260917T160436807827Z",
+    "tests/runs/20260917T160436833422Z"
+  ]
+}

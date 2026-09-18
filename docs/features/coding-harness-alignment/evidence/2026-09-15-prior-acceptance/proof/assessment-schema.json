@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "candidate": "Replace with the object emitted by acceptance.py snapshot; retain its files and digest keys.",
+  "exercise_agent": {"id": "actual agent identity", "history_ref": "actual retained tool/task history reference"},
+  "assessor": {"id": "actual different agent identity", "history_ref": "actual retained tool/task history reference"},
+  "transcript": {"path": "relative path from report to retained complete prompt-and-response transcript", "sha256": "actual SHA-256 digest"},
+  "cases": [
+    {"id": "one entry for each cases.json id", "verdict": "PASS or FINDINGS", "evidence": "specific response evidence supporting the rubric judgment", "limitations": "any observed limitation, or none observed in this bounded exercise"}
+  ],
+  "limitations": "Bounded instruction-decision exercises and self-reported identities; actual agent records must be reviewed. No claim of universal future compliance."
+}

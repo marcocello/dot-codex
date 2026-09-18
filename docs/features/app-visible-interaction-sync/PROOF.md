@@ -6,7 +6,7 @@
 
 ## Command
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/app-visible-interaction-sync --timeout-seconds 60 --note "verify app-visible interaction synchronization"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/app-visible-interaction-sync --timeout-seconds 60 --note "verify app-visible interaction synchronization"
 ```
 
 ## Scenario: Add, update, and retain project chats

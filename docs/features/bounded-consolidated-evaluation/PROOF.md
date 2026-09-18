@@ -13,7 +13,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/bounded-consolidated-evaluation --timeout-seconds 30 --note "verify bounded consolidated evaluation"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/bounded-consolidated-evaluation --timeout-seconds 30 --note "verify bounded consolidated evaluation"
 ```
 
 ## Scenario: Ordered evidence and implementation challenge

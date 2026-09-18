@@ -1,0 +1,86 @@
+{
+  "executor": "/root/proactive_exercise_b",
+  "candidate_sha256": {
+    "AGENTS.md": "60a5aedc74e079ea3a5b10a7ea4e38292643b2983556f71d3f876f2fc5b1afc9",
+    "README.md": "085ecbbcf785af1597401b4c8929bc8d417605eadb3de1600fd24f8dc1f0343a",
+    "docs/harness/coding/evidence.md": "598734675b1e5d03380f67762fe0de26a2a352ea241af57a643c945f3d6c93aa",
+    "docs/harness/coding/proof.md": "3e7cc98e8525b78f5e32608aa20ec058c925e6839213f64f65944b4218276a73",
+    "docs/harness/coding/rules.md": "f60873b92df12c95cc724bab696efa59a53c667a2fe999f3979abd668d79b945",
+    "docs/harness/coding/status.md": "84fe9f72376038f5fc0937dd472c9bf6283210332e6d40152fb91cc16af7acc1",
+    "docs/harness/safety.md": "97adb1f4c06512691dd7e97a4b42e59982be52e4f0bfa4afa9bed8f26e6f3d2a",
+    "docs/harness/workflow.md": "b69078ff41862bffd2c3b7e96d27163f00da8e242615614d543259915ab390cd",
+    "skills/coding-fix/SKILL.md": "9ddbba677656e82b51f8575ccb67ca4055a1ae5e009b84419114cd5d613b00fd",
+    "skills/coding-operate/SKILL.md": "089566021aeb83957f28bbf1e022fe154eee68bf52d49faa7b6a5de404d99221",
+    "skills/coding-shape/SKILL.md": "c7eb3e441a353ee0f7d470dc5d24916c4adc7f89885cda32d33094c0c2474a5a",
+    "skills/coding-shape/agents/openai.yaml": "a4613cd8d8a0e2d9f687537b2a0160d74c3958b8cfecd32917edc531706f911b",
+    "skills/coding-ship/SKILL.md": "3b404eb5f09c7b87ac4c371f62eedf9bf76598d78440b297f58851f6b1a2de72",
+    "skills/coding-ship/agents/openai.yaml": "c46ea07537598e3d015873b763571d1132ae7d2dcda8c26addb723faf89cfa2f"
+  },
+  "cases": [
+    {
+      "id": "direct_ship",
+      "response": "I\u2019m using `coding-ship` to implement the ready CSV export feature against its accepted specification and independent proof. I\u2019ll claim the feature, implement it, run proof and affected regressions, and obtain a fresh independent final review. No matching Goal exists, so I\u2019ll continue the authorized work normally.",
+      "actions": [
+        "Rename the task FEAT: implement CSV export if this is its first turn.",
+        "Read the ready feature, frozen proof, relevant repository conventions, and consumption target; select and announce the actual domain skill after identifying the stack.",
+        "Claim ready -> active with this task\u2019s owner; preserve frozen inputs and unrelated work. Do not create a Goal or ask for Goal or implementation permission.",
+        "Implement accepted CSV export behavior; capture official proof against the named consumption target and separately capture affected regression verification; repair introduced failures.",
+        "Obtain PASS from a fresh read-only reviewer distinct from implementer and proof author on unchanged relevant inputs. Run required repository checks, retain evidence, and mark feature done only with valid proof and review."
+      ],
+      "stop_condition": "Finish with verified feature delivery and evidence, or stop at an actual unresolved dependency, user interruption, or runtime limit while reporting unfinished work. No deployment is implied."
+    },
+    {
+      "id": "missing_tools",
+      "response": "I\u2019m using `coding-shape` to define the Clear filters button around the existing reset action and documented defaults. Goal tools are unavailable, so I\u2019ll proceed with normal authorized execution. The behavior and placement are already clear; I\u2019ll arrange independent proof, then switch to `coding-ship` to implement and verify it.",
+      "actions": [
+        "Rename the task FEAT: add Clear filters button if this is its first turn.",
+        "Do not attempt unavailable Goal tools, fabricate a Goal, ask for Goal permission, or create a replacement persistence loop.",
+        "Use established reset semantics and layout conventions to specify the button and compatibility requirements without asking the user to reconfirm documented defaults. Register the feature draft under this task\u2019s ownership.",
+        "Delegate independent proof of reset to documented defaults and preservation of existing filtering behavior against the actual UI target; record author and frozen inputs, then mark ready when runnable.",
+        "Announce coding-ship before claiming active. Identify and announce the applicable actual frontend domain skill if the repository stack requires it; implement through the existing reset action.",
+        "Capture target-valid feature proof, affected regressions, required repository checks, and a distinct fresh final-review PASS; retain evidence and mark done when complete."
+      ],
+      "stop_condition": "Complete the authorized local feature after proof and review; unavailable Goal tools alone do not stop execution. Pause only work blocked by an actual new dependency or decision, and respect runtime limits."
+    },
+    {
+      "id": "occupied_goal",
+      "response": "I\u2019m using `coding-shape` to define Retry for failed local previews using the existing retry function and button component. The active Goal belongs to the email digest feature, so I\u2019ll leave it with its owner and continue this independent work. I\u2019ll prepare independent proof, then use `coding-ship` to implement and verify the preview change.",
+      "actions": [
+        "Rename the task FEAT: retry failed file previews if this is its first turn.",
+        "Inspect the native Goal state with get_goal; recognize the unfinished unrelated email digest Goal. Do not replace, update, complete, or reuse it and do not ask for a replacement Goal.",
+        "Check feature/write ownership and isolate the preview change; coordinate a real overlapping write if one emerges rather than displacing the email digest owner.",
+        "Specify failed-preview Retry using established retry semantics, standard component, and existing preview states. Register its own feature and delegate independent proof against the local preview consumer.",
+        "Once requirements and runnable independent proof are ready, announce coding-ship, claim the preview feature, select and announce stack expertise when identified, and implement within the authorized local scope.",
+        "Capture proof and affected preview regressions, run repository checks, obtain a distinct fresh read-only final-review PASS, and mark the preview feature done. Leave the email digest Goal untouched."
+      ],
+      "stop_condition": "Complete independently authorized preview delivery once verified. If actual shared ownership blocks a write, continue independent work and report that concrete conflict; the unrelated Goal alone is not a reason to stop."
+    },
+    {
+      "id": "shorthand_pr",
+      "response": "I\u2019ll inspect PR #81\u2019s purpose and diff first, then trace the invoice approval and receipt paths. I\u2019m using `coding-operate` for a read-only investigation of the reported duplicate receipts, including runtime evidence where available. I\u2019ll report what is confirmed and the smallest next step.",
+      "actions": [
+        "Rename the task OPS: investigate duplicate invoice receipts if this is its first turn.",
+        "Read PR #81 purpose and diff before deciding the cause or a repair route; do not assume the PR caused the symptom.",
+        "Use coding-operate within diagnosis-only scope. Establish affected environment/version/timeframe and expected receipt behavior from contracts and the inspected PR.",
+        "Trace approval handlers, receipt producers, retries and queue/provider events using bounded read-only source and available runtime evidence. Do not trigger a real approval or send a receipt merely to reproduce it.",
+        "Report confirmed findings separately from hypotheses, evidence limits, and the smallest diagnostic or proposed remedy. If runtime evidence is inaccessible, name precisely what is missing.",
+        "Do not create a Goal, feature package, code patch, PR comment, merge, deployment, or production mutation for this diagnosis request."
+      ],
+      "stop_condition": "Stop with the requested diagnosis and recommended next action, or the exact evidence/access gap. Do not claim the live issue is resolved from source inspection."
+    },
+    {
+      "id": "deep_shape",
+      "response": "I\u2019m using `coding-shape` to define the reminder journey before implementation. I\u2019ll start the standing-request Goal covering discovery, independent proof, implementation, verification, and final review.\n\nSeveral choices determine who receives email and when:\n\n- Should reminders cover each active subscription that renews automatically, subscriptions requiring manual renewal, or both? For a customer with several renewals, should each subscription get its own message or should nearby renewals be combined?\n- How far before renewal should a reminder arrive, at what local time, and should there be one reminder or repeated reminders? I recommend one reminder per subscription renewal initially, with retries that cannot create duplicate deliveries.\n- Should customers be able to opt out globally or per subscription, and what preference should existing customers start with?\n- If a subscription is canceled or its renewal date changes after scheduling, should the pending reminder be canceled or rescheduled? I recommend rechecking subscription status, date, and preferences immediately before sending so outdated reminders are suppressed.\n\nI\u2019ll continue examining the subscription lifecycle and email service while these choices are resolved.",
+      "actions": [
+        "Rename the task FEAT: customer renewal reminders if this is its first turn.",
+        "Call get_goal; with no existing Goal, call create_goal with objective: Define and deliver customer renewal reminders through discovery, accepted behavior specification, independent executable proof, authorized local implementation, affected regression verification, and independent final review. Omit token_budget because none was requested.",
+        "Ask the grouped product questions once, retaining the pending choices. Further focused questions are allowed when answers reveal material unresolved behavior; do not treat silence or recommendations as acceptance.",
+        "Continue read-only discovery of subscription states, renewal calculation, timezones including missing values, existing preference contracts, delivery retries, scheduling infrastructure, and test targets; identify discoverable facts rather than asking the user to supply them. Announce domain skills only when selected and before use.",
+        "Do not send live email or freeze unresolved reminder behavior. Continue work whose correctness does not depend on pending choices. Resolve timing, eligibility, opt-out, repeat/deduplication behavior, and cancellation/rescheduling before accepted specification and frozen proof.",
+        "After decisions, record FEATURE.md with journeys, failure/empty states, compatibility and boundaries; register draft and delegate independent proof. Advance to ready only when acceptance is complete and executable proof runnable.",
+        "Announce coding-ship and continue existing build authorization with the matching Goal, local implementation, captured target-valid proof and affected regressions, required checks, and a fresh reviewer distinct from implementer and proof author. Live sending/deployment remains subject to explicit external-action authorization."
+      ],
+      "stop_condition": "While decisions are pending, stop dependent work after useful independent discovery and leave the Goal unfinished, applying blocked controls only when native criteria are met. Complete the Goal only after its accepted deliverable is fully verified; respect interruptions and configured limits without replacement loops."
+    }
+  ]
+}

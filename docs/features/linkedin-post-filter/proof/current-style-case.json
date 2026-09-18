@@ -1,0 +1,16 @@
+{
+  "id": "brutal-agent-stack-course-funnel",
+  "input": "The author lists several premium AI subscriptions and 12 autonomous agents, withholds the framework and ticket details, promises to explain them later, then promotes courses and webinars.",
+  "personal_context": "The user already operates a rigorous local agent harness and explicitly wants super-honest, no-fluff analysis.",
+  "rejected_output": "DROP — the post withholds the actual framework, evidence, constraints, and ticket schema, then defers substance to future courses/webinars. Useful kernel: agents escalate decisions through context-rich tickets; decision criteria should also be recorded. For you: your dot-codex harness already implements this pattern with considerably more rigor. Confidence: high — full post and relevant discussion were visible.",
+  "expected_verdict": "CRINGE",
+  "required_behavior": [
+    "Directly identify the flex, withheld substance, or sales-funnel mechanism.",
+    "Put CRINGE alone on the first line and one compact explanatory paragraph below it.",
+    "Do not use an em dash.",
+    "Explain why the post is not useful for this user.",
+    "Do not add ritual Useful kernel, For you, or Confidence sections.",
+    "Do not manufacture a redeeming takeaway or flatter the user.",
+    "Attack the post's value, not the author's character or mental state."
+  ]
+}

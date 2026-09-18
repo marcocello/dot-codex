@@ -10,11 +10,11 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/frontend-sites-routing --timeout-seconds 60 --note "verify frontend and Sites routing repair"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/frontend-sites-routing --timeout-seconds 60 --note "verify frontend and Sites routing repair"
 ```
 
 ## Scenario: Target repository without local agent instructions
-- Producer/activation: pytest creates a temporary repository-shaped directory containing README and `.gitignore`, then invokes the real `scripts/gate --profile other` subprocess.
+- Producer/activation: pytest creates a temporary repository-shaped directory containing README and `.gitignore`, then invokes the real `scripts/gate.py --profile other` subprocess.
 - Consumer: the gate's normal common-profile path.
 - Read-back: subprocess exit status and gate output.
 - Fake: the temporary repository contents only; the gate executable is unchanged.

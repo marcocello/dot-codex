@@ -121,7 +121,7 @@ Command policy:
 - Run Python tooling through `.venv/bin/python -m <tool>`.
 - Use `.venv/bin/python -m pytest ...` for pytest.
 - Use `.venv/bin/python -m ruff ...`, `.venv/bin/python -m mypy ...`, etc. when installed.
-- For FastAPI apps with `app = FastAPI()` in `backend/app/main.py`, run the dev server from `backend/app` with `.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`.
+- For FastAPI apps with `app = FastAPI()` in `backend/app/main.py`, run the dev server from `backend/app` with `../../.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`, or use the quoted absolute path to the repository's `.venv/bin/python` when the app lives elsewhere.
 - Do not assume shell activation.
 
 ## React and Node

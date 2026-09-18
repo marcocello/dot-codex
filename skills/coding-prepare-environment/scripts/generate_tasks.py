@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 GENERATED_LABELS = {"frontend", "backend:app", "backend:ngrok", "backend", "fullstack"}
@@ -31,23 +32,26 @@ def aggregate_task(label: str, depends_on: list[str]) -> dict[str, Any]:
 
 
 def generated_tasks(args: argparse.Namespace) -> list[dict[str, Any]]:
-    backend_app_command = resolve_backend_app_command(args)
     return [
         shell_task("frontend", args.frontend_command, args.frontend_cwd, True),
-        shell_task("backend:app", backend_app_command, args.backend_cwd, True),
+        backend_app_task(args),
         shell_task("backend:ngrok", args.backend_ngrok_command, args.backend_cwd, True),
         aggregate_task("backend", ["backend:app", "backend:ngrok"]),
         aggregate_task("fullstack", ["frontend", "backend"]),
     ]
 
 
-def resolve_backend_app_command(args: argparse.Namespace) -> str:
+def backend_app_task(args: argparse.Namespace) -> dict[str, Any]:
     if args.backend_app_command:
-        return args.backend_app_command
+        return shell_task("backend:app", args.backend_app_command, args.backend_cwd, True)
     backend_path = vscode_cwd_to_path(args.project_root.resolve(), args.backend_cwd)
+    task = shell_task("backend:app", PROJECT_VENV_PYTHON, args.backend_cwd, True)
+    # Keep the resolved executable as one argument, including spaces or shell characters.
+    task["type"] = "process"
+    task["args"] = ["main.py"]
     if has_fastapi_app(backend_path):
-        return f"{PROJECT_VENV_PYTHON} -m uvicorn main:app --reload --host 127.0.0.1 --port 8000"
-    return f"{PROJECT_VENV_PYTHON} main.py"
+        task["args"] = ["-m", "uvicorn", "main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"]
+    return task
 
 
 def vscode_cwd_to_path(project_root: Path, cwd: str) -> Path:
@@ -91,12 +95,27 @@ def read_backend_dependency_text(backend_path: Path) -> str:
     return "\n".join(dependency_text)
 
 
+def parse_jsonc(source: str) -> Any:
+    # Match complete strings first so URLs, escapes and comment-like string values survive.
+    string = r'"(?:\\.|[^"\\])*"'
+    without_comments = re.sub(
+        string + r"|//[^\r\n]*|/\*[\s\S]*?\*/",
+        lambda match: match[0] if match[0].startswith('"') else re.sub(r"[^\r\n]", " ", match[0]),
+        source,
+    )
+    without_trailing_commas = re.sub(
+        string + r"|(?<=[^\s\[{,:])\s*,(?=\s*[\]}])",
+        lambda match: match[0] if match[0].startswith('"') else match[0].replace(",", " "),
+        without_comments,
+    )
+    return json.loads(without_trailing_commas)
+
+
 def load_existing_tasks(tasks_path: Path) -> dict[str, Any]:
     if not tasks_path.exists():
         return {"version": "2.0.0", "tasks": []}
 
-    with tasks_path.open(encoding="utf-8") as file:
-        data = json.load(file)
+    data = parse_jsonc(tasks_path.read_text(encoding="utf-8"))
 
     if not isinstance(data, dict):
         raise ValueError(f"{tasks_path} must contain a JSON object")
@@ -144,7 +163,7 @@ def merge_tasks(existing: dict[str, Any], generated: list[dict[str, Any]]) -> di
         for task in existing.get("tasks", [])
         if not isinstance(task, dict) or task.get("label") not in GENERATED_LABELS
     ]
-    return {"version": existing.get("version", "2.0.0"), "tasks": [*preserved, *generated]}
+    return {**existing, "version": existing.get("version", "2.0.0"), "tasks": [*preserved, *generated]}
 
 
 def write_tasks(project_root: Path, tasks: dict[str, Any]) -> Path:

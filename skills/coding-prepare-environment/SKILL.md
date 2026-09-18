@@ -7,7 +7,7 @@ description: "Prepare repo-local Python, Node, PHP, Laravel, WordPress, or mixed
 
 Purpose: centralize repo setup policy so other skills and AGENTS.md do not duplicate stack-specific environment rules.
 
-`coding-workflow` owns routing, acceptance, execution, and completion. Prepare only the environment needed for that work; setup does not require its own feature package or review.
+The coding lifecycle skills own routing, acceptance, execution, and completion. Prepare only the environment needed for that work; setup does not require its own feature package or review.
 
 ## Caller Contract
 
@@ -36,7 +36,7 @@ Purpose: centralize repo setup policy so other skills and AGENTS.md do not dupli
 5. Prepare the minimum environment needed for the current task.
 6. Create or update root `.gitignore` when missing or clearly incomplete. Use the whitelist pattern from the stack reference; do not generate a blacklist-only ignore file.
 7. When the project needs the standard backend/frontend local run workflow, create or update `.vscode/tasks.json` from this skill's bundled generator.
-8. Run the narrowest repository-native dependency or readiness check needed by the active work. Do not run a full suite or gate as a routine setup prerequisite. Repository-required gates remain supporting verification under `coding-workflow`, separate from feature proof. Then report:
+8. Run the narrowest repository-native dependency or readiness check needed by the active work. Do not run a full suite or gate as a routine setup prerequisite. Repository-required gates remain supporting verification under the coding lifecycle skills, separate from feature proof. Then report:
    - stacks detected
    - files created or changed
    - `.gitignore` status and whether it follows the whitelist pattern
@@ -85,7 +85,7 @@ The bundled generator has operational defaults for the Python backend and React 
 - Backend app command: auto-detect FastAPI from `backend/app/main.py` plus dependency files in `backend/app` or `backend`, and use `${workspaceFolder}/.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`; otherwise use `${workspaceFolder}/.venv/bin/python main.py`
 - Backend ngrok command: `ngrok http 8000`
 
-Preserve unrelated existing tasks. Replace only generated labels: `frontend`, `backend:app`, `backend:ngrok`, `backend`, and `fullstack`. Use script flags when a repo uses different commands, paths, or a different ngrok URL. Start local services when required by authorized implementation or proof; generating tasks alone does not require starting them. External tunnels require applicable authorization.
+Preserve unrelated existing tasks and shared settings such as input definitions, environment options, and platform overrides. Accept existing JSONC task files with comments and trailing commas; output is formatted JSON, so comments are not retained. Replace only generated labels: `frontend`, `backend:app`, `backend:ngrok`, `backend`, and `fullstack`. Default backend tasks launch Python as a process with separate arguments so workspace paths containing spaces work; explicit command overrides retain shell execution. Use script flags when a repo uses different commands, paths, or a different ngrok URL. Start local services when required by authorized implementation or proof; generating tasks alone does not require starting them. External tunnels require applicable authorization.
 
 ## Output Shape
 
@@ -97,7 +97,8 @@ Environment prepared:
 - changed: created backend/.env from backend/.env.example; updated whitelist `.gitignore`
 - commands: .venv/bin/python -m pip install -r backend/requirements.txt;
   cd frontend && pnpm install --frozen-lockfile
-- use: .venv/bin/python -m pytest ..., .venv/bin/python -m uvicorn main:app --reload
-  from backend/app when FastAPI is detected, and pnpm test ...
+- use: .venv/bin/python -m pytest ... from the repo root;
+  ../../.venv/bin/python -m uvicorn main:app --reload from backend/app;
+  pnpm test ... from frontend/app
 - blockers: none
 ```

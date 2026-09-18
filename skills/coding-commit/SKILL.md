@@ -1,16 +1,16 @@
 ---
 name: coding-commit
-description: Stage coherent repository change sets and create one or more local Conventional Commits, or draft messages, regardless of which task or chat produced the changes. Use for commit requests. Never push.
+description: Create coherent local Conventional Commits or draft messages from repository changes. Use for commit, commit-message, or explicit push requests; push only when requested.
 ---
 
 # Commit
 
-Purpose: inspect repository changes, select scope from the user's current request and Git state, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit.
+Purpose: inspect repository changes, select scope from the user's current request and Git state, plan coherent change sets, stage selected files, write clear Conventional Commit messages, and create one or more local commits when the user asks to commit. Push existing commits when explicitly requested.
 
 Committing is a supporting action, not a new feature workflow or a completion verdict. Preserve the active lifecycle’s acceptance and retained evidence; do not reopen proof or claim a feature complete solely because a commit succeeds. Keep private dialogue out of commits and reference its retained capture instead.
 
 ## Default behavior
-- Never push. Do not run `git push`.
+- Keep commits local by default. An explicit push request authorizes pushing the requested branch without asking for confirmation again, subject to higher-priority instructions and runtime permissions.
 - Create local commits only when the user explicitly asks to commit.
 - If the user only asks for a commit message, do not stage files and do not commit.
 - Task provenance is not a commit-scope boundary. Changes may predate the current task or come from other tasks, chats, agents, or sessions.
@@ -51,6 +51,7 @@ Committing is a supporting action, not a new feature workflow or a completion ve
    - Inspect relevant untracked files named by `git status --short` without broad staging.
    - If no staged, unstaged, or untracked change exists: `git show --stat --format=medium HEAD`
 2. Decide the operation:
+   - Push-only request: follow Explicit Push below; do not stage files or create extra commits.
    - Message-only request: plan the coherent group or groups, draft every message, and stop without changing Git state.
    - Explicitly scoped commit request: continue with only the named paths, concern, staged selection, or other clear subset.
    - Unscoped commit request: continue with the complete staged, unstaged, and relevant non-ignored untracked repository change set, regardless of which task produced it.
@@ -88,7 +89,14 @@ Committing is a supporting action, not a new feature workflow or a completion ve
    - Before retrying, inspect Git status and, after a failed commit, HEAD to establish whether the operation took effect. Preserve the planned index content and avoid duplicate commits.
    - Do not delete lock files, change filesystem permissions, relocate Git metadata, or weaken the sandbox to work around a denial. A lock that already exists is a different error and requires diagnosis.
    - If approval is rejected or unavailable, or another failure remains unresolved, stop and report commits already created, the exact remaining issue, and any approval-review rejection reason.
-10. Do not push.
+10. Push only when explicitly requested, following Explicit Push below.
+
+## Explicit Push
+
+- Inspect the current branch, configured upstream/remote, and outgoing commits. Use the user’s specified destination or the unambiguous configured upstream; ask only when the destination cannot be established.
+- Push only the selected branch with an explicit remote and refspec. A normal push request does not authorize force-pushing, deleting remote refs, pushing all branches/tags, or changing remote configuration.
+- Use the supported permission flow if the sandbox blocks the authorized push. Higher-priority prohibitions still apply; do not bypass them.
+- On rejection, inspect the cause and report it; do not automatically force-push or rewrite history. After success, verify that the remote branch points to the intended commit and report the destination and result.
 
 ## Output
 - For a one-message request, output only the final commit message in a `text` fence: subject, blank line, and one compact paragraph.
@@ -96,6 +104,7 @@ Committing is a supporting action, not a new feature workflow or a completion ve
 - For a subject-only request, output only the final subject line in backticks.
 - For a full-message request with footers, include the subject, body, and footer.
 - For completed local commits, report every commit hash and message in creation order. Do not suggest pushing unless the user asks.
+- For a requested push, report the remote branch and verified result, or the exact blocker.
 - Do not add explanation unless the user asks for it.
 
 ## Examples

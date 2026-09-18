@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Commit"
-  short_description: "Create one or more coherent local commits."
-  default_prompt: "Use $coding-commit to inspect repository changes, including changes from other tasks, and create one or more coherent local Conventional Commits. Never push."
+  short_description: "Create coherent commits; push on explicit request."
+  default_prompt: "Use $coding-commit to inspect repository changes, including changes from other tasks, and create one or more coherent local Conventional Commits. Push only when explicitly requested."
 policy:
   allow_implicit_invocation: true

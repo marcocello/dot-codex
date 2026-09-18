@@ -27,7 +27,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 | React/Next.js implementation | [coding-frontend](skills/coding-frontend/SKILL.md) |
 | UI design, critique, components, refinement | [coding-ui-toolkit](skills/coding-ui-toolkit/SKILL.md), plus frontend for implementation |
 | Unknown/broken local setup | [coding-prepare-environment](skills/coding-prepare-environment/SKILL.md) |
-| Requested local commit or commit message | [coding-commit](skills/coding-commit/SKILL.md); never push |
+| Requested commit, commit message, or push | [coding-commit](skills/coding-commit/SKILL.md); push only on explicit request |
 | Requested or policy-required secret/privacy audit | [coding-secret-audit](skills/coding-secret-audit/SKILL.md) |
 | Skill creation/editing | `skill-creator` |
 | Skill inventory changes or reconciliation | [harness-manage-skills](skills/harness-manage-skills/SKILL.md); `skills.toml` is authoritative |

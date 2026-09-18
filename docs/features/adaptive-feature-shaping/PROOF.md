@@ -12,7 +12,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/adaptive-feature-shaping --timeout-seconds 60 --note "verify adaptive conversational shaping and risk-based proof"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/adaptive-feature-shaping --timeout-seconds 60 --note "verify adaptive conversational shaping and risk-based proof"
 ```
 
 ## Scenario: Intake and artifact selection adapt to the request

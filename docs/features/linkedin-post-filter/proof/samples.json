@@ -1,0 +1,76 @@
+{
+  "samples": [
+    {
+      "id": "agent-stack-course-funnel-it",
+      "verdict": "CRINGE",
+      "response": "CRINGE\nStatus theatre and a content-free teaser. The subscriptions and agent count offer no framework, constraints, failure modes, or reproducible method, so they teach you nothing about reliable agent workflows before turning into a sales pitch. Skip.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3c73-7173-a6b5-307ce7fc6ad7",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    },
+    {
+      "id": "solo-revenue-anecdote-en",
+      "verdict": "CRINGE",
+      "response": "CRINGE\n\nFake specificity and status theatre. The $790,000 and one-employee headline is meaningless without margins, workload, durability, or operating context, and the recycled “don’t hire just because revenue grew” advice offers nothing useful when you are not making a hiring decision.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3bd2-7483-a094-19afc128003f",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    },
+    {
+      "id": "boastful-reproducible-engineering",
+      "verdict": "KEEP",
+      "response": "KEEP\n\nThe traces, reproducible benchmark, backpressure mechanism, failed approaches, and regression conditions turn a performance flex into transferable evidence. It directly supports learning performance diagnosis in data-heavy agent systems.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3d00-7cc3-8118-bb1ca3d1d588",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    },
+    {
+      "id": "agreeable-empty-motivation",
+      "verdict": "CRINGE",
+      "response": "CRINGE\n\nRecycled truism dressed as inspiration. It offers no evidence, sharper model, or concrete action worth your attention.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3d7c-7fb3-9cdd-dcd63fd6c319",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    },
+    {
+      "id": "excellent-but-out-of-scope",
+      "verdict": "CRINGE",
+      "response": "CRINGE\n\nPotentially excellent infrastructure material, but explicitly outside your current learning queue. Its depth does not rescue the timing: consuming it now would steal attention from product discovery and local AI-agent reliability. Skip this quarter.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3e80-7ca3-b5d6-9bcf777eb434",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    },
+    {
+      "id": "bounded-author-pattern",
+      "verdict": "CRINGE",
+      "response": "CRINGE\nContent-free teaser and sales pitch. The method, setup, evidence, and measurement are withheld, while the recent posts repeat the same funnel pattern, so there is nothing concrete to extract for agent orchestration.",
+      "provenance": {
+        "source": "isolated-codex-subagent",
+        "agent_id": "01a06dee-3dfb-7d91-8e46-b21e189408f2",
+        "captured_at": "2026-09-04T16:04:00Z",
+        "skill_path": "skills/keep-or-cringe/SKILL.md",
+        "invocation": "current skill plus linked rubric; one realistic pasted-text request; no expected verdict or wording supplied"
+      }
+    }
+  ]
+}

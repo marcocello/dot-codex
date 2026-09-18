@@ -8,7 +8,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/ready-feature-size-guard --timeout-seconds 30 --note "verify oversized packages cannot enter ready"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/ready-feature-size-guard --timeout-seconds 30 --note "verify oversized packages cannot enter ready"
 ```
 
 ## Scenario: Ready transition owns the size guard

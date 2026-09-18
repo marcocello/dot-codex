@@ -1,0 +1,98 @@
+{
+  "executor": "/root/proactive_exercise_a",
+  "candidate_sha256": {
+    "AGENTS.md": "60a5aedc74e079ea3a5b10a7ea4e38292643b2983556f71d3f876f2fc5b1afc9",
+    "README.md": "085ecbbcf785af1597401b4c8929bc8d417605eadb3de1600fd24f8dc1f0343a",
+    "docs/harness/coding/evidence.md": "598734675b1e5d03380f67762fe0de26a2a352ea241af57a643c945f3d6c93aa",
+    "docs/harness/coding/proof.md": "3e7cc98e8525b78f5e32608aa20ec058c925e6839213f64f65944b4218276a73",
+    "docs/harness/coding/rules.md": "f60873b92df12c95cc724bab696efa59a53c667a2fe999f3979abd668d79b945",
+    "docs/harness/coding/status.md": "84fe9f72376038f5fc0937dd472c9bf6283210332e6d40152fb91cc16af7acc1",
+    "docs/harness/safety.md": "97adb1f4c06512691dd7e97a4b42e59982be52e4f0bfa4afa9bed8f26e6f3d2a",
+    "docs/harness/workflow.md": "b69078ff41862bffd2c3b7e96d27163f00da8e242615614d543259915ab390cd",
+    "skills/coding-fix/SKILL.md": "9ddbba677656e82b51f8575ccb67ca4055a1ae5e009b84419114cd5d613b00fd",
+    "skills/coding-operate/SKILL.md": "089566021aeb83957f28bbf1e022fe154eee68bf52d49faa7b6a5de404d99221",
+    "skills/coding-shape/SKILL.md": "c7eb3e441a353ee0f7d470dc5d24916c4adc7f89885cda32d33094c0c2474a5a",
+    "skills/coding-shape/agents/openai.yaml": "a4613cd8d8a0e2d9f687537b2a0160d74c3958b8cfecd32917edc531706f911b",
+    "skills/coding-ship/SKILL.md": "3b404eb5f09c7b87ac4c371f62eedf9bf76598d78440b297f58851f6b1a2de72",
+    "skills/coding-ship/agents/openai.yaml": "c46ea07537598e3d015873b763571d1132ae7d2dcda8c26addb723faf89cfa2f"
+  },
+  "cases": [
+    {
+      "id": "model_defaults",
+      "response": "I\u2019m using `coding-shape` to define the model defaults when a kit is associated with a new team. The current flow deliberately leaves the selections empty, so this changes that behavior. I\u2019ll preserve Admin-only editing.\n\nNEED_INPUT: By \u201cbooth model,\u201d do you mean both the execution and vision models? I recommend selecting the configured default for each, with admins able to change them afterward. This determines whether one or both selections are populated.",
+      "actions": [
+        "Rename the task FEAT: Default models on kit association.",
+        "Call get_goal; with no active Goal, call create_goal with objective: Clarify and deliver default model selection on new-team kit association, with independent proof, implementation, affected regressions, and final review. Do not set a token budget.",
+        "Ask the model-meaning question once; retain it as pending. Preserve the established Admin-only edit permission without asking for role reconfirmation.",
+        "Continue read-only discovery of the creation/association path, configured-default resolution and validation, persistence, later admin override, and affected consumers. Resolve established empty/unavailable-state conventions from code and identify any remaining consequential decision.",
+        "Keep the feature draft; do not freeze acceptance or implement which model fields default until the terminology decision arrives. Once clarified, record accepted behavior and compatibility boundaries, obtain independent executable proof, then announce coding-ship and continue authorized implementation and verification without another implementation or Goal permission question."
+      ],
+      "stop_condition": "Pause dependent work after independent discovery is exhausted while the model-meaning decision is pending; do not claim completion or mark the Goal blocked before native criteria are met. After the decision, finish only with target-valid proof, affected regressions, and a fresh distinct final reviewer PASS."
+    },
+    {
+      "id": "animation",
+      "response": "I\u2019m using `coding-shape` to record the team-chat loading behavior, then `coding-ship` to implement and verify it. I\u2019ll reuse the existing Conversations animation while a response is pending, including its accessibility and reduced-motion behavior. The existing component and pending state settle the implementation direction, so I can proceed.",
+      "actions": [
+        "Rename the task FEAT: Reuse loading animation in team chat.",
+        "Call get_goal, then create_goal with objective: Deliver the existing Conversations loading animation in team chat during response generation, including independent proof, implementation, affected regressions, and final review. Omit token_budget.",
+        "Record the pending-state visibility behavior, idle/completion/failure behavior from existing state conventions, reuse of accessibility and reduced-motion behavior, and preservation of existing chat behavior in a material feature package with draft status.",
+        "Have a separate proof author create PROOF.md, dedicated acceptance tests, and executable proof/run.sh against the local chat consumption target, using the request and specification. Verify runner feasibility and freeze ready inputs.",
+        "Announce the transition to coding-ship before implementation, claim ready to active, and continue the matching Goal. Select and announce a stack-specific skill only if actual repository stack requires one; no new design skill is needed to reuse the supplied component.",
+        "Integrate the shared component with the established response-pending state. Run captured realistic proof for response generation, leaving pending state, accessibility/reduced motion, plus affected conversation/team-chat regressions and required repository checks.",
+        "Obtain one fresh read-only final reviewer distinct from implementer and proof author. Repair findings and reverify if needed; record done and complete the matching Goal only on unchanged passing inputs."
+      ],
+      "stop_condition": "Deliver the implemented local team-chat animation after realistic proof, affected regression checks, required repository checks, and final-review PASS. No additional user approval gate or deployment is introduced."
+    },
+    {
+      "id": "roles",
+      "response": "I\u2019m using `coding-shape` to specify member access to execution-model changes, then `coding-ship` to implement and verify it. Your request authorizes that permission change: I\u2019ll update the server authorization behind the existing selector and keep vision-model editing Admin-only.",
+      "actions": [
+        "Rename the task FEAT: Allow members to change execution model.",
+        "Call get_goal, then create_goal with objective: Allow ordinary team members to change the execution model through the existing selector and server permission boundary, with independent proof, implementation, affected regressions, and final review. Omit token_budget.",
+        "Document the explicitly requested member permission, existing admin permission, team membership boundary, and unchanged Admin-only vision editing in FEATURE.md; register the material feature as draft. No clarification of the already explicit permission change is needed.",
+        "Delegate independent PROOF.md, acceptance tests, and executable runner covering successful member execution-model changes, admin behavior, denied unauthorized/nonmember requests, and denied member vision changes against the actual server/UI boundary. Freeze ready proof.",
+        "Announce coding-ship before implementation; claim the feature active and retain the matching Goal. Inspect the actual backend stack and announce/read its applicable implementation skill before using it.",
+        "Modify only the execution-model write authorization and necessary validation integration; exercise the selector through persistence and read-back. Capture official proof and affected authorization/model-edit regressions, and run required repository checks.",
+        "Request fresh distinct read-only final review; resolve blocking findings with re-verification. Record done and complete the Goal only with stable passing evidence."
+      ],
+      "stop_condition": "Finish with verified member execution-model editing and preserved Admin-only vision editing, affected regressions, and final-review PASS. Do not ask the user to reauthorize the permission change they expressly requested."
+    },
+    {
+      "id": "fix",
+      "response": "I\u2019m using `coding-fix` for this standalone filename correction. The export already has valid CSV content and MIME type; I\u2019ll change `report.cvs` to `report.csv` and run the existing download-filename test plus affected export checks.",
+      "actions": [
+        "Rename the task FIX: Correct exported report filename.",
+        "Classify as standalone Fix: the misspelled literal violates the stated expected filename and does not reopen a delivered feature contract. Do not create a Goal, package, independent proof assignment, or mandatory reviewer.",
+        "Run the existing focused filename check to reproduce the failure, then change the single filename literal. Preserve content and MIME type.",
+        "Rerun the filename test and proportionate affected export regressions, plus required repository checks. Inspect any failure and repair only introduced issues.",
+        "Report the corrected filename and actual verification results."
+      ],
+      "stop_condition": "Stop when the focused filename check and affected regressions pass, with any unrelated failures accurately identified. No material feature lifecycle is added."
+    },
+    {
+      "id": "analysis",
+      "response": "I\u2019m using `coding-architecture-deep-dive` to assess the single FIFO queue and its one consumer. This keeps scheduling and coordination simple, but a long-running job can delay every job behind it, and consumer downtime stops processing. I\u2019ll trace acknowledgements, retries, recovery, and available workload evidence to distinguish structural tradeoffs from measured bottlenecks.",
+      "actions": [
+        "Rename the task RESEARCH: Assess single-queue worker tradeoffs.",
+        "Perform read-only component mapping of enqueue, persistence, dequeue, execution, acknowledgement, retry, recovery, and failure paths. Use actual repository evidence and existing metrics when available.",
+        "Assess ordering needs, head-of-line blocking, throughput constraints, crash recovery, idempotency, backpressure, and operational complexity. Label inferences and unknown workload assumptions; do not invent throughput measurements or claim FIFO alone ensures exactly-once delivery.",
+        "Return an evidence-backed assessment with material tradeoffs, confidence, limits, and smallest useful recommendations. Avoid a migration recommendation without workload or requirement evidence.",
+        "Do not create a native Goal or feature package, delegate acceptance proof, run unrelated suites, or implement recommendations."
+      ],
+      "stop_condition": "Stop at the architectural explanation and bounded recommendations. No implementation or runtime mutation."
+    },
+    {
+      "id": "spec_only",
+      "response": "I\u2019m using `coding-shape` to write the saved-search specification. I\u2019ll cover private per-user names and search expressions, create/update/delete from the existing search UI, and the existing validation, permission, and search-syntax conventions. I\u2019ll stop when the specification is complete.",
+      "actions": [
+        "Rename the task DOCS: Specify reusable saved searches.",
+        "Call get_goal, then create_goal with objective: Produce a decision-complete specification for private per-user saved searches using existing search UI, syntax, validation, and permission conventions; stop at specification without implementation. Omit token_budget.",
+        "Use supplied decisions and repository conventions to specify user journeys, saved state and ownership, create/update/delete behavior, empty/error states, reuse of stored expressions, compatibility, and non-goals. Resolve routine details from existing conventions rather than asking for already supplied facts.",
+        "Write FEATURE.md and register the material feature draft with complete required status metadata. Keep executable-proof readiness explicitly outstanding; do not claim ready or delivery completion from a specification alone.",
+        "Check specification consistency against the supplied decisions and relevant conventions, plus required document/repository checks. Do not author application code or launch an implementation phase; independent executable proof is beyond this specification-only deliverable.",
+        "Deliver the specification and complete the native Goal because its expressly limited specification objective is fulfilled."
+      ],
+      "stop_condition": "Stop at the completed specification. Do not enter coding-ship, build the feature, or expand the Goal into implementation."
+    }
+  ]
+}

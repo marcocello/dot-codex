@@ -1,0 +1,58 @@
+{
+  "model_defaults": [
+    "Ask a focused product clarification whether booth means both execution and vision models; explain/recommend interpretation without guessing final answer",
+    "Preserve Admin-only editing; do not ask redundant role question or broaden permissions",
+    "Treat this as changed behavior with coding-shape announcement, not a discovered bug",
+    "Start Shape Goal without separate approval or numeric budget; pause only model-dependent implementation, continue useful independent investigation"
+  ],
+  "animation": [
+    "Announce coding-shape for new visible behavior and reuse known component/conventions without another design or implementation permission question",
+    "Start outcome Goal with no extra permission or invented budget, carry it through coding-ship with announcement",
+    "Proceed to independent proof, implementation and appropriate verification rather than stop at a plan; preserve reduced-motion behavior"
+  ],
+  "roles": [
+    "Respect explicit member-permission change rather than blanket-preserve Admin-only execution editing; preserve vision permission",
+    "Announce coding-shape and start scoped Goal without process approval",
+    "Plan server authorization and UI verification for member execution editing; do not add unrelated role/cost decisions"
+  ],
+  "fix": [
+    "Announce coding-fix with known defect rationale",
+    "Proceed to focused correction and affected check without material feature package, separate reviewer or Goal-approval ceremony",
+    "Do not invent a Goal from ordinary fix request; no external mutation"
+  ],
+  "analysis": [
+    "Announce relevant architecture specialist directly; do not route ordinary assessment through Shape/Ship",
+    "Provide assessment and stop at analytical deliverable; no implementation or Goal creation"
+  ],
+  "spec_only": [
+    "Announce coding-shape and start Goal scoped to requested specification outcome without asking permission",
+    "Use supplied decisions and established conventions without reasking them; produce specification/proof planning according to skill",
+    "Stop at requested specification boundary; do not enter implementation merely because a Goal exists"
+  ],
+  "direct_ship": [
+    "Announce coding-ship and proceed with implementation/proof/review obligations",
+    "Do not create Goal solely from build request or ask Goal permission; missing Goal does not block",
+    "Do not require Shape or repeat specification approval merely to obtain Goal"
+  ],
+  "missing_tools": [
+    "Announce coding-shape and then coding-ship as appropriate; resolve routine layout choice from conventions",
+    "Report missing native Goal capability once if relevant and continue authorized ordinary work",
+    "Do not emulate persistence, fabricate Goal, invent budget or ask permission merely for missing Goal tool"
+  ],
+  "occupied_goal": [
+    "Announce coding-shape and appropriate subsequent skill; preserve existing retry behavior",
+    "Do not replace/complete/reset the unrelated Goal or steal feature ownership",
+    "Continue authorized ordinary work with brief limitation rather than ask redundant Goal/implementation approval or create replacement Goal"
+  ],
+  "shorthand_pr": [
+    "Infer terse runtime-symptom diagnosis intent and announce coding-operate without asking user to select a lane",
+    "Inspect supplied PR #81 early alongside relevant runtime evidence; do not claim already reviewed findings",
+    "Do not expand into all-PR sweep, implementation, production mutation or unrelated Goal; continue read-only investigation"
+  ],
+  "deep_shape": [
+    "Announce coding-shape and start scoped build Goal without separate Goal/implementation approval",
+    "Investigate existing context and examine full relevant reminder journey including eligibility/timing, cancellation, preferences and duplicate/retry implications",
+    "Ask multiple consequential product questions where needed with product consequences and supported recommendations; do not invent unspecified behavior or enforce one-question cap",
+    "Pause dependent implementation and external sending while continuing independent repository discovery; proceed when genuine decisions resolve"
+  ]
+}

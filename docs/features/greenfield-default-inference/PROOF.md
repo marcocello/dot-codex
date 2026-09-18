@@ -9,7 +9,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/greenfield-default-inference --timeout-seconds 60 --note "verify greenfield default inference policy"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/greenfield-default-inference --timeout-seconds 60 --note "verify greenfield default inference policy"
 ```
 
 ## Scenario: Minimal greenfield create request

@@ -6,7 +6,7 @@ The agreed 47-entry inventory and four new owned entrypoints are discoverable fr
 
 ## Command
 
-Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/skill-portfolio-consolidation --timeout-seconds 120 --note "skill discovery and document contract proof"`. The dedicated runner is `proof/run.sh`; it invokes only `proof/acceptance.py`. Gate and affected regressions are separate supporting checks.
+Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/skill-portfolio-consolidation --timeout-seconds 120 --note "skill discovery and document contract proof"`. The dedicated runner is `proof/run.sh`; it invokes only `proof/acceptance.py`. Gate and affected regressions are separate supporting checks.
 
 ## Environment and target
 

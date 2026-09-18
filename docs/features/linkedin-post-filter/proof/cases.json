@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "id": "agent-stack-course-funnel-it",
+      "input": "Italian post: the author lists several premium AI subscriptions and says they coordinate 12 autonomous agents. They do not explain the framework, tease a future explanation, then promote upcoming courses and webinars.",
+      "personal_context": "Experienced technical product builder interested in reliable agent workflows.",
+      "author_history": null,
+      "expected_verdict": "CRINGE",
+      "decisive_pressure": "Tool and agent counts signal status, while the reusable method is withheld and the post resolves into a sales funnel.",
+      "must_not_reason": "CRINGE because the author is boastful, mentally unwell, or successful."
+    },
+    {
+      "id": "solo-revenue-anecdote-en",
+      "input": "English post retells a founder story built around $790,000 revenue and one employee, then advises founders not to hire merely because revenue grew. It gives no margin, workload, durability, or operating context.",
+      "personal_context": "Technical founder who is not currently making a hiring decision.",
+      "author_history": null,
+      "expected_verdict": "CRINGE",
+      "decisive_pressure": "The useful idea is familiar and the second-hand headline metrics omit the context needed to make the advice decision-grade.",
+      "must_not_reason": "CRINGE because solo founders are dishonest or revenue claims are always false."
+    },
+    {
+      "id": "boastful-reproducible-engineering",
+      "input": "I cut our nightly ingestion job from 47 minutes to 11. Here are the before/after traces, benchmark repository, the backpressure change, and two approaches that failed. The last section explains when the optimization makes performance worse.",
+      "personal_context": "Building data-heavy agent systems and currently learning performance diagnosis.",
+      "author_history": null,
+      "expected_verdict": "KEEP",
+      "decisive_pressure": "The post offers measurable, reproducible, bounded technical knowledge that directly matches a current learning goal.",
+      "must_not_reason": "CRINGE because opening with an achievement is bragging."
+    },
+    {
+      "id": "agreeable-empty-motivation",
+      "input": "You do not need to hustle. Protect your peace, trust the process, and build the life you deserve.",
+      "personal_context": null,
+      "author_history": null,
+      "expected_verdict": "CRINGE",
+      "decisive_pressure": "The sentiment may be agreeable but contains no specific model, evidence, method, or timely decision support.",
+      "must_not_reason": "Keep because the message is positive and humane."
+    },
+    {
+      "id": "excellent-but-out-of-scope",
+      "input": "A precise Kubernetes autoscaling deep dive with production graphs, configuration, failure modes, and a reproducible load-test repository.",
+      "personal_context": "Current learning queue is intentionally limited to product discovery and local AI-agent reliability; infrastructure study is explicitly deferred this quarter.",
+      "author_history": null,
+      "expected_verdict": "CRINGE",
+      "decisive_pressure": "The post is high quality but does not deserve current attention because the user explicitly deferred this topic.",
+      "must_not_reason": "CRINGE because Kubernetes content is low quality."
+    },
+    {
+      "id": "bounded-author-pattern",
+      "input": "I found a new agent-orchestration pattern that changed everything. Details soon; join the waitlist in my profile.",
+      "personal_context": "Interested in concrete agent-orchestration methods, not course announcements.",
+      "author_history": [
+        "A teaser promises the full system next week and links to a paid cohort.",
+        "A result screenshot promotes a webinar but omits setup and measurement details.",
+        "A tool-stack list ends with a newsletter signup and no implementation notes."
+      ],
+      "expected_verdict": "CRINGE",
+      "decisive_pressure": "The supplied recent-post sample shows a repeated content pattern of withholding the method in favor of signup prompts.",
+      "must_not_reason": "CRINGE because this author is a grifter or will never publish anything useful."
+    }
+  ]
+}

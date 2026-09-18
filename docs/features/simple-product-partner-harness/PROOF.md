@@ -3,7 +3,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/simple-product-partner-harness --timeout-seconds 60 --note "verify compact ownership and truthful runtime completion"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/simple-product-partner-harness --timeout-seconds 60 --note "verify compact ownership and truthful runtime completion"
 ```
 
 ## Scenarios

@@ -8,4 +8,4 @@ echo "python=$($python --version 2>&1)"
 echo "target=active-dot-codex-delivery-surface"
 "$python" -m pytest tests/unit/test_decomposed_delivery_lifecycle.py -q -p no:cacheprovider
 "$python" -m pytest tests/unit/test_proof_run_capture.py -q -p no:cacheprovider
-"$root/scripts/gate" --root "$root"
+"$root/scripts/gate.py" --root "$root"

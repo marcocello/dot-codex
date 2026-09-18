@@ -12,8 +12,8 @@ import time
 import unittest
 
 REPO = Path(__file__).resolve().parents[4]
-CAPTURE = REPO / 'scripts/proof_run_capture'
-STATUS = REPO / 'scripts/feature_status'
+CAPTURE = REPO / 'scripts/proof_run_capture.py'
+STATUS = REPO / 'scripts/feature_status.py'
 PYTHON = sys.executable
 
 

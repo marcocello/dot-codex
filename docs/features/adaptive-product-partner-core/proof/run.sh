@@ -7,4 +7,4 @@ python="$root/.venv/bin/python"
 echo "python=$($python --version 2>&1)"
 echo "target=active-dot-codex-product-shaping-surface"
 "$python" -m pytest tests/unit/test_product_partner_core.py -q -p no:cacheprovider
-"$root/scripts/gate" --root "$root"
+"$root/scripts/gate.py" --root "$root"

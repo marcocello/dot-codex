@@ -205,8 +205,8 @@
       "priority": 23,
       "status": "done",
       "owner": null,
-      "proof_run": "docs/features/coding-harness-alignment/proof/runs/20260914T095633259739Z",
-      "notes": "Installed coding instruction alignment complete; frozen independent proof PASS, six decision cases PASS, gate 89 tests PASS, fresh reviewer PASS. Runtime capture/protection limits remain explicit."
+      "proof_run": "docs/features/coding-harness-alignment/proof/runs/20260915T145815445821Z",
+      "notes": "Explicit AGENTS-to-workflow routing covers all nine domain skills. Fresh six workflow and nine skill-selection cases PASS; official proof8 and captured metadata/inventory/gate PASS; fresh /root/final_routing_review PASS on unchanged candidate."
     },
     {
       "id": "feature-verification-capture",
@@ -243,6 +243,42 @@
       "notes": "Source-agnostic item and profile analysis passed LinkedIn, X, and blog cases with independent verdicts, examples, truthful coverage, and insufficient-evidence handling; full proof passed 82 tests and fresh final review PASS.",
       "owner": null,
       "proof_run": "docs/features/linkedin-post-filter/proof/runs/20260904T215744715768Z"
+    },
+    {
+      "id": "four-lifecycle-skills",
+      "feature_dir": "docs/features/four-lifecycle-skills",
+      "priority": 28,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/four-lifecycle-skills/proof/runs/20260917T154103710409Z",
+      "notes": "Four lifecycle skills and explicit announcements delivered; independent 30-prompt assessment and official proof PASS, metadata/inventory/gate/anchor checks PASS, final reviewer /root/split_final_review PASS. On-disk readiness verified; fresh task required for catalog reload."
+    },
+    {
+      "id": "proactive-coding-workflow",
+      "feature_dir": "docs/features/proactive-coding-workflow",
+      "priority": 29,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/proactive-coding-workflow/proof/runs/20260917T160659786622Z",
+      "notes": "Proactive contextual intake and deeper shaping; standing default Shape Goal carried into Ship. Blind 11-case/34-outcome exercises, official proof, metadata/gate/anchors and final reviewer /root/proactive_final_review PASS. Bounded response/decision target; live project replay not claimed."
+    },
+    {
+      "id": "lean-harness-instructions",
+      "feature_dir": "docs/features/lean-harness-instructions",
+      "priority": 30,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/lean-harness-instructions/proof/runs/20260917T162423146841Z",
+      "notes": "Consolidation complete; independent proof, affected checks, and distinct final review PASS. Source-boundary evidence only."
+    },
+    {
+      "id": "proactive-outcome-discovery",
+      "feature_dir": "docs/features/proactive-outcome-discovery",
+      "priority": 31,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/proactive-outcome-discovery/proof/runs/20260917T215304711653Z",
+      "notes": "Outcome discovery strengthened; six independent blind response cases, proof, gate, metadata and distinct final review PASS. Bounded response evidence only."
     }
   ]
 }

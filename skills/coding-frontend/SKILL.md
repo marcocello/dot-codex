@@ -9,7 +9,7 @@ metadata:
 
 Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the repo's design system and frontend conventions.
 
-`coding-workflow` owns routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; invoking it does not bypass Shape for undefined behavior or require a feature package for a focused Fix.
+The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; invoking it does not bypass Shape for undefined behavior or require a feature package for a focused Fix.
 
 ## Scope
 - Applies when:
@@ -57,7 +57,7 @@ Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while 
 - Reuse the existing test setup and select checks for affected components, shared hooks/state, API clients, and consuming screens.
 - Add a focused regression test when a concrete behavior risk lacks coverage; reproduce the failure when practical. Small copy, spacing, or internal cleanup does not automatically require a new test.
 - For material UI features, the separate proof author should exercise the real browser journey and assert observable DOM state, navigation, persisted data, or API effects. Screenshots alone do not establish interaction correctness.
-- Implement against the fixed proof. Route proof defects through the [central proof procedure](../coding-workflow/references/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
 
 ## Reference repos (Frontend)
 Use only when the current repository lacks a needed pattern.

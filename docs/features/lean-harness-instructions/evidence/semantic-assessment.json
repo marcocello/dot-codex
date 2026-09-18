@@ -1,0 +1,96 @@
+{
+  "author": "/root/lean_proof",
+  "method": "Independent source/consumption-boundary semantic inspection against the captured pre-change instructions, FEATURE invariants, current callers, and eight frozen concrete cases. No live model replay or downstream application execution claimed.",
+  "candidate_sha256": {
+    "AGENTS.md": "538e745859259201ed3684d7a1f51e5e7293a5675ae65522db7c04b8230a6d00",
+    "README.md": "6353d56554fb58d2f48772af8b2fb8211bdfaa1cddf98e8f1e1074d50d5e4651",
+    "docs/harness/coding/evidence.md": "64dad35eb39fb03efd4de309dfcaeaba8d54272ad18928288d4b7d2caa8c65d6",
+    "docs/harness/coding/proof.md": "fa289e0a3dd297d9ed209fdd4e86746cea77ce4f86a675bbe875fd06c1c65c5b",
+    "docs/harness/coding/status.md": "e8d8d7eb63ebae33b832157caec46cc21fc9e04b46df471e300f9a864b61abbd",
+    "docs/harness/presentations.md": "26ab81b37a0d9a76f4dae38328305d1dc1a57f069594044ca8fe25db1f720aa1",
+    "docs/harness/secondbrain.md": "58f497068561b6e51a69aef1d6bd8581c2827f770403bbe96cc978721b24da2e",
+    "docs/harness/skill-management.md": "97a4910c7d79646468520ddebf1cebb457c2af2af906d722fac4968ae86ee393",
+    "skills/coding-antipattern-review/SKILL.md": "80958edb5496c8389fd239d65c5efac3a343d339ad66dce7831771e66f6ff170",
+    "skills/coding-antipattern-review/references/architecture-and-runtime.md": "4b29be23ea03eef8094373077c79d11ec83ec92728e36e45eb35b923eeea76e6",
+    "skills/coding-antipattern-review/references/code-and-design.md": "74a05085752f06cb81b374d4940c4a7cd84195febc0d568b1192642ec9a7b4a0",
+    "skills/coding-antipattern-review/references/finding-schema.md": "fbb15fedd139ef275e67602b6f9dbe93265334ee1617c8ed95b2dc8db3961fc6",
+    "skills/coding-antipattern-review/references/sources.md": "e9fc41ba4a6cbb332380d4b736965e0d8c96c255fbdf3056a88dd13129a73a32",
+    "skills/coding-antipattern-review/references/tests-and-proof.md": "1a09f1d533fc6ed54e95df49529b2205f648b5bd262ce1e9561f5df12e5d2283",
+    "skills/coding-architecture-deep-dive/SKILL.md": "b11d59db74a4950137f1d19d334be6bab2f6cc371c7533b0675e9110eef5ae5a",
+    "skills/coding-commit/SKILL.md": "998f5d0975ca980dca4eedfc5830e677de4aebc62b3fd4e420018f7df6632751",
+    "skills/coding-fix/SKILL.md": "411bf39bba711ab288aa04921df5d0d06737bc29a9586467cdebb973c16e8940",
+    "skills/coding-frontend/SKILL.md": "ffb685703510da5abf8d9678912c0e1971e7de2f5a6cbe351c06860f5a44978b",
+    "skills/coding-operate/SKILL.md": "5db96353bae0fabaaac45eab970961fc21f716726f72def0ee6658089becef43",
+    "skills/coding-operate/references/read-only-checks.md": "b48d24f9afa48e71441a99e47477194acc99a21c07fb87a019b649ed569d450c",
+    "skills/coding-prepare-environment/SKILL.md": "e6b135af9b799d917e3d618119dacef90b9cc8f48e5a26e6299bdd929eb48085",
+    "skills/coding-prepare-environment/references/stack-reference.md": "61a036dbdec176b3a531a06fe75ccba89d1247805f3ef40f8604835357235114",
+    "skills/coding-python-backend/SKILL.md": "054d5810095ea4169b585107a2a3aced8bce33877afe83e6e4525fc0fad5e66d",
+    "skills/coding-review-workflow/SKILL.md": "7212ecdd0d78f1d56f5f59253d149b4878cc75449a9caa42241107f3e985440e",
+    "skills/coding-secret-audit/SKILL.md": "cff6df86b263b8d40ff346425b12cfda50d17537a7e7817797244b6fa6aaa7be",
+    "skills/coding-shape/SKILL.md": "a2a7ce85c5cc43d9310f8eda11ed19a327d94bae0288c55442297ced8c6c71af",
+    "skills/coding-ship/SKILL.md": "3a8ea5a2f4d53a3d5cbed2027f211d76643f261c9f44d4ee4e9f7028767bc968",
+    "skills/coding-ui-toolkit/SKILL.md": "fbdf37cfd538ed07863e893e0a5cd0bf63dfce7a9c70da197099c9b04524295f",
+    "skills/coding-ui-toolkit/references/capability-catalog.md": "bd6b2dee6f76eb2b2d679004b3e416a1813806b20996052d1839aabae4db3ac9",
+    "skills/coding-ui-toolkit/references/mcp-routing.md": "56ad429204ad39305b4660d5d9f102b9f6ab9cac67ca2d2a5bc2ede0e8713065",
+    "skills/coding-ui-toolkit/references/review-handoff.md": "b18b41b9d8f8be6295842d77f552a1c6949625aaf32289e5571032573db7df43"
+  },
+  "cases": [
+    {
+      "id": "terse-defect",
+      "verdict": "PASS",
+      "reason": "AGENTS Understand And Route first inspects relevant PR/context and infers ordinary local repair from a clear defect report. Fix Classify requires expected behavior/evidence and distinguishes reopened delivery. Global Boundaries denies PR-comment/merge authority from review alone. The route does not depend on wording or patch size."
+    },
+    {
+      "id": "model-defaults",
+      "verdict": "PASS",
+      "reason": "AGENTS routes changed behavior to Shape. Shape Discover investigates saved state, defaults/overrides, permissions and consumers; preserves unrelated permissions and asks remaining consequential choices with concrete tradeoffs, with no one-question cap. Start The Goal reuses/creates a scoped explicitly requested Goal; Specify continues already-authorized Ship without another permission question."
+    },
+    {
+      "id": "runtime-analysis",
+      "verdict": "PASS",
+      "reason": "AGENTS gives observed runtime symptoms precedence and diagnosis-only read-only scope. Operate brackets environment/version/time/context, follows runtime evidence before assigning cause, and stops diagnosis-only at findings. A code-defect route remains subject to the explicit no-change scope in AGENTS, so it cannot itself authorize edits."
+    },
+    {
+      "id": "direct-ship",
+      "verdict": "PASS",
+      "reason": "Ship Enter accepts a ready specified feature with independent proof, claims status, and expressly proceeds without Goal tools or a matching Goal. It preserves no invented budgets/Goals and no unrelated Goal takeover, while still requiring independent proof, affected verification and final distinct review."
+    },
+    {
+      "id": "analysis-only",
+      "verdict": "PASS",
+      "reason": "AGENTS routes architecture assessment directly to coding-architecture-deep-dive, whose read-only scope and findings-do-not-authorize-implementation remain byte-identical apart from removal of the shared rulebook read. Shape/Ship package/Goal procedures are not entered merely for analysis; evidence explicitly avoids package creation for logging. Authoritative external verification remains bounded in AGENTS."
+    },
+    {
+      "id": "proof-setup",
+      "verdict": "PASS",
+      "reason": "Shared proof Fixed Acceptance assigns setup correction exclusively to the independent author using unchanged contracts, retaining scenarios/assertions/outcomes/test selection/target/fakes. It preserves failed inputs, exact diff/rationale/new hashes outside PROOF, requires affected and complete reruns and final reviewer examination; unavailable author pauses repair, and Ship cannot edit frozen acceptance."
+    },
+    {
+      "id": "obsolete-proof",
+      "verdict": "PASS",
+      "reason": "Fix identifies delivered-contract violation and reopens through status, preserving feature proof/review. Shared proof Restore requires separate author, archived originals/failure, preserved scenarios/target/real-fake boundary, full captured rerun and review; candidate behavior is expressly not the oracle. Latest own official PASS and distinct final review govern completion."
+    },
+    {
+      "id": "ownership-and-boundaries",
+      "verdict": "PASS",
+      "reason": "AGENTS and status restrict priority selection to requested queue continuation and eligible ready entries, preserve foreign active claims, and require user-authorized stopped-owner handoff. Helper owns locked atomic mutation and rejects takeover/manual bypass. Available deploy access does not satisfy explicit external-effect authorization. Goal/tool and runtime limits remain independent of status success."
+    }
+  ],
+  "invariant_review": {
+    "verdict": "PASS",
+    "findings": [
+      "AGENTS now contains initial lifecycle, coding domain/review/support and capability-based noncoding routing; exact skill announcements, scope inference and user interaction rules have a single global owner. Focused skills no longer require the redundant rulebook.",
+      "Shape owns default scoped Goals, thorough product discovery and independent proof handoff. Ship owns authorized execution, stopping/resumption, verification and distinct final review. Fix keeps standalone/reopened/active-regression distinctions; Operate retains actual-runtime consumer read-back.",
+      "The only shared coding references are proof, status and evidence. Each opens with an explicit reader/occasion. Proof has real distinct callers for authoring, executing and restoring; status for registration/claim/reopen; evidence for material verification and proof-author records. They retain cross-skill mechanics rather than replacing the removed general guide.",
+      "Acceptance isolation, genuine UI/API/process boundary, relevant state/permissions and loaded-resource read-back, separate acceptance/regression placement, no foreign whole-proof reuse, independent setup repair/restoration, fixed input hashes, newer failed/unfinished override and observed-broken precedence all remain explicit.",
+      "Status retains mandatory adopted-repository schema, exact field ownership, atomic helper use, safe original-index archival and locked migration, no invented owners/PASS, complete scaffold, latest local own official proof pointer, foreign/symlink/stale/regression rejection, one active owner/task, and no timeout takeover.",
+      "Material completion still requires named-target proof, affected regressions and fresh reviewer distinct from implementer/author, on stable relevant inputs. Standalone Fix remains lightweight and explicit analysis/review-only remains direct. No extra package/reviewer for regressions introduced within Ship.",
+      "Global external/destructive authorization, unrelated dirty work, existing instructions, no target AGENTS creation, domain/platform ownership, shared scripts and repository gate remain. Evidence retains official/regression command modes, incomplete attempts, private native dialogue, redaction, partial-capture honesty and precise limits of digest/capture protection.",
+      "README remains human orientation linking directly to current owners; no mandatory replacement policy layer was created. Existing specialized techniques changed only by removal of redundant shared-rulebook references relative to captured baseline. Scripts/inventory and earlier evidence are protected byte-for-byte by executable checks."
+    ],
+    "limitations": [
+      "Source semantic assessment cannot establish future agent compliance or live application correctness.",
+      "Some implementation detail already exposed by script help and repeated prose was intentionally removed; script semantics are unchanged and protected."
+    ]
+  }
+}

@@ -9,7 +9,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/ui-proof-realism --timeout-seconds 30 --note "verify realistic UI proof boundaries"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/ui-proof-realism --timeout-seconds 30 --note "verify realistic UI proof boundaries"
 ```
 
 ## Scenario: UI claims use the owning boundary

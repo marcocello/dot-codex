@@ -7,11 +7,11 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/proof-capture-hardening --timeout-seconds 30 --note "verify proof capture supervision and input integrity"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/proof-capture-hardening --timeout-seconds 30 --note "verify proof capture supervision and input integrity"
 ```
 
 ## Scenario: Terminal outcomes are retained truthfully
-- Producer/activation: pytest creates temporary Git repositories and invokes the real `scripts/proof_run_capture` with controlled executable proof runners, including one terminated directly by a signal.
+- Producer/activation: pytest creates temporary Git repositories and invokes the real `scripts/proof_run_capture.py` with controlled executable proof runners, including one terminated directly by a signal.
 - Consumer: the parent feature lifecycle reading the retained attempt and process exit status.
 - Read-back: tests parse the real `attempt-start.json`, `result.json`, stdout, stderr, signal, and copied contracts for successful, failing, timed-out, and interrupted runs.
 - Fake: temporary repositories and controlled proof runners only; the capture executable and operating-system subprocess/signal boundaries are real.

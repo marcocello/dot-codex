@@ -1,0 +1,16 @@
+{
+  "AGENTS.md": "Initial intent, all routing/skill selection, announcements, concise global safety and repository boundaries. Always loaded.",
+  "skills/coding-shape/SKILL.md": "Default Goal, product discovery/questions, specification and independent proof delegation.",
+  "skills/coding-ship/SKILL.md": "Authorized implementation, repair, verification, final review/completion.",
+  "skills/coding-fix/SKILL.md": "Known defect classification, focused repair and reopened-feature obligations.",
+  "skills/coding-operate/SKILL.md": "Runtime diagnosis, authorized remediation, live read-back.",
+  "docs/harness/coding/proof.md": "Keep: Shape authors, Ship executes, Fix restores or repairs setup; shared acceptance contract.",
+  "docs/harness/coding/status.md": "Keep: Shape registers, Ship claims/completes, reopened Fix changes status; shared CLI/schema.",
+  "docs/harness/coding/evidence.md": "Keep: Ship/proof authors capture verification; Fix/Operate retain appropriate evidence; shared capture command and privacy constraints.",
+  "docs/harness/workflow.md": "Remove: only AGENTS/README current callers; narrative duplicates lifecycle skills.",
+  "docs/harness/coding/rules.md": "Remove: routing and announcements to AGENTS; lifecycle behavior to owner skill, references only where needed.",
+  "docs/harness/coding/research.md": "Remove: bounded source verification becomes a concise general instruction; no unique mechanism.",
+  "docs/harness/safety.md": "Remove: global approvals belong AGENTS; runtime details already Operate; completion already Ship/Fix.",
+  "README.md": "Human orientation with direct links; no required instruction layer.",
+  "docs/features/": "Historical decisions and verification, read only for feature-specific context; excluded from routine harness loading."
+}

@@ -7,7 +7,7 @@ description: "Review code, architecture, runtime, tests, proof, and function mai
 
 Purpose: identify harmful recurring practices without turning a catalog match, scanner alert, or style preference into a finding.
 
-Use directly for `coding-workflow` Analyze. The review is read-only; authorized remediation can follow in the same task through the appropriate workflow.
+Use directly for analysis. The review is read-only; authorized remediation can follow in the same task through the appropriate workflow.
 
 ## Inputs
 - Repository, component, paths, or review question.
@@ -102,7 +102,7 @@ For function findings, include purpose, current shape, verbosity classification,
 - Do not prescribe a replacement pattern without repository fit.
 - Do not infer systemic impact from one isolated example unless it crosses a critical boundary.
 - Do not apply remediation during review-only work.
-- For authorized remediation, route known defects or bounded behavior-preserving cleanup to `coding-workflow` Fix; material accepted behavior changes or refactors use Shape/Ship. During an active feature, introduced regressions stay in its current repair loop.
+- For authorized remediation, route known defects or bounded behavior-preserving cleanup to `coding-fix`; material accepted behavior changes or refactors use Shape/Ship. During an active feature, introduced regressions stay in its current repair loop.
 
 ## Handoff
 Lead with confirmed findings and strongest counter-evidence checks. Include suspected candidates only when the missing fact is actionable. Prefer fewer high-confidence findings over a noisy catalog dump.

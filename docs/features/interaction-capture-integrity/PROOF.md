@@ -9,7 +9,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/interaction-capture-integrity --timeout-seconds 90 --note "verify clean analysis-ready interaction capture"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/interaction-capture-integrity --timeout-seconds 90 --note "verify clean analysis-ready interaction capture"
 ```
 
 ## Scenario: Parser excludes lifecycle noise and retains safe provenance

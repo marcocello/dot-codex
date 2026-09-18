@@ -10,7 +10,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/adaptive-product-partner-core --timeout-seconds 60 --note "verify one adaptive product partner and semantic eval corpus"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/adaptive-product-partner-core --timeout-seconds 60 --note "verify one adaptive product partner and semantic eval corpus"
 ```
 
 ## Scenario: One active shaping authority serves all product input

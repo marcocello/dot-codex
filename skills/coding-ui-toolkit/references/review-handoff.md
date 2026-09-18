@@ -1,6 +1,6 @@
 # Read-only UI review handoff
 
-Use directly for `coding-workflow` Analyze to produce a component-specific implementation brief. Ground every judgment in the product's goal, the observed interface, and real source material. The review is read-only; authorized implementation can follow in the same task through `coding-workflow` and the relevant frontend skill.
+Use directly for analysis to produce a component-specific implementation brief. Ground every judgment in the product's goal, the observed interface, and real source material. The review is read-only; authorized implementation can follow in the same task through the coding lifecycle skills and the relevant frontend skill.
 
 ## Preserve the read-only boundary
 

@@ -1,0 +1,30 @@
+{
+  "protected": {
+    "skills/harness-capture-interactions/SKILL.md": "d3e89c7969bfe5025336d712af147c0b30b367d08dad4d606644b22ce64de427",
+    "skills/harness-capture-interactions/agents/openai.yaml": "74c3030f07ddb44f7ef2c978cd055575b1dc5983e93ce49949aa636ca2e3fb42",
+    "skills/harness-capture-interactions/scripts/capture_interactions.py": "4abeb8bd5a0c6d205859b172d35099c5c4be51bfef1b7f51f5cf3cb4981bc887",
+    "skills/second-brain-notion-api/SKILL.md": "65da60f6eb25c6dd3f87e5df57a0b2a388f323752e4b9f0cfde10700939d88a3",
+    "skills/second-brain-notion-api/agents/openai.yaml": "36dc99915a07d260db512391a87baa89f41d7c68695842e6cf6bfcdee06c9e33",
+    "skills/second-brain-notion-api/scripts/notion_secondbrain.py": "af928c74fc2c3a914c9b75f1a1e8ddcfe377da773c10bd8b9d66124532e1941c",
+    "skills/coding-ui-toolkit/SKILL.md": "dff7f7cf5d4ccf8772b84cd530f0df78841c7f207b5c30dea639c69c527206f8",
+    "skills/coding-ui-toolkit/references/mcp-routing.md": "99f94394b756521861b644660f5efa2e9e052c95ae34fe183d6519a946178c2d",
+    "skills/coding-ui-toolkit/references/review-handoff.md": "0fd7daee91628ef737604f3fe16ed799116f5f1b860e3aa47e781c0c50b79c2f",
+    "skills/coding-ui-toolkit/references/capability-catalog.md": "bd6b2dee6f76eb2b2d679004b3e416a1813806b20996052d1839aabae4db3ac9",
+    "skills/coding-ui-toolkit/agents/openai.yaml": "3549d811c562050908198a0a6c936cbece63db7788dbe7adaf4dc2982897d909",
+    "skills/coding-ui-toolkit/references/shadcn-catalog/components.json": "fab6084d4e6e9623a435c79176f9366679d32979f2c24983fc0fb79ecb55e47b",
+    "skills/writing-technical-content/SKILL.md": "6cc76a24db73ba580c70cd39ddb66c22eed15cbe3c696f776011ef33609c71e3",
+    "skills/writing-technical-content/references/anti-ai-rhetoric.md": "aa2e34d451a2f62d1c05a50d7625e1b81eac50a567e7a1552b587db67dfb07a7",
+    "skills/writing-technical-content/references/work-recaps.md": "626921012306e577d58754edc9693e12c3732fdbd49d35deae8f71a0120d2571",
+    "skills/writing-technical-content/agents/openai.yaml": "4bed9cc7404a8a7ff8f6493c7250fcc0c53ef7b1be4daa2171a87947b769db05",
+    "skills/codex-manage-skills/SKILL.md": "b5cfc32012c5efd4b32ec5563ba00ae7c534b5d4c9163c640daf262ba9b0b8df",
+    "skills/codex-manage-skills/agents/openai.yaml": "01e2f746466d3648cf7ca35f1c20225983e7890e5003f03caf391e53d33f6414",
+    "skills/second-brain-review/SKILL.md": "70506b0bf243cadcc68f6fb6a61a39f859853b018c124fa70221ea1bebbf89de",
+    "skills/second-brain-review/agents/openai.yaml": "30799c12472355ab5e863c0772dc98eb0c6dd936e6a5543b50db2414890d2dac",
+    "scripts/skill_inventory.py": "b4658763297acef418e194f1f56fc5d67819e0d09405af6b7c99c84a13b3f3df"
+  },
+  "relocated": {
+    "note-shapes.md": "1ebb4f8e3b99d07ce3cad3b4cdc526752c154455dd85306c2695912e17b1980f",
+    "build_capture_ris.py": "0c89cfc1e1e6c835ebeb029db76903bf48d49ed4ec4db00764cf0d14b3ba8175",
+    "update_session_note.py": "7cc7aa5d4a6e7cd6352c8b21bbe3af84a4d4fe375661483514ffa36d24fa7ca5"
+  }
+}

@@ -16,7 +16,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/lean-completion-lifecycle --timeout-seconds 60 --note "verify bounded contract preflight and final evaluator lifecycle"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/lean-completion-lifecycle --timeout-seconds 60 --note "verify bounded contract preflight and final evaluator lifecycle"
 ```
 
 ## Scenario: Implementation entry receives one independent bounded challenge

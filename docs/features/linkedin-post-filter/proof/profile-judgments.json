@@ -1,0 +1,68 @@
+{
+  "evaluator": {
+    "agent_id": "01a06e6c-4675-77d3-baba-b874a21b5a53",
+    "captured_at": "2026-09-04T21:56:30Z",
+    "evidence_order": [
+      "profile-cases.json",
+      "profile-samples.json"
+    ]
+  },
+  "judgments": [
+    {
+      "id": "linkedin-cringe-post-keep-profile",
+      "item_verdict_supported": true,
+      "profile_outcome_supported": true,
+      "item_and_profile_independent": true,
+      "examples_supported": true,
+      "coverage_truthful": true,
+      "source_agnostic": true,
+      "user_value_explained": true,
+      "content_not_person": true,
+      "format_valid": true,
+      "no_em_dash": true,
+      "evidence": "The post verdict follows from the unsupported agent-count boast and sales pitch. The separate profile verdict is supported by four concrete, relevant engineering posts among six sampled items. Examples and coverage match the case evidence exactly."
+    },
+    {
+      "id": "x-keep-post-cringe-profile",
+      "item_verdict_supported": true,
+      "profile_outcome_supported": true,
+      "item_and_profile_independent": true,
+      "examples_supported": true,
+      "coverage_truthful": true,
+      "source_agnostic": true,
+      "user_value_explained": true,
+      "content_not_person": true,
+      "format_valid": true,
+      "no_em_dash": true,
+      "evidence": "The item provides reproducible performance evidence and merits KEEP independently. Seven of eight sampled profile items lack evidence or usable substance, supporting the separate CRINGE profile verdict. Examples and coverage are accurate."
+    },
+    {
+      "id": "blog-keep-article-keep-author",
+      "item_verdict_supported": true,
+      "profile_outcome_supported": true,
+      "item_and_profile_independent": true,
+      "examples_supported": true,
+      "coverage_truthful": true,
+      "source_agnostic": true,
+      "user_value_explained": true,
+      "content_not_person": true,
+      "format_valid": true,
+      "no_em_dash": true,
+      "evidence": "The article contains directly usable reliability methods, implementation details, failures, and tests. The complete five-item archive consistently shows the same evidence quality, independently supporting KEEP for the profile. Examples and coverage are faithful."
+    },
+    {
+      "id": "blog-cringe-article-profile-unrated",
+      "item_verdict_supported": true,
+      "profile_outcome_supported": true,
+      "item_and_profile_independent": true,
+      "examples_supported": true,
+      "coverage_truthful": true,
+      "source_agnostic": true,
+      "user_value_explained": true,
+      "content_not_person": true,
+      "format_valid": true,
+      "no_em_dash": true,
+      "evidence": "The article's unsupported 10x claim justifies CRINGE. With only two accessible items from a partial archive, withholding a profile verdict is justified and explicitly presented as insufficient evidence. Examples and coverage match the case."
+    }
+  ]
+}

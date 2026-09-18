@@ -1,0 +1,12 @@
+{
+  "author": "/root/lean_proof",
+  "sha256": {
+    "docs/features/lean-harness-instructions/FEATURE.md": "c9f1486641ded173f6345a768ab420eed4c2ba73067de42a2a941095d1ac729d",
+    "docs/features/lean-harness-instructions/PROOF.md": "4504a373796e0e1354fa28ecfb691a06482cff667a08822645c0bf4f516933d8",
+    "docs/features/lean-harness-instructions/evidence/baseline.json": "38f289ddc447c563d08ec9bc615e1f1cb7b3f48cfc4c8117a071f6130a6f0c25",
+    "docs/features/lean-harness-instructions/proof/check.py": "9e62b60c2151fcd1d8094d3544a422034feddae89c46f7a07095cf1be7549798",
+    "docs/features/lean-harness-instructions/proof/run.sh": "925bfaf59c9e25f57e51856ace64816dd0e9671ef017c0259eb7e6bce93ed887",
+    "docs/features/lean-harness-instructions/proof/cases.json": "281ee7ae5da21ae9f73cabeb081234989cc65f14ce59411fae657ed1f07483c9",
+    "docs/features/lean-harness-instructions/proof/protected.json": "7d2f4cf80f5a8e447f6337200b5199f03ec4673a3143d494519883a54036c0a0"
+  }
+}

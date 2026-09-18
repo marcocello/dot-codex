@@ -1,0 +1,256 @@
+{
+  "author": "/root/split_proof",
+  "author_role": "independent-proof-author",
+  "method": "Read actual migrated instructions and specialist entrypoints, judge each supplied paraphrase against accepted scenario, compare migrated proof/status/evidence/research rules against pre-migration baseline. No implementation or acceptance edits. This assesses instruction semantics on disk, not future agent compliance.",
+  "input_hashes": {
+    "AGENTS.md": "3d25615d604c37912871333b49e64ece09715de439cd6b4e489cb640e24d9d67",
+    "README.md": "da9be6cfd11f71b19117d588aa87203af8e0a32b8a4ac569fdb7b2d39cd4e557",
+    "docs/harness/coding/evidence.md": "4342b0153e5e770135054accbd27fceac58f989b49b2b5a2da62326515645352",
+    "docs/harness/coding/proof.md": "b765df9544527cabd4f80f95b2f71515aae06aec1480bfa0d7c493bce68505a5",
+    "docs/harness/coding/research.md": "84c5e40ab710663ee3f04cd8acab6553de8e5bdfdce47fe6b5e6b1ccc2cebbd4",
+    "docs/harness/coding/rules.md": "72745518a73c6ecd681e7f7d690568ed80d73869679573f4d2281f05b04557b6",
+    "docs/harness/coding/status.md": "293fd50180019fec31ea36402e255da7be22d751b716560addbdb9857fa3fae7",
+    "docs/harness/presentations.md": "26ab81b37a0d9a76f4dae38328305d1dc1a57f069594044ca8fe25db1f720aa1",
+    "docs/harness/safety.md": "05998c3d2f4e0e4693721d0958fea353738c784d01bbd13d764ad0e145fbe2b4",
+    "docs/harness/secondbrain.md": "58f497068561b6e51a69aef1d6bd8581c2827f770403bbe96cc978721b24da2e",
+    "docs/harness/skill-management.md": "97a4910c7d79646468520ddebf1cebb457c2af2af906d722fac4968ae86ee393",
+    "docs/harness/workflow.md": "bd26508453a5815bf9d3c72107e1454d14633167dff965fe7301fca7654e5d00",
+    "skills/coding-antipattern-review/SKILL.md": "9c0e082d64ce7e8a6079fa5835828e5432cd657e8808edf4889ecfb0c83cf8c8",
+    "skills/coding-antipattern-review/agents/openai.yaml": "e3dcfabb1fcf44306607518a8e8846c567e12c3ced9ff85ec757d19cd8418a51",
+    "skills/coding-antipattern-review/references/architecture-and-runtime.md": "4b29be23ea03eef8094373077c79d11ec83ec92728e36e45eb35b923eeea76e6",
+    "skills/coding-antipattern-review/references/code-and-design.md": "74a05085752f06cb81b374d4940c4a7cd84195febc0d568b1192642ec9a7b4a0",
+    "skills/coding-antipattern-review/references/finding-schema.md": "fbb15fedd139ef275e67602b6f9dbe93265334ee1617c8ed95b2dc8db3961fc6",
+    "skills/coding-antipattern-review/references/sources.md": "e9fc41ba4a6cbb332380d4b736965e0d8c96c255fbdf3056a88dd13129a73a32",
+    "skills/coding-antipattern-review/references/tests-and-proof.md": "1a09f1d533fc6ed54e95df49529b2205f648b5bd262ce1e9561f5df12e5d2283",
+    "skills/coding-architecture-deep-dive/SKILL.md": "935671eb7e56f1b562e03c435e9e71f5485656f83a4b0332ee96e46b12edc5e1",
+    "skills/coding-architecture-deep-dive/agents/openai.yaml": "12be3444c14d7e4ffd5b25953692507b65c638ebb2fe87834b1ebf7605a111b8",
+    "skills/coding-commit/SKILL.md": "035012606dbe64c844e08a5317d7e5903707391e50a5720508b22ef7f368d9b6",
+    "skills/coding-commit/agents/openai.yaml": "372ec55c43390d1501c4658fba9a474c69aa6253122531e0cdafda3aa2c916f3",
+    "skills/coding-fix/SKILL.md": "54e62e410aaf8926ce48721b3b4d7c101a424da9ee02e38296aa312b04091d53",
+    "skills/coding-fix/agents/openai.yaml": "2ae6aeced873994af9b9dc9f7ae79d716cf3de2062fee0c8ea9a06ece81f7e99",
+    "skills/coding-frontend/SKILL.md": "f8125020ef6f7f8adadbb95031d0defb8732490bb826901e57cae6edb6f6683d",
+    "skills/coding-frontend/agents/openai.yaml": "39792fd041b7a2b0013da54bbe5b43400bb450b1be6a1f1ff227d116ec1dd798",
+    "skills/coding-operate/SKILL.md": "089566021aeb83957f28bbf1e022fe154eee68bf52d49faa7b6a5de404d99221",
+    "skills/coding-operate/agents/openai.yaml": "a63423467c13e805b4c31aadedb13f0e5160e7f4339924f7e0be0b8bedaeda2d",
+    "skills/coding-operate/references/read-only-checks.md": "b48d24f9afa48e71441a99e47477194acc99a21c07fb87a019b649ed569d450c",
+    "skills/coding-operate/scripts/ops_diag_preflight.sh": "e57fbeaca1ca288be0e6ca5cde43682e3139f6bafc101ee18a92e2697f714fb1",
+    "skills/coding-prepare-environment/SKILL.md": "2c6d348c021b5805846997b0b65ad674a4ad39a539c6fa3ea42d7fce65f2772a",
+    "skills/coding-prepare-environment/agents/openai.yaml": "6e5d7b11084ca9e4450ec8afa787e43502312d6adb7c5567084a56fbd733beb9",
+    "skills/coding-prepare-environment/references/stack-reference.md": "61a036dbdec176b3a531a06fe75ccba89d1247805f3ef40f8604835357235114",
+    "skills/coding-python-backend/SKILL.md": "99c9a685327d7f01a54d4c2ca26bb34bd98a5a3cb422764b28cd1222bf25bdf5",
+    "skills/coding-python-backend/agents/openai.yaml": "1ad0836d06c41645d6c2f6b7ec2f6565a81adcf242e739332d594f3d1d2a8e03",
+    "skills/coding-review-workflow/SKILL.md": "c0306011d94f2f87576893b5d447aa5233f44e9f19a23e9af0bfb0f20268cc57",
+    "skills/coding-review-workflow/agents/openai.yaml": "1716ba2cc8d2e6302b75f69e084b549e58648aacce88fc8307b9cc1c110420c2",
+    "skills/coding-secret-audit/SKILL.md": "86a056bfea507c61d75709ed4501d420981e825c47af67a9f4d9f6d50ec9c478",
+    "skills/coding-secret-audit/agents/openai.yaml": "c7d15eff1d9c8c7dd761b40b2b48f82d72d9f9504d7c92f195fed368a9932fa4",
+    "skills/coding-shape/SKILL.md": "f267ebb631864eecae3e094e15713b2a66f167cdbc454228a4a75072006e3137",
+    "skills/coding-shape/agents/openai.yaml": "6e2e9a536b919546d4d4ebfe5a7478fe92e0031fbc4666723e2fc7cd5a830a9b",
+    "skills/coding-ship/SKILL.md": "53eab3fce67b83db419a7237d13c4fb7c6751bc0cd46654cb192922505195cfa",
+    "skills/coding-ship/agents/openai.yaml": "0199f2c6afea911a53ce85375ce20cd62a9c6f5d9687f7bbef54efcf73a1ffa8",
+    "skills/coding-ui-toolkit/SKILL.md": "28c02e63052b207aa3b261cda4aa0e0bdc16bd94c4b3223ba453abfa938e1824",
+    "skills/coding-ui-toolkit/agents/openai.yaml": "3549d811c562050908198a0a6c936cbece63db7788dbe7adaf4dc2982897d909",
+    "skills/coding-ui-toolkit/references/capability-catalog.md": "bd6b2dee6f76eb2b2d679004b3e416a1813806b20996052d1839aabae4db3ac9",
+    "skills/coding-ui-toolkit/references/mcp-routing.md": "56ad429204ad39305b4660d5d9f102b9f6ab9cac67ca2d2a5bc2ede0e8713065",
+    "skills/coding-ui-toolkit/references/review-handoff.md": "b18b41b9d8f8be6295842d77f552a1c6949625aaf32289e5571032573db7df43",
+    "skills/harness-manage-skills/SKILL.md": "926270cd55ad8440b2d36a425e68618702799b131867514413794757ac999463",
+    "skills/harness-manage-skills/agents/openai.yaml": "761f3d393f69050a4e034a55d5fd120ea9a921a137f0970260df7dee505a3d45",
+    "skills/harness-manage-skills/references/pull-config.md": "ea9388985b32cb578672617c00512eac913f1deed280a278a119b56422a3fc68",
+    "skills.toml": "9ccf2f58509281c5336733704d4568bb71e7e43a7deddf4575eec7a5fc1bf9b7"
+  },
+  "cases": {
+    "new_export": {
+      "verdict": "PASS",
+      "route": "coding-shape",
+      "evidence": [
+        "skills/coding-shape/SKILL.md#discover-and-decide",
+        "skills/coding-shape/SKILL.md#specify-and-author-proof",
+        "skills/coding-shape/SKILL.md#stop-or-continue"
+      ],
+      "paraphrase_outcomes": [
+        "Clarify CSV format and relevant compatibility before fixing the feature specification; delegate acceptance to a separate author, then continue authorized Ship once ready.",
+        "Resolve the unsettled column behavior in Shape, then independent proof and Ship; do not request a second build approval simply because discovery ended."
+      ]
+    },
+    "ready_feature": {
+      "verdict": "PASS",
+      "route": "coding-ship",
+      "evidence": [
+        "skills/coding-ship/SKILL.md#enter-and-persist",
+        "skills/coding-ship/SKILL.md#implement-and-repair",
+        "skills/coding-ship/SKILL.md#verify-and-review"
+      ],
+      "paraphrase_outcomes": [
+        "Enter Ship for the ready accepted feature; verify explicit native Goal authority separately, preserve independent acceptance, then run relevant regressions and separate final review.",
+        "Frozen acceptance stays fixed during implementation; use user-configured allowance without invented budget, complete target proof and distinct fresh review."
+      ]
+    },
+    "standalone_fix": {
+      "verdict": "PASS",
+      "route": "coding-fix",
+      "evidence": [
+        "skills/coding-fix/SKILL.md#classify-and-explain-the-scope",
+        "skills/coding-fix/SKILL.md#complete"
+      ],
+      "paraphrase_outcomes": [
+        "A spelling correction without invalidated feature contract is standalone Fix, with focused check and affected regressions, no mandated material package or reviewer.",
+        "An isolated README typo receives a bounded correction and meaningful focused check, without package, Goal, or separate acceptance ceremony."
+      ]
+    },
+    "reopen_fix": {
+      "verdict": "PASS",
+      "route": "coding-fix",
+      "evidence": [
+        "skills/coding-fix/SKILL.md#enter",
+        "skills/coding-fix/SKILL.md#classify-and-explain-the-scope",
+        "skills/coding-fix/SKILL.md#complete"
+      ],
+      "paraphrase_outcomes": [
+        "The delivered export claim is false: reopen its existing feature and rerun realistic proof plus fresh review even for a narrow patch.",
+        "Delivered behavior regression follows the owning contract and retained completion obligations; standalone classification cannot be used to waive them."
+      ]
+    },
+    "active_ship_regression": {
+      "verdict": "PASS",
+      "route": "coding-ship",
+      "evidence": [
+        "skills/coding-ship/SKILL.md#implement-and-repair",
+        "skills/coding-fix/SKILL.md#enter"
+      ],
+      "paraphrase_outcomes": [
+        "Keep introduced regression repair in current Ship with current task, Goal allowance, proof and final review.",
+        "A neighboring failure introduced by this candidate gets affected regression verification and repair without creating a separate package or reviewer for that neighbor."
+      ]
+    },
+    "runtime_diagnosis": {
+      "verdict": "PASS",
+      "route": "coding-operate",
+      "evidence": [
+        "docs/harness/coding/rules.md#routing-and-analytical-scope",
+        "skills/coding-operate/SKILL.md#start-read-only",
+        "skills/coding-operate/SKILL.md#complete"
+      ],
+      "paraphrase_outcomes": [
+        "The observed production failure routes to Operate despite \u201canalyze\u201d; investigate bounded actual-runtime evidence, stop at findings without remediation.",
+        "Investigate the service timeout read-only and follow evidence across repository boundaries; no restart, data mutation or deployment is implied."
+      ]
+    },
+    "runtime_repair": {
+      "verdict": "PASS",
+      "route": "coding-operate",
+      "evidence": [
+        "skills/coding-operate/SKILL.md#route-or-remediate",
+        "skills/coding-operate/SKILL.md#complete"
+      ],
+      "paraphrase_outcomes": [
+        "Stay in Operate for authorized operational correction, limit mutation to explicit target and verify live consumer; confirmed code defect may enter Fix.",
+        "Check the original affected user flow on the running target after corrective action; local repair evidence cannot establish production recovery."
+      ]
+    },
+    "architecture": {
+      "verdict": "PASS",
+      "route": "coding-architecture-deep-dive",
+      "evidence": [
+        "docs/harness/coding/rules.md#routing-and-analytical-scope",
+        "skills/coding-architecture-deep-dive/SKILL.md#workflow",
+        "skills/coding-architecture-deep-dive/SKILL.md#reference-comparison"
+      ],
+      "paraphrase_outcomes": [
+        "Direct architecture-deep-dive assessment bounded to the component and decision, read-only without generic analysis skill or package.",
+        "Compare current and reference boundaries against accepted constraints through the specialist; recommendations do not authorize implementation."
+      ]
+    },
+    "antipattern": {
+      "verdict": "PASS",
+      "route": "coding-antipattern-review",
+      "evidence": [
+        "docs/harness/coding/rules.md#select-domain-skills",
+        "skills/coding-antipattern-review/SKILL.md#workflow",
+        "skills/coding-antipattern-review/SKILL.md#boundaries"
+      ],
+      "paraphrase_outcomes": [
+        "Direct anti-pattern review selects relevant code and test lenses, challenges evidence and stays read-only.",
+        "Apply function maintainability lens to selected functions and report supported findings; no implied refactor authorization or lifecycle package."
+      ]
+    },
+    "workflow_review": {
+      "verdict": "PASS",
+      "route": "coding-review-workflow",
+      "evidence": [
+        "skills/coding-review-workflow/SKILL.md#review",
+        "skills/coding-review-workflow/SKILL.md#learning-placement",
+        "skills/coding-review-workflow/SKILL.md#rules"
+      ],
+      "paraphrase_outcomes": [
+        "Directly inspect retained coding run and corrections; propose improvements without status, acceptance, or global-rule changes.",
+        "Use retained proof attempts as evidence for harness reflection; passing commands do not substitute for realistic proof and suggestions remain suggestions."
+      ]
+    },
+    "explanation": {
+      "verdict": "PASS",
+      "route": "domain-expertise",
+      "evidence": [
+        "docs/harness/coding/rules.md#routing-and-analytical-scope",
+        "AGENTS.md#start-and-route"
+      ],
+      "paraphrase_outcomes": [
+        "Use relevant Python/domain expertise to explain the existing endpoint; no generic Analyze skill, feature package, Goal or implementation is implied.",
+        "Explain existing React state behavior with relevant domain expertise and evidence, stop at requested explanation."
+      ]
+    },
+    "acceptance_change": {
+      "verdict": "PASS",
+      "route": "user-decision",
+      "evidence": [
+        "skills/coding-ship/SKILL.md#implement-and-repair",
+        "docs/harness/coding/rules.md#steering",
+        "docs/harness/coding/proof.md#fixed-acceptance"
+      ],
+      "paraphrase_outcomes": [
+        "Pause dependent implementation for the concrete user behavior decision, retain failed evidence, and revise specification/independent proof only after agreement.",
+        "Do not fit frozen proof to candidate behavior; unresolved meaning requires the user decision and cannot be bypassed by changing modes or implementer edits."
+      ]
+    },
+    "announce_first_use": {
+      "verdict": "PASS",
+      "route": "explicit-skill-announcement",
+      "evidence": [
+        "AGENTS.md#start-and-route",
+        "docs/harness/coding/rules.md#announce-skills-and-phase",
+        "skills/coding-architecture-deep-dive/SKILL.md"
+      ],
+      "paraphrase_outcomes": [
+        "Before Shape work, say using coding-shape to clarify requested feature behavior; exact identifier and purpose are required, not a generic lane.",
+        "Before direct assessment, name coding-architecture-deep-dive and each actually selected support skill with its task purpose; no announcement of hypothetical unused skills."
+      ]
+    },
+    "announce_transition_and_selection": {
+      "verdict": "PASS",
+      "route": "explicit-skill-announcement",
+      "evidence": [
+        "docs/harness/coding/rules.md#announce-skills-and-phase",
+        "AGENTS.md#start-and-route"
+      ],
+      "paraphrase_outcomes": [
+        "Before implementation, announce switching to coding-ship to implement/verify plus coding-python-backend for API changes; concise grouped announcement explicitly permitted.",
+        "Before repair, announce coding-fix and the actually selected domain specialist by exact identifier and purpose; previous Operate announcement does not cover new selection."
+      ]
+    },
+    "announce_without_noise": {
+      "verdict": "PASS",
+      "route": "no-redundant-announcement",
+      "evidence": [
+        "docs/harness/coding/rules.md#announce-skills-and-phase",
+        "AGENTS.md#start-and-route"
+      ],
+      "paraphrase_outcomes": [
+        "Continue unchanged skills without repetitive announcements per tool call; policy remains in AGENTS and shared rules, linked from skills.",
+        "Mentioning an alternative is not use; do not claim it was invoked. Current skill entrypoints link the shared rule instead of copying the announcement policy."
+      ]
+    }
+  },
+  "findings": [],
+  "limitations": [
+    "Fresh app-task catalog reload and future behavioral adherence are outside the on-disk proof target.",
+    "Structured semantic judgment is independent reading, not a deterministic model benchmark."
+  ]
+}

@@ -18,7 +18,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/linkedin-post-filter --timeout-seconds 60 --note "verify source-agnostic content and profile filtering"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/linkedin-post-filter --timeout-seconds 60 --note "verify source-agnostic content and profile filtering"
 ```
 
 ## Scenario: Source type does not change the attention standard

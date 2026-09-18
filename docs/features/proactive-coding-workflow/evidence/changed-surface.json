@@ -1,0 +1,15 @@
+[
+  "AGENTS.md",
+  "README.md",
+  "docs/harness/safety.md",
+  "docs/harness/workflow.md",
+  "docs/harness/coding/proof.md",
+  "docs/harness/coding/evidence.md",
+  "docs/harness/coding/status.md",
+  "docs/harness/coding/rules.md",
+  "skills/coding-shape/SKILL.md",
+  "skills/coding-ship/SKILL.md",
+  "skills/coding-fix/SKILL.md",
+  "skills/coding-shape/agents/openai.yaml",
+  "skills/coding-ship/agents/openai.yaml"
+]

@@ -1,0 +1,12 @@
+{
+  "author": "/root/proof_author",
+  "sha256": {
+    "docs/features/skill-portfolio-consolidation/FEATURE.md": "c8cff10eadb5769b7338e27037d9ee05f38495e99d42e58fb5029db5aa763317",
+    "docs/features/skill-portfolio-consolidation/PROOF.md": "1b16e95aa17e09ff838df0e18b1c4438c2b588e46f2c37e927c84892ca3eb004",
+    "docs/features/skill-portfolio-consolidation/proof/acceptance.py": "2c85f14efb5dd9f03069b84bb63e8009419421725458656f9d06657b7642a364",
+    "docs/features/skill-portfolio-consolidation/proof/run.sh": "e40f4a66b71016249409eea0aea24af183d1a85a95238d10562244536301ff43",
+    "docs/features/skill-portfolio-consolidation/proof/scenarios.json": "da32fffb72a84d0f4b7c15e13f6c862d52efa6e9bb38f6d07d1b8830215ed181",
+    "docs/features/skill-portfolio-consolidation/proof/baseline-skills.toml": "f7a531fe4b053d79579a8be63e905bfdeb2cb7168de25827030c972324d292fa",
+    "docs/features/skill-portfolio-consolidation/proof/baseline-hashes.json": "1eff4316aba70ff946dc51d02a9498a5a40aa6a4c777b277b98374336fe0f7af"
+  }
+}

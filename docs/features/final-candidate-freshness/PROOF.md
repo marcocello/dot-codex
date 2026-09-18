@@ -11,7 +11,7 @@
 ## Command
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture" --feature-dir docs/features/final-candidate-freshness --timeout-seconds 30 --note "verify final-candidate freshness policy"
+"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/final-candidate-freshness --timeout-seconds 30 --note "verify final-candidate freshness policy"
 ```
 
 ## Scenario: Proof and evaluator apply to one unchanged candidate

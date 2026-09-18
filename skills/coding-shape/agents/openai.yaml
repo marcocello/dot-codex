@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Shape"
+  short_description: "Define behavior and independent acceptance."
+  default_prompt: "Use $coding-shape to understand the requested outcome, start or reuse the default native Goal, resolve consequential product decisions, and define independent acceptance before authorized implementation."
+policy:
+  allow_implicit_invocation: true

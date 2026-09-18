@@ -14,38 +14,40 @@
 
 # 3. Allow specific files and file extensions
 !.gitignore
-!*.md
-!*.py
-!*.toml
-!*.ini
-!*.yaml
-!*.sh
-!scripts/gate
-!scripts/feature_status
-!scripts/proof_run_capture
-!docs/features/status.json
+!AGENTS.md
+!README.md
+!config.template.toml
+!pyproject.toml
+!skills.toml
+
+!docs/**/*
+
+!scripts/*.sh
+!scripts/*.py
+
 !skills/**/*.html
-!skills/**/*.json
+!skills/**/*.py
 !skills/**/*.yaml
+!skills/**/*.md
+!skills/**/*.sh
+!skills/**/*.json
+!skills/**/requirements.txt
+!skills/**/LICENSE
+!skills/**/assets/**/*.js
+!skills/**/assets/**/*.css
+!skills/**/assets/**/*.png
+!skills/**/assets/**/*.svg
+!skills/**/assets/**/*.drawio
 
 # 4. Block some directories and files
 *.git
 **/.venv/
+
 skills/.system/
-config.toml
+
 docs/features/**/proof/runs/**
 docs/features/**/tests/runs/**
 docs/interactions
-# Preserve bundled photo-drop assets when renaming the owned skill.
-!/skills/app-photo-drop/assets/app/LICENSE
-!/skills/app-photo-drop/assets/app/backend/requirements.txt
-!/skills/app-photo-drop/assets/app/frontend/app/dist/assets/index-DVxHorlm.css
-!/skills/app-photo-drop/assets/app/frontend/app/dist/assets/index-DwTMLTj4.js
-!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon.png
-!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon.svg
-!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.png
-!/skills/app-photo-drop/assets/app/frontend/app/dist/images/favicon_light.svg
-!/skills/app-photo-drop/assets/app/frontend/app/dist/images/shadcn-admin.png
 
 # BEGIN skill_inventory.py managed skills
 skills/bento-slides/

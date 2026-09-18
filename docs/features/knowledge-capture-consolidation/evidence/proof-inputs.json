@@ -1,0 +1,12 @@
+{
+  "author": "/root/proof_author",
+  "sha256": {
+    "docs/features/knowledge-capture-consolidation/FEATURE.md": "f42e512a851bade9f4e1a86ae9a29a93f78b18154a9b5fb1c5a661fee84d0501",
+    "docs/features/knowledge-capture-consolidation/PROOF.md": "6d2da97bc7b478606a77b71ea56ffd5d0c8c20400e713a68677e365bb824181f",
+    "docs/features/knowledge-capture-consolidation/proof/acceptance.py": "e73a511febcebdab5e5119242c8ca85eb79018fc85d29f860ba55d668faafcaa",
+    "docs/features/knowledge-capture-consolidation/proof/run.sh": "275f4d531f435dc1a4cf5e84971b9da90608d2137a6062128c6529de64f13b74",
+    "docs/features/knowledge-capture-consolidation/proof/scenarios.json": "4404401010c65c7c5c6ff9bbecf14b723669bbe8a03d5282006aaeeb65e1dc56",
+    "docs/features/knowledge-capture-consolidation/proof/baseline-skills.toml": "1b91aee63cc9e80623648738d0d0b3eb182819d5054620c9ecb2c3afade0650a",
+    "docs/features/knowledge-capture-consolidation/proof/baseline-hashes.json": "9ea2ea03e26563c7ca422e45d61921b15e6056209458d001318bc7560ef80527"
+  }
+}

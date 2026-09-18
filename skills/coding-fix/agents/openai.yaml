@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Fix"
+  short_description: "Restore known behavior with focused verification."
+  default_prompt: "Use $coding-fix to repair known defects or small maintenance, distinguishing standalone fixes from reopened feature obligations and active implementation regressions."
+policy:
+  allow_implicit_invocation: true

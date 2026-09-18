@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Make the coding skills and operating instructions follow the accepted workflow in `docs/harness/README.md`. The user authorized this migration, removal of unnecessary coding workflow pieces, and no fallback or backward-compatibility mechanisms.
+Make the coding skills and operating instructions follow the accepted workflow in `docs/harness/coding-workflow.md`. The user authorized this migration, removal of unnecessary coding workflow pieces, and no fallback or backward-compatibility mechanisms.
 
 ## Accepted behavior
 
@@ -25,3 +25,15 @@ Shared impact: workflow references, AGENTS.md, root and harness documentation, c
 ## Validation
 
 Use independently authored executable acceptance for discoverability, active reference integrity, and retained supporting command behavior, plus realistic independent workflow exercises for routing, fixed acceptance, regressions, and completion decisions. Static wording checks alone cannot establish future agent behavior. Run affected regressions and the repository gate separately from the feature proof.
+
+## Accepted verification revision — 2026-09-15
+
+The user requested verification of the entire coding harness after recent changes and explicitly chose the current five-mode workflow and current skill inventory as the intended behavior when repairing older proof. The prior contract and executable inputs are retained under `evidence/2026-09-15-prior-acceptance/`; earlier results remain history.
+
+- The supported modes are Shape, Ship, Fix, Analyze, and Operate. The current coding capabilities are `coding-workflow`, `coding-frontend`, `coding-python-backend`, `coding-prepare-environment`, `coding-architecture-deep-dive`, `coding-antipattern-review`, `coding-commit`, `coding-secret-audit`, `coding-ui-toolkit`, and `coding-review-workflow`. Retired standalone PHP/Laravel/WordPress, research, and UI improvement skills are not required to return. Research and UI work follow the current routing owners and references.
+- Verify the current declared inventory through its real local CLI, with consistent owned entrypoints and no broken coding references. Preserve the user's current non-coding inventory and plugin choices; no fixed historical total count or obsolete skill names define success.
+- Current core verification must be self-contained under this feature's proof directory and must not depend on removed root `tests/unit` files or execute another feature's complete proof. Every executable acceptance input, including JSON cases and assessment schema, must be deliverable in a clean Git checkout. Private run evidence remains ignored.
+- Preserve and exercise actual status ownership, concurrent independent claims without lost updates, rejection of duplicate task ownership, rejection of stale/foreign-owner changes without state mutation, proof-backed completion, reopening, and rejection of an older PASS after a newer failed or unfinished official attempt. Exercise regression/proof separation at the real capture and completion-validator boundary.
+- Retain the six independent decision cases and their meaningful boundaries, adapting references to current owners as needed. Fresh exercise and assessment evidence must bind to the current instruction candidate; old semantic results cannot certify this revision.
+- The setup maintenance completed during this audit is supporting regression scope: preserve unrelated task definitions and shared settings, launch backend commands from paths with spaces, parse valid JSONC without altering string values, preserve malformed files, and use the repository-root Python environment from the documented app directory.
+- This is verification and proof maintenance against the installed harness, not a request to run a new material application feature or create a native Goal. Exercise Goal authority as a bounded decision case; do not infer authorization to create a Goal. Historical feature runners for superseded designs remain historical and do not replace this current verification boundary.

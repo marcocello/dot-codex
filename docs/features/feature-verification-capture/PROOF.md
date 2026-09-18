@@ -6,7 +6,7 @@ The installed capture CLI retains exact feature verification execution evidence,
 
 ## Command
 
-Run `proof/run.sh` through the installed `proof_run_capture --feature-dir docs/features/feature-verification-capture --timeout-seconds 60 --note "feature verification acceptance"` from this repository. The runner directly executes this feature's `proof/acceptance.py` with Python 3.
+Run `proof/run.sh` through the installed `proof_run_capture.py --feature-dir docs/features/feature-verification-capture --timeout-seconds 60 --note "feature verification acceptance"` from this repository. The runner directly executes this feature's `proof/acceptance.py` with Python 3.
 
 ## Scenarios and dedicated tests
 

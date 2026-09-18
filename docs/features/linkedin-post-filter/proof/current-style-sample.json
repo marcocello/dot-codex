@@ -1,0 +1,24 @@
+{
+  "id": "brutal-agent-stack-course-funnel",
+  "response": "CRINGE\nAgent-count status theatre disguised as insight. With no framework, ticket details, failure cases, or reliability evidence, this is a content-free teaser feeding a course funnel, not something an experienced builder can apply.",
+  "provenance": {
+    "source": "isolated-codex-subagent",
+    "agent_id": "01a06def-10a8-7b71-a2fc-f6b31707a89f",
+    "captured_at": "2026-09-04T16:05:00Z",
+    "skill_path": "skills/keep-or-cringe/SKILL.md",
+    "invocation": "current skill plus linked rubric; realistic pasted-text request; no desired verdict or wording supplied"
+  },
+  "judgment": {
+    "evaluator_agent_id": "01a06df0-c01a-7890-b608-f17af4dead8f",
+    "verdict_supported": true,
+    "direct_and_brutal": true,
+    "no_ritual_sections": true,
+    "no_forced_salvage_or_flattery": true,
+    "content_not_person": true,
+    "compact": true,
+    "user_value_explained": true,
+    "verdict_alone_first_line": true,
+    "no_em_dash": true,
+    "evidence": "The response puts CRINGE alone first, names the status flex, missing usable details, and course funnel, then explains that an experienced builder cannot apply it. It contains no ritual sections, flattery, personal attack, or em dash."
+  }
+}

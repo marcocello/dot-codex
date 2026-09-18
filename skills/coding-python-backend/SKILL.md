@@ -9,7 +9,7 @@ metadata:
 
 Purpose: implement or bootstrap Python backend API/application work with clear boundaries, repo-native setup, and pytest coverage.
 
-`coding-workflow` owns routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Fix path for known defects and Shape/Ship for material accepted behavior changes.
+The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Fix path for known defects and Shape/Ship for material accepted behavior changes.
 
 ## Scope
 - Applies when:
@@ -38,7 +38,7 @@ Purpose: implement or bootstrap Python backend API/application work with clear b
 - Reuse pytest and select checks for affected routes, services, persistence, shared utilities, and their consumers. Add focused coverage for a concrete uncovered risk; reproduce the failure when practical.
 - For material API features, the separate proof author should exercise HTTP against the real app runtime. Internal changes may use contract, migration, invariant, or equivalence proof matching the accepted boundary.
 - Assert requested outcomes rather than incidental private structure. Generic tests support verification but do not replace dedicated feature proof.
-- Implement against the fixed proof. Route proof defects through the [central proof procedure](../coding-workflow/references/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
 
 ## Environment
 - Use `coding-prepare-environment` when setup or readiness is unknown; reuse a prepared environment.

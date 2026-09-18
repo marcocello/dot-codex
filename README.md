@@ -8,23 +8,66 @@ I built dot-codex to make that workflow repeatable. It gives Codex a shared set 
 
 The aim is dependable delegation. Codex should carry the work through implementation and verification while bringing decisions about scope, cost, permissions, and external effects back to me when needed. Small corrections should remain small; material features need explicit acceptance and realistic proof.
 
-## Four pillars
+## Harness north star
 
-**Spec-driven work.** Start with conversation and investigation. Record accepted behavior in `FEATURE.md` so implementation and verification have a stable target.
+Understand the request, implement the agreed behavior, prove it works, and retain evidence to improve future work. Codex supplies the runtime; the harness organizes how its capabilities are used.
 
-**Realistic proof.** Have a separate agent author executable acceptance checks. Exercise the user's journey on the intended runtime, verify affected existing behavior, and use a fresh final reviewer to challenge the completion claim.
+This README preserves the harness’s north star: how it should behave and why. [`AGENTS.md`](AGENTS.md) owns operational routing and global boundaries; the four lifecycle skills own detailed procedures. Domain skills supply implementation technique. Use this design to judge future harness changes and actual coding runs.
 
-**Persistent execution.** Use native Codex Goals, when explicitly authorized, to carry material implementation through proof and repair within the configured allowance. Report unfinished work when input, access, or runtime limits prevent completion.
+### Pillars
 
-**Evidence and reflection.** Retain decisions, attempts, corrections, and results so failures can be understood and recurring problems can inform deliberate improvements to the harness.
+- **Spec-driven:** accepted behavior gives implementation and verification a shared target.
+- **Proof-driven:** realistic executable checks establish whether the intended behavior works.
+- **Proactive execution:** investigate, resolve routine choices, implement authorized work, and verify. The user’s standing request starts a native Goal at Shape entry and carries it through Ship within configured limits; missing Goal tooling does not block ordinary execution.
+- **Evidence and reflection:** retained decisions and results support diagnosis and deliberate improvement. Capture automation depends on the available runtime integration.
 
-## How work flows
+### Workflows
 
-The [coding workflow](skills/coding-workflow/SKILL.md) selects Shape, Ship, Fix, Analyze, or Operate according to the request. Domain skills supply the relevant implementation technique. A rough idea needs discovery; an isolated correction needs a focused change and check.
+The depth of work follows the intended outcome, inferred from the request and current context. Quick notes and reports of strange behavior do not require formal tickets or named skills. Inspect relevant supplied artifacts or PRs, distinguish changed behavior from a defect, and explain the route briefly. A rough idea needs investigation and useful product questions; a clear correction needs a focused change and check. Proactivity means proposing a concrete interpretation, investigating ordinary cases the user has not named, and recommending choices that make the intended outcome work. Curiosity should uncover consequential gaps before implementation, such as absent configuration behind an automatic default. Those discoveries belong in acceptance and verification, not only in conversation. Preserve explicit review-only or planning-only scope.
 
-For a material feature, the path is conversation → `FEATURE.md` → independently authored `PROOF.md` and executable proof → implementation → affected regression checks → fresh final review. Acceptance stays fixed during implementation, and repairs continue within the same feature. The [coding guide](docs/harness/coding-workflow.md) explains the decisions and completion requirements.
+| What the user needs | Procedure |
+| --- | --- |
+| New or changed behavior | [Shape](skills/coding-shape/SKILL.md), then [Ship](skills/coding-ship/SKILL.md) |
+| Implementation of a ready feature | [Ship](skills/coding-ship/SKILL.md) |
+| Repair of known behavior or small maintenance | [Fix](skills/coding-fix/SKILL.md) |
+| Explanation, assessment, or architecture review | [Direct specialist analysis](AGENTS.md#understand-and-route) |
+| Investigation of a running-system problem | [Operate](skills/coding-operate/SKILL.md) |
 
-Codex provides the runtime, permissions, task history, and Goal controls. This repository defines how to use them. Automatic evidence capture and protected proof execution still have integration limits; the workflow must report what was verified and where evidence is missing. The [evidence guidance](skills/coding-workflow/references/evidence.md) describes those boundaries.
+For example, adding CSV export changes capability and needs Shape and Ship. Restoring an export that stopped working is Fix. Changing a button label can remain a standalone Fix. A defect that invalidates a delivered feature reopens its verification obligations; the [Fix scope criteria](skills/coding-fix/SKILL.md#classify-and-explain-the-scope) define that distinction.
+
+A concrete running-system symptom routes to Operate before general assessment, even when the request says “analyze” or “understand” and asks for diagnosis only. “Understand why this production job failed” is Operate; “assess the production architecture” without an observed failure uses the relevant specialist directly. Runtime evidence establishes the owning component before a confirmed code defect moves to Fix.
+
+The harness announces each exact skill name and its purpose before use, including specialist skills and lifecycle switches, and states substantive phase changes in commentary. The handoff states the final lane/phase and outcome. The [communication rules](AGENTS.md#work-with-the-user) owns this behavior; labels do not grant permission or imply successful verification.
+
+### From intent to completion
+
+1. **Understand and agree.** Conversation and repository investigation establish the user's journey, boundaries, consequential decisions, and existing behavior to preserve. `FEATURE.md` records the accepted outcome. [Shape](skills/coding-shape/SKILL.md) governs discovery, authorization, and when the specification is ready.
+
+2. **Define independent proof.** A separate author turns the accepted scenarios into `PROOF.md`, executable acceptance tests, and `proof/run.sh`. Tests follow the features they verify, with acceptance and implementer-authored regressions kept separate. The [proof procedure](docs/harness/coding/proof.md) owns test placement, authorship, realistic boundaries, and recorded attempts.
+
+3. **Implement and repair.** The implementer works against fixed acceptance, using domain skills and the matching Goal carried from Shape when available. A ready feature can also proceed directly without a Goal; internal tools or skill transitions do not introduce approval gates. [Ship](skills/coding-ship/SKILL.md) governs continuation, affected regression checks, stopping, and resuming. Proof defects follow the [fixed-acceptance procedure](docs/harness/coding/proof.md#fixed-acceptance), which distinguishes code repair, independent setup repair, and decisions about required behavior.
+
+4. **Verify where the result is consumed.** Proof exercises the intended runtime and reads back the relevant behavior. Supporting regressions check affected existing behavior. A fresh reviewer, separate from the implementer and proof author, challenges the completion claim. [Ship verification and completion](skills/coding-ship/SKILL.md#complete) defines the evidence required to finish.
+
+Analysis ends at its requested explanation or assessment. Runtime investigation begins with the observed symptom and follows the evidence to an authorized remedy; a local repair still needs verification on the affected runtime. The [Direct specialist analysis](AGENTS.md#understand-and-route), [Operate](skills/coding-operate/SKILL.md), and [global boundaries](AGENTS.md#global-boundaries) provide the corresponding procedures and boundaries.
+
+### Feature records and ownership
+
+`docs/features/` holds feature descriptions, accepted decisions, and verification evidence. Its `status.json` records ownership and completion references. The [status procedure](docs/harness/coding/status.md) owns the schema, migration, transitions, concurrent work, and handoff rules.
+
+When required historical proof no longer runs, the [restoration procedure](docs/harness/coding/proof.md#restore-unrunnable-proof) recovers executable checks in the current feature structure through an independent author while preserving accepted behavior and old evidence.
+
+A feature record preserves the history of a change. Current operating instructions live in `AGENTS.md` and the workflow skills; earlier specifications remain evidence of what was accepted at the time.
+
+### Saving work and learning
+
+Retain enough evidence to explain the request, decisions, implementation attempts, verification, and remaining gaps. [Evidence and reflection](docs/harness/coding/evidence.md) defines what to record, how to protect private dialogue, and how to report missing capture.
+
+Official proof and every supporting regression run used to justify feature completion go through `proof_run_capture.py`, with separate result kinds and evidence directories. Investigation commands and conversation context follow the [per-feature evidence procedure](docs/harness/coding/evidence.md#evidence-for-one-feature).
+
+Complete automatic lifecycle capture is not configured by this repository. Use supported capture where available and identify partial or unavailable evidence. Current proof capture also has limited write protection; its [documented boundary](docs/harness/coding/proof.md#fixed-acceptance) explains what it can establish.
+
+The [improvement-review skill](skills/coding-review-workflow/SKILL.md) examines actual runs and proposes corrections supported by recurring failures or a demonstrated harness defect. Retaining evidence supports that review; changes to global instructions remain deliberate decisions.
 
 The same installation also supports [personal operations through Second Brain](docs/harness/secondbrain.md), with shared rules for turning notes and activity into Notion tasks, deals, and ideas.
 
@@ -43,7 +86,7 @@ Review machine-specific paths and permissions. The template enables multiple age
 Validate the repository:
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/gate" --root "$CODEX_HOME"
+"${CODEX_HOME:-$HOME/.codex}/scripts/gate.py" --root "$CODEX_HOME"
 ```
 
 ## Documentation
@@ -51,8 +94,8 @@ Validate the repository:
 `docs/harness/` describes how dot-codex operates today. `docs/features/` records dot-codex changes, feature descriptions, decisions, and verification evidence.
 
 - [Operating rules and ownership](AGENTS.md)
-- [Coding workflow and pillars](docs/harness/coding-workflow.md)
-- [Safety and operations](docs/harness/safety.md)
+- [Skill routing and global boundaries](AGENTS.md#understand-and-route)
+- [Runtime diagnosis and recovery](skills/coding-operate/SKILL.md)
 - [Skill inventory](docs/harness/skill-management.md)
 - [Non-coding workflows](docs/harness/secondbrain.md)
 

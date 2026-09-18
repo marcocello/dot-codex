@@ -1,0 +1,42 @@
+{
+  "mode_procedures": {
+    "skills/coding-workflow/references/shape.md": "skills/coding-shape/SKILL.md",
+    "skills/coding-workflow/references/ship.md": "skills/coding-ship/SKILL.md",
+    "skills/coding-workflow/references/fix.md": "skills/coding-fix/SKILL.md",
+    "skills/coding-workflow/references/operate.md": "skills/coding-operate/SKILL.md"
+  },
+  "shared_references": {
+    "skills/coding-workflow/references/proof.md": "docs/harness/coding/proof.md",
+    "skills/coding-workflow/references/status.md": "docs/harness/coding/status.md",
+    "skills/coding-workflow/references/evidence.md": "docs/harness/coding/evidence.md",
+    "skills/coding-workflow/references/research.md": "docs/harness/coding/research.md"
+  },
+  "shared_rules": "Extract common domain selection, steering, permission, completion, and announcement guidance from the current workflow entrypoint into docs/harness/coding/rules.md. Route in AGENTS.md; link shared docs from each relevant skill.",
+  "analysis": "Retire analyze.md; retain scope and research guidance in shared rules and current guide. Specialist skills remain directly invocable.",
+  "operations": {
+    "skills/coding-workflow/scripts/ops_diag_preflight.sh": "skills/coding-operate/scripts/ops_diag_preflight.sh",
+    "skills/coding-workflow/references/operate/read-only-checks.md": "skills/coding-operate/references/read-only-checks.md"
+  },
+  "inventory": "Use skill_inventory.py add for each of four owned skills, then remove coding-workflow. Preserve all other manifest entries.",
+  "current_callers": [
+    "AGENTS.md",
+    "README.md",
+    "docs/harness/coding-workflow.md",
+    "docs/harness/safety.md",
+    "skills/coding-*/SKILL.md",
+    "skills/coding-ui-toolkit/references/review-handoff.md",
+    "skills/coding-ui-toolkit/references/mcp-routing.md",
+    "skills/coding-antipattern-review/references/tests-and-proof.md"
+  ],
+  "historical_inputs": "Leave old feature contracts, proof runners, tests, retained reviews and results untouched. New proof covers the migrated instructions; historical path-dependent proof may require independent restoration if needed in future.",
+  "verification": [
+    "Independent feature proof at local discovery and instruction-consumption boundary",
+    "Metadata validation for each new skill",
+    "Inventory doctor",
+    "Repository gate",
+    "Preserved diagnostic helper syntax/help and unchanged bytes"
+  ],
+  "announcements": "AGENTS.md and shared rules require exact skill names and brief purpose when each lifecycle, specialist, or supporting skill is first used and when switching or selecting another skill. Group initial selections concisely; do not repeat per tool call.",
+  "authorization": "User proceeded after the pending Goal choice; native Goal created for this migration without an invented numeric budget.",
+  "guide": "Current design guide moved from docs/harness/coding-workflow.md to docs/harness/workflow.md to avoid being interpreted as the retired skill by the existing gate."
+}

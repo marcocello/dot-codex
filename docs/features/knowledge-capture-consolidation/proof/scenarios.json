@@ -1,0 +1,22 @@
+{
+  "destination": {
+    "prompts": ["Capture this note (no established destination)", "Here is a URL (no save instruction)", "Save this to Markdown; Notion is also available"],
+    "required": "Explicit destination wins; established context can resolve omission; otherwise one concise destination question. Bare notes never initiate source sweeps. Bare URLs never authorize Zotero/Notion archive. No destination automatically writes elsewhere. Relevant mode only."
+  },
+  "markdown": {
+    "prompts": ["Append this private uncertain meeting note to my existing daily notes", "Save a new note when no collection convention exists"],
+    "required": "Inspect collection, preserve naming/frontmatter/order and append-versus-create convention; preserve event uncertainty and distinguish local capture date. No taxonomy or unrelated rewrite. Read saved note back; concise receipt excludes private content."
+  },
+  "secondbrain": {
+    "prompts": ["Capture this supplied action in Second Brain", "Gather last week's Gmail follow-ups into Second Brain", "An existing row has the same source/action", "The read is incomplete or only a placeholder Notion helper is available", "Two unrelated ideas share a title", "An email suggests commercial progress without an explicit new stage"],
+    "required": "Supplied input and explicitly scoped/time-bounded gathering enter one shared classify/deduplicate/write/verify process. Source availability gaps disclosed; no unsolicited sweep. Existing schema/properties/conservative values and Tasks/Deals/Ideas mapping preserved. Compare actual action/opportunity/idea and links, not title alone; no blind creation on incomplete reads. Supported clear-match update or ambiguous proposal. Verify configured operation support, prefer available connector, and give exact table/fields/values/existing identity manual proposals when unsupported. No indirect silent deal advancement, bulk bodies, Inbox or invented dates/owners; actual write read-back before success."
+  },
+  "research": {
+    "prompts": ["Save this video with only a machine transcript to Zotero", "Save an article whose full text is inaccessible", "Update notes on an existing canonical source without a supported writer", "The connector returns SESSION_NOT_FOUND after import"],
+    "required": "Companion readiness and target selection; canonical dedup; missing/machine-source provenance and uncertainty; article access limits; grounded highlights and exact separate Raw_Transcript/Source_Outline plus Highlights notes. Prepare metadata/notes before one connector session, preserve tags, stop expired session without reimport. Unsupported updates prepare notes/blocker without duplicate. Verify saved parent and children, completeness and source anchors; no claimed unseen content or connector-only success."
+  },
+  "routing": {
+    "prompts": ["Invoke knowledge-capture", "Export interaction history"],
+    "required": "One entrypoint with three substantive destination modes; raw input and sweep share a Second Brain mode rather than four legacy wrappers. Helper/note-shape links resolve. Current callers route capture to knowledge-capture; interactions remain a separate explicit harness-capture-interactions tool. Notion API is unchanged and not presumed configured/capable."
+  }
+}

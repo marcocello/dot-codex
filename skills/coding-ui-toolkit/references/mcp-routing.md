@@ -38,4 +38,4 @@ These are not separately configured MCP servers. Browse their official docs or m
 - Beautiful UI: `https://beautiful-ui-five.vercel.app/` for manual AI-interface pattern references; treat copied code as unvetted.
 - Remotion and Bento: use their installed skills for video or presentation artifacts, not application UI primitives.
 
-During review, do not install a supplemental package, run add commands, or copy registry source. When implementation is already authorized, hand the findings to `coding-workflow` and the relevant frontend skill in the same task for implementation and verification.
+During review, do not install a supplemental package, run add commands, or copy registry source. When implementation is already authorized, hand the findings to the coding lifecycle skills and the relevant frontend skill in the same task for implementation and verification.

@@ -1,0 +1,9 @@
+{
+  "docs/features/proactive-coding-workflow/FEATURE.md": "539372fed9068b0dcd092b1cdb96cd442b81c049074a162e13fffbe2098b0647",
+  "docs/features/proactive-coding-workflow/PROOF.md": "983294c20b380f3c400aa652bf6923e83a9f9920d406aa78e74d795d79f0aad9",
+  "docs/features/proactive-coding-workflow/proof/run.sh": "ed7029105baccb9d35662c1684957ec0999582e640130906f1d65bd64d59ce64",
+  "docs/features/proactive-coding-workflow/proof/check.py": "7bbd814fc2426b1645ee15875a3a42dd8f2327311676b3211b4d2fd2e782259d",
+  "docs/features/proactive-coding-workflow/proof/cases.json": "2affad148154ae10184c105f70e71268496eda28350f7d8eeaa6911d92e5faaf",
+  "docs/features/proactive-coding-workflow/proof/oracle.json": "2914990b9a6cdffc5a6d83c3c3cd6193df3564cf889fd6336c75aa06c9864c82",
+  "docs/features/proactive-coding-workflow/proof/executor.md": "2430dbe83e69a0741f902229ab6d03a110632cb83c7db294a385e3570728b71e"
+}

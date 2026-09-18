@@ -16,11 +16,6 @@ kind = "owned"
 path = "coding-commit"
 
 [[skills]]
-name = "coding-workflow"
-kind = "owned"
-path = "coding-workflow"
-
-[[skills]]
 name = "coding-frontend"
 kind = "owned"
 path = "coding-frontend"
@@ -189,3 +184,23 @@ path = "knowledge-notion-review"
 name = "knowledge-rewrite-natural-message"
 kind = "owned"
 path = "knowledge-rewrite-natural-message"
+
+[[skills]]
+name = "coding-shape"
+kind = "owned"
+path = "coding-shape"
+
+[[skills]]
+name = "coding-ship"
+kind = "owned"
+path = "coding-ship"
+
+[[skills]]
+name = "coding-fix"
+kind = "owned"
+path = "coding-fix"
+
+[[skills]]
+name = "coding-operate"
+kind = "owned"
+path = "coding-operate"

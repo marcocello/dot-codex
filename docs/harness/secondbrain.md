@@ -12,6 +12,16 @@ The hub and data source IDs below are placeholders, not usable configuration. Re
 
 Canonical Notion hub: https://app.notion.com/p/<second-brain-hub-id>
 
+## Account and workspace for this chat
+
+For read-only `knowledge-notion-review` work, including reads handed to `knowledge-notion-api`, use all connected accounts and their accessible workspaces by default without an initial selection question. Honor any explicit user scope, keep connection identities and resolved IDs separate by workspace, and label findings with their source. Offer optional narrowing after the review and report unavailable sources while continuing with accessible ones. This exception does not select a destination for writes; the selection rules below still apply to requested updates and other Notion work.
+
+At the start of Notion work in a chat, before searching, reading, or writing Notion content, ask once: “Which Notion account and workspace should I use for this chat?” If the user already explicitly selected both in this chat, use that selection without asking again. Available connection labels may help present the choices; do not infer the destination from a default connection, a single connected account, or a previous chat.
+
+Keep the selected account, workspace, connection identity, and resolved data-source IDs in the conversation context. Reuse them for every subsequent Notion operation and across Notion skill handoffs in this chat, including after compaction. Do not ask again on each turn or persist this choice as a default for other chats.
+
+Use only a connector or local API configuration verified to access the selected account and workspace. If the selection is ambiguous or unavailable, ask for the missing detail or report the access blocker before accessing content; never silently switch accounts or workspaces. If the user explicitly changes the selection, replace the chat context and resolve the destination IDs again. A conflicting page link or destination requires clarification before access, not an automatic switch.
+
 ## Notion Structure
 
 Use only these three active tables by default:

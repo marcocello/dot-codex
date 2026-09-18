@@ -2,6 +2,8 @@
 
 Use the existing tables, properties and conservative values in `docs/harness/secondbrain.md` in the dot-codex checkout. Only `SB - Tasks`, `SB - Deals`, and `SB - Ideas` are active; Inbox capture is disabled. Resolve actual workspace/data source IDs before access: the contract's IDs are placeholders.
 
+Before any Notion access, follow the account and workspace selection rule in `docs/harness/secondbrain.md`: ask once at the start of Notion work unless the user already selected the account and workspace in this chat, then reuse that choice across turns and skill handoffs.
+
 ## Obtain material
 
 - **Supplied input:** use the pasted note, dictation, Granola excerpt, screenshot text, snippet or Codex outcome directly. Do not search other systems merely because a note mentions them.

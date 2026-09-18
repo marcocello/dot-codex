@@ -7,6 +7,10 @@ description: Review Notion Second Brain tasks, deals, and ideas as a concise act
 
 Use the existing structure in `docs/harness/secondbrain.md`. Read only `SB - Tasks`, `SB - Deals`, and `SB - Ideas` through an available connector or `knowledge-notion-api`. Preserve the current schema.
 
+Default to reviewing all connected Notion accounts and their accessible workspaces without asking which account to use first. Honor an explicit account or workspace scope already provided by the user. Discover the available connections and resolve the Second Brain tables separately in each workspace; keep connection identities and data-source IDs associated with their source.
+
+Label findings by account and workspace and report any inaccessible connections or missing tables without blocking the rest of the review. After presenting the review, offer to narrow it to accounts or workspaces the user selects; selection is optional and must not delay the initial review. Reuse any later selection for subsequent reviews in this chat until the user changes it. This read-only review scope also applies when handing reads to `knowledge-notion-api`, as specified in the shared contract.
+
 ## Select depth
 
 Use brief mode for an activity brief, current priorities, or an unspecified review. Use weekly mode for a weekly review or a deeper examination of open loops and follow-up decisions. A weekly review request does not itself schedule recurring work.

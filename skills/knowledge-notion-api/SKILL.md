@@ -8,6 +8,8 @@ description: Read or write Notion Second Brain tasks, deals, and ideas through t
 Use this skill for direct Notion API operations on the Second Brain tables
 defined in `docs/harness/secondbrain.md`.
 
+Before any Notion access, follow the account and workspace selection rule in `docs/harness/secondbrain.md`, including its read-only review exception. For reads handed off by `knowledge-notion-review`, use the review's account and workspace scope without asking for an initial selection; verify which of those sources the local configuration can access and report any coverage gaps. Otherwise, ask once at the start of Notion work unless the user already selected the account and workspace in this chat, then reuse that choice across turns and skill handoffs.
+
 ## Safety
 
 - Never hardcode Notion credentials in repo files.
@@ -47,14 +49,12 @@ schema work:
 - `deals` -> `SB - Deals`
 - `ideas` -> `SB - Ideas`
 
-At the beginning of each interaction, read or confirm the current data-source IDs for these
-tables from `docs/harness/secondbrain.md`, the live Notion structure, or user-provided context before
-running write operations.
+Resolve the current data-source IDs for these tables within the selected account and workspace before first use, using the live Notion structure or user-provided context. Reuse the verified IDs for this chat; resolve them again when the user changes workspace or evidence shows they are stale. The contract contains placeholders, not usable IDs.
 
 ## Workflow
 
 1. Read `docs/harness/secondbrain.md` for the current table contract.
-2. Use the script with the token stored in
+2. Verify that the local configuration matches the selected account and workspace before using the script with the token stored in
    `$HOME/.config/codex/notion_secondbrain_token`.
 3. For writes, create the narrowest row that matches the user's request.
 4. For uncertain derived rows, use `Needs Review`, `Proposed`, or low confidence.

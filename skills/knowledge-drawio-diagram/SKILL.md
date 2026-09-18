@@ -38,6 +38,7 @@ This skill's checked-in contracts own visual intent, diagram grammar, editable D
 - Give every connector a unique attachment point. Fan multiple connections on one edge by at least 12 px.
 - Place connector labels in separate paper-filled text cells, 6–10 px away from the connector. Never use an edge's built-in centered label.
 - Put legends in a separate horizontal strip below the diagram.
+- Hide the canvas grid by default (`mxGraphModel grid="0"`). Show it only when the user asks; keep the 4 px coordinate-alignment rule regardless of grid visibility.
 
 ### 3. Build native Draw.io source
 

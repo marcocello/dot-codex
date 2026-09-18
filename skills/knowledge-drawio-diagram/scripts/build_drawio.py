@@ -170,6 +170,8 @@ def validate_spec(spec: dict[str, Any]) -> None:
     for field in ("width", "height"):
         if not is_grid(page.get(field)) or page.get(field, 0) <= 0:
             errors.append(f"page.{field} must be a positive integer divisible by 4")
+    if "show_grid" in page and not isinstance(page["show_grid"], bool):
+        errors.append("page.show_grid must be a boolean")
     errors.extend(validate_ids(spec))
     geometry_collections = ("zones", "edge_labels", "nodes", "primitives")
     if not errors or page.get("width", 0) > 0:
@@ -461,7 +463,7 @@ def graph_tree(spec: dict[str, Any]) -> ET.ElementTree:
         {
             "dx": "1422",
             "dy": "762",
-            "grid": "1",
+            "grid": "1" if page.get("show_grid", False) else "0",
             "gridSize": "4",
             "guides": "1",
             "tooltips": "1",

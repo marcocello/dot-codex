@@ -75,6 +75,8 @@ This keeps connectors behind endpoint boxes while labels remain readable.
 
 ## 4 px grid and budgets
 
+Hide the canvas grid by default (`grid="0"`). Enable it only on explicit request. Grid visibility is separate from the coordinate-alignment rules below.
+
 - Coordinates, dimensions, gaps, and font sizes use multiples of 4.
 - Standard limit: 9 semantic nodes and 12 connectors.
 - Imported `faithful` mode may use up to 24 nodes only when zoned; split above 24.

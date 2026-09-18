@@ -113,6 +113,8 @@ The builder positions the legend in one horizontal strip near the bottom of the 
 
 ## Grid and bounds
 
+The canvas grid is hidden by default. Set `page.show_grid` to the boolean `true` only when the user asks to display it; `false` or omission emits `mxGraphModel grid="0"`. Coordinate alignment remains unchanged.
+
 - Use integer coordinates and dimensions divisible by 4.
 - Keep content within the declared page.
 - Set explicit page dimensions for the intended output; use `assets/example-architecture.json` as the default 1200 × 720 reference.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "HTML Presentations"
+  short_description: "Create and amend HTML slide decks"
+  default_prompt: "Use $html-presentations to create or revise an HTML presentation."

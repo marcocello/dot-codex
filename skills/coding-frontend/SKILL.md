@@ -23,7 +23,7 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - UI components -> hooks/state -> API client -> shared utils
 - No business logic inside UI components
 - Keep components focused and composable
-- In the default greenfield layout, frontend application code lives in `frontend/app`.
+- Follow the greenfield component locations owned by `coding-prepare-environment`: frontend application code lives in `frontend/app`.
 
 ## Platform ownership
 - Sites remains available but does not own generic frontend construction.

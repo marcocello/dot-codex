@@ -25,9 +25,9 @@ The coding lifecycle skills own routing, acceptance, execution, and completion. 
 1. Read local authority first:
    - `docs/ARCHITECTURE.md` if it exists.
    - `docs/TESTING.md`, `docs/CONVENTIONS.md`, `README*`, `Makefile`, and package/tool config when relevant.
-2. Detect stack signals:
+2. Resolve the layout before creating manifests or installing dependencies: preserve an established repository layout or explicit user choice; otherwise use the greenfield layout below. Detect stack signals:
    - Python: `backend/pyproject.toml`, `backend/requirements*.txt`, `backend/app/requirements*.txt`, `backend/app`, root `pyproject.toml`, root `requirements*.txt`, `pytest.ini`, `tox.ini`.
-   - React/Node: `frontend/package.json`, frontend lockfiles, `frontend/app`, `vite.config.*`, `next.config.*`, root `package.json`, root lockfiles.
+   - Node (backend or frontend): `backend/app/package.json`, `frontend/app/package.json`, `frontend/package.json`, component lockfiles, `vite.config.*`, `next.config.*`, root `package.json`, root lockfiles.
    - PHP/Laravel: `composer.json`, `artisan`, `phpunit.xml`, `pest.php`, `.php-version`.
    - WordPress: `wp-config.php`, `wp-config-sample.php`, `wp-content/`, or WordPress Composer packages.
    - Other: Docker, devcontainer, Nix, direnv, mise, asdf, language lockfiles, or custom scripts.
@@ -54,15 +54,25 @@ The coding lifecycle skills own routing, acceptance, execution, and completion. 
 - If local toolchains are incomplete, prefer documented containers or devcontainers over installing unrelated global tools.
 - Do not add dependencies for setup convenience unless the task explicitly includes dependency work.
 
+## Greenfield Layout
+
+This skill owns the default component locations for environment preparation across stacks; domain skills own internal application architecture and framework scaffolding.
+
+- Backend applications, including Node bots, workers, and APIs, live in `backend/app`; frontend applications live in `frontend/app`. A standalone backend still uses `backend/app`. Do not infer frontend ownership merely from Node or npm.
+- Keep Node package manifests, lockfiles, and tool configuration with their component package (`backend/app` or `frontend/app`), and run installs and package scripts there. Python dependency/tool configuration defaults to `backend/`, with `.venv` at the repository root.
+- Create only components required by the request. Environment-only setup does not authorize implementing application behavior or inventing a frontend.
+- Existing repository layouts, explicit user choices, and explicitly selected platform requirements take precedence. Do not relocate an existing project just to match these defaults.
+- Before relocating existing folders, show the proposed source and destination paths and ask the user for approval. A general environment-preparation request or complaint about layout does not authorize relocation. If the user has already explicitly authorized the specific relocation, proceed without asking again; otherwise continue setup that preserves the current layout while awaiting their answer.
+- Before reporting readiness, verify the selected component paths and documented command working directories as well as dependencies. For a changed `.gitignore`, use `git check-ignore` to verify representative nested source/config files are visible and dependencies, secrets, and generated artifacts remain ignored. A successful dependency check or generic gate alone does not establish those outcomes.
+
 ## Gitignore Policy
 
 Root `.gitignore` setup belongs to this skill because it is cross-stack repo hygiene.
 
-- Preserve an existing `.gitignore` and its style unless it is unsafe or clearly incomplete.
-- When creating `.gitignore`, use a whitelist pattern:
-  1. Ignore everything with `*`.
-  2. Unignore required source, docs, config, and scaffold directories with `!`.
-  3. Re-ignore secrets, dependencies, generated outputs, caches, uploads, databases, and local runtime artifacts.
+- Preserve project-specific rules in an existing `.gitignore`; when creating or updating it for setup, align it with the four-section policy below. Leave unrelated ignore files alone.
+- Use the four-section template in the stack reference. Keep section 1 (`*`) and section 2 (`!*/`) unchanged unless technically unavoidable; explain any necessary exception.
+- Section 3 allows required source/config/docs file types or specific filenames. Do not allow entire trees with `!directory/**`.
+- Section 4 blocks generated, local, secret, and runtime artifacts, including allowed file types inside those directories.
 - Stack/domain skills may require extra paths, but this skill owns the root `.gitignore` update.
 - Never whitelist `.env`, secret-bearing local config, dependency directories, build outputs, caches, uploaded media, or database files.
 - Do not replace a whitelist `.gitignore` with a blacklist-style file.
@@ -77,7 +87,7 @@ Run:
 "${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/generate_tasks.py" <repo-root>
 ```
 
-The bundled generator has operational defaults for the Python backend and React frontend skills, but it does not define the project structure. Override these values whenever repo docs or the owning domain skill uses different paths:
+The bundled generator follows the component locations above, with Python backend and React frontend command defaults. Override commands for other runtimes (including Node backends), and paths for established repository layouts:
 
 - Frontend command: `npm run dev`
 - Frontend cwd: `${workspaceFolder}/frontend/app`

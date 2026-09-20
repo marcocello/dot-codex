@@ -27,7 +27,7 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Keep business logic out of routes
 
 ## Implementation rules
-- In the default greenfield layout, backend application code lives in `backend/app`.
+- Follow the greenfield component locations owned by `coding-prepare-environment`: backend application code lives in `backend/app`.
 - Backend dependency and tool configuration files live under `backend/` unless repo docs provide a different established layout.
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly

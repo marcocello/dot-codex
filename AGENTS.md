@@ -50,7 +50,7 @@ Use relevant `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `
 
 Preserve unrelated dirty work and existing instructions. Do not create target-repository `AGENTS.md` or `AGENTS.override.md`, or treat their absence as a failure. Repository-local setup and declared dependencies are authorized. Global installs, paid resources, destructive operations, deployments, force pushes, secret edits, credential entry, and external mutations need applicable explicit authorization. PR review alone does not authorize comments or merging; review never grants mutation permission.
 
-Domain skills own application structure. Sites construction is opt-in: explicit request or a pre-existing `.openai/hosting.json`; creating a manifest cannot authorize the platform retroactively.
+`coding-prepare-environment` owns default greenfield component locations; domain skills own internal application structure. Sites construction is opt-in: explicit request or a pre-existing `.openai/hosting.json`; creating a manifest cannot authorize the platform retroactively.
 
 Coordinate one writer for overlapping files/shared runtimes; never displace another task. One active feature per task, one owner per feature. Use [status mechanics](docs/harness/coding/status.md) only for feature registration, claims, migration, or transitions. Independent unrelated work may proceed; global queue priority applies only when requested.
 

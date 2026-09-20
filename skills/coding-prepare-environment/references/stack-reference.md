@@ -13,7 +13,7 @@ Use this file as the shared setup policy. Keep stack skills thin by pointing the
 
 ## Environment Files
 
-Environment files follow the repo's current structure and the owning domain skill's layout guidance. This setup reference detects common paths, but it does not define the canonical greenfield tree.
+Environment files follow the established repository layout or the greenfield component locations in this skill's SKILL.md.
 
 Order of preference:
 
@@ -34,26 +34,33 @@ Python backend convention:
 When creating a new root `.gitignore`, use a whitelist pattern by default:
 
 ```gitignore
-# Ignore everything by default.
+## Whitelist-style monorepo ignore.
+## Ignore by default, then allow source/config/docs file types explicitly.
+
+# 1. Ignore everything.
 *
 
-# Keep repo metadata and human/project docs.
+# 2. Allow Git to descend into directories.
+!*/
+
+# 3. Allow repo metadata and source files.
 !.gitignore
 !README*
-!AGENTS.md
-!docs/
-!docs/**
-
-# Keep stack-owned source trees. Add only the trees that exist or are being created.
-!backend/
-!backend/**
-!frontend/
-!frontend/**
-!wordpress/
-!wordpress/**
-
-# Keep common project config and checked-in examples.
+!*.md
+!*.py
+!*.php
+!*.ts
+!*.mts
+!*.cts
+!*.tsx
+!*.js
+!*.jsx
+!*.mjs
+!*.cjs
+!*.html
+!*.css
 !Makefile
+!.nvmrc
 !package.json
 !package-lock.json
 !pnpm-lock.yaml
@@ -62,16 +69,13 @@ When creating a new root `.gitignore`, use a whitelist pattern by default:
 !composer.lock
 !pyproject.toml
 !requirements*.txt
+!tsconfig*.json
+!tasks.json
 !.env.example
-!**/.env.example
-!**/.env.local.example
+!.env.local.example
 
-# Always keep local-only and generated artifacts ignored.
-.env
-.env.*
-!.env.example
-!**/.env.example
-!**/.env.local.example
+# 4. Block generated, local, secret, and runtime artifacts.
+.git/
 .venv/
 node_modules/
 vendor/
@@ -83,21 +87,34 @@ __pycache__/
 dist/
 build/
 coverage/
+.cache/
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.pem
+*.key
+*.log
+*.tsbuildinfo
 *.sqlite
 *.sqlite3
 *.db
+.DS_Store
 uploads/
-wordpress/app/wp-content/uploads/
+auth_info_baileys/
+.auth/
+sessions/
 wordpress/app/wp-content/cache/
 ```
 
 Rules:
 
-- Preserve an existing `.gitignore` style unless it is unsafe or clearly incomplete.
-- Add domain-specific unignore entries for source trees created by the active stack skill.
-- Keep examples such as `.env.example` tracked, but keep real `.env*` files ignored.
-- Do not switch a whitelist `.gitignore` to blacklist-style appends.
-- Do not whitelist dependency directories, generated output, uploads, caches, or databases.
+- Preserve a safe existing whitelist's project-specific entries while aligning it with these four sections when updating it. Do not rewrite an unrelated existing ignore file solely for formatting.
+- Keep sections 1 and 2 unchanged unless technically unavoidable; explain any exception. Tailor section 3 to the actual stack's source/config/docs file types and specific filenames, and section 4 to its generated, local, secret, and runtime artifacts.
+- Do not allow whole directory trees with `!directory/**`; directory traversal is already enabled by `!*/`.
+- Keep real `.env*` files ignored. The example exceptions after the environment block intentionally allow only checked-in examples; examples must not contain credentials.
+- Never whitelist dependency directories, generated output, uploads, caches, or databases. Verify block rules also exclude otherwise allowed extensions inside those directories.
+- Validate nested source/config visibility and artifact exclusion with `git check-ignore --no-index`; for an uninitialized project, use a temporary Git repository rather than initializing the user's project just for validation.
 
 ## Python
 
@@ -126,7 +143,7 @@ Command policy:
 
 ## React and Node
 
-Detect React/Node with `frontend/package.json`, frontend lockfiles, `frontend/app`, `vite.config.*`, `next.config.*`, root `package.json`, root lockfiles, or framework-specific config.
+Detect Node backends and frontends with `backend/app/package.json`, `frontend/app/package.json`, `frontend/package.json`, frontend lockfiles, `frontend/app`, `vite.config.*`, `next.config.*`, root `package.json`, root lockfiles, or framework-specific config.
 
 Package manager priority:
 
@@ -144,7 +161,7 @@ Setup:
   - npm: `npm ci` when `package-lock.json` exists, otherwise `npm install`.
   - bun: `bun install --frozen-lockfile` when a lockfile exists.
 - Create local env files only from examples, commonly `.env.local` from `.env.local.example` or `.env.example`, without overwriting existing files.
-- When `frontend/package.json` exists, run package-manager commands from `frontend/`.
+- Run package-manager commands from the selected package directory: by default `backend/app` for Node backends and `frontend/app` for frontends. Preserve established alternatives such as `frontend/package.json`, which requires commands from `frontend/`.
 
 Command policy:
 

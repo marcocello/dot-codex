@@ -1,4 +1,0 @@
-interface:
-  display_name: "KNOWLEDGE | Notion Review"
-  short_description: "Brief or weekly review of tasks, deals, and ideas"
-  default_prompt: "Use $knowledge-notion-review for a concise read-only brief of my Second Brain."

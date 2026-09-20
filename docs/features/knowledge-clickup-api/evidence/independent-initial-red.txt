@@ -1,0 +1,160 @@
+Acceptance target: real Python CLI; synthetic HTTPS boundary; no live account.
+test_complete_pagination_and_failures (test_acceptance.Acceptance.test_complete_pagination_and_failures) ... FAIL
+test_credentials_configuration_and_isolation (test_acceptance.Acceptance.test_credentials_configuration_and_isolation) ... FAIL
+test_custom_fields_and_rejections (test_acceptance.Acceptance.test_custom_fields_and_rejections) ... FAIL
+test_discover_and_check (test_acceptance.Acceptance.test_discover_and_check) ... FAIL
+test_failure_no_success_no_retry (test_acceptance.Acceptance.test_failure_no_success_no_retry) ... FAIL
+test_mutation_and_readback (test_acceptance.Acceptance.test_mutation_and_readback) ... FAIL
+test_private_token_file (test_acceptance.Acceptance.test_private_token_file) ... FAIL
+test_scope_stops_content_access (test_acceptance.Acceptance.test_scope_stops_content_access) ... FAIL
+test_setup_signal_restart_none_and_override (test_acceptance.Acceptance.test_setup_signal_restart_none_and_override) ... FAIL
+
+======================================================================
+FAIL: test_complete_pagination_and_failures (test_acceptance.Acceptance.test_complete_pagination_and_failures)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 88, in test_complete_pagination_and_failures
+    self.setup_api()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_credentials_configuration_and_isolation (test_acceptance.Acceptance.test_credentials_configuration_and_isolation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 52, in test_credentials_configuration_and_isolation
+    self.setup_api(); original=self.config.read_bytes()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_custom_fields_and_rejections (test_acceptance.Acceptance.test_custom_fields_and_rejections)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 114, in test_custom_fields_and_rejections
+    self.setup_api()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_discover_and_check (test_acceptance.Acceptance.test_discover_and_check)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 61, in test_discover_and_check
+    self.runcli(API,'discover','--token-env','PROOF_TOKEN','--workspace-id','7')
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/http_edge.py", line 97, in <module>
+    runpy.run_path(script, run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 254, in _get_code_from_file
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/clickup_api.py'
+
+
+======================================================================
+FAIL: test_failure_no_success_no_retry (test_acceptance.Acceptance.test_failure_no_success_no_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 124, in test_failure_no_success_no_retry
+    self.setup_api()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_mutation_and_readback (test_acceptance.Acceptance.test_mutation_and_readback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 99, in test_mutation_and_readback
+    self.setup_api()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_private_token_file (test_acceptance.Acceptance.test_private_token_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 71, in test_private_token_file
+    self.runcli(API,'discover','--token-file',token)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/http_edge.py", line 97, in <module>
+    runpy.run_path(script, run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 254, in _get_code_from_file
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/clickup_api.py'
+
+
+======================================================================
+FAIL: test_scope_stops_content_access (test_acceptance.Acceptance.test_scope_stops_content_access)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 77, in test_scope_stops_content_access
+    self.setup_api()
+    ~~~~~~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 32, in setup_api
+    return self.runcli(RESOLVER,'put','work','--provider','clickup','--transport','api','--token-env','PROOF_TOKEN','--connection','direct','--account','42','--workspace-id','7','--tasks','101','--deals','102','--ideas','103','--default',*extra)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : /Library/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/skills/knowledge-config/scripts/knowledge_profile.py': [Errno 2] No such file or directory
+
+
+======================================================================
+FAIL: test_setup_signal_restart_none_and_override (test_acceptance.Acceptance.test_setup_signal_restart_none_and_override)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 38, in test_setup_signal_restart_none_and_override
+    self.assertEqual(r.returncode,3)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: 2 != 3
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.285s
+
+FAILED (failures=9)
+
+exit=1

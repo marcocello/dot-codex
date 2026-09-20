@@ -1,0 +1,4 @@
+interface:
+  display_name: "KNOWLEDGE | Review"
+  short_description: "Review requested notes, documents, and records"
+  default_prompt: "Use $knowledge-review for a concise read-only brief of my selected knowledge collection."

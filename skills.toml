@@ -151,11 +151,6 @@ kind = "owned"
 path = "knowledge-keep-or-cringe"
 
 [[skills]]
-name = "knowledge-notion-api"
-kind = "owned"
-path = "knowledge-notion-api"
-
-[[skills]]
 name = "harness-manage-skills"
 kind = "owned"
 path = "harness-manage-skills"
@@ -174,11 +169,6 @@ path = "coding-review-workflow"
 name = "knowledge-think-first-principles"
 kind = "owned"
 path = "knowledge-think-first-principles"
-
-[[skills]]
-name = "knowledge-notion-review"
-kind = "owned"
-path = "knowledge-notion-review"
 
 [[skills]]
 name = "knowledge-rewrite-natural-message"
@@ -204,3 +194,13 @@ path = "coding-fix"
 name = "coding-operate"
 kind = "owned"
 path = "coding-operate"
+
+[[skills]]
+name = "knowledge-review"
+kind = "owned"
+path = "knowledge-review"
+
+[[skills]]
+name = "knowledge-tool-connect"
+kind = "owned"
+path = "knowledge-tool-connect"

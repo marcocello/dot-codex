@@ -279,6 +279,69 @@
       "owner": null,
       "proof_run": "docs/features/proactive-outcome-discovery/proof/runs/20260917T215304711653Z",
       "notes": "Outcome discovery strengthened; six independent blind response cases, proof, gate, metadata and distinct final review PASS. Bounded response evidence only."
+    },
+    {
+      "id": "knowledge-profiles",
+      "feature_dir": "docs/features/knowledge-profiles",
+      "priority": 32,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-profiles/proof/runs/20260918T195445721290Z",
+      "notes": ""
+    },
+    {
+      "id": "knowledge-clickup-api",
+      "feature_dir": "docs/features/knowledge-clickup-api",
+      "priority": 33,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-clickup-api/proof/runs/20260919T084141492048Z",
+      "notes": ""
+    },
+    {
+      "id": "knowledge-connect",
+      "feature_dir": "docs/features/knowledge-connect",
+      "priority": 34,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-connect/proof/runs/20260919T091422243937Z",
+      "notes": "Separate provider skill; independent CLI/semantic proof and final review PASS; live SaaS unverified"
+    },
+    {
+      "id": "knowledge-routing",
+      "feature_dir": "docs/features/knowledge-routing",
+      "priority": 35,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-routing/proof/runs/20260919T103545205294Z",
+      "notes": "Neutral connections and guided plugin/API recovery; independent proof, semantic assessment and review PASS; synthetic/local verification"
+    },
+    {
+      "id": "knowledge-unified",
+      "feature_dir": "docs/features/knowledge-unified",
+      "priority": 36,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-unified/proof/runs/20260919T191537126899Z",
+      "notes": "Unified skill and chat-token guidance; independent proof/semantic review/final review PASS; legacy setup-owner assertion intentionally superseded"
+    },
+    {
+      "id": "knowledge-inline-token",
+      "feature_dir": "docs/features/knowledge-inline-token",
+      "priority": 37,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-inline-token/proof/runs/20260919T192748587977Z",
+      "notes": ""
+    },
+    {
+      "id": "knowledge-tool-delete",
+      "feature_dir": "docs/features/knowledge-tool-delete",
+      "priority": 38,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/knowledge-tool-delete/proof/runs/20260920T125646515420Z",
+      "notes": ""
     }
   ]
 }

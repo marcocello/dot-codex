@@ -1,0 +1,17 @@
+Acceptance target: real Python CLI; synthetic HTTPS boundary; no live account.
+test_complete_pagination_and_failures (test_acceptance.Acceptance.test_complete_pagination_and_failures) ... ok
+test_credentials_configuration_and_isolation (test_acceptance.Acceptance.test_credentials_configuration_and_isolation) ... ok
+test_custom_fields_and_rejections (test_acceptance.Acceptance.test_custom_fields_and_rejections) ... ok
+test_discover_and_check (test_acceptance.Acceptance.test_discover_and_check) ... ok
+test_failure_no_success_no_retry (test_acceptance.Acceptance.test_failure_no_success_no_retry) ... ok
+test_mutation_and_readback (test_acceptance.Acceptance.test_mutation_and_readback) ... ok
+test_private_token_file (test_acceptance.Acceptance.test_private_token_file) ... ok
+test_scope_stops_content_access (test_acceptance.Acceptance.test_scope_stops_content_access) ... ok
+test_setup_signal_restart_none_and_override (test_acceptance.Acceptance.test_setup_signal_restart_none_and_override) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 3.558s
+
+OK
+
+exit=0

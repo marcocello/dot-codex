@@ -1,0 +1,30 @@
+Acceptance target: real Python CLI; synthetic HTTPS boundary; no live account.
+test_complete_pagination_and_failures (test_acceptance.Acceptance.test_complete_pagination_and_failures) ... ok
+test_credentials_configuration_and_isolation (test_acceptance.Acceptance.test_credentials_configuration_and_isolation) ... ok
+test_custom_fields_and_rejections (test_acceptance.Acceptance.test_custom_fields_and_rejections) ... FAIL
+test_discover_and_check (test_acceptance.Acceptance.test_discover_and_check) ... ok
+test_failure_no_success_no_retry (test_acceptance.Acceptance.test_failure_no_success_no_retry) ... ok
+test_mutation_and_readback (test_acceptance.Acceptance.test_mutation_and_readback) ... ok
+test_private_token_file (test_acceptance.Acceptance.test_private_token_file) ... ok
+test_scope_stops_content_access (test_acceptance.Acceptance.test_scope_stops_content_access) ... ok
+test_setup_signal_restart_none_and_override (test_acceptance.Acceptance.test_setup_signal_restart_none_and_override) ... ok
+
+======================================================================
+FAIL: test_custom_fields_and_rejections (test_acceptance.Acceptance.test_custom_fields_and_rejections)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 117, in test_custom_fields_and_rejections
+    self.reset(); out=json.loads(self.runcli(API,'set-field','tasks','t1','--field-id',fid,'--value-file',self.payload(value)).stdout)
+                                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/knowledge-clickup-api/proof/test_acceptance.py", line 28, in runcli
+    if ok: self.assertEqual(result.returncode,0,result.stderr)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 0 : clickup_api: Custom field applicability to this task cannot be established
+
+
+----------------------------------------------------------------------
+Ran 9 tests in 3.204s
+
+FAILED (failures=1)
+
+exit=1

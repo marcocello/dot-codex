@@ -1,6 +1,6 @@
 interface:
   display_name: "KNOWLEDGE | Capture"
-  short_description: "Capture notes, Second Brain updates, and sources"
+  short_description: "Capture notes, documents, records, and sources"
   default_prompt: "Use $knowledge-capture to capture this material in the appropriate destination."
 policy:
   allow_implicit_invocation: true

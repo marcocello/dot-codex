@@ -42,12 +42,17 @@
 # 4. Block some directories and files
 *.git
 **/.venv/
+**/__pycache__
 
 skills/.system/
 
 docs/features/**/proof/runs/**
 docs/features/**/tests/runs/**
 docs/interactions
+# Private harness connection settings and lock
+/knowledge.toml
+/knowledge.toml.lock
+
 
 # BEGIN skill_inventory.py managed skills
 skills/bento-slides/

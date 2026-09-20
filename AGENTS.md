@@ -32,7 +32,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 | Skill creation/editing | `skill-creator` |
 | Skill inventory changes or reconciliation | [harness-manage-skills](skills/harness-manage-skills/SKILL.md); `skills.toml` is authoritative |
 
-For other stacks and non-coding work, choose the available specialist from its actual capability and requested artifact. Personal knowledge operations use [Second Brain routing](docs/harness/secondbrain.md) and the matching `knowledge-*` skill. Honor explicitly invoked skills within scope. Reassess selection when evidence changes the owning component; never load the whole catalog.
+For other stacks and non-coding work, choose the available specialist from its actual capability and requested artifact. Personal knowledge operations use [knowledge routing](docs/harness/secondbrain.md) and the matching `knowledge-*` skill. Before configured knowledge capture or review, invoke `knowledge-tool-connect`; if configuration/default is missing, run its setup flow, ask the user and resume the pending operation after setup. Explicit `none` is configured; unrelated work does not trigger setup. Delegate ClickUp/Notion MCP and API interactions to [knowledge-tool-connect](skills/knowledge-tool-connect/SKILL.md), including direct provider requests and scoped setup discovery. Honor explicitly invoked skills within scope. Reassess selection when evidence changes the owning component; never load the whole catalog.
 
 ## Work With The User
 

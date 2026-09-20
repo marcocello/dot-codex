@@ -1,12 +1,12 @@
 # Markdown Notes
 
-Purpose: add personal knowledge, diary, journal, meeting, or second-brain notes to the right markdown location with minimal friction and no forced folder convention.
+Purpose: add personal knowledge, diary, journal, meeting, or other notes to the right markdown location with minimal friction and no forced folder convention.
 
 ## Workflow
 
 1. Identify the note material and any explicit target:
    - Treat spoken transcripts, rough bullets, pasted fragments, and polished prose as valid input.
-   - Extract only the user's intended meaning, dates, people, decisions, tasks, and links.
+   - Preserve supplied text when asked to copy or archive it; extract or rewrite only when the user requests that transformation.
    - Do not invent facts, summaries, dates, tags, or context that the user did not provide or that cannot be inferred from the target collection's local convention.
 2. Find the note collection:
    - If the user gives a folder, inspect that folder first.
@@ -23,7 +23,7 @@ Purpose: add personal knowledge, diary, journal, meeting, or second-brain notes 
    - Never overwrite unrelated notes. Preserve existing content order and local separators.
 5. Write the note:
    - Use the target collection's existing filename and frontmatter conventions when present.
-   - Include a date and title. Use frontmatter if similar notes use frontmatter; otherwise use a markdown heading with the date nearby.
+   - Add title/date metadata only when requested or established by the target collection. Preserve a plain document as plain text when that is its convention; do not wrap an exact-copy request in unsolicited metadata.
    - Keep the body readable: short paragraphs, bullets for lists, and sections only when they add clarity.
    - Preserve uncertainty from the source text. Mark unclear items as unclear instead of resolving them by guesswork.
 
@@ -37,11 +37,11 @@ Prefer the strongest local convention over a generic preference:
 - Inbox or capture folders: unprocessed notes, rough transcripts, or short dated captures.
 - Topic folders: notes grouped by domain, project, person, or source.
 
-If no convention is discoverable, create a conservative markdown file near the requested folder: `YYYY-MM-DD-title-slug.md`, with a top-level title and date.
+If no convention is discoverable, use a descriptive filename in the requested folder. A date prefix or heading is optional when useful to the requested note; exact-copy content stays unchanged.
 
 ## Markdown Shape
 
-Match existing notes first. When there is no clear pattern, use:
+Match existing notes and the requested transformation first. For a new authored note where title/date metadata is appropriate, this is one optional shape:
 
 ```markdown
 ---
@@ -51,7 +51,7 @@ title: Note title
 
 # Note title
 
-Source note content rewritten clearly, without adding new facts.
+Requested note content; preserve verbatim when copying, or transform only as requested.
 ```
 
 For daily-note append operations, prefer:

@@ -1,0 +1,13 @@
+# Independent semantic acceptance review
+
+Author: `/root/tool_delete_proof`, independent acceptance author. Reviewed 2026-09-20. Result: PASS for the specified local task/subtask deletion and skill rename scope. No implementation or acceptance inputs edited during review.
+
+Reviewed canonical SKILL.md, agents/openai.yaml, ClickUp provider reference, active AGENTS/README/docs-harness/capture/review routing, inventory entry, historical launchers/symlink, HTTPStatusError transport construction and Client.delete control flow. Official executable acceptance run `20260920T125646515420Z` is PASS; retained RED `20260920T125543271712Z` predates implementation. All five frozen acceptance-input hashes still match the author’s original freeze.
+
+The sole discoverable skill is knowledge-tool-connect; UI prompt and workflow routes name it consistently. Previous scripts resolve to canonical implementations and profile storage is unchanged. ClickUp deletion instructions require the user’s concrete target/request, resolve ambiguous identities, preserve subtask scope and distinguish deleting a task from removing it from another list. They do not treat this implementation request as authorization for live deletion. MCP use requires a genuinely available delete capability and applies target/read-back checks.
+
+Docs/page API deletion is explicitly unavailable, with connector capability discovery or manual UI as the applicable route; the instructions forbid inventing endpoints, blanking content as deletion, or presenting token setup as a fix. Existing supported Docs/page operations remain separately described. Other object deletion remains outside this specified adapter.
+
+HTTPStatusError subclasses APIError and stores numeric status. Transport raises it for HTTP response/error statuses without exposing the provider body. Client.delete catches this typed exception and accepts only status404 from the GET after the single successful DELETE; no status-message parsing is present. Scope preflight is outside that success branch. Denied/rate-limited/uncertain deletion or read-back returns identifying unverified error and does not retry. A returned readable task cannot be reported deleted. The receipt precisely limits verification to successful DELETE followed by GET404, with no claim about Trash/backups.
+
+This review plus executable proof establish repository behavior against synthetic HTTP-edge responses. They do not establish live SaaS/MCP behavior or deletion of any actual account object. Final independent implementation review and affected regressions remain the delivery owner’s responsibility.

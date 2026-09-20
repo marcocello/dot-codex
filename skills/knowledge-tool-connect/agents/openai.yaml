@@ -1,0 +1,4 @@
+interface:
+  display_name: "KNOWLEDGE | Tool Connections"
+  short_description: "Set up and use knowledge connections and tokens"
+  default_prompt: "Use $knowledge-tool-connect to set up or use my knowledge connection."

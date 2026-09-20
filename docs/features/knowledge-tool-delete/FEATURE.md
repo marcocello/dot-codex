@@ -1,0 +1,21 @@
+# Knowledge tool integration naming and ClickUp deletion
+
+User requests renaming knowledge-connect to knowledge-tool-connect or knowledge-connect-tool, and implementing ClickUp object deletion. Choose knowledge-tool-connect. Scope deletion initially to tasks/subtasks, the existing content object supported by a documented public DELETE endpoint. Async scope question offered task-only (default), containers, or Docs/pages; pending optional answer can revise scope before freeze. Official ClickUp index on 2026-09-20 exposes no Docs/page deletion endpoint; never fabricate one or equate clearing content with deletion.
+
+## Rename and compatibility
+
+Move canonical skill, scripts, references, UI metadata and tests to skills/knowledge-tool-connect. Update active routing (AGENTS, README, docs/harness, capture/review references), setup error skill identifier, inventory via skill_inventory.py and old knowledge-config/shared launchers. Only new skill is discoverable. Preserve previous knowledge-connect/scripts CLI and import entrypoints via a compatibility symlink to canonical scripts; old skill has no SKILL.md. Historical feature evidence remains unchanged. Existing knowledge.toml location, version, defaults, transport preferences, provider scope and inline/reference tokens stay compatible and redacted.
+
+## Task deletion
+
+Public command: clickup_api.py [global profile/config/API override] delete DESTINATION TASK_ID. DESTINATION is exact home list or existing optional alias, as for get/update. Its explicit invocation is authorization for that task deletion; skill requires a concrete user request before invoking it. Implementing this feature does not authorize live deletions. No extra universal confirmation, no bulk deletion or unrelated object support.
+
+Before DELETE, use existing real authenticated user/workspace/list/task checks. Reject foreign identity, workspace, list, malformed IDs, permission failures and missing preflight objects before any mutation. Task/subtask endpoint is DELETE /api/v2/task/{task_id}; success documented HTTP 204, accept empty 2xx or JSON object success through bounded existing transport. Exactly one DELETE, no automatic retries. Deleting a task is distinct from removing it from another list. Skill describes task/subtask deletion impact and honors explicit user scope; uncertainty about selected target must be resolved before mutation.
+
+After successful DELETE, GET the same task endpoint. A typed HTTP 404 after the successful request verifies that it is no longer retrievable; return context, task_id, deleted:true, verified:true, with verification description limited to successful DELETE plus subsequent not-found. A 401/403/429/5xx/timeout/malformed response or still-readable object yields nonzero unverified error identifying task and no retry. A missing task during preflight never counts as a successful deletion. Preserve numeric HTTP status as an APIError subtype without including provider body/token; never parse status out of error text. HTTP 404 alone cannot prove deletion without the preceding successful scoped DELETE. Failed/uncertain DELETE yields unverified, no blind reconciliation retry.
+
+MCP deletion uses only an actual callable delete-task capability with same authorization/scope/verification principles. No actual provider call during this development. Doc/page API deletion commands are not advertised as implemented; instructions explain missing documented capability and offer actual supported connector or manual UI if necessary, without token setup as a fix. Notion deletion unchanged/unsupported.
+
+## Proof and compatibility
+
+Independent public subprocess proof uses canonical and legacy commands, real profile loading and HTTP transport with only urllib HTTP edge faked. Verify missing setup points at new skill, redaction/settings compatibility, durable fake remote deletion, task/subtask success, empty 204, scope rejection before write, preflight404, post-delete still-readable/403/429/timeout, failed DELETE and no retries, safe credential output. Semantic independent inspection covers discoverability/routing/guidance and documented Docs limitations. Preserve existing ClickUp Docs/task operations and Notion/profile consumers with affected regressions. No live SaaS outcome claimed.

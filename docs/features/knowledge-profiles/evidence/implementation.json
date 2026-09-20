@@ -1,0 +1,47 @@
+{
+  "task": "01a0b606-aaba-72b2-8b87-e012fffbe543",
+  "implementer": "/root",
+  "proof_author": "/root/knowledge_proof",
+  "target": "Local harness CLI and provider instruction adapters; no live SaaS access",
+  "capture": "Partial: native dialogue retained in task; official proof and checks captured separately",
+  "proof_pass": "proof/runs/20260918T195445721290Z",
+  "gate_pass": "tests/runs/20260918T195521059952Z",
+  "inventory_doctor": "tests/runs/20260918T195234977559Z: missing sites@openai-bundled, unrelated to profile skills",
+  "inventory_baseline": "tests/runs/20260918T195300978723Z: same Sites failure with HEAD manifest; old review path additionally absent after intended rename",
+  "limits": [
+    "No real profile/default selected",
+    "No live provider credentials or remote writes tested",
+    "Profile settings do not themselves select/authenticate connector accounts",
+    "Legacy fixed-token Notion CLI retired"
+  ],
+  "unrelated_work_preserved": [
+    ".gitignore existing __pycache__ addition",
+    "docs/.DS_Store"
+  ],
+  "candidate_sha256": {
+    "README.md": "77877b14ea67e419b1c0330b89fdf8ca80b61ab039232cd6b2d9adf059251191",
+    "docs/harness/knowledge-providers/clickup.md": "e3e547ff7582ab3adcbf6d7e5c084c9deb2e4d1f073c00875423cb1a33161056",
+    "docs/harness/knowledge-providers/markdown.md": "87dd5ab8e8bfb306185f04d8257f6e51457488a34e356575808f58dc741ed2ab",
+    "docs/harness/knowledge-providers/notion.md": "a536f431094354719a77377709881397aa333794227459578ff88bcce5aa04c4",
+    "docs/harness/secondbrain.md": "41720c38a9e66913fed88918b26b4812fdefda3799c2a74a1324a25b47e67603",
+    "scripts/knowledge_profile.py": "7fda6f6c3670b29673f36832af1a292631250514690581d4b3834c2e842c5dd6",
+    "skills/knowledge-capture/SKILL.md": "6a73782f96f3dbb972acdca06ee394c9b44b0bcc6f5e7c0d67d2394b6bacc361",
+    "skills/knowledge-capture/agents/openai.yaml": "5fa3675b9840d63d56758cf50c04565c099acce2859f797afc5c8634ce87ec79",
+    "skills/knowledge-capture/references/markdown-notes.md": "130b8a770f7c95a57f7e4f509b5e4e9e9a5ca1967be52c1454685f51a0743a1c",
+    "skills/knowledge-capture/references/note-shapes.md": "1ebb4f8e3b99d07ce3cad3b4cdc526752c154455dd85306c2695912e17b1980f",
+    "skills/knowledge-capture/references/research-sources.md": "3318b2fbb37b940189ee61617e1f088e5ef14194927bb8f060237ac68523ca0d",
+    "skills/knowledge-capture/references/second-brain.md": "b9f6f850394bf213d2bc24fbf7d90d923100861bfc300fe129d310cf920d2cfe",
+    "skills/knowledge-capture/scripts/build_capture_ris.py": "0c89cfc1e1e6c835ebeb029db76903bf48d49ed4ec4db00764cf0d14b3ba8175",
+    "skills/knowledge-capture/scripts/update_session_note.py": "7cc7aa5d4a6e7cd6352c8b21bbe3af84a4d4fe375661483514ffa36d24fa7ca5",
+    "skills/knowledge-config/SKILL.md": "997125dc9ef98bbeccb6e32244e771b49fc17eaa04619e6ecaeb58606a3a5b1f",
+    "skills/knowledge-config/agents/openai.yaml": "14ed619c0d249405699c6ef9cceb64a3d485b26c469b6f5bcecf0ea07f90d085",
+    "skills/knowledge-notion-api/SKILL.md": "8fdab2cc8bb66e045151d87feb1970843f9a66ab9c978df152c85b5e2c7a8e23",
+    "skills/knowledge-notion-api/agents/openai.yaml": "77e8a8b57e7497bd6c8a3fd7e31c3ad5a993a0f362bf6d3d19de9cb34b0cacf5",
+    "skills/knowledge-notion-api/scripts/notion_secondbrain.py": "4b68aee9094d3a70120e522a3091dc38ca96211c902a84da1ef09925e371bf01",
+    "skills/knowledge-review/SKILL.md": "9ad56b5debd9f580f7fd6dbf77fc89995b7d3e9c70aa263942607d492a837f95",
+    "skills/knowledge-review/agents/openai.yaml": "287adb6f14ba3bba653e5cedf68c887fc4373365efa57c5e198cfca65d6738f6",
+    "skills.toml": "f56e58636684a36114d2de118f21f558821c4a301c4784fc8366c02aa2ca1ed4"
+  },
+  "edge_regressions": "tests/runs/20260918T195445597968Z",
+  "skill_validation_pass": "tests/runs/20260918T195342024041Z"
+}

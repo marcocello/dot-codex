@@ -1,0 +1,11 @@
+--- original/test_acceptance.py
++++ repaired/test_acceptance.py
+@@ -17,7 +17,7 @@
+         self.env = dict(os.environ, PROOF_TOKEN=SECRET, PROOF_STATE=str(self.state))
+         self.reset()
+     def reset(self, mode=''):
+-        self.state.write_text(json.dumps({'mode':mode,'tasks':{f't{i}':{'id':f't{i}','name':f'Task {i}','description':'Keep me','team_id':'7','list':{'id':'101'},'custom_fields':[]} for i in range(1,4)},'requests':[]}))
++        self.state.write_text(json.dumps({'mode':mode,'tasks':{f't{i}':{'id':f't{i}','name':f'Task {i}','description':'Keep me','team_id':'7','list':{'id':'101'},'custom_fields':[{'id':fid} for fid in ('f-text','f-number','f-drop','f-unsupported')]} for i in range(1,4)},'requests':[]}))
+     def calls(self): return json.loads(self.state.read_text())['requests']
+     def runcli(self, script, *args, ok=True, env=None):
+         command = [sys.executable]

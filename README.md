@@ -69,7 +69,7 @@ Complete automatic lifecycle capture is not configured by this repository. Use s
 
 The [improvement-review skill](skills/coding-review-workflow/SKILL.md) examines actual runs and proposes corrections supported by recurring failures or a demonstrated harness defect. Retaining evidence supports that review; changes to global instructions remain deliberate decisions.
 
-The same installation also supports [personal operations through Second Brain](docs/harness/secondbrain.md), with shared rules for turning notes and activity into Notion tasks, deals, and ideas.
+The same installation supports [knowledge capture and review](docs/harness/secondbrain.md) through reusable ClickUp, Notion or Markdown connections, following the user's existing organization. $knowledge-tool-connect handles setup, saved credentials, defaults, capability checks and plugin/MCP or API access in one skill. When MCP is limited, it offers an explicitly chosen API switch for supported operations, reusing credentials without silently changing the preferred transport. Destinations are optional and none disables storage.
 
 ## Install
 

@@ -1,0 +1,47 @@
+{
+  "task": "01a0b606-aaba-72b2-8b87-e012fffbe543",
+  "implementer": "/root",
+  "proof_author": "/root/clickup_api_proof",
+  "target": "Harness integration skill, profile CLI and direct ClickUp API client with HTTP edge faked",
+  "proof_pass": "proof/runs/20260919T084141492048Z",
+  "regressions": {
+    "prior_profile": "tests/runs/20260919T084101452222Z",
+    "gate": "tests/runs/20260919T084103295890Z",
+    "skills": "tests/runs/20260919T084145174843Z",
+    "redirect": "tests/runs/20260919T084231514751Z"
+  },
+  "inventory_doctor": "tests/runs/20260919T084145345651Z: unrelated preexisting absent sites@openai-bundled",
+  "proof_repairs": "evidence/proof-repair-1/; independent author repaired HTTP response interface and custom-field applicability fixture, assertions/spec unchanged",
+  "semantic_assessment": "evidence/independent-semantic-assessment.md",
+  "limits": [
+    "No live account or real credentials selected",
+    "No actual SaaS operation performed",
+    "Instruction behavior assessed semantically; no guarantee of future model compliance",
+    "Direct API respects ClickUp permissions/plan limits; core create cannot satisfy required custom fields",
+    "No automatic retry, transport/provider switching, or arbitrary endpoints"
+  ],
+  "capture": "Partial lifecycle capture; dialogue remains in native task, official proof/regressions retained separately",
+  "unrelated_changes_preserved": [
+    "Existing environment routing changes in AGENTS.md and coding domain skills",
+    ".gitignore existing changes",
+    "docs/.DS_Store"
+  ],
+  "sha256": {
+    "AGENTS.md": "f1df1757b21ff96616a5bdc5d4c3bf867f6edfcad4c469ffbb11a491a60729c6",
+    "README.md": "75bf2b231528000849803245e3728aa6c58d5a77a7082cdca12cfdca221df367",
+    "docs/harness/secondbrain.md": "d1004c9a60afa6ceca54f6d37e349d754cc27af0f24c686729cb6547e6c8537c",
+    "scripts/knowledge_profile.py": "b23ae4e2dc6bf2f18847dbcda948320a2e98ecf1ed0273948ede6aa3693a3065",
+    "skills/knowledge-capture/references/second-brain.md": "86fdb73c52323828b5d067d773d30af2014d32f3163afaf257f22f98a3f22bb7",
+    "skills/knowledge-config/SKILL.md": "0027fd709c673b28cb3689aa6e5ed2634185f70f2586fe59cf878a688d32a02e",
+    "skills/knowledge-config/agents/openai.yaml": "81e03b8bf13ded175462516a6c177f2b9461f1c3e8e6bad4df4caf6df3c919b9",
+    "skills/knowledge-config/references/clickup.md": "6b6b8990538e0c391117df8c95b4e50efd047a0122a901e577cb31b518698d50",
+    "skills/knowledge-config/references/markdown.md": "87dd5ab8e8bfb306185f04d8257f6e51457488a34e356575808f58dc741ed2ab",
+    "skills/knowledge-config/references/notion.md": "5d6ce99ca67d5f5bffad653e56201273ddc8f6446cd94a55a7417d0e26561ea2",
+    "skills/knowledge-config/references/secondbrain.md": "db6f1e572b3ec006f4118576dc8de2a362f4e958c17a1f22a10b8c682a1a9753",
+    "skills/knowledge-config/scripts/clickup_api.py": "dbffc116501995fa52b3f20e22f2d2f584eae58710543413ca556e054606535b",
+    "skills/knowledge-config/scripts/clickup_http.py": "0bad888a2664d06dc244b58a24ec9aca069690b8ef5ee9effdc4c07625387224",
+    "skills/knowledge-config/scripts/knowledge_profile.py": "50b6d139b324607681c4d6696a0d5d5ef38a404a9b0eaa664654b05eb3d56eb9",
+    "skills/knowledge-review/SKILL.md": "c6f7be71a5cecca00e62e5d500d8a41112bc2fc5f6012bbb9eff911f4d831f4f",
+    "skills.toml": "f2e048e4b02f847a2c95aa219f69acc3487a80ce19ecc057007631cfa428e57f"
+  }
+}

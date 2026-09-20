@@ -1,0 +1,31 @@
+--- original/http_edge.py
++++ repaired/http_edge.py
+@@ -6,6 +6,10 @@
+ state_path = Path(os.environ['PROOF_STATE'])
+ state = json.loads(state_path.read_text())
+ mode = state.get('mode', '')
++
++class HTTPResponse(io.BytesIO):
++    def getcode(self):
++        return 200
+ 
+ def save():
+     state_path.write_text(json.dumps(state))
+@@ -27,7 +31,7 @@
+     if mode == 'timeout':
+         raise TimeoutError('private-body-SECRET')
+     if mode == 'malformed':
+-        return io.BytesIO(b'not JSON private-body-SECRET')
++        return HTTPResponse(b'not JSON private-body-SECRET')
+     out = None
+     if p == '/user':
+         out = {'user': {'id': 99 if mode == 'account' else 42, 'username': 'Synthetic', 'email': 'synthetic@example.test'}}
+@@ -88,7 +92,7 @@
+             if mutations and mode == 'readback-fail': raise urllib.error.HTTPError(req.full_url,503,'failed',{},io.BytesIO(b'SECRET'))
+             if mutations and mode == 'readback-mismatch': out.update(name='Wrong', custom_fields=[{'id':'f-text','value':'Wrong'}])
+     assert out is not None, (method, p, q)
+-    return io.BytesIO(json.dumps(out).encode())
++    return HTTPResponse(json.dumps(out).encode())
+ 
+ script, *argv = sys.argv[1:]
+ sys.argv = [script, *argv]

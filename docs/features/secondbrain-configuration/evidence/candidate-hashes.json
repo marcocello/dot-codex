@@ -1,0 +1,14 @@
+{
+  "scripts/secondbrain_config.py": "1480ac56fc1ac390e7c8860158a337bb06982dab25130ffc34d36595a6ce97fd",
+  "secondbrain.template.yaml": "d0fa65e8ada782e5f6f9ba4f9f32d0de0c13d8978992939b0b042cc709e4bc6f",
+  "skills/secondbrain-update/SKILL.md": "93b6a6fbcf9cd6dfb48d07ce97cdbc1bafd585a7ed56915d88361387e48dc207",
+  "skills/secondbrain-update/requirements.txt": "865bbefc83398c2d53d4d494e8c0ad2302c93e657b78b860a1eba3ac71044309",
+  "skills/secondbrain-update/references/configuration.md": "d69e123df07f040b0a3b6e4bace455b412655931cee6848c74944b521e3b6c38",
+  "skills/secondbrain-update/references/whatsapp.md": "ec62e31e2841293eca18651e57e92e9412242f1a098aac898e29c4ea9980ab2e",
+  "skills/secondbrain-update/references/sources.md": "75d1e5934369cf2b3b5c193d9d81c6534e532552304773141b872ad70505bcff",
+  "skills/secondbrain-review/SKILL.md": "fcfcb475b8825107d2640b5de429ed619b8e2b42d6ce5426c98f67b72a82999a",
+  "skills/secondbrain-review/references/scheduling.md": "5fedddf1273ab979ca3fb037c61940f96fb49730dab2b81a576e36a8f777a24c",
+  "docs/harness/secondbrain-cycle.md": "bb770098ecf749634567c00a7d26bcae49c498621411287ef28a072c0235c40d",
+  "README.md": "482a7ebd32347fe503910ea0c7eeb9f5a70b766264700fd75315f32a6275244e",
+  ".gitignore": "929be9f624e534cbb0146d9c6ad6ec047c75c2bac996cd04d7436a2a1e51d8dc"
+}

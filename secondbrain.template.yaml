@@ -1,0 +1,44 @@
+# Copy to secondbrain.yaml. Private configuration and state are Git-ignored.
+schema: 1
+workspace: ./secondbrain-state
+initial_lookback_minutes: 60
+
+# Enable after selecting source scopes and verifying a manual update/review.
+# Ask Codex to reconcile the native schedules after editing these values.
+schedules:
+  update:
+    enabled: false
+    every_minutes: 15
+  review:
+    enabled: false
+    every_minutes: 60
+
+sources:
+  - id: whatsapp-personal
+    provider: whatsapp
+    enabled: false
+    scope: {}
+    # Replace {} with the scope below, then enable this source:
+    #   adapter: wacli
+    #   store: ~/.wacli
+    #   chats: ["SELECTED_CHAT_JID@s.whatsapp.net"]  # Or explicitly: all
+  - id: repositories
+    provider: repos
+    enabled: false
+    scope: {}  # Example: {paths: ["../selected-repository"]}
+  - id: research
+    provider: zotero
+    enabled: false
+    scope: {}  # Select library and collections with the Zotero skill.
+  - id: email
+    provider: gmail
+    enabled: false
+    scope: {}  # Select account and folders, including sent/reply state.
+  - id: files
+    provider: onedrive
+    enabled: false
+    scope: {}  # Select account, drive and folders.
+  - id: tasks
+    provider: clickup
+    enabled: false
+    scope: {}  # Select workspace/lists via knowledge-tool-connect.

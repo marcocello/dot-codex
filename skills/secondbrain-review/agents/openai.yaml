@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain Review"
+  short_description: "Review priorities and follow through on pending work"
+  default_prompt: "Use $secondbrain-review to review my established second-brain workspace and advance authorized pending work."

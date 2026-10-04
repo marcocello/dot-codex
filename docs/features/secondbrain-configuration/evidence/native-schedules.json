@@ -1,0 +1,21 @@
+{
+  "readback": "Native automation tool creations and local automation.toml readback; both tool view calls succeeded",
+  "schedules": [
+    {
+      "id": "secondbrain-review-e4d3e0b1770a",
+      "kind": "heartbeat",
+      "name": "Secondbrain review (e4d3e0b1770a)",
+      "status": "PAUSED",
+      "rrule": "FREQ=MINUTELY;INTERVAL=60",
+      "target_thread_id": "01a0bb36-2dbd-7703-8a6f-c23af878e1ac"
+    },
+    {
+      "id": "secondbrain-update-e4d3e0b1770a",
+      "kind": "heartbeat",
+      "name": "Secondbrain update (e4d3e0b1770a)",
+      "status": "PAUSED",
+      "rrule": "FREQ=MINUTELY;INTERVAL=15",
+      "target_thread_id": "01a0bb36-2dbd-7703-8a6f-c23af878e1ac"
+    }
+  ]
+}

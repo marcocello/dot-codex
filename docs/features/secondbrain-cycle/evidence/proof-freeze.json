@@ -1,0 +1,9 @@
+{
+  "author": "/root/secondbrain_proof",
+  "inputs": {
+    "docs/features/secondbrain-cycle/FEATURE.md": "9b2a610e56d7477ad0f1710aa25d40c857ccd4e79e4d278929261460d600e5bc",
+    "docs/features/secondbrain-cycle/PROOF.md": "84cf13bd32b3174a0b25d261e845c9ae8899aee9e37124e76f0bab5011e74560",
+    "docs/features/secondbrain-cycle/proof/acceptance.py": "580b27b0dc4d90f738f0f3277e6e0cfff9344ba46d5b008df083ec2ef47c1aeb",
+    "docs/features/secondbrain-cycle/proof/run.sh": "f5f53389e86166fbb8f54cc42ff6ea146672878a3253c3046c479bc0146dc1ed"
+  }
+}

@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Prepare Environment"
-  short_description: "Prepare envs, whitelist gitignore, and run tasks."
-  default_prompt: "Use $coding-prepare-environment to prepare only the local environment and narrow readiness checks needed for this work, preserving existing setup and adding ignore rules or run tasks when needed."
+  short_description: "Scaffold full-stack projects or prepare existing environments."
+  default_prompt: "Use $coding-prepare-environment to use the bundled React/FastAPI scaffold for greenfield work, or inspect an existing project and propose selective scaffold adoption before changing its conventions. Verify the resulting setup and run journey."
 policy:
   allow_implicit_invocation: true

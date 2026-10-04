@@ -1,0 +1,48 @@
+{
+  "apiVersion": "batch/v1",
+  "kind": "Job",
+  "metadata": {
+    "name": "migrate-APP_RELEASE"
+  },
+  "spec": {
+    "backoffLimit": 0,
+    "activeDeadlineSeconds": 300,
+    "ttlSecondsAfterFinished": 86400,
+    "template": {
+      "spec": {
+        "restartPolicy": "Never",
+        "automountServiceAccountToken": false,
+        "containers": [
+          {
+            "name": "migrate",
+            "image": "APP_BACKEND_IMAGE",
+            "command": [
+              "python",
+              "-m",
+              "alembic",
+              "upgrade",
+              "head"
+            ],
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "app-secrets"
+                }
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

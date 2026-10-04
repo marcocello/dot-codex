@@ -1,0 +1,74 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "web"
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "web"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "web"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "web",
+            "image": "APP_WEB_IMAGE",
+            "ports": [
+              {
+                "containerPort": 80
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            },
+            "readinessProbe": {
+              "tcpSocket": {
+                "port": 80
+              },
+              "periodSeconds": 5
+            },
+            "volumeMounts": [
+              {
+                "name": "caddy",
+                "mountPath": "/etc/caddy/Caddyfile",
+                "subPath": "Caddyfile"
+              }
+            ],
+            "envFrom": [
+              {
+                "secretRef": {
+                  "name": "app-secrets"
+                }
+              }
+            ]
+          }
+        ],
+        "automountServiceAccountToken": false,
+        "volumes": [
+          {
+            "name": "caddy",
+            "configMap": {
+              "name": "web-config"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "StatefulSet",
+  "metadata": {
+    "name": "db"
+  },
+  "spec": {
+    "serviceName": "db",
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "db"
+      }
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "db"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "db",
+            "image": "postgres:17-alpine",
+            "ports": [
+              {
+                "containerPort": 5432
+              }
+            ],
+            "env": [
+              {
+                "name": "POSTGRES_DB",
+                "value": "app"
+              },
+              {
+                "name": "POSTGRES_USER",
+                "value": "app"
+              },
+              {
+                "name": "POSTGRES_PASSWORD",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "name": "app-secrets",
+                    "key": "POSTGRES_PASSWORD"
+                  }
+                }
+              },
+              {
+                "name": "PGDATA",
+                "value": "/var/lib/postgresql/data/pgdata"
+              }
+            ],
+            "volumeMounts": [
+              {
+                "name": "data",
+                "mountPath": "/var/lib/postgresql/data"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "limits": {
+                "cpu": "1",
+                "memory": "512Mi"
+              }
+            },
+            "readinessProbe": {
+              "exec": {
+                "command": [
+                  "pg_isready",
+                  "-U",
+                  "app",
+                  "-d",
+                  "app"
+                ]
+              },
+              "periodSeconds": 5
+            }
+          }
+        ],
+        "automountServiceAccountToken": false
+      }
+    },
+    "volumeClaimTemplates": [
+      {
+        "metadata": {
+          "name": "data"
+        },
+        "spec": {
+          "accessModes": [
+            "ReadWriteOnce"
+          ],
+          "resources": {
+            "requests": {
+              "storage": "10Gi"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

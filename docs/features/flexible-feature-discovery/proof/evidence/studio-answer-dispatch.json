@@ -1,0 +1,18 @@
+{
+  "scope": "Native visible coordinator events dispatching the supplementary stakeholder answer; excludes hidden reasoning and unrelated events.",
+  "events": [
+    {
+      "timestamp": "2026-09-24T19:25:18.163Z",
+      "type": "function_call",
+      "call_id": "call_IWKjHXMpvW8Lvy65EDpMiRGk",
+      "name": "followup_task",
+      "arguments": "{\"target\":\"candidate_studio\",\"message\":\"gAAAAABqtXkeMILQcnUl1TRf-KSixhc9QFl_ACYB2YLnJ5D3aWC_WsNAqNCv9QgzJjpFMZNylPE1TX5yMSm6fxNeAKST_H6UcsZi2BCvvmJJSNseyCp3t_InBd_ZSBtnUc1B_1fBdV4HmMNXJB6sr--q--qOuqOHTiiPbWGWpW59B5DHRata51ZCGwrnvQZdSUFlTiVfreIsdMl4nDSc4n5yqvlEnTbPlsS9ZOq0iqOq7ym7eU8xlltGy_lt0gnPOTKCJ8Bkn6s6r1uKRTRPxVSCt2T_ve5yW6vsM0LhtwLBzhgK2FOaO7cS1tg-fH_yjdVZCJyUE9tgxWpZb-vnWP0GuvESO8Bb4tetBIGIqgAhkNKO6pCqDvFsen64-_8zZ2m831GT4IFOk2AzDWCT2sqz_tJMYnbdL5OXdvbiTCaPI2yepxaBxRUMEIkZ5ID3fQgXVr1PAZ3nF7w2ckAYHQyuDuTBRQ6dqGpoq_W43RLt5XYox7htgM8SOOB8B4sGIJpuGOzmD5kCYpjaF9ZQrEEyjSXKS8BkF8DUuFHS_zFdbjFSAlvYBIFkWRxzoEQaOTmHLtZW04hO8AeViHg7asEkSIiy_l9UK-2YBSRKYAxFo2qSXNWquMJyzjPoJwQpVll69rJ1qlyL5UbkVjLHUhZZE2zPTEJO3O7HGtCVCzKr44aEklgGHRvZwahebf-lUDL2TAP8MrwAabucI_2Jo8AojpHmSeoTiptSEoa1K2CvGCwEgAfVm2iqO94o4I58xjlfFqHT0gbFGFPdB2o4VhU6UChRhD9wQvW2dZbMuRdmP0H5EaDwfi4A8zN6NXxR0kSRLybt64OxJmeSkEnNjjpYgYtF9ZWK8UdbkhtduYLJWmwTMiFpYu9Xw6KaA0zTSEoKrpU_BGWfw_RsJXfKBVhzOzVHePhq89g67RX8wuEXz2uSM0lD0REo72ITS6kdG-9irZYsDEUx5NWtMumNq8ta92iQDJmg5nzfOnjLnrD7NPi0f_KV9Hw1UgIjFSLVLS7bBW7utUlXjUR7xYF4OOTHgOCaZy9NOPAYqzJRrtHkxe8Z0PscoJXH9DsOnSQaOQeKxZqdxJBuzr6_bpISON-0w1Cedb7a1ZJWv3Bb19n5LYrte6UF0ehPhWAozVSBxz__yAtUOPm_N-YpFxunAKCpgYsdE_rI03rz7tcwuyF81esBQ3roDzK2lguYEwTLKms_b0zvw-zK6XMd3sr75jEa3QDpeORSXqtc9DwmKVUt2Ct9R8JNH0qrDHnFMsqqkc-UtOJfNXeHRmZ-PWWKVfhU02YZxsWYYA==\"}"
+    },
+    {
+      "timestamp": "2026-09-24T19:25:18.239Z",
+      "type": "function_call_output",
+      "call_id": "call_IWKjHXMpvW8Lvy65EDpMiRGk",
+      "output": ""
+    }
+  ]
+}

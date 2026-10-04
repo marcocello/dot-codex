@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "64ca281f6f41f8b4bec2ac7a3f88dd05fdfbb18fee35b7a5141e6f5e3ef3ab0f",
+  "feature_dir": "docs/features/knowledge-inline-token",
+  "feature_id": "knowledge-inline-token",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-inline-token/proof/runs/20260919T192748587977Z",
+  "receipt_digest": "a9f2a1756aaa917b9ffbb419c6d14478912be3dac34bd7acbeeef049323a59e9",
+  "recorded_at": "2026-10-02T10:04:28.090355+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

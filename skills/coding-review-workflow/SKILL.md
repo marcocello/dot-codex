@@ -11,7 +11,7 @@ Use directly for analysis. Review is read-only: no status changes, acceptance ed
 
 ## Inputs
 - Target repository and optional feature scope.
-- Current `FEATURE.md`, `PROOF.md`, proof runner, implementation.
+- Current feature criteria, COVERAGE mappings when used, owning check contracts/runners, round receipts and implementation.
 - Relevant retained attempts: contract/runner copies, `attempt-start.json`, `result.json`, notes, stdout, stderr.
 - Final-review verdict and findings, affected regression results, plus relevant setup diagnostics.
 - Original requests, corrections, rejected directions, interrupted exchanges, and repair history when available.
@@ -69,12 +69,14 @@ Suggest, but do not write, the destination:
 
 - Product behavior -> `FEATURE.md` or new accepted feature package.
 - Architecture/convention -> repository architecture/convention docs.
-- Proof gap -> proposed correction to the owning proof or testing guidance. Distinguish independent setup repair under [shared proof procedure](../../docs/harness/coding/proof.md) from changes to acceptance or unresolved meaning requiring a user decision. Review itself remains read-only.
+- Proof gap -> proposed correction to the owning proof or testing guidance. Distinguish setup repair under [shared proof procedure](../../docs/harness/coding/proof.md) from changes to acceptance or unresolved meaning requiring a user decision. Review itself remains read-only.
 - Setup friction -> repository setup scripts/docs/tasks.
 - Cross-feature harness gap -> smallest relevant skill, harness doc, script, or regression.
 - Stable preference -> smallest appropriate user or project instruction; reference existing dialogue capture instead of copying it.
 
 For a proposed harness correction, name a motivating case and a held-out case that can check behavior without merely matching instruction wording. Measure time to accepted completion, rework, false completion, and capture completeness when evidence supports it. Reject changes that create more ceremony than useful feedback.
+
+For consequential instruction changes, use [harness evaluation](../../docs/harness/coding/harness-evaluation.md) to select a small realistic comparison and an unseen case. Fresh workers receive raw context without the suspected failure or expected answer; inspect their actual questions, tool use, artifacts, and verification. Continue realistic question/answer rounds when evaluating discovery. Use [reviewer calibration cases](../../docs/harness/coding/reviewer-calibration.json) as supplementary decision checks, not proof of investigation or delivery. Retain failed trials and instruction versions. If repeated wording fixes fail, reconsider routing, context, or executable enforcement instead of adding more rules.
 
 ## Output
 ```text

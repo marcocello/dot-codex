@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "fa3353af11afa14d132d3dc7959d6ae3cf0cd82454502e031bfe9f159b72bdfa",
+  "feature_dir": "docs/features/knowledge-capture-consolidation",
+  "feature_id": "knowledge-capture-consolidation",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-capture-consolidation/proof/runs/20260915T122047577247Z",
+  "receipt_digest": "fae635d3d2f96479da9e5b321bd63c58f7014ea41d4955625222a1ccf33d3651",
+  "recorded_at": "2026-10-02T10:04:28.085058+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

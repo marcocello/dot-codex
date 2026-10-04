@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Implement"
+  short_description: "Implement and verify coherent rounds with a Goal."
+  default_prompt: "Use $coding-implement to deliver authorized outcomes through focused checks, shared journeys, and final round review; start the scoped native Goal when the outcome is understood and the next slice is ready, and own routine implementation decisions."
+policy:
+  allow_implicit_invocation: true

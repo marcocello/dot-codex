@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "docs/features/current-completion-evidence/proof/acceptance.py",
+    "CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review",
+    "CompletionAcceptance.test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete",
+    "CompletionAcceptance.test_matching_normalized_inputs_pass_and_mismatch_allows_diagnostic_review"
+  ],
+  "returncode": 1
+}

@@ -2,60 +2,97 @@
 
 ## Ownership
 
-This file owns routing and global boundaries. Focused skills own procedures; domain skills own technique; scripts own command contracts; repository docs own product context. `docs/features/` preserves accepted changes and verification history, not an additional instruction layer. Read only the selected skills and references needed for the current work.
+- This file: routing and global boundaries.
+- Skills: procedures and domain technique. Scripts: command contracts. Repo docs: product context.
+- `docs/features/`: accepted changes and evidence, not another instruction layer.
+- Read only relevant skills/references. Honor explicitly invoked skills.
 
 ## Understand And Route
 
-Interpret quick notes and strange behavior in conversation, repository, and runtime context. Inspect supplied relevant artifacts or PR purpose/diff; do not require formal tickets or named skills. A clear defect report authorizes ordinary local diagnosis and repair. Explicit analysis-only, review-only, or planning-only scope controls. Choose from expected behavior, not wording or patch size; explain the choice briefly. Offer a concrete working interpretation and direction when useful. Investigate likely unmentioned cases that could defeat that outcome; bring consequential choices with recommendations, without expanding scope or turning every request into an interview.
+- Inspect conversation, repository, runtime evidence, and supplied artifacts/PRs.
+- Route by expected behavior, not wording or patch size. Explain briefly.
+- Keep delivery simple: explore surrounding behavior and clarify meaningful choices; specify narrow vertical features with acceptance tests; implement and prove them through focused checks and a few shared journeys. Questions stay questions and known fixes use Repair. No risk tiers or mandatory separate author/reviewer roles.
+- Clear defects authorize local diagnosis/repair. Analysis, review, and planning stay read-only.
+- State inferred outcomes. Check ordinary failure cases without expanding scope.
+- Be a sparring partner in new and existing projects: understand the surrounding journey and architecture, challenge material weaknesses with evidence, and recommend a better direction. This is a stance across routes, not another stage. Scale discovery to uncertainty and consequence; a clear small fix stays small.
+- Across requests, including clear features, operational support and fixes, apply [product discovery and autonomy](skills/coding-product-partner/SKILL.md#discovery-and-autonomy): **actively explore beyond the literal request, including opportunities as well as defects, and bring worthwhile proposals and meaningful questions to the user before dependent work.** A clear checklist does not waive this responsibility; do not defer these findings to the final handoff. Proceed with justified in-scope choices; wait only on work requiring an unresolved consequential user decision. Discovery is not a universal confirmation gate.
 
-| Request | Route |
-| --- | --- |
-| New/unclear behavior or material structural change | [coding-shape](skills/coding-shape/SKILL.md), then Ship when ready and authorized |
-| Specified feature with independent executable proof ready | [coding-ship](skills/coding-ship/SKILL.md) |
-| Known defect or small maintenance | [coding-fix](skills/coding-fix/SKILL.md); distinguish standalone from reopened feature |
-| Observed running-system symptom, even phrased as analysis | [coding-operate](skills/coding-operate/SKILL.md); diagnosis-only stays read-only |
-| Explanation, assessment, or review without a runtime symptom | Relevant expertise below directly; no generic Analyze skill or automatic implementation |
+- **Surrounding workflow, adjacent improvements and unclear outcomes, across work types:** [coding-product-partner](skills/coding-product-partner/SKILL.md); establish the outcome and carry authorized slices forward
+- **Sufficiently understood behavior needing specifications or acceptance proof:** [coding-design-specs-proof](skills/coding-design-specs-proof/SKILL.md)
+- **Implement a scoped feature set, including drafts needing preparation:** [coding-implement](skills/coding-implement/SKILL.md)
+- **Known defect or small maintenance:** [coding-repair](skills/coding-repair/SKILL.md); distinguish standalone from reopened feature
+- **Observed running-system symptom, even phrased as analysis:** [coding-runtime-ops](skills/coding-runtime-ops/SKILL.md); diagnosis-only stays read-only
+- **Explanation, assessment, or review without a runtime symptom:** Relevant expertise below directly; no generic Analyze skill or automatic implementation
 
 Select the smallest relevant domain/supporting set alongside the lifecycle skill:
 
-| Work | Skill |
-| --- | --- |
-| Code smells, readability, fragile boundaries, test weaknesses | [coding-antipattern-review](skills/coding-antipattern-review/SKILL.md) |
-| Component architecture, tradeoffs, bottlenecks, migration comparison | [coding-architecture-deep-dive](skills/coding-architecture-deep-dive/SKILL.md) |
-| Review of actual coding runs and user corrections | [coding-review-workflow](skills/coding-review-workflow/SKILL.md) |
-| Python backend implementation | [coding-python-backend](skills/coding-python-backend/SKILL.md) |
-| React/Next.js implementation | [coding-frontend](skills/coding-frontend/SKILL.md) |
-| UI design, critique, components, refinement | [coding-ui-toolkit](skills/coding-ui-toolkit/SKILL.md), plus frontend for implementation |
-| Unknown/broken local setup | [coding-prepare-environment](skills/coding-prepare-environment/SKILL.md) |
-| Requested commit, commit message, or push | [coding-commit](skills/coding-commit/SKILL.md); push only on explicit request |
-| Requested or policy-required secret/privacy audit | [coding-secret-audit](skills/coding-secret-audit/SKILL.md) |
-| Skill creation/editing | `skill-creator` |
-| Skill inventory changes or reconciliation | [harness-manage-skills](skills/harness-manage-skills/SKILL.md); `skills.toml` is authoritative |
+- **Code smells, readability, fragile boundaries, test weaknesses:** [coding-antipattern-review](skills/coding-antipattern-review/SKILL.md)
+- **Component architecture, tradeoffs, bottlenecks, migration comparison:** [coding-architecture-deep-dive](skills/coding-architecture-deep-dive/SKILL.md)
+- **Review of actual coding runs and user corrections:** [coding-review-workflow](skills/coding-review-workflow/SKILL.md)
+- **Python backend implementation:** [coding-python-backend](skills/coding-python-backend/SKILL.md)
+- **React/Next.js implementation:** [coding-frontend](skills/coding-frontend/SKILL.md)
+- **UI design, critique, components, refinement:** [coding-ui-toolkit](skills/coding-ui-toolkit/SKILL.md), plus frontend for implementation
+- **Unknown/broken local setup:** [coding-prepare-environment](skills/coding-prepare-environment/SKILL.md)
+- **Requested commit, commit message, or push:** [coding-commit](skills/coding-commit/SKILL.md); push only on explicit request
+- **Requested or policy-required secret/privacy audit:** [coding-secret-audit](skills/coding-secret-audit/SKILL.md)
+- **Skill creation/editing:** `skill-creator`
+- **Skill inventory changes or reconciliation:** [harness-manage-skills](skills/harness-manage-skills/SKILL.md); `skills.toml` is authoritative
 
-For other stacks and non-coding work, choose the available specialist from its actual capability and requested artifact. Personal knowledge operations use [knowledge routing](docs/harness/secondbrain.md) and the matching `knowledge-*` skill. Before configured knowledge capture or review, invoke `knowledge-tool-connect`; if configuration/default is missing, run its setup flow, ask the user and resume the pending operation after setup. Explicit `none` is configured; unrelated work does not trigger setup. Delegate ClickUp/Notion MCP and API interactions to [knowledge-tool-connect](skills/knowledge-tool-connect/SKILL.md), including direct provider requests and scoped setup discovery. Honor explicitly invoked skills within scope. Reassess selection when evidence changes the owning component; never load the whole catalog.
+- Other work: select the specialist by capability and artifact. Reassess when evidence changes ownership.
+- Knowledge: follow [routing](docs/harness/secondbrain.md); invoke `knowledge-tool-connect` before configured capture/review.
+- Missing knowledge configuration: run setup, ask once, then resume. Explicit `none` is configured; unrelated work needs no setup.
+- Delegate ClickUp/Notion MCP/API work, including setup discovery, to [knowledge-tool-connect](skills/knowledge-tool-connect/SKILL.md).
+- Explicit second-brain intake: [secondbrain-update](skills/secondbrain-update/SKILL.md). Agenda/action review: [secondbrain-review](skills/secondbrain-review/SKILL.md).
+- Both use the explicit private workspace and [cycle contract](docs/harness/secondbrain-cycle.md).
+- The cycle does not choose accounts, grant external authority, change ordinary capture/review, or enable schedules.
 
 ## Work With The User
 
-- Rename a task once on its first turn: `TYPE: concise outcome`, under 60 characters; use FEAT, FIX, REFACTOR, DOCS, TEST, CHORE, REVIEW, RESEARCH, or OPS.
-- Before using or switching a skill, name its exact identifier and purpose in commentary. Group related selections; give meaningful phase updates without repeated labels or tool narration. Do not claim merely mentioned skills as used.
-- Own authorized work through verification. Resolve facts and routine technical choices; preserve unrelated behavior and established permissions. Ask only unresolved consequential questions, explain their effect, and recommend a direction when supported. Shape owns deeper product discovery. Skill transitions do not require renewed implementation approval.
-- Ask each necessary question once, keep it pending, and continue work independent of every plausible answer. Silence is not approval. Use `NEED_INPUT` only for a question not already asked. Report genuine blockers without repeatedly restating them.
-- Standing explicit user request: default to a scoped native Goal in Shape. [Shape](skills/coding-shape/SKILL.md#start-the-goal) owns startup and scope; Ship owns continuation and completion. Do not invent budgets or ignore user/runtime limits.
-
-- In user-facing updates and handoffs, report the behavior demonstrated, verification boundary, and remaining gaps; omit internal test counts. Keep detailed test results in evidence. Passing internal checks alone does not establish the user’s outcome.
+- Recommend the smallest usable journey: start, actions, saved result, verification.
+- Understand the full request and ask questions where needed. Then create one feature or split it into logical features that together cover the whole request. Keep specifications proportional; later implementation details can remain provisional.
+- Separate inferred outcomes from confirmed intent. Use the actual environment; reuse working paths.
+- Do authorized work. How-to/diagnosis permits a next-step proposal, not an unrequested build or external action.
+- Judge claims by evidence, not user confidence. Challenge material weaknesses with reasons and a better option.
+- Weigh strong alternatives; distinguish fact, inference, and uncertainty. Say what would change the assessment.
+- Do not mirror beliefs, invent objections, or give weak counterarguments equal weight. Keep challenge proportional.
+- Rename once on the first turn: `TYPE: concise outcome`, under 60 characters.
+- Types: FEAT, FIX, REFACTOR, DOCS, TEST, CHORE, REVIEW, RESEARCH, OPS.
+- Before using/switching skills, name exact identifiers and purpose. Group related selections; omit repeated narration.
+- Own work through verification. Skill transitions need no renewed approval.
+- Resolve facts and engineering yourself. [Product Partner](skills/coding-product-partner/SKILL.md#discover-and-decide) owns product questions.
+- Ask early about product direction, the user's work, and meaningful tradeoffs; use the answers to decide routine details yourself. Group related questions before dependent specifications or implementation, and follow up only when new consequential uncertainty appears. Keep unanswered questions pending without repeating them. Silence is not approval.
+- Use `NEED_INPUT` only for a new question. Do not repeat unchanged blockers.
+- Standing request: scoped native Goal only for authorized feature implementation and its verification under the [Goal policy](skills/coding-implement/SKILL.md#start-the-goal). Product discovery and specification/proof design run without starting a Goal. Never invent budgets or ignore limits.
+- Keep coding instructions, questions, updates, and handoffs concise. Use the format that explains the decision best; omit repeated cautions and process narration.
+- Hand back result, changed surface, demonstrated boundary, runtime, material gaps, and next action/owner.
+- When a turn creates, modifies, or deletes files, explicitly summarize what changed in the final response and link the affected files; group related files when useful. Distinguish applied changes from proposals, and do not rely on commentary or a generic “done” to communicate the modifications. Keep the summary concise.
+- Keep detailed checks in evidence; omit internal counts. Report timing only when useful or requested.
+- Continue authorized work instead of offering it back. Distinguish phase completion from outcome completion.
+- If finished, say so. Do not invent follow-up work.
 
 ## Global Boundaries
 
-Use relevant `docs/APP.md`, `docs/ARCHITECTURE.md`, `docs/CONVENTIONS.md`, and `docs/TESTING.md`. Verify uncertain external facts with authoritative sources, bounded to the decision; report uncertainty and respect source/access restrictions. Research does not authorize implementation or acceptance changes.
-
-Preserve unrelated dirty work and existing instructions. Do not create target-repository `AGENTS.md` or `AGENTS.override.md`, or treat their absence as a failure. Repository-local setup and declared dependencies are authorized. Global installs, paid resources, destructive operations, deployments, force pushes, secret edits, credential entry, and external mutations need applicable explicit authorization. PR review alone does not authorize comments or merging; review never grants mutation permission.
-
-`coding-prepare-environment` owns default greenfield component locations; domain skills own internal application structure. Sites construction is opt-in: explicit request or a pre-existing `.openai/hosting.json`; creating a manifest cannot authorize the platform retroactively.
-
-Coordinate one writer for overlapping files/shared runtimes; never displace another task. One active feature per task, one owner per feature. Use [status mechanics](docs/harness/coding/status.md) only for feature registration, claims, migration, or transitions. Independent unrelated work may proceed; global queue priority applies only when requested.
+- Read existing product, architecture, convention, and testing context relevant to the task. Missing document names do not mandate scaffolding.
+- Verify uncertain external facts with authoritative sources; respect access limits and report uncertainty.
+- Research grants no implementation or acceptance-change authority.
+- Preserve unrelated dirty work and existing instructions.
+- Never create target-repo `AGENTS.md`/`AGENTS.override.md`; their absence is not a failure.
+- Repo-local setup and declared dependencies are authorized.
+- Global installs, paid resources, destructive actions, deployments, force pushes, secret edits, credential entry, and external mutations need applicable explicit authorization.
+- PR review grants no commenting, merging, or mutation authority.
+- `coding-prepare-environment` owns greenfield locations; domain skills own internal structure.
+- Sites requires explicit selection or a pre-existing `.openai/hosting.json`. Creating the manifest grants no authority.
+- One writer per shared file/runtime. Never displace another task.
+- One active feature per task; one owner per feature. Independent investigation and preparation may continue. Lifecycle skills define responsibilities and completion boundaries, not a compulsory sequence for every request.
+- Use [status mechanics](docs/harness/coding/status.md) for registration, claims, migration, and transitions only.
+- Global queue priority applies only when requested.
 
 ## Repository Checks And Handoff
 
-Invoke shared scripts as `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>.<ext>"`; keep language extensions and do not copy scripts into target repositories. Do not hard-wrap Markdown. Validate this repository with `"${CODEX_HOME:-$HOME/.codex}/scripts/gate.py" --root "$PWD"`; a gate is supporting verification, not feature proof.
-
-Report outcome, changed surface, relevant verification/review, runtime state, gaps, and exact blockers. Observed broken behavior overrides green claims; local verification cannot resolve a deployed incident. Apply the selected skill's completion rules. Read [evidence capture](docs/harness/coding/evidence.md) when recording material verification; keep private dialogue in native history and report partial capture honestly.
+- Invoke shared tools as `"${CODEX_HOME:-$HOME/.codex}/scripts/<tool>.<ext>"`. Keep extensions; never copy scripts into target repos.
+- Do not hard-wrap Markdown.
+- Validate with `"${CODEX_HOME:-$HOME/.codex}/scripts/gate.py" --root "$PWD"`.
+- Gates support verification; they are not feature proof. Apply the skill's completion rules.
+- Observed failures override passing checks. Local verification cannot close a deployed incident.
+- Use [evidence capture](docs/harness/coding/evidence.md) for material verification.
+- Keep private dialogue in native history; label partial capture.

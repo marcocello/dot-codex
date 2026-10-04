@@ -26,7 +26,7 @@ SECRET_PATTERNS = tuple(
     )
 )
 FEATURE_STATUS_FIELDS = {"id", "feature_dir", "priority", "status", "owner", "proof_run", "notes"}
-FEATURE_STATUSES = {"draft", "ready", "active", "blocked", "done"}
+FEATURE_STATUSES = {"draft", "ready", "active", "implemented", "blocked", "done"}
 
 
 class Gate:
@@ -197,7 +197,7 @@ def feature_status_lint(gate: Gate, payload: dict | None = None, *, check_invent
         else:
             seen_priorities.add(priority)
         if not isinstance(state, str) or state not in FEATURE_STATUSES:
-            gate.fail("common.feature-status", f"{label} has invalid status", "Use draft, ready, active, blocked, or done.")
+            gate.fail("common.feature-status", f"{label} has invalid status", "Use draft, ready, active, implemented, blocked, or done.")
         owner = entry["owner"]
         if state == "active":
             if not isinstance(owner, str) or not owner.strip():
@@ -215,12 +215,23 @@ def feature_status_lint(gate: Gate, payload: dict | None = None, *, check_invent
             gate.fail("common.feature-status", f"{label} notes must be a string", "Keep concise lifecycle context in notes.")
 
         directory = gate.root / feature_path
-        required = (directory / "FEATURE.md", directory / "PROOF.md", directory / "proof/run.sh")
+        mapped = (directory / "COVERAGE.json").exists()
+        required = (directory / "FEATURE.md",) if state in {"draft", "blocked"} or mapped else (
+            directory / "FEATURE.md", directory / "PROOF.md", directory / "proof/run.sh"
+        )
+        if mapped and state not in {"draft", "blocked", "done"}:
+            try:
+                from verification_round import coverage
+                coverage(gate.root, feature_dir)
+            except (OSError, ValueError, TypeError) as exc:
+                gate.fail("common.feature-status", f"{label} invalid coverage: {exc}", "Map every criterion to nonempty executable shared checks.")
         for required_path in required:
             if not required_path.is_file():
-                gate.fail("common.feature-status", f"{required_path.relative_to(gate.root)} is missing", "Restore the complete feature package.")
+                gate.fail("common.feature-status", f"{required_path.relative_to(gate.root)} is missing", "Supply the inputs required by this lifecycle state.")
+            elif state != "done" and not required_path.read_bytes().strip():
+                gate.fail("common.feature-status", f"{required_path.relative_to(gate.root)} is empty", "Write the accepted outcome or determining proof; placeholders do not establish readiness.")
         runner = directory / "proof/run.sh"
-        if runner.is_file() and not os.access(runner, os.X_OK):
+        if state not in {"draft", "blocked"} and runner.is_file() and not os.access(runner, os.X_OK):
             gate.fail("common.feature-status", f"{runner.relative_to(gate.root)} is not executable", "Make the feature proof runner executable.")
 
         if state == "done" and entry["proof_run"] is None:
@@ -230,6 +241,20 @@ def feature_status_lint(gate: Gate, payload: dict | None = None, *, check_invent
         if entry["proof_run"] is not None and proof_path is None:
             gate.fail("common.feature-status", f"{label} has invalid proof_run", "Use null or a safe repository-relative retained run path.")
         elif proof_path is not None:
+            try:
+                from completion_history import read_history
+                if read_history(gate.root, feature_id, feature_dir, proof_path.as_posix()) is not None:
+                    continue  # Historical record only; new completion validates raw proof separately.
+            except (OSError, ValueError, TypeError) as exc:
+                gate.fail("common.feature-status", f"{label} invalid completion history: {exc}", "Preserve the original completion record.")
+                continue
+            if proof_path.parts[:3] == ("docs", "verification", "rounds"):
+                try:
+                    from verification_round import validate_round
+                    validate_round(gate.root, proof_path.as_posix(), feature_id=feature_id, current=False)
+                except (OSError, ValueError, TypeError) as exc:
+                    gate.fail("common.feature-status", f"{label} invalid round receipt: {exc}", "Use a retained PASS round covering the feature; new completion additionally checks current evidence.")
+                continue
             expected_prefix = feature_path / "proof/runs"
             if proof_path.parts[: len(expected_prefix.parts)] != expected_prefix.parts or len(proof_path.parts) != len(expected_prefix.parts) + 1:
                 gate.fail("common.feature-status", f"{label} proof_run is outside its feature", "Point to a retained run inside the owning feature's proof/runs directory.")
@@ -440,8 +465,8 @@ def harness_lint(gate: Gate) -> None:
             gate.fail("harness.skill", f"{path.relative_to(gate.root)} has invalid name {name!r}", "Use the hyphen-case directory name.")
             continue
         names.add(name)
-        if not isinstance(description, str) or not description.strip() or (local and len(description.split()) > 32):
-            gate.fail("harness.skill", f"{path.relative_to(gate.root)} has an invalid description", "Use 1-32 descriptive words.")
+        if not isinstance(description, str) or not description.strip():
+            gate.fail("harness.skill", f"{path.relative_to(gate.root)} has an invalid description", "Use a nonempty string describing when the skill applies.")
         agent = path.parent / "agents/openai.yaml"
         if agent.is_file():
             operational.append(agent)

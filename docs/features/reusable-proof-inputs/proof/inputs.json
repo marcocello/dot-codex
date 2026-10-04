@@ -1,0 +1,10 @@
+{
+  "scope": [
+    "scripts",
+    "docs/harness/coding",
+    "skills/coding-implement",
+    "skills/coding-design-specs-proof",
+    "docs/features/shared-journey-verification/proof/acceptance.py",
+    "README.md"
+  ]
+}

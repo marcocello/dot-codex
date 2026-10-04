@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "29696c200d36b8d08557f01ab5bd8d6469b0414a936fd8f0b460113e5907e2a3",
+  "evidence_digest": "88b71dd6265883546b9adbfa9b473764bb23608f0166b3254c4e576f67cbc7b3",
+  "feature_dir": "docs/features/outcome-continuity",
+  "feature_id": "outcome-continuity",
+  "implementer": "01a0ed9e-8476-7c80-be7a-11ea90f01280",
+  "proof_run": "docs/features/outcome-continuity/proof/runs/20260929T162759589444Z",
+  "receipt_digest": "a288ccb520b24db45e5c91ccfe33c9890f48483b77639b5d9c80bc277c4356d3",
+  "recorded_at": "2026-10-02T10:04:28.092977+00:00",
+  "summary": "Independent semantic review and final candidate freshness PASS. Four sampled trials passed including baseline; no causal improvement/general reliability claim. Forced bundles and partial instrumented receipts; no live provider or complete lifecycle proof.",
+  "target": "local-harness-instrumented-trials",
+  "verdict": "PASS",
+  "version": 1
+}

@@ -1,0 +1,22 @@
+{
+  "classes": [
+    {
+      "id": "yoga-am",
+      "starts": "2026-10-01T09:00:00",
+      "capacity": 8,
+      "bookings": [
+        {
+          "member": "Avery",
+          "payment": "class-pass"
+        }
+      ]
+    }
+  ],
+  "members": [
+    {
+      "name": "Avery",
+      "email": "avery@example.test",
+      "credits": 5
+    }
+  ]
+}

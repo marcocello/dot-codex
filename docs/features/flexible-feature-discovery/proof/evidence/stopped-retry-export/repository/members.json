@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Zoe, Jr",
+    "email": "zoe@example.test",
+    "active": true
+  },
+  {
+    "name": "Avery",
+    "email": "avery@example.test",
+    "active": true
+  },
+  {
+    "name": "Morgan",
+    "email": "morgan@example.test",
+    "active": false
+  }
+]

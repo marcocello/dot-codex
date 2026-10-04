@@ -1,0 +1,12 @@
+{
+  "north": {
+    "patient_home_url": "https://patient.example.test/north",
+    "appointments": [
+      {
+        "patient": "Avery",
+        "slot": "2026-10-02T14:00:00",
+        "provider_ref": "sample-42"
+      }
+    ]
+  }
+}

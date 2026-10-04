@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "b57b9b0a5708aaa98bf68ff2769d438458356b1fa20b415140d8f2785556407d",
+  "evidence_digest": "2cdbaae2c0dec57e002215eb2e055047ff76c7f2a44e3bac07fa70dfbbe87604",
+  "feature_dir": "docs/features/adaptive-verification-roles",
+  "feature_id": "adaptive-verification-roles",
+  "implementer": "01a0ee99-7dfb-7cb1-9600-35491b78d726",
+  "proof_run": "docs/features/adaptive-verification-roles/proof/runs/20261001T123522912793Z",
+  "receipt_digest": "2c2691d86659fd62918617b07d3197df7f566b4f925ababc434f30b7a0caab63",
+  "recorded_at": "2026-10-02T10:04:28.093780+00:00",
+  "summary": "Checked final changes against the user correction: direct routing, narrow vertical specs and acceptance before implementation, shared journeys, no risk levels or role modes. CLI acceptance and inherited evidence regressions pass; documentation and skill validators pass. No production time saving claimed.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

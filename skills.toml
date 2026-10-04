@@ -176,26 +176,6 @@ kind = "owned"
 path = "knowledge-rewrite-natural-message"
 
 [[skills]]
-name = "coding-shape"
-kind = "owned"
-path = "coding-shape"
-
-[[skills]]
-name = "coding-ship"
-kind = "owned"
-path = "coding-ship"
-
-[[skills]]
-name = "coding-fix"
-kind = "owned"
-path = "coding-fix"
-
-[[skills]]
-name = "coding-operate"
-kind = "owned"
-path = "coding-operate"
-
-[[skills]]
 name = "knowledge-review"
 kind = "owned"
 path = "knowledge-review"
@@ -204,3 +184,43 @@ path = "knowledge-review"
 name = "knowledge-tool-connect"
 kind = "owned"
 path = "knowledge-tool-connect"
+
+[[skills]]
+name = "secondbrain-update"
+kind = "owned"
+path = "secondbrain-update"
+
+[[skills]]
+name = "secondbrain-review"
+kind = "owned"
+path = "secondbrain-review"
+
+[[skills]]
+name = "coding-explain-kit"
+kind = "owned"
+path = "coding-explain-kit"
+
+[[skills]]
+name = "coding-product-partner"
+kind = "owned"
+path = "coding-product-partner"
+
+[[skills]]
+name = "coding-design-specs-proof"
+kind = "owned"
+path = "coding-design-specs-proof"
+
+[[skills]]
+name = "coding-implement"
+kind = "owned"
+path = "coding-implement"
+
+[[skills]]
+name = "coding-repair"
+kind = "owned"
+path = "coding-repair"
+
+[[skills]]
+name = "coding-runtime-ops"
+kind = "owned"
+path = "coding-runtime-ops"

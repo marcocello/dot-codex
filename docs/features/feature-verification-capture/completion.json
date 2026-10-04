@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "128b19113716bfd13bbe50c6d7a4d23a2243299f1c6634b9a726319356c5c506",
+  "feature_dir": "docs/features/feature-verification-capture",
+  "feature_id": "feature-verification-capture",
+  "implementer": null,
+  "proof_run": "docs/features/feature-verification-capture/proof/runs/20260914T200739934657Z",
+  "receipt_digest": "3f4ef254cae89a9ee373339cf349d1cdf1dc7718c89368bc5e2e8d17bd944aeb",
+  "recorded_at": "2026-10-02T10:04:28.084242+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

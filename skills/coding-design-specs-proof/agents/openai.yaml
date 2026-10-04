@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Design Specs and Proof"
+  short_description: "Map feature criteria to focused checks and journeys."
+  default_prompt: "Use $coding-design-specs-proof to turn understood intent into narrow feature specifications and acceptance tests through focused checks and shared journeys, deriving routine details from the agreed direction without starting a Goal."
+policy:
+  allow_implicit_invocation: true

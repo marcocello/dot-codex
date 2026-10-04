@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "3aa5220bcfa80989f5de7dcd9204551f8ab06e4a7bdc2bc24a6daabc32526c18",
+  "evidence_digest": "c7d138e686521c24bcff25027e5d584473fb57dc1f7a1a82e7d3f217662ed8e5",
+  "feature_dir": "docs/features/flexible-feature-discovery",
+  "feature_id": "flexible-feature-discovery",
+  "implementer": "01a0d45e-c436-7c40-b267-964194757d71",
+  "proof_run": "docs/features/flexible-feature-discovery/proof/runs/20260924T202337206383Z",
+  "receipt_digest": "5fddb3e4f1f082800df373eb5e731f570e75c9db18fec834103b1acfde22a470",
+  "recorded_at": "2026-10-02T10:04:28.092265+00:00",
+  "summary": "Independent reviewer accepted all four sampled discovery cases, final instructions, retained failures and approved continuations, frozen acceptance, and fresh supporting CLI regressions. Evidence demonstrates observed behavior in isolated tasks, not reliability or measured superiority. Concurrent scaffold-adoption guidance received source review only; supplementary stakeholder answer provenance remains author-attested.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

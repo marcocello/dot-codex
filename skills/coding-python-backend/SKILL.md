@@ -9,7 +9,7 @@ metadata:
 
 Purpose: implement or bootstrap Python backend API/application work with clear boundaries, repo-native setup, and pytest coverage.
 
-The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Fix path for known defects and Shape/Ship for material accepted behavior changes.
+The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Repair path for known defects and Design Specs and Proof/Implement for material accepted behavior changes, following [product discovery and autonomy](../coding-product-partner/SKILL.md#discovery-and-autonomy).
 
 ## Scope
 - Applies when:
@@ -21,10 +21,10 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
   - FastAPI / service-layer architecture is in use
 
 ## Architecture expectations
-- routes -> services/use-cases -> domain -> infra/data
+- Separate routes, use cases, domain policy, and persistence when those responsibilities warrant it. Simple operations need not introduce a class or layer for each label.
 - No cyclic imports
 - No “god” services
-- Keep business logic out of routes
+- Keep reusable domain policy and substantial orchestration outside transport handlers; straightforward request/response mapping may stay local.
 
 ## Implementation rules
 - Follow the greenfield component locations owned by `coding-prepare-environment`: backend application code lives in `backend/app`.
@@ -32,13 +32,13 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly
 - Smallest change that satisfies the feature
-- Avoid backward compatibility work by default; do it only when explicitly requested
+- Preserve established consumers and accepted contracts. Add compatibility machinery only for an actual supported consumer or migration need; ask before consequential breaking changes outside the request.
 
 ## Verification
 - Reuse pytest and select checks for affected routes, services, persistence, shared utilities, and their consumers. Add focused coverage for a concrete uncovered risk; reproduce the failure when practical.
-- For material API features, the separate proof author should exercise HTTP against the real app runtime. Internal changes may use contract, migration, invariant, or equivalence proof matching the accepted boundary.
-- Assert requested outcomes rather than incidental private structure. Generic tests support verification but do not replace dedicated feature proof.
-- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
+- For material API features, exercise HTTP against the real app runtime. Internal changes may use contract, migration, invariant, or equivalence proof matching the accepted boundary.
+- Assert requested outcomes rather than incidental private structure. Reuse existing tests as feature proof when they exercise and assert the accepted behavior.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), preserving accepted behavior when repairing test setup or assertions. Repair introduced regressions within the current feature run.
 
 ## Environment
 - Use `coding-prepare-environment` when setup or readiness is unknown; reuse a prepared environment.

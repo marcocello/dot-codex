@@ -342,6 +342,87 @@
       "owner": null,
       "proof_run": "docs/features/knowledge-tool-delete/proof/runs/20260920T125646515420Z",
       "notes": ""
+    },
+    {
+      "id": "secondbrain-cycle",
+      "feature_dir": "docs/features/secondbrain-cycle",
+      "priority": 39,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/secondbrain-cycle/proof/runs/20260921T094418783067Z",
+      "notes": "Local durable CLI and two skills verified; independent proof, semantic exercise and final review PASS; live source/schedule activation separate"
+    },
+    {
+      "id": "secondbrain-configuration",
+      "feature_dir": "docs/features/secondbrain-configuration",
+      "priority": 40,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/secondbrain-configuration/proof/runs/20260921T184918786650Z",
+      "notes": "Independent proof/regressions/review PASS; native schedules installed paused. Gate has unrelated coding-explain-kit description issue."
+    },
+    {
+      "id": "flexible-feature-discovery",
+      "feature_dir": "docs/features/flexible-feature-discovery",
+      "priority": 41,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/flexible-feature-discovery/proof/runs/20260924T202337206383Z",
+      "notes": "Independent behavioral review and current captured proof/regressions passed; isolated trial limits retained."
+    },
+    {
+      "id": "current-completion-evidence",
+      "feature_dir": "docs/features/current-completion-evidence",
+      "priority": 42,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/current-completion-evidence/proof/runs/20260925T081706636815Z",
+      "notes": ""
+    },
+    {
+      "id": "outcome-continuity",
+      "feature_dir": "docs/features/outcome-continuity",
+      "priority": 43,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/outcome-continuity/proof/runs/20260929T162759589444Z",
+      "notes": ""
+    },
+    {
+      "id": "shared-journey-verification",
+      "feature_dir": "docs/features/shared-journey-verification",
+      "priority": 44,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/shared-journey-verification/proof/runs/20260929T222221427426Z",
+      "notes": "Shared journeys and focused coverage, implemented state, scoped reuse and round receipts verified through independent CLI acceptance, affected legacy checks, held-out author trial and distinct final review. Arbitrator not migrated or reverified."
+    },
+    {
+      "id": "adaptive-verification-roles",
+      "feature_dir": "docs/features/adaptive-verification-roles",
+      "priority": 45,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/adaptive-verification-roles/proof/runs/20261001T123522912793Z",
+      "notes": ""
+    },
+    {
+      "id": "reusable-proof-inputs",
+      "feature_dir": "docs/features/reusable-proof-inputs",
+      "priority": 46,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/reusable-proof-inputs/proof/runs/20261002T091136484259Z",
+      "notes": ""
+    },
+    {
+      "id": "feature-proof-integrity",
+      "feature_dir": "docs/features/feature-proof-integrity",
+      "priority": 47,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/feature-proof-integrity/proof/runs/20261002T100428361670Z",
+      "notes": ""
     }
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "d1abe6e6f8bc38dc93fbe9978c8147195b6928d62348fb99bc1414fd7c3a0794",
+  "feature_dir": "docs/features/skill-portfolio-consolidation",
+  "feature_id": "skill-portfolio-consolidation",
+  "implementer": null,
+  "proof_run": "docs/features/skill-portfolio-consolidation/proof/runs/20260915T093621540288Z",
+  "receipt_digest": "3e44393a7cd5d138432efb56f1916f5b84316b8f74562d498b929f0517c4dcff",
+  "recorded_at": "2026-10-02T10:04:28.084662+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

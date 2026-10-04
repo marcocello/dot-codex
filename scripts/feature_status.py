@@ -14,6 +14,9 @@ import sys
 import tempfile
 import time
 
+from verification_receipt import validate_completion
+from verification_round import validate_round
+
 
 def gate_module():
     loader = importlib.machinery.SourceFileLoader('feature_gate', str(Path(__file__).resolve().with_name('gate.py')))
@@ -25,7 +28,8 @@ def gate_module():
 
 TRANSITIONS = {
     'new': {'draft'}, 'draft': {'ready'}, 'ready': {'active', 'draft'},
-    'active': {'done', 'blocked', 'draft', 'ready'},
+    'active': {'implemented', 'done', 'blocked', 'draft', 'ready'},
+    'implemented': {'active', 'done', 'blocked', 'draft'},
     'blocked': {'ready', 'draft'}, 'done': {'active', 'draft'},
 }
 
@@ -72,13 +76,28 @@ def update(args, gate):
             raise ValueError('unsupported lifecycle transition')
         if args.proof_run and args.after != 'done':
             raise ValueError('--proof-run is only valid for done')
+        if args.round_review and args.after != 'done':
+            raise ValueError('--round-review is only valid for done')
+        if args.after == 'done':
+            # Recheck the active package before historical inventory rules apply.
+            gate.feature_status_lint(check, payload, check_inventory=False, target_id=args.id)
+            if check.failures:
+                raise ValueError(str(check.failures))
         entry.update(status=args.after, owner=args.owner if args.after == 'active' else None,
-                     proof_run=args.proof_run if args.after == 'done' else None)
+                     proof_run=(args.round_review or args.proof_run) if args.after == 'done' else None)
         if args.notes is not None:
             entry['notes'] = args.notes
         gate.feature_status_lint(check, payload, check_inventory=False, target_id=args.id)
         if check.failures:
             raise ValueError(str(check.failures))
+        if args.after == 'done':
+            if args.round_review:
+                validate_round(root, args.round_review, feature_id=args.id, owner=args.owner)
+            else:
+                validate_completion(root, entry['feature_dir'], args.proof_run, args.owner)
+        if args.after == 'done':
+            from completion_history import record_history
+            record_history(root, entry)
         temporary = None
         try:
             with tempfile.NamedTemporaryFile(mode='w', dir=path.parent, prefix='.status-', delete=False) as output:
@@ -102,7 +121,9 @@ def main():
     parser.add_argument('--owner', required=True, help='Stable calling task id, not a feature name')
     parser.add_argument('--from', dest='before', choices=TRANSITIONS, required=True)
     parser.add_argument('--to', dest='after', choices=sorted(set().union(*TRANSITIONS.values())), required=True)
-    parser.add_argument('--proof-run')
+    evidence = parser.add_mutually_exclusive_group()
+    evidence.add_argument('--proof-run')
+    evidence.add_argument('--round-review', help='Shared round review covering this feature')
     parser.add_argument('--notes')
     args = parser.parse_args()
     try:

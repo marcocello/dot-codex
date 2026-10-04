@@ -100,7 +100,7 @@ Unknowns: <blocking only>
 - No mandatory framework or pattern replacement.
 - No backward-compatibility work unless required by user or authoritative contract.
 - No implementation edits during review-only work.
-- For authorized implementation, route a clear defect or bounded behavior-preserving cleanup to `coding-fix`; material refactors use Shape/Ship with invariant or equivalence proof. Findings alone do not authorize implementation.
+- For authorized implementation, route a clear defect or bounded behavior-preserving cleanup to `coding-repair`; material refactors use `coding-design-specs-proof` and `coding-implement` with invariant or equivalence proof. Resolve consequential unclear intent through `coding-product-partner`. Findings alone do not authorize implementation.
 
 ## Handoff
 Lead with the decision and highest-impact evidence. Keep the remediation staged and testable. Ask for input only when one missing product/workload/operational fact can change the decision.

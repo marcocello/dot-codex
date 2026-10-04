@@ -1,0 +1,1 @@
+Review this change against the original request: “Add saved report presets so I can save a report's filters, close the app, and load that preset next time.” The implementation and supplied checks are here. Give a completion verdict with evidence in REVIEW.md. This is a read-only review; do not fix or extend the change.

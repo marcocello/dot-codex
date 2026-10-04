@@ -1,0 +1,16 @@
+{
+  "fixture/README.md": "441f13eaace01a6f15285e669c7f48e7ea93e9b771051ff500276aef0822d993",
+  "fixture/REQUEST.md": "adb71156af3d6e40888ec41346b0e5654340d33444eac7a8e715b522c48e8cbf",
+  "fixture/docs/api.md": "1143383db0694f885d76ef242ff7f5ef7bb22b16c476d2e34c1f0613f30fe512",
+  "fixture/vendor/archivebox.py": "9c547e19ab8f612c4bfacd5b46405d14d28e5360ea9a0ff7d7c2096de26c0f7d",
+  "instructions/guidance.md": "2ecf58991bdb9505cbe8d5862c747e9f7bd8b90a518127dceabcc04806aa5c35",
+  "instructions/implement.md": "0b4ee3ca93e9ca493c3f49d6ff651f84e5f65ac4cc0f275e65f774c1488dfc2d",
+  "instructions/partner.md": "8f8d8004a40feb48006e45d505c7f4981a3a1584f0b29fcd64d40ee188954480",
+  "instructions/proof.md": "8b0452a1627d28c9e793232fdb783dd5fae07f34074e1a808d7235500b76b551",
+  "instructions/repair.md": "ea152b173fbef3819cef1f3990b2880b08d886a7fd69a106f1a197516b16f7f0",
+  "instructions/spec.md": "e42484ceb8b3d8d20f11a44f8e1b8981f8faf2d5b92f3d1e2ba60c7b82499e7f",
+  "metadata.json": "7aa646ca682f9a09d18c746ca9aece8de419d72ce953147e53a7ce8c725d47ba",
+  "result.md": "11894e56ad9f7cf44d673176f19cd0bc827c64c054a49751b3c0cfaf4ed340cd",
+  "tool-events.log": "669d06807e4e2a0e2b6c826df0b3a1f12f8ee620f4eaa7cd0ead407f587803c5",
+  "trace.md": "b89e90c40cb7f10392e3cda4b63d935bb34f7c18aedd4439dc80f057d8070ee5"
+}

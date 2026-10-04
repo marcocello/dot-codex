@@ -1,0 +1,19 @@
+{
+  "prepared_at": "2026-09-24T19:15:21.839376+00:00",
+  "proof_author_id": "/root/discovery_proof",
+  "acceptance_input_hashes": {
+    "../FEATURE.md": "a4cdc7c8c780a95afe22e15bddb79bd709da783932c8c82116a6917bef2b6424",
+    "../PROOF.md": "40dc998810e49cef4cfb21185a02a01cc0d0ecac7fb037eaf6e449de8a1dcd95",
+    "prepare.py": "a50dd187a34e71eb776adcb1de7baddc4930d08088c9062007abf6264749c456",
+    "rubric.md": "dc4a0a5bd740e4b99e0008736c1c81ecf1bdc9b0cca4e382c630443e0c747000",
+    "run.sh": "ecc3b003968b554d29738ccd692aa06ec46a89329ba9ac7178a5fa0d3bd03600",
+    "check.py": "69bf0f21f0990393af12f691913d4e82ef0dc50ba6ea1db963b457ab36075aef"
+  },
+  "fixture_hashes": {
+    "studio": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+    "export": "407f01e423878749355d5c53aa34c189a19f4bbed75be47aea71a5e5b6b78d94",
+    "repair": "226b13587aba0761b6f57276c5571dea904f5f3b8d01908b2ef016a70431264f",
+    "portal": "4f7aed0a45f15d1272de8bfe83099c4f8823768d730f1a1d380424e41549279e"
+  },
+  "note": "Prepared without candidate instruction inspection. Rubric withheld from trial workers."
+}

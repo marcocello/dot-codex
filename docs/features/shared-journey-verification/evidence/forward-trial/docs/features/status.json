@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "features": [
+    {
+      "id": "save-owner-contacts",
+      "feature_dir": "docs/features/save-owner-contacts",
+      "priority": 1,
+      "status": "ready",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Independent mapped CLI acceptance executed locally; delivery and final review remain."
+    },
+    {
+      "id": "export-owner-csv",
+      "feature_dir": "docs/features/export-owner-csv",
+      "priority": 2,
+      "status": "ready",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Independent mapped CSV acceptance executed locally; delivery and final review remain."
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+--- prior/PROOF.md
++++ revised/PROOF.md
+@@ -5,6 +5,8 @@
+ The installed capture, review-receipt, and status CLIs demonstrate the accepted completion contract against disposable local Git repositories. Run `"${CODEX_HOME:-$HOME/.codex}/scripts/proof_run_capture.py" --feature-dir docs/features/current-completion-evidence --timeout-seconds 180 --note "current completion acceptance"`. The executable `proof/run.sh` runs `proof/acceptance.py` with Python 3 and Git; it needs no credentials, packages, commits, network, or external service.
+ 
+ The acceptance author is the separate `completion_proof` agent. Its inputs are FEATURE.md, the shared proof contract, retained capture behavior, and the proposed public CLI and evidence format supplied before implementation. The author does not edit application scripts or derive expected outcomes from candidate output.
++
++The separate `input_scope_proof` agent repaired missing input-coverage assertions on 2026-09-25 under the existing requirement to reject mismatched supporting evidence. Original inputs, focused red, the pre-fix false completion, exact diff, rationale, and revised hashes are retained in `proof/author-notes/input-scope-repair/`.
+ 
+ ## Boundary and observation
+ 
+@@ -24,6 +26,7 @@
+ | explicit_ignored_inputs_are_bound_without_dumping_values | Change ignored input with default selection and with explicit --include | Claimed includes are not bound, or default silently claims ignored runtime observation |
+ | regressions_pass_current_target_matched_and_cannot_replace_proof | Bind passing regression, try it as acceptance including relocation, then complete with proof | Regression substitution, receipt omits support, generated regression evidence self-invalidates |
+ | failed_stale_or_different_target_regressions_cannot_support_pass | Bind failed, earlier-candidate, or different-target regression to fresh proof | Supporting runs are named without validation |
++| mismatched_input_coverage_cannot_support_pass_review; legacy_pass_receipt_with_mismatched_inputs_cannot_complete; matching_normalized_inputs_pass_and_mismatch_allows_diagnostic_review | Capture with differing ignored-input coverage; attempt PASS review and legacy-receipt completion; compare matching normalized includes and diagnostic FAIL review | Each run passes independently but does not cover the same inputs; only new receipt creation is fixed while an older mismatched receipt still closes work; include order or diagnostic evidence is rejected unnecessarily |
+ | changed_bound_evidence_and_receipt_prevent_completion | Alter proof output/result/manifest, review rationale, or bound regression output after review | Receipt checks only PASS strings or does not bind evidence and its own accidental alteration |
+ | distinct_attribution_and_actual_verdict_are_required | Reuse identities, omit rationale, record FAIL, or mismatch implementer and active owner | Independent attribution is optional; FAIL becomes done; receipt belongs to another implementation owner |
+ | newer_failed_or_unfinished_official_attempt_invalidates_older_pass | Retain older PASS, create later FAIL or interrupted-format STARTED directory, then review/done | Cherry-picked earlier PASS; altered candidate alone masks the latest-attempt requirement |
+@@ -35,6 +38,8 @@
+ 
+ Every deterministic scenario must pass. Cases vary mutation kind, lifecycle state, attribution, evidence kind, and target where they change the accepted outcome; repetition of identical deterministic calls would not improve the claim. Two unchanged captures establish deterministic manifest behavior on the tested fixture. This is executable CLI behavior proof, not a source-wording or mock-import test.
+ 
++The legacy mismatched-receipt case supplies historical input to the real completion CLI. A retained pre-fix PASS receipt grounds its format; each run obtains fresh evidence bindings through the public diagnostic-review command, then independently restores the historical PASS verdict and canonical digest. No production validator is imported or replaced. Matching normalized includes exercise valid completion, and a diagnostic FAIL receipt remains recordable without qualifying for completion.
++
+ This proves the tested local commands reject ordinary stale, altered, incorrectly attributed, or substituted evidence and preserve useful historical/draft behavior. It does not prove identity authentication, cryptographic tamper resistance against an actor rewriting all hashes, semantic reviewer quality, observed production behavior, all ignored runtime state, transient edit-and-restore detection, inaccessible external service state, universal concurrency safety, every supported operating system, or every form of process-tree escape. Target labels describe the review claim; they do not authenticate a deployment. The preserved capture suite's unaffected cases are separate regressions, not imported as this feature's acceptance.
+ 
+ False-green risks include an untested selection edge such as submodules or unusual filesystem entries, a caller bypassing the status helper and editing JSON directly, and a model asserting completion conversationally without invoking these tools. These remain stated boundaries. The final reviewer must assess implementation and instruction integration in addition to this executable proof.
+--- prior/proof/acceptance.py
++++ revised/proof/acceptance.py
+@@ -295,6 +295,57 @@
+                 proof = self.capture_pass(repo)
+                 self.rejects(repo.review(proof, regressions=(regression,)))
+                 self.completion_rejected_unchanged(repo, proof)
++
++    def mismatched_input_runs(self, repo, *, proof_includes_config=True):
++        code = "from pathlib import Path; assert Path('ignored-config.txt').read_text() == 'private-synthetic-value-before\\n'"
++        included = ("ignored-config.txt",)
++        regression = self.capture_pass(
++            repo, kind="regression", code=code,
++            include=() if proof_includes_config else included,
++        )
++        if proof_includes_config:
++            repo.write("ignored-config.txt", "changed-after-regression\n")
++        proof = self.capture_pass(repo, include=included if proof_includes_config else ())
++        return proof, regression
++
++    def test_mismatched_input_coverage_cannot_support_pass_review(self):
++        for proof_includes_config in (True, False):
++            with self.subTest(proof_includes_config=proof_includes_config):
++                repo = self.repo()
++                proof, regression = self.mismatched_input_runs(repo, proof_includes_config=proof_includes_config)
++                self.rejects(repo.review(proof, regressions=(regression,)))
++                self.assertFalse((proof / "review.json").exists(), "rejected review wrote a receipt")
++                self.completion_rejected_unchanged(repo, proof)
++
++    def test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete(self):
++        repo = self.repo()
++        proof, regression = self.mismatched_input_runs(repo)
++        # Recreate the retained pre-fix PASS receipt format using fresh real run
++        # bindings. This is historical input to the actual lifecycle consumer,
++        # not a replacement for receipt or completion validation.
++        self.passes(repo.review(proof, regressions=(regression,), verdict="FAIL"))
++        path = proof / "review.json"
++        receipt = read_json(path)
++        receipt.pop("receipt_digest")
++        receipt["verdict"] = "PASS"
++        canonical = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode()
++        receipt["receipt_digest"] = hashlib.sha256(canonical).hexdigest()
++        path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n")
++        self.completion_rejected_unchanged(repo, proof)
++
++    def test_matching_normalized_inputs_pass_and_mismatch_allows_diagnostic_review(self):
++        repo = self.repo()
++        proof, regression = self.mismatched_input_runs(repo)
++        self.passes(repo.review(proof, regressions=(regression,), verdict="FAIL"))
++        self.assertEqual(read_json(proof / "review.json")["verdict"], "FAIL")
++        self.completion_rejected_unchanged(repo, proof)
++        repo = self.repo()
++        repo.write(".gitignore", "ignored-config.txt\nignored-other.txt\n__pycache__/\n")
++        repo.write("ignored-other.txt", "another observed input\n")
++        regression = self.capture_pass(repo, kind="regression", include=("ignored-other.txt", "ignored-config.txt", "ignored-other.txt"))
++        proof = self.capture_pass(repo, include=("ignored-config.txt", "ignored-other.txt"))
++        self.passes(repo.review(proof, regressions=(regression,)))
++        self.passes(repo.transition(run=proof))
+ 
+     def test_changed_bound_evidence_and_receipt_prevent_completion(self):
+         for artifact in ("stdout.txt", "result.json", "candidate.json", "review.json", "regression"):

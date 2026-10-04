@@ -7,7 +7,7 @@ Use directly for analysis to produce a component-specific implementation brief. 
 - Do not edit product or test files, generate or apply patches, install or copy components, or change dependencies or configuration.
 - Preserve the user's requested scope. A critique ends with findings; an explicit request to apply or build continues through the implementation workflow once the behavior is understood.
 - Do not mutate the running product, connected services, or feedback state. Never acknowledge, resolve, or otherwise mutate an annotation.
-- Invoking this analytical skill does not cancel existing implementation authorization or require another task. Route known UI defects to Fix and material new behavior through Shape/Ship.
+- Invoking this analytical skill does not cancel existing implementation authorization or require another task. Route known UI defects to Repair, unclear product choices to Product Partner, and settled material behavior through Design Specs and Proof/Implement.
 - Inspect rendered UI, screenshots, repository source, annotations, and external sources only through read-only actions.
 
 ## Inspect before researching

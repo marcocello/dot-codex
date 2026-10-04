@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "3c81fb59930914988a3ea7185aae4829736b176c5995b5086af0f91ee9e98b61",
+  "evidence_digest": "97242d5e35a3f6b438e4efd68f17226209dc3ce4502286665548cefd77805914",
+  "feature_dir": "docs/features/reusable-proof-inputs",
+  "feature_id": "reusable-proof-inputs",
+  "implementer": "01a0ee99-7dfb-7cb1-9600-35491b78d726",
+  "proof_run": "docs/features/reusable-proof-inputs/proof/runs/20261002T091136484259Z",
+  "receipt_digest": "12fa925718707db9d424fff450d1caf84e72c0200eae4a41bb4d9ef397483f4b",
+  "recorded_at": "2026-10-02T10:04:28.094158+00:00",
+  "summary": "Checked implementation and instructions against the feature contract. Actual CLI tests establish saved scope reuse, additive paths, relevant and unrelated changes, scope mutation detection, current mapped completion, broad fallback and legacy round compatibility. Completion attribution regressions pass. Dependency completeness remains a check-author responsibility; no Arbitrator runtime savings measured.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

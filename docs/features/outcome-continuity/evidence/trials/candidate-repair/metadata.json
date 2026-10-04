@@ -1,0 +1,10 @@
+{
+  "worker_id": "/root/candidate_repair",
+  "model": "gpt-6-astra",
+  "effort": "medium (inherited)",
+  "instruction_selection": "forced",
+  "source_session": "collaboration /root/candidate_repair; parent 01a0ed9e-8476-7c80-be7a-11ea90f01280",
+  "outcome": "completed",
+  "observation_kind": "instrumented-tool-receipts",
+  "observation_limit": "Child native trace unavailable; actual shell command/output receipts instrumented during execution, artifact and final delivery observed. No independent runtime attestation."
+}

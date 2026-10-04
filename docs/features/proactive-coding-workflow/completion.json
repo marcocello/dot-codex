@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "583cb6a0a78c504a18710e1c10ef3b9ab8ff6a6ad7fa15f509713bf3b0307c6d",
+  "feature_dir": "docs/features/proactive-coding-workflow",
+  "feature_id": "proactive-coding-workflow",
+  "implementer": null,
+  "proof_run": "docs/features/proactive-coding-workflow/proof/runs/20260917T160659786622Z",
+  "receipt_digest": "44c76ced7b2b18d99e8cc0d8504a999c584d42aa770f16eb876c87480a9b0588",
+  "recorded_at": "2026-10-02T10:04:28.086304+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

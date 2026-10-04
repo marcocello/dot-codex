@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "9d07999aefc8a08dbfaba96d2cd940c014e0d3911bd325993eba086871c44886",
+  "feature_dir": "docs/features/interaction-capture-integrity",
+  "feature_id": "interaction-capture-integrity",
+  "implementer": null,
+  "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20260910T121212495216Z",
+  "receipt_digest": "8bab4958c9e839dd030e0619958c23127e4f20afecb0f5666b0a087655c7e2d1",
+  "recorded_at": "2026-10-02T10:04:28.083200+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

@@ -1,0 +1,585 @@
+{
+  "schema_version": 1,
+  "observation_kind": "fresh-agent-execution",
+  "implementer_id": "/root",
+  "proof_author_id": "/root/discovery_proof",
+  "limitations": [
+    "Single sample per scenario, no success-rate or superiority estimate.",
+    "Initial fixture comparisons are single-turn. Candidate studio also has one supplementary authored stakeholder answer; baseline has no continuation and real-user co-discovery remains unmeasured.",
+    "Explicit snapshot paths and shared host developer/tool context differ from ordinary implicit routing.",
+    "Greenfield stance is covered by final instruction review, not a separate runtime trial.",
+    "Candidate snapshot includes contemporaneous shared script copies while completion-script implementation proceeds separately; this feature assesses instruction behavior, not final completion-script behavior.",
+    "Export persistence and repair completion required explicit user approval after automatic review rejected fixture writes; successful continuations share the initial worker context.",
+    "Current preparation guidance changed concurrently under a separate explicit user request after runtime trials. Its current hash is source-reviewed by an actual supplemental independent verdict; historical trial snapshot identities remain unchanged and starter adoption has no runtime claim here."
+  ],
+  "trials": [
+    {
+      "id": "baseline-studio",
+      "variant": "baseline",
+      "case": "studio",
+      "final_for_case": false,
+      "worker_id": "01a0d4d6-dda9-7e30-97e9-d6354b431f85",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+      "instruction_snapshot": "18cca1685573ff1197d3249adfc8afe9df787aeb0ec3badf7aa297a40e7b669f",
+      "native_trace": {
+        "path": "evidence/baseline-studio/native-visible-events.json",
+        "sha256": "7cccd9712eabf6f23fbd6a43d5c1f87d8f1350d04939e7c89aaa7ed3376fa4d7"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/baseline-studio/repository/README.md",
+          "sha256": "fd79e2f40480201f879a82c431c14476da768065b83201d78bbcf3c858ae9799"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/REQUEST.txt",
+          "sha256": "6de5736d9233b9069bdbec2687b39ce860b6897fc515fc829f7cc65060cd7cca"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/APP.md",
+          "sha256": "493d7c88c6f01e0fe83d302601c33da0d894bc36eff9bacc105ccf31c97b15fd"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/ARCHITECTURE.md",
+          "sha256": "ab4219ec1b48f354ec7267e5c79828a642e3c157702a57eb02447131b6393121"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/DISCOVERY.md",
+          "sha256": "3953ad4f439006f099728782b74afad206f233c65e7e233ff0289833456c96a0"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/book-class/FEATURE.md",
+          "sha256": "786cf7757243480841c95c7e20abb63c3823e88e019f40ae08baecec0f59637a"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/book-class/PROOF.md",
+          "sha256": "e98fdff030ef28c80ff151325f397f6681cdc084781908040c49eb50dc47d2ff"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/book-class/proof/run.sh",
+          "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/FEATURE.md",
+          "sha256": "2da0e8f6c18eeeb91f7e4e267dda62755050fe7cbb7047f777d355ec929f501d"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/PROOF.md",
+          "sha256": "5ff1d28f13ee6a95467c31ef9d6fd0ac560ead9598b0c2c1d4ffa9e7e8a4ab31"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/proof/run.sh",
+          "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/member-overview/FEATURE.md",
+          "sha256": "4ef6a87f3a2268142666128e761687041fbde506957c9f0cd5abe0d7a85869b5"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/member-overview/PROOF.md",
+          "sha256": "f7c7c6001d57b0533188321c69605a9308cd57e8ca678be91977007e2104a3d7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/member-overview/proof/run.sh",
+          "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/move-booking/FEATURE.md",
+          "sha256": "b19a862ef627e06b8317ef76296767ed760e4f531c4cb976cf71d2bb9a0baf4c"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/move-booking/PROOF.md",
+          "sha256": "bef1f3f4979485ea258fc2b1101d90e0f9be3908fc03e87eef050087fb643a8b"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/move-booking/proof/run.sh",
+          "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/status.json",
+          "sha256": "be63aa7a8f5a92faa49fda664d7974814ce249d521eb977faecb4c6ade012524"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/waiting-list/FEATURE.md",
+          "sha256": "c736a144eba6e3389baa206ed5c56adb00c122a8f8b0fce497557981525ca50d"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/waiting-list/PROOF.md",
+          "sha256": "7e4266fd9d5c8ffa2e8a6af0235136aaa678f08db9ad6b44634897b6be9c7b11"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/docs/features/waiting-list/proof/run.sh",
+          "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/schedule.json",
+          "sha256": "ad72d5ddd5657f1de1c0979a24036d67dd1628223e0c1766d02b68c066915c1d"
+        },
+        {
+          "path": "evidence/baseline-studio/repository/studio.py",
+          "sha256": "ad2313f41687a28a5b7a9fbbdafecda2a9288b766ba202b46b0f2de525ae8658"
+        },
+        {
+          "path": "evidence/baseline-instructions.json",
+          "sha256": "7673c5359b6f22225173c7ae14bf0031d3f4637dca76b6630fd960077e1012db"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+      ]
+    },
+    {
+      "id": "candidate-studio",
+      "variant": "candidate",
+      "case": "studio",
+      "final_for_case": true,
+      "worker_id": "01a0d4df-9183-7003-8cf0-0dc7de538e86",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+      "instruction_snapshot": "70b82de1a995c08d31390c0d4672e45f6c5566f7aa1bef16851557c992337738",
+      "native_trace": {
+        "path": "evidence/candidate-studio/native-visible-events.json",
+        "sha256": "120f08756f5647734825afe93075dae1f85272ee0e81f9b96b7ca656e7f4262b"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/candidate-studio/repository/README.md",
+          "sha256": "fd79e2f40480201f879a82c431c14476da768065b83201d78bbcf3c858ae9799"
+        },
+        {
+          "path": "evidence/candidate-studio/repository/REQUEST.txt",
+          "sha256": "6de5736d9233b9069bdbec2687b39ce860b6897fc515fc829f7cc65060cd7cca"
+        },
+        {
+          "path": "evidence/candidate-studio/repository/schedule.json",
+          "sha256": "ad72d5ddd5657f1de1c0979a24036d67dd1628223e0c1766d02b68c066915c1d"
+        },
+        {
+          "path": "evidence/candidate-studio/repository/studio.py",
+          "sha256": "ad2313f41687a28a5b7a9fbbdafecda2a9288b766ba202b46b0f2de525ae8658"
+        },
+        {
+          "path": "evidence/candidate-instructions.json",
+          "sha256": "9f91b5a6777722c3943aed0f355059467c586ae5083ca44a9304f668d91c9589"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+      ]
+    },
+    {
+      "id": "supplementary-studio",
+      "variant": "supplementary",
+      "case": "studio",
+      "final_for_case": false,
+      "worker_id": "01a0d4df-9183-7003-8cf0-0dc7de538e86",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+      "instruction_snapshot": "70b82de1a995c08d31390c0d4672e45f6c5566f7aa1bef16851557c992337738",
+      "native_trace": {
+        "path": "evidence/supplementary-studio/native-visible-events.json",
+        "sha256": "fd7452ba5bdb4bbb54e4806befa251064b433bb4aa8c190771ababcd05ec0b2d"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/supplementary-studio/repository/README.md",
+          "sha256": "fd79e2f40480201f879a82c431c14476da768065b83201d78bbcf3c858ae9799"
+        },
+        {
+          "path": "evidence/supplementary-studio/repository/REQUEST.txt",
+          "sha256": "6de5736d9233b9069bdbec2687b39ce860b6897fc515fc829f7cc65060cd7cca"
+        },
+        {
+          "path": "evidence/supplementary-studio/repository/docs/features/view-upcoming-bookings/FEATURE.md",
+          "sha256": "083ef068f3fa4ace1ed779100ca1bf33236de59e42fed56d45a4ffbb07ac8bc3"
+        },
+        {
+          "path": "evidence/supplementary-studio/repository/schedule.json",
+          "sha256": "ad72d5ddd5657f1de1c0979a24036d67dd1628223e0c1766d02b68c066915c1d"
+        },
+        {
+          "path": "evidence/supplementary-studio/repository/studio.py",
+          "sha256": "ad2313f41687a28a5b7a9fbbdafecda2a9288b766ba202b46b0f2de525ae8658"
+        },
+        {
+          "path": "evidence/studio-answer-dispatch.json",
+          "sha256": "1e717d22cca6b2b72e917e32cb02538f8880588fe1c069ec277103c6ab38cf2b"
+        },
+        {
+          "path": "evidence/snapshot-setup-repair.json",
+          "sha256": "b965fee21ba775e157d88a60e6b6de57285dee06a089a1f63fcdedb56761b8f6"
+        },
+        {
+          "path": "evidence/studio-helper-readback.json",
+          "sha256": "439d48c509a40625a24dc5b076ff8b8586e089460b80b35e66120f9176f5c1f7"
+        },
+        {
+          "path": "evidence/candidate-final-tool-snapshot.json",
+          "sha256": "830e10b6828cefc815cf42611d37751f32502753169636747df24af4133b7529"
+        },
+        {
+          "path": "evidence/candidate-instructions.json",
+          "sha256": "9f91b5a6777722c3943aed0f355059467c586ae5083ca44a9304f668d91c9589"
+        },
+        {
+          "path": "evidence/studio-answer-author-transcription.json",
+          "sha256": "b240525f3c21d0f64501e9f0577b51ebb10afa0c11769fc711de210629f752f6"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "Follow-up stakeholder answer after the separately retained initial turn; baseline has no continuation. Shared snapshot dependency import failed after the requested FEATURE had been produced.",
+        "Original stakeholder answer is retained as an author transcription from the visible original tool input; persisted native payload is encrypted, so plaintext is not independently machine-recovered."
+      ]
+    },
+    {
+      "id": "candidate-export",
+      "variant": "candidate",
+      "case": "export",
+      "final_for_case": false,
+      "worker_id": "01a0d4e4-2dde-7ae3-b183-ca14e6bce9ac",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "407f01e423878749355d5c53aa34c189a19f4bbed75be47aea71a5e5b6b78d94",
+      "instruction_snapshot": "437df21b4e839511a5dedb83658b71dd0fd0e5a248bb3dd07c85da09be2b8edd",
+      "native_trace": {
+        "path": "evidence/candidate-export/native-visible-events.json",
+        "sha256": "b86b11489ce4dd29afd855bd9eb944fa56c364713b9f805ee3a4c6e3a7cf9598"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/candidate-export/repository/README.md",
+          "sha256": "c10d7bbd361c48c966c1cc99bb7c79ed40d11161e39caea1061f0e57ef60bfa2"
+        },
+        {
+          "path": "evidence/candidate-export/repository/REQUEST.txt",
+          "sha256": "63c17f5b6c6199a342ac5732ef49d41218d35286b18814a2b45ac2ca0cc9c7f8"
+        },
+        {
+          "path": "evidence/candidate-export/repository/members.json",
+          "sha256": "97b160fd7d6dcf416b364f0ab19f812d3be235d5325948486beb1968b489185b"
+        },
+        {
+          "path": "evidence/candidate-export/repository/members.py",
+          "sha256": "cf4cfb8b6cf9781a9dfeab57911e6280e0025d6561ff3e74587b494e85455cad"
+        },
+        {
+          "path": "evidence/candidate-instructions-repaired.json",
+          "sha256": "5dd82115b552133dba344155df3d1dd040f33ffcc1dbda8b58735e8b8c35d581"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "FEATURE creation rejected by automatic approval review as outside authorization; worker stopped without writing. Spec is only retained as its native final draft."
+      ],
+      "outcome": "blocked-by-automatic-approval-review"
+    },
+    {
+      "id": "candidate-repair",
+      "variant": "candidate",
+      "case": "repair",
+      "final_for_case": false,
+      "worker_id": "01a0d4e6-61d2-7e82-a8ca-b2728beabab6",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "226b13587aba0761b6f57276c5571dea904f5f3b8d01908b2ef016a70431264f",
+      "instruction_snapshot": "000b9edef687104bb59d6a135fb04f194f8b380ae9832b7138f66f8cf6ed3d46",
+      "native_trace": {
+        "path": "evidence/candidate-repair/native-visible-events.json",
+        "sha256": "2066afb167cfeffda257659c8d14c1eb132b965164f794e69ad49f5fa56878a8"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/candidate-repair/repository/README.md",
+          "sha256": "c492ad338e2495fb7cc2bc11bf50be530be3c2ab89d394197018cce4677b9b4d"
+        },
+        {
+          "path": "evidence/candidate-repair/repository/REQUEST.txt",
+          "sha256": "f4fee95b0aa638983e62c1083639e8f201101e1e8219a572d3e182b99b0a1004"
+        },
+        {
+          "path": "evidence/candidate-repair/repository/capacity.py",
+          "sha256": "1dbf34d112c9479813bdacbcc1c2fd7af51e1836aa2119155339dd423b00f2e7"
+        },
+        {
+          "path": "evidence/candidate-repair/repository/test_capacity.py",
+          "sha256": "0d0108cfc47984b56a3dc0b27c911a78e90ac5e92935522d4ccba12ef46cb575"
+        },
+        {
+          "path": "evidence/candidate-final-tool-snapshot.json",
+          "sha256": "830e10b6828cefc815cf42611d37751f32502753169636747df24af4133b7529"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "Reproduced the requested test failure, but automatic approval review rejected capacity.py repair even with explicit forward-test context. No repair applied; post-repair passing test remains unavailable."
+      ],
+      "outcome": "blocked-by-automatic-approval-review"
+    },
+    {
+      "id": "stopped-retry-export",
+      "variant": "stopped-retry",
+      "case": "export",
+      "final_for_case": false,
+      "worker_id": "01a0d4e4-2dde-7ae3-b183-ca14e6bce9ac",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "407f01e423878749355d5c53aa34c189a19f4bbed75be47aea71a5e5b6b78d94",
+      "instruction_snapshot": "437df21b4e839511a5dedb83658b71dd0fd0e5a248bb3dd07c85da09be2b8edd",
+      "native_trace": {
+        "path": "evidence/stopped-retry-export/native-visible-events.json",
+        "sha256": "cdf891f030c12812103ad159c05e08affa83e6e7d06a1c0b0c83cdcda323f671"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/stopped-retry-export/repository/README.md",
+          "sha256": "c10d7bbd361c48c966c1cc99bb7c79ed40d11161e39caea1061f0e57ef60bfa2"
+        },
+        {
+          "path": "evidence/stopped-retry-export/repository/REQUEST.txt",
+          "sha256": "63c17f5b6c6199a342ac5732ef49d41218d35286b18814a2b45ac2ca0cc9c7f8"
+        },
+        {
+          "path": "evidence/stopped-retry-export/repository/members.json",
+          "sha256": "97b160fd7d6dcf416b364f0ab19f812d3be235d5325948486beb1968b489185b"
+        },
+        {
+          "path": "evidence/stopped-retry-export/repository/members.py",
+          "sha256": "cf4cfb8b6cf9781a9dfeab57911e6280e0025d6561ff3e74587b494e85455cad"
+        },
+        {
+          "path": "evidence/candidate-instructions-repaired.json",
+          "sha256": "5dd82115b552133dba344155df3d1dd040f33ffcc1dbda8b58735e8b8c35d581"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+      ]
+    },
+    {
+      "id": "candidate-portal",
+      "variant": "candidate",
+      "case": "portal",
+      "final_for_case": true,
+      "worker_id": "01a0d4e9-133f-7e70-9579-76067bbc9f90",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "4f7aed0a45f15d1272de8bfe83099c4f8823768d730f1a1d380424e41549279e",
+      "instruction_snapshot": "000b9edef687104bb59d6a135fb04f194f8b380ae9832b7138f66f8cf6ed3d46",
+      "native_trace": {
+        "path": "evidence/candidate-portal/native-visible-events.json",
+        "sha256": "a48a1dbc97d27eb9990e37032c8473c3faf4562d4d1c8930f7bae9deed9354fe"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/candidate-portal/repository/README.md",
+          "sha256": "5a597acf2cdecc1123762b9229ba5f7f299f6216c978da5c9ab412222778a10c"
+        },
+        {
+          "path": "evidence/candidate-portal/repository/REQUEST.txt",
+          "sha256": "2cdbdc5305b9a7ff5819b70011a0662a90dbbb7e17de9029d2adbfe8a599dbec"
+        },
+        {
+          "path": "evidence/candidate-portal/repository/clinics.json",
+          "sha256": "b548f8f6a587bfb85d522fa0b144dab7eed272ad6a81828c496ae8e1b30e7610"
+        },
+        {
+          "path": "evidence/candidate-portal/repository/provider.py",
+          "sha256": "734e845c3727f6d245efbe3cc02d9684f26ddb4bb65c1d2dbac299ea8afe19be"
+        },
+        {
+          "path": "evidence/candidate-final-tool-snapshot.json",
+          "sha256": "830e10b6828cefc815cf42611d37751f32502753169636747df24af4133b7529"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "This held-out task explicitly used read-only investigation to avoid unrelated fixture-write approval blocks. It demonstrates discovery decisions in the response, not artifact creation."
+      ]
+    },
+    {
+      "id": "approved-export",
+      "variant": "candidate",
+      "case": "export",
+      "final_for_case": true,
+      "worker_id": "01a0d4e4-2dde-7ae3-b183-ca14e6bce9ac",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "407f01e423878749355d5c53aa34c189a19f4bbed75be47aea71a5e5b6b78d94",
+      "instruction_snapshot": "437df21b4e839511a5dedb83658b71dd0fd0e5a248bb3dd07c85da09be2b8edd",
+      "native_trace": {
+        "path": "evidence/approved-export/native-visible-events.json",
+        "sha256": "41326a02899799b3482deec04946c85e2d2e65890eb21f8c63e7cde1ad4972c7"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/approved-export/repository/README.md",
+          "sha256": "c10d7bbd361c48c966c1cc99bb7c79ed40d11161e39caea1061f0e57ef60bfa2"
+        },
+        {
+          "path": "evidence/approved-export/repository/REQUEST.txt",
+          "sha256": "63c17f5b6c6199a342ac5732ef49d41218d35286b18814a2b45ac2ca0cc9c7f8"
+        },
+        {
+          "path": "evidence/approved-export/repository/docs/features/export-active-members/FEATURE.md",
+          "sha256": "8af6cf633461b5c0d65c71d311638f4c7c283855cda6a8312c381ac3720900b2"
+        },
+        {
+          "path": "evidence/approved-export/repository/members.json",
+          "sha256": "97b160fd7d6dcf416b364f0ab19f812d3be235d5325948486beb1968b489185b"
+        },
+        {
+          "path": "evidence/approved-export/repository/members.py",
+          "sha256": "cf4cfb8b6cf9781a9dfeab57911e6280e0025d6561ff3e74587b494e85455cad"
+        },
+        {
+          "path": "evidence/candidate-instructions-repaired.json",
+          "sha256": "5dd82115b552133dba344155df3d1dd040f33ffcc1dbda8b58735e8b8c35d581"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "Continued original worker after explicit user approval of the exact previously denied fixture action. Earlier denied attempt remains retained; this is not a new independent sample."
+      ],
+      "outcome": "worker-completed-after-explicit-user-approval"
+    },
+    {
+      "id": "approved-repair",
+      "variant": "candidate",
+      "case": "repair",
+      "final_for_case": true,
+      "worker_id": "01a0d4e6-61d2-7e82-a8ca-b2728beabab6",
+      "model": "gpt-6-astra",
+      "effort": "xhigh",
+      "fixture_sha256": "226b13587aba0761b6f57276c5571dea904f5f3b8d01908b2ef016a70431264f",
+      "instruction_snapshot": "000b9edef687104bb59d6a135fb04f194f8b380ae9832b7138f66f8cf6ed3d46",
+      "native_trace": {
+        "path": "evidence/approved-repair/native-visible-events.json",
+        "sha256": "4fac4e5364a676fde2fcfe45531b0a6326e5e0b20b5df178f86498f69ff7423e"
+      },
+      "artifacts": [
+        {
+          "path": "evidence/approved-repair/repository/README.md",
+          "sha256": "c492ad338e2495fb7cc2bc11bf50be530be3c2ab89d394197018cce4677b9b4d"
+        },
+        {
+          "path": "evidence/approved-repair/repository/REQUEST.txt",
+          "sha256": "f4fee95b0aa638983e62c1083639e8f201101e1e8219a572d3e182b99b0a1004"
+        },
+        {
+          "path": "evidence/approved-repair/repository/capacity.py",
+          "sha256": "5f154bcabadbb2e8f53649d222854d14b9feccae7099790d204ba0ca443c50b1"
+        },
+        {
+          "path": "evidence/approved-repair/repository/test_capacity.py",
+          "sha256": "0d0108cfc47984b56a3dc0b27c911a78e90ac5e92935522d4ccba12ef46cb575"
+        },
+        {
+          "path": "evidence/candidate-final-tool-snapshot.json",
+          "sha256": "830e10b6828cefc815cf42611d37751f32502753169636747df24af4133b7529"
+        }
+      ],
+      "limitations": [
+        "Single-turn isolated task; no live user answers.",
+        "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+        "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime.",
+        "Continued original worker after explicit user approval of the exact previously denied fixture action. Earlier denied attempt remains retained; this is not a new independent sample."
+      ],
+      "outcome": "worker-completed-after-explicit-user-approval"
+    }
+  ],
+  "candidate_instruction_hashes": {
+    "AGENTS.md": "7c7e837bc1e95f05a69e18192ae9e2fcb8d02469ff472ce25cd5524c0329c17e",
+    "README.md": "9ddce86435882795760b8ad23f997c7e391536d38d5598886f88d3a9e66f984b",
+    "docs/harness/coding/evidence.md": "ae54d3d479f5ccf03e89f817d4dfb7bfafcda82135d945bd02682cb65caa5470",
+    "docs/harness/coding/harness-evaluation.md": "d62879b92a8263cc37a5fe827033eaa1e45a4932584695f0d0fc22623bc93df1",
+    "docs/harness/coding/proof-guidance.md": "f67fad1e7aea90f02eaf31d179d51f94cc6945d6a68075166d72a799a13bf43f",
+    "docs/harness/coding/proof.md": "ef648ce7232afc7d3e40c9e43ca19e6c1d7f9da006303f1ec110a69fb3ba6248",
+    "docs/harness/coding/reviewer-calibration.json": "c26a3dfd5723dcd42f9338e11e64a688b9207cb2e888e4a7d6573a105ae6b35e",
+    "docs/harness/coding/status.md": "e4778f75bb767f14565dd314728cfdd90d951f68d152e6b6407f24e23467b03e",
+    "docs/harness/presentations.md": "26ab81b37a0d9a76f4dae38328305d1dc1a57f069594044ca8fe25db1f720aa1",
+    "docs/harness/secondbrain-cycle.md": "bb770098ecf749634567c00a7d26bcae49c498621411287ef28a072c0235c40d",
+    "docs/harness/secondbrain.md": "d0924d988ab01da76361a112dc89a4c397fc523ae8a45f49d7bcadad7176e1c9",
+    "docs/harness/skill-management.md": "97a4910c7d79646468520ddebf1cebb457c2af2af906d722fac4968ae86ee393",
+    "skills/coding-antipattern-review/SKILL.md": "80958edb5496c8389fd239d65c5efac3a343d339ad66dce7831771e66f6ff170",
+    "skills/coding-antipattern-review/agents/openai.yaml": "e3dcfabb1fcf44306607518a8e8846c567e12c3ced9ff85ec757d19cd8418a51",
+    "skills/coding-antipattern-review/references/architecture-and-runtime.md": "4b29be23ea03eef8094373077c79d11ec83ec92728e36e45eb35b923eeea76e6",
+    "skills/coding-antipattern-review/references/code-and-design.md": "74a05085752f06cb81b374d4940c4a7cd84195febc0d568b1192642ec9a7b4a0",
+    "skills/coding-antipattern-review/references/finding-schema.md": "fbb15fedd139ef275e67602b6f9dbe93265334ee1617c8ed95b2dc8db3961fc6",
+    "skills/coding-antipattern-review/references/sources.md": "e9fc41ba4a6cbb332380d4b736965e0d8c96c255fbdf3056a88dd13129a73a32",
+    "skills/coding-antipattern-review/references/tests-and-proof.md": "1a09f1d533fc6ed54e95df49529b2205f648b5bd262ce1e9561f5df12e5d2283",
+    "skills/coding-architecture-deep-dive/SKILL.md": "b11d59db74a4950137f1d19d334be6bab2f6cc371c7533b0675e9110eef5ae5a",
+    "skills/coding-architecture-deep-dive/agents/openai.yaml": "12be3444c14d7e4ffd5b25953692507b65c638ebb2fe87834b1ebf7605a111b8",
+    "skills/coding-commit/SKILL.md": "a20ccba6400793cc7d8875bdf68dc8bd4e58d9de44fcdb3defbd375bc01f01f8",
+    "skills/coding-commit/agents/openai.yaml": "da7e82c29883feb9036127a5a94dd2a4ae01c954658d1cacbaec08eb83827065",
+    "skills/coding-explain-kit/SKILL.md": "bc8b37ade4494debce994347fc476a318d8fa83205c47c83fcdd3cca9b7c6cc2",
+    "skills/coding-fix/SKILL.md": "7d1d8e041496c8ea07924c154fa36051eac14a62f9ebd698c85047847533cf35",
+    "skills/coding-fix/agents/openai.yaml": "2ae6aeced873994af9b9dc9f7ae79d716cf3de2062fee0c8ea9a06ece81f7e99",
+    "skills/coding-frontend/SKILL.md": "05304f600ee7f0571d33a5b7b5710f99dbdadd8319a0eaf92c9f7f57ea490195",
+    "skills/coding-frontend/agents/openai.yaml": "39792fd041b7a2b0013da54bbe5b43400bb450b1be6a1f1ff227d116ec1dd798",
+    "skills/coding-operate/SKILL.md": "a06e20e3ab84458e2dd3fb80fe50ad24a8e4fe4d3506271b00b85bbe9df973a4",
+    "skills/coding-operate/agents/openai.yaml": "a63423467c13e805b4c31aadedb13f0e5160e7f4339924f7e0be0b8bedaeda2d",
+    "skills/coding-operate/references/read-only-checks.md": "b48d24f9afa48e71441a99e47477194acc99a21c07fb87a019b649ed569d450c",
+    "skills/coding-operate/scripts/ops_diag_preflight.sh": "e57fbeaca1ca288be0e6ca5cde43682e3139f6bafc101ee18a92e2697f714fb1",
+    "skills/coding-prepare-environment/SKILL.md": "7b8186f9d190d4951ab1b941a3e99b0c11d47acf780485a4106afaede31fa9e6",
+    "skills/coding-prepare-environment/agents/openai.yaml": "6e5d7b11084ca9e4450ec8afa787e43502312d6adb7c5567084a56fbd733beb9",
+    "skills/coding-prepare-environment/ddd.dfg": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "skills/coding-prepare-environment/references/stack-reference.md": "91dde579ecc90ef2b4c01efc2bae5cf58cedc9757383eeae0b10a449242f4484",
+    "skills/coding-prepare-environment/scripts/generate_tasks.py": "8e45bd893ba55c63f7df55b0a4187e451e43c698a5c1a2a17951f2334f6ef666",
+    "skills/coding-prepare-environment/tests/test_generate_tasks.py": "d5535007b1fc1396e64f9d24a2cd78bb9e42f5587405c50226dde76dc7032f1d",
+    "skills/coding-prepare-environment/tests/test_gitignore_template.py": "fe3aafef449123dcb0e39a0e97696ee1546825176d6152f8d0622d7735c62c56",
+    "skills/coding-python-backend/SKILL.md": "b74245f178817a104db4aaa63cad6395c26a091dce297313d0946b47e696d7cf",
+    "skills/coding-python-backend/agents/openai.yaml": "1ad0836d06c41645d6c2f6b7ec2f6565a81adcf242e739332d594f3d1d2a8e03",
+    "skills/coding-review-workflow/SKILL.md": "ba0623dba251b5f9f06e1608cc8fc0a7267cbb9ad724e1049d243052b6951c99",
+    "skills/coding-review-workflow/agents/openai.yaml": "1716ba2cc8d2e6302b75f69e084b549e58648aacce88fc8307b9cc1c110420c2",
+    "skills/coding-secret-audit/SKILL.md": "cff6df86b263b8d40ff346425b12cfda50d17537a7e7817797244b6fa6aaa7be",
+    "skills/coding-secret-audit/agents/openai.yaml": "c7d15eff1d9c8c7dd761b40b2b48f82d72d9f9504d7c92f195fed368a9932fa4",
+    "skills/coding-secret-audit/scripts/run_gitguardian_audit.py": "6f4a5d5cdc795c41612398b29bb8c627792a9b6a744f6308bbdc083893f5e8ac",
+    "skills/coding-secret-audit/scripts/scan_current_checkout.py": "f831f93f754b70abd8c01e56ef1e5c3fd645679d805b38da6e200deba70b2807",
+    "skills/coding-shape/SKILL.md": "3b760f5c8e76b633eaaf2b59323879c554fae77484eb10b72d2591d42d5b0a3d",
+    "skills/coding-shape/agents/openai.yaml": "fba6ae4ca49506f2768a0dacd105af9e5e9ef0fbd19c682026ff88773f7dac76",
+    "skills/coding-ship/SKILL.md": "fc835be9568056b0486350cdfb8fb02d6cb1c9ef2419b9c83f5fb3d75aee1d5f",
+    "skills/coding-ship/agents/openai.yaml": "dc6f3ad91ebee25870d6c00d0be2e7c6d4d90890d56979a04cd924808e3be985",
+    "skills/coding-ui-toolkit/SKILL.md": "fbdf37cfd538ed07863e893e0a5cd0bf63dfce7a9c70da197099c9b04524295f",
+    "skills/coding-ui-toolkit/agents/openai.yaml": "3549d811c562050908198a0a6c936cbece63db7788dbe7adaf4dc2982897d909",
+    "skills/coding-ui-toolkit/references/capability-catalog.md": "bd6b2dee6f76eb2b2d679004b3e416a1813806b20996052d1839aabae4db3ac9",
+    "skills/coding-ui-toolkit/references/mcp-routing.md": "56ad429204ad39305b4660d5d9f102b9f6ab9cac67ca2d2a5bc2ede0e8713065",
+    "skills/coding-ui-toolkit/references/review-handoff.md": "b18b41b9d8f8be6295842d77f552a1c6949625aaf32289e5571032573db7df43",
+    "skills/coding-ui-toolkit/references/shadcn-catalog/components.json": "fab6084d4e6e9623a435c79176f9366679d32979f2c24983fc0fb79ecb55e47b"
+  },
+  "independent_review": {
+    "reviewer_id": "/root/final_review",
+    "verdict": "PASS",
+    "passed_cases": [
+      "studio",
+      "export",
+      "repair",
+      "portal"
+    ],
+    "scope": "Semantic task observations and final instruction review. Official captured proof/freshness review follows separately.",
+    "candidate_instruction_map_sha256": "3d52ba5ca0148dbb141870fce5581474da80a2e8b4bc7cfaf14894a958fa3fdb",
+    "evidence": {
+      "path": "evidence/independent-review-current.json",
+      "sha256": "d54c4564fd53af9415f9292b32735b196730c541d7d98d1a9121cd6807048d77"
+    }
+  }
+}

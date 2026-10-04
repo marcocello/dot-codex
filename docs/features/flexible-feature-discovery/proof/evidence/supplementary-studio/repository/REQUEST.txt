@@ -1,0 +1,1 @@
+We run a small fitness studio. I want members to manage their own bookings, move sessions, join waiting lists and see their remaining credits. Help me shape this into work we can start delivering. Keep the feature specs narrow. Investigate this repository and discuss the direction with me; don't implement application changes yet.

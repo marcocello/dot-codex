@@ -1,0 +1,20 @@
+{
+  "author": "acceptance-fixture-author",
+  "candidate_digest": "f4c856b20d5cdf848680df329d82df26bace5d03e47027e5f935250f228fa09a",
+  "implementer": "acceptance-fixture-implementer",
+  "proof_digest": "5615804e01638ff89f5e3766d6752d6f76aa79c4f25d7f3b4181eafea0b0147f",
+  "proof_run": "docs/features/sample/proof/runs/20260925T081507421813Z",
+  "receipt_digest": "70f435c8e5ad25a2fec6974174620a5209af37e19f5beeebd45d225ec046ce16",
+  "regressions": [
+    {
+      "digest": "b3aaf82006ebbb176c07567ffb0f55f741fbe479a5114ddcd03da77f2391f1c3",
+      "run": "docs/features/sample/tests/runs/20260925T081507304383Z"
+    }
+  ],
+  "reviewed_at": "2026-09-25T08:15:07.521872+00:00",
+  "reviewer": "acceptance-fixture-reviewer",
+  "summary": "Reviewed accepted behavior against retained execution.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

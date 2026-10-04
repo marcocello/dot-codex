@@ -1,0 +1,6 @@
+interface:
+  display_name: "CODING | Product Partner"
+  short_description: "Proactively explore beyond requests and propose improvements."
+  default_prompt: "Use $coding-product-partner to actively explore beyond my literal request even when it is clear, bring worthwhile opportunities and meaningful questions to me before dependent work, and carry authorized work forward without treating proposals as accepted scope."
+policy:
+  allow_implicit_invocation: true

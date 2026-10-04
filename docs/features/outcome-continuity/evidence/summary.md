@@ -1,0 +1,13 @@
+# Observed result and scope
+
+The change replaces focused passages in Product Partner, Design Specs and Proof, Implement, the shared proof contract, and reviewer guidance. It preserves the existing lifecycle and adds no mandatory document, approval, or stage. The exact turn-local patch and baseline/candidate snapshots are retained here, preserving the pre-existing dirty checkout.
+
+Four fresh workers executed isolated raw tasks. Both baseline and candidate integration workers inspected the vendor contract and avoided treating an authenticated path as a public customer link. The candidate review reproduced a failed save/relaunch/load while the supplied same-process test passed. The candidate repair reproduced the singular failure, repaired it, and preserved plural behavior. The separate reviewer adjudicated actual command receipts and artifacts, including an independent rerun of the repair tests.
+
+This is evidence of sampled candidate behavior and no observed regression on the comparison case. It does not demonstrate a causal improvement: baseline also passed. The stronger source/consumer emphasis is retained as a focused clarification supported by prior interaction failures, not a claim that those failure modes are eliminated.
+
+The trial context is deliberately small and instructions are explicitly supplied. Workers inherited the same model/effort and host tool/developer context. Full child native histories were unavailable: command/stdout/stderr receipts were instrumented by workers during actual execution, and artifacts/final delivery were observed by the coordinator. Instrumented receipts are not independent runtime attestation and may omit conversation activity. Dispatch prohibited Goals, subagents, commits, and external actions; therefore the repair result cannot establish automatic routing, Goal enforcement, or causally isolate the new guidance from the unchanged repair skill and trial restrictions.
+
+No trial exercises a complete feature implementation through all lifecycle roles, live provider delivery, visual matching, or a real production deployment. No reliability percentage, token/time saving, or broad efficiency gain is claimed. Snapshot/freshness selection, shared-checkout coordination, stale fixture tooling, and interaction redaction were not changed in this slice.
+
+Skill metadata validation and the repository gate passed before final capture. Official proof is an integrity check over retained fresh-worker observations and independent semantic adjudication, not a new model execution. Final capture and review receipt bind this evidence to the current local candidate.

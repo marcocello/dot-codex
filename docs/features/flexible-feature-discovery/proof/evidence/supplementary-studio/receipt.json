@@ -1,0 +1,42 @@
+{
+  "id": "supplementary-studio",
+  "variant": "supplementary",
+  "case": "studio",
+  "final_for_case": false,
+  "worker_id": "01a0d4df-9183-7003-8cf0-0dc7de538e86",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "fixture_sha256": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+  "instruction_snapshot": "70b82de1a995c08d31390c0d4672e45f6c5566f7aa1bef16851557c992337738",
+  "native_trace": {
+    "path": "evidence/supplementary-studio/native-visible-events.json",
+    "sha256": "fd7452ba5bdb4bbb54e4806befa251064b433bb4aa8c190771ababcd05ec0b2d"
+  },
+  "artifacts": [
+    {
+      "path": "evidence/supplementary-studio/repository/README.md",
+      "sha256": "fd79e2f40480201f879a82c431c14476da768065b83201d78bbcf3c858ae9799"
+    },
+    {
+      "path": "evidence/supplementary-studio/repository/REQUEST.txt",
+      "sha256": "6de5736d9233b9069bdbec2687b39ce860b6897fc515fc829f7cc65060cd7cca"
+    },
+    {
+      "path": "evidence/supplementary-studio/repository/docs/features/view-upcoming-bookings/FEATURE.md",
+      "sha256": "083ef068f3fa4ace1ed779100ca1bf33236de59e42fed56d45a4ffbb07ac8bc3"
+    },
+    {
+      "path": "evidence/supplementary-studio/repository/schedule.json",
+      "sha256": "ad72d5ddd5657f1de1c0979a24036d67dd1628223e0c1766d02b68c066915c1d"
+    },
+    {
+      "path": "evidence/supplementary-studio/repository/studio.py",
+      "sha256": "ad2313f41687a28a5b7a9fbbdafecda2a9288b766ba202b46b0f2de525ae8658"
+    }
+  ],
+  "limitations": [
+    "Single-turn isolated task; no live user answers.",
+    "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+    "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+  ]
+}

@@ -17,6 +17,7 @@
 !AGENTS.md
 !README.md
 !config.template.toml
+!secondbrain.template.yaml
 !pyproject.toml
 !skills.toml
 
@@ -52,9 +53,43 @@ docs/interactions
 # Private harness connection settings and lock
 /knowledge.toml
 /knowledge.toml.lock
-
+/secondbrain.yaml
+/secondbrain-state/
+# Separate minimal harness experiment; its own allowlist protects runtime state.
+!/SSH/
 
 # BEGIN skill_inventory.py managed skills
 skills/bento-slides/
 skills/reui/
 # END skill_inventory.py managed skills
+
+# Bundled environment starter source (narrow file types, no runtime trees).
+!skills/coding-prepare-environment/assets/**/*.toml
+!skills/coding-prepare-environment/assets/**/*.lock
+!skills/coding-prepare-environment/assets/**/*.ini
+!skills/coding-prepare-environment/assets/**/*.mako
+!skills/coding-prepare-environment/assets/**/*.ts
+!skills/coding-prepare-environment/assets/**/*.tsx
+!skills/coding-prepare-environment/assets/**/*.html
+!skills/coding-prepare-environment/assets/**/*.yml
+!skills/coding-prepare-environment/assets/**/Makefile
+!skills/coding-prepare-environment/assets/**/Dockerfile
+!skills/coding-prepare-environment/assets/**/Caddyfile
+!skills/coding-prepare-environment/assets/**/Caddyfile.production
+!skills/coding-prepare-environment/assets/**/.gitignore
+!skills/coding-prepare-environment/assets/**/.dockerignore
+!skills/coding-prepare-environment/assets/**/.python-version
+!skills/coding-prepare-environment/assets/**/.nvmrc
+skills/coding-prepare-environment/assets/**/.env*
+!skills/coding-prepare-environment/assets/**/.env.example
+skills/coding-prepare-environment/assets/**/node_modules/
+skills/coding-prepare-environment/assets/**/.venv/
+skills/coding-prepare-environment/assets/**/build/
+skills/coding-prepare-environment/assets/**/dist/
+skills/coding-prepare-environment/assets/**/backups/
+skills/coding-prepare-environment/assets/**/logs/
+
+# Shared verification evidence follows the existing local retention policy.
+docs/verification/*/proof/runs/**
+docs/verification/*/tests/runs/**
+docs/verification/rounds/**

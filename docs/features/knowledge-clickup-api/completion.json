@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "18847258b3019a8d547b2ada1b7b8e27d24eaf3b6e764af3906a698d77d76923",
+  "feature_dir": "docs/features/knowledge-clickup-api",
+  "feature_id": "knowledge-clickup-api",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-clickup-api/proof/runs/20260919T084141492048Z",
+  "receipt_digest": "4c1aabea8d17e9c2e51c5446941252ea55d1e67c7b65862057a559491673f0dc",
+  "recorded_at": "2026-10-02T10:04:28.088531+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

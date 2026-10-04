@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "8784d773d1a0863205dde75eaf0f3498a5d0bad2ac9ca1992aaad192371bb368",
+  "feature_dir": "docs/features/knowledge-profiles",
+  "feature_id": "knowledge-profiles",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-profiles/proof/runs/20260918T195445721290Z",
+  "receipt_digest": "b14ecb2a786e57e5f9a9b7abc50d4d29fbda5e88d1a977ec7f9a92a77afb7ec9",
+  "recorded_at": "2026-10-02T10:04:28.087953+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

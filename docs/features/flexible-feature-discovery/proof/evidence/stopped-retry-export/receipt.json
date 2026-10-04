@@ -1,0 +1,38 @@
+{
+  "id": "stopped-retry-export",
+  "variant": "stopped-retry",
+  "case": "export",
+  "final_for_case": false,
+  "worker_id": "01a0d4e4-2dde-7ae3-b183-ca14e6bce9ac",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "fixture_sha256": "407f01e423878749355d5c53aa34c189a19f4bbed75be47aea71a5e5b6b78d94",
+  "instruction_snapshot": "437df21b4e839511a5dedb83658b71dd0fd0e5a248bb3dd07c85da09be2b8edd",
+  "native_trace": {
+    "path": "evidence/stopped-retry-export/native-visible-events.json",
+    "sha256": "cdf891f030c12812103ad159c05e08affa83e6e7d06a1c0b0c83cdcda323f671"
+  },
+  "artifacts": [
+    {
+      "path": "evidence/stopped-retry-export/repository/README.md",
+      "sha256": "c10d7bbd361c48c966c1cc99bb7c79ed40d11161e39caea1061f0e57ef60bfa2"
+    },
+    {
+      "path": "evidence/stopped-retry-export/repository/REQUEST.txt",
+      "sha256": "63c17f5b6c6199a342ac5732ef49d41218d35286b18814a2b45ac2ca0cc9c7f8"
+    },
+    {
+      "path": "evidence/stopped-retry-export/repository/members.json",
+      "sha256": "97b160fd7d6dcf416b364f0ab19f812d3be235d5325948486beb1968b489185b"
+    },
+    {
+      "path": "evidence/stopped-retry-export/repository/members.py",
+      "sha256": "cf4cfb8b6cf9781a9dfeab57911e6280e0025d6561ff3e74587b494e85455cad"
+    }
+  ],
+  "limitations": [
+    "Single-turn isolated task; no live user answers.",
+    "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+    "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+  ]
+}

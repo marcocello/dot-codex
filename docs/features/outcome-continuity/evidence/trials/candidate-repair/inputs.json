@@ -1,0 +1,17 @@
+{
+  "fixture/REQUEST.md": "c64bb546543f7a203f702208cadc25064a7319557417d36972363674583af3cd",
+  "fixture/counts.py": "c5d57701834e7d65297e7196adb5e30fa90668feeaee6504d6cbaf2a8d048008",
+  "fixture/test_counts.py": "ea0692e80e2b5549dc1e2f3c15d50725977abbb3f37dde86c8837855b14b6681",
+  "instructions/guidance.md": "2ecf58991bdb9505cbe8d5862c747e9f7bd8b90a518127dceabcc04806aa5c35",
+  "instructions/implement.md": "0b4ee3ca93e9ca493c3f49d6ff651f84e5f65ac4cc0f275e65f774c1488dfc2d",
+  "instructions/partner.md": "8f8d8004a40feb48006e45d505c7f4981a3a1584f0b29fcd64d40ee188954480",
+  "instructions/proof.md": "8b0452a1627d28c9e793232fdb783dd5fae07f34074e1a808d7235500b76b551",
+  "instructions/repair.md": "ea152b173fbef3819cef1f3990b2880b08d886a7fd69a106f1a197516b16f7f0",
+  "instructions/spec.md": "e42484ceb8b3d8d20f11a44f8e1b8981f8faf2d5b92f3d1e2ba60c7b82499e7f",
+  "metadata.json": "4bd640360d83ee3789f4245998ceb1948b51d90881df9a46a58192b8d50c612b",
+  "result-files/counts.py": "bfaa88704697af8338ed429487000e66bf92cfd3ed049464afbe2453a132581c",
+  "result-files/test_counts.py": "ba4c2d1d2a2551e4ee842cf488e3a24d105986ab011e4fb8cfe4fe8f15ec0e54",
+  "result.md": "8587f6764259cf3b92506055de99b2a8b6a66b7c66400fb13e893cc39b2714c8",
+  "tool-events.log": "e04fa09964be8fc95e857ba60be1d3c53b83c39301134346e86a84c8791fd0cb",
+  "trace.md": "d90ef962e8b69c874b4a5b2b64b515b91129f6b7cbb1132f5847d24b1d2ec908"
+}

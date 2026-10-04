@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "ee756d635f4b1972a23a3d4f2f5c5bf884e9e4ecfe88defdeb1299e7ef9ba51a",
+  "feature_dir": "docs/features/coding-harness-alignment",
+  "feature_id": "coding-harness-alignment",
+  "implementer": null,
+  "proof_run": "docs/features/coding-harness-alignment/proof/runs/20260915T145815445821Z",
+  "receipt_digest": "9af197381c2517cd0fcb81b831ed719e4c6a77539271b683db80196e52e61841",
+  "recorded_at": "2026-10-02T10:04:28.083767+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

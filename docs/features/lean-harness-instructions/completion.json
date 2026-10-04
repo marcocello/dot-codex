@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "a4cc7e6b36c8fa5f242ee8f821850b3fedd3be6d41044987bcc1a1f2da93149f",
+  "feature_dir": "docs/features/lean-harness-instructions",
+  "feature_id": "lean-harness-instructions",
+  "implementer": null,
+  "proof_run": "docs/features/lean-harness-instructions/proof/runs/20260917T162423146841Z",
+  "receipt_digest": "a34e6370b978aba5618efe53140895db71215da375c6d06fd04a46cde65b2a27",
+  "recorded_at": "2026-10-02T10:04:28.086793+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

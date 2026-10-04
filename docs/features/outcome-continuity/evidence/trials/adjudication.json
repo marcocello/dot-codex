@@ -1,0 +1,55 @@
+{
+  "reviewer_id": "/root/outcome_reviewer",
+  "limitations": "One fresh worker execution per cell, with forced instruction bundles and local synthetic fixtures. All recorded models are gpt-6-astra, medium inherited effort. Child native traces are unavailable: inspected worker-instrumented commands and subprocess output captured during execution, alongside coordinator-retained dispatch/final delivery and result artifacts; these are partial tool receipts, not full native logs or independent runtime attestation. Unobserved conversation or tool activity cannot be excluded. Dispatch explicitly prohibited Goals, external calls, subagents, and commits; repair selected unchanged repair.md. Thus the repair result shows successful bounded execution under this setup, not an isolated causal test of whether changed discovery guidance adds ceremony. No reliability, superiority, automatic routing, Goal enforcement, acceptance-author behavior, implemented integration, or live-provider correctness is established. No additional attempts are represented in this fixed comparison.",
+  "comparison": "Baseline and candidate integration both pass against byte-identical raw integration inputs. Both inspect vendor source, resolve authenticated download_path versus separate public share issuance, retain first-use creation through customer download, and disclose unavailable live checks. Candidate recommends protected portal delivery and explicitly limits its transport probe to client dispatch; baseline recommends conditional public sharing and supplies a protected alternative. These are both valid plan choices. The observed sample supports candidate behavior with no observed regression; it does not establish that the changed instructions caused an improvement. All four workers have the same recorded model, local tools, and authorization scope; dispatch wording and worker choices differ slightly, and forced bundles differ intentionally.",
+  "model_difference": null,
+  "trials": {
+    "baseline-integration": {
+      "pass": true,
+      "rationale": "Receipts show REQUEST and original README/API/vendor source inspection. Findings correctly identify account-authenticated raw downloads, explicit share creation, no pre-existing shares, and a newly connected account create/status/ready/customer-download journey. Conditional public sharing and protected streaming alternative preserve usable customer access. Facts, provisional TTL/access policy, absent credentials/portal/live validation are separated. No observed implementation or live calls; the requested planning deliverable is complete despite later implementation prerequisites.",
+      "evidence": [
+        "baseline-integration/tool-events.log",
+        "baseline-integration/result.md",
+        "baseline-integration/fixture/vendor/archivebox.py",
+        "baseline-integration/fixture/REQUEST.md",
+        "baseline-integration/trace.md"
+      ]
+    },
+    "candidate-integration": {
+      "pass": true,
+      "rationale": "Receipts show original source inspection plus a network-free probe of actual bundled client dispatch. The result does not treat invented transport responses as provider capability evidence. It identifies authenticated download_path, absent initial exports/shares, and plans create, persist, poll, ready handling, protected portal fetch and browser artifact inspection with ownership checks. Public sharing is an explicit alternative with its access tradeoff. Live/provider and absent-portal limits are concrete; no implementation, acceptance pass, or live verification is claimed.",
+      "evidence": [
+        "candidate-integration/tool-events.log",
+        "candidate-integration/result.md",
+        "candidate-integration/fixture/vendor/archivebox.py",
+        "candidate-integration/fixture/REQUEST.md",
+        "candidate-integration/trace.md"
+      ]
+    },
+    "candidate-review": {
+      "pass": true,
+      "rationale": "Worker reads the original close/reopen requirement, source and supplied tests. Receipts show supplied test PASS followed by actual CLI save in one process and load in another returning None. Review correctly rejects completion because PRESETS is process memory and the passing test only exercises one process. It leaves the implementation unchanged within the observed record and confines its claim to the local CLI.",
+      "evidence": [
+        "candidate-review/tool-events.log",
+        "candidate-review/result.md",
+        "candidate-review/fixture/REQUEST.md",
+        "candidate-review/fixture/presets.py",
+        "candidate-review/fixture/test_presets.py",
+        "candidate-review/trace.md"
+      ]
+    },
+    "candidate-repair": {
+      "pass": true,
+      "rationale": "Retained source preserves format_count(count), selects item only for count == 1, and leaves plural behavior unchanged. Receipts show an exposing singular test failure before the fix, subsequent singular/zero/two test success, and direct execution for -2, -1, 0, 1, 2, 100. Independent adjudicator reran retained result-files with PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_counts: both tests pass. No added feature scaffolding, product question, or pause is visible; requested RESULT/log retention is evaluation instrumentation, not extra product ceremony.",
+      "evidence": [
+        "candidate-repair/tool-events.log",
+        "candidate-repair/result.md",
+        "candidate-repair/result-files/counts.py",
+        "candidate-repair/result-files/test_counts.py",
+        "candidate-repair/fixture/counts.py",
+        "candidate-repair/fixture/REQUEST.md",
+        "candidate-repair/trace.md"
+      ]
+    }
+  }
+}

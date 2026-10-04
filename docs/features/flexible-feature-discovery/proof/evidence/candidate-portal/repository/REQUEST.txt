@@ -1,0 +1,1 @@
+We're adding a customer portal to this clinic system so patients can see and manage appointments. In our earlier conversation you asked whether to put every clinic in one shared workspace or give each clinic its own. Yes, keep one workspace per clinic. Please investigate the repository and shape the first deliverable. Don't implement application changes yet.

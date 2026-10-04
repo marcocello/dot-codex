@@ -1,0 +1,1 @@
+Fix this bug: remaining_capacity counts cancelled reservations against a class's capacity. A class with capacity 10 and 3 confirmed plus 4 cancelled reservations should have 7 spaces, but it currently reports 3. Preserve the existing function interface and don't alter the input reservations. Run the existing tests after the repair.

@@ -1,0 +1,63 @@
+--- skills/coding-product-partner/SKILL.md (turn baseline)
++++ skills/coding-product-partner/SKILL.md
+@@ -26,7 +26,7 @@
+ 
+ Inspect the request, relevant dialogue, repository behavior, existing decisions, and supplied references. Code establishes present capability and reuse opportunities, not the ceiling of the user's ambition. Explain the current understanding and a recommended direction before turning a brief into contracts. Keep exploration conversational until a decision is worth recording.
+ 
+-Connect the problem, user experience, and technical context: who encounters what situation, why the present behavior is inadequate, what useful result changes, and how architecture or provider constraints affect that result. Investigate the surrounding journey and affected consumers without requiring an exhaustive repository tour. Code establishes what happens, not necessarily what should happen.
++Ground the next slice in a concrete situation: the user's actual starting state, ordinary action, and useful result at the consumer. Investigate the assumption most likely to make that journey fail before dependent acceptance. Use available source, references, or a bounded authorized probe; incomplete documentation alone does not establish that a capability is missing. Separate what the user decided, what evidence establishes, and what remains assumed. Keep unavailable evidence as a limit and continue independent work. Scale investigation to the consequence; clear repairs need no additional discovery round.
+ 
+ Challenge a proposed solution when a materially different interpretation or simpler approach would better meet the need. Give the reason, practical consequence, and recommendation. Do not manufacture objections or treat every choice as unresolved.
+ 
+@@ -42,6 +42,6 @@
+ 
+ Recommend one specific, demonstrable outcome for the next slice and keep a short view of how later slices compose into the user's journey. Keep necessary failure and permission behavior with the outcome; technical layers alone are not useful features. Later choices can remain provisional.
+ 
+-When the slice's outcome and authority are sufficiently established, use [Design Specs and Proof](../coding-design-specs-proof/SKILL.md) to turn that intent into narrow contracts and independent acceptance. Pass the original request, actual questions and answers when present, recommendations, assumptions, unresolved decisions, and relevant evidence without presenting assumptions as agreement. Exploration itself needs no feature package or mandatory APP/ARCHITECTURE scaffold.
++When the slice's outcome and authority are sufficiently established, use [Design Specs and Proof](../coding-design-specs-proof/SKILL.md) to turn that intent into narrow contracts and independent acceptance. Pass the original request/corrections and the concrete situation, with the evidence and material assumptions behind it. Preserve actual answers separately from recommendations; do not turn a proposed approach into user agreement. Exploration itself needs no feature package or mandatory APP/ARCHITECTURE scaffold.
+ 
+ A sufficiently clear request can continue to specification/proof design, and an already-ready feature to [Implement](../coding-implement/SKILL.md), while retaining the same critical attention to context and assumptions. Implementation starts its scoped Goal without renewed build approval. Analysis or specification-only work ends at its requested deliverable without a Goal. Partnership remains a stance throughout the work.
+--- skills/coding-design-specs-proof/SKILL.md (turn baseline)
++++ skills/coding-design-specs-proof/SKILL.md
+@@ -46,7 +46,7 @@
+ 
+ - Register durable drafts using [status mechanics](../../docs/harness/coding/status.md). Exploration itself needs no package.
+ - Supply the independent author with FEATURE, original intent/corrections, relevant context, and the named consumption target under the [proof contract](../../docs/harness/coding/proof.md). Use its [role briefs and examples](../../docs/harness/coding/proof-guidance.md) when designing an unfamiliar boundary. This skill does not merge implementer, acceptance-author, and final-reviewer responsibilities.
+-- Establish critical provider capabilities, permissions, and observation paths through existing evidence or bounded authorized probes. An unsupported integration assumption is not readiness.
++- Resolve pivotal engineering assumptions using available source or bounded authorized probes before freezing dependent acceptance. A provider fake must follow an evidenced contract; writing it cannot establish the capability it assumes. Retain the concrete starting state, action, consumer result, and unavailable boundary from discovery in the existing feature/proof, without another handoff document.
+ - Reconcile scenarios and proof with the original outcome. Resolve missing decisions rather than narrow the promise. Author setup checks establish that the proof machinery works; application assertions may correctly remain red.
+ - Mark a slice ready when its outcome and authority are clear, consequential user-owned decisions are resolved, remaining assumptions are justified, and its independent proof is executable. This is an accountable judgment, not a document-count test or another build-approval round.
+ - Retain prior evidence on interruption or revision. During delivery, acceptance repairs follow the proof contract; routine setup repair does not reopen product discovery.
+--- docs/harness/coding/proof.md (turn baseline)
++++ docs/harness/coding/proof.md
+@@ -10,7 +10,7 @@
+ - Apply [product discovery and autonomy](../../../skills/coding-product-partner/SKILL.md#discovery-and-autonomy): ground acceptance in the request, actual decisions, and justified explicit assumptions. Return unresolved consequential user choices before freezing dependent acceptance; no extra discovery round is required for sufficiently clear authorized behavior.
+ - The author writes PROOF, dedicated tests, and executable `proof/run.sh`.
+ - The author may inspect code and reuse utilities; it cannot implement behavior or edit FEATURE.
+-- Compare acceptance with the original outcome. Return product gaps to Product Partner; never narrow the promise silently.
++- Derive the starting state, ordinary action, and consumer result from the original request/corrections before reconciling the proposed FEATURE. Investigate disagreement instead of letting the specification and fixtures validate the same unsupported assumption. Return product gaps to Product Partner; never narrow the promise silently.
+ - An unavailable author does not permit implementer-authored acceptance.
+ - Keep acceptance under feature `proof/`; record framework-required alternative paths.
+ - Map scenarios to tests and all determining fixtures/helpers/configuration.
+--- docs/harness/coding/proof-guidance.md (turn baseline)
++++ docs/harness/coding/proof-guidance.md
+@@ -12,7 +12,7 @@
+ 
+ ## Final Reviewer
+ 
+-Read the request/corrections, accepted feature, changed surface, proof boundary, latest results, and repairs. Challenge the completion claim against the tested candidate and target:
++Start with the original request/corrections and form an expectation of the ordinary user outcome before reading completion summaries and PASS results. Then inspect the accepted feature, changed surface, proof boundary, results, and repairs. Follow the highest-consequence shared assumption to independent source or consumer evidence; agreement between specification, fixture, and implementation is not corroboration. Challenge the completion claim against the tested candidate and target:
+ 
+ - Which ordinary promised action could still fail while every assertion passes?
+ - Did proof activate the real path and observe the authoritative result? Could a fake, prefilled state, stale build, or shared implementation assumption hide the defect?
+--- skills/coding-implement/SKILL.md (turn baseline)
++++ skills/coding-implement/SKILL.md
+@@ -48,7 +48,7 @@
+ - Keep relevant source, acceptance, and runtime inputs stable. Relevant changes invalidate evidence.
+ - Compare observed behavior with the original request and accepted discovery cases. Passing tests cannot excuse missing outcomes.
+ - Obtain a fresh final reviewer distinct from implementer and proof author.
+-- Supply request/corrections, contracts, changed surface, target, and results.
++- Supply original request/corrections and discovery evidence as well as contracts, changed surface, target, and results. Have the reviewer establish the expected user outcome before assessing the completion claim; do not supply only a PASS summary.
+ - Use the [reviewer brief](../../docs/harness/coding/proof-guidance.md#final-reviewer) when useful. Reviewers challenge what a pass might miss, not merely whether files and labels exist.
+ - Review behavior, regressions, proof adequacy, input freshness, and author repairs.
+ - Reviewers stay read-only: no edits, official runs, status mutations, or permission grants.

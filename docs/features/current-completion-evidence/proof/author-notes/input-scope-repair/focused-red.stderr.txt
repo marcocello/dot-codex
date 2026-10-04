@@ -1,0 +1,52 @@
+test_mismatched_input_coverage_cannot_support_pass_review (__main__.CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review) ... 
+  test_mismatched_input_coverage_cannot_support_pass_review (__main__.CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review) (proof_includes_config=True) ... FAIL
+  test_mismatched_input_coverage_cannot_support_pass_review (__main__.CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review) (proof_includes_config=False) ... FAIL
+test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete (__main__.CompletionAcceptance.test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete) ... FAIL
+test_matching_normalized_inputs_pass_and_mismatch_allows_diagnostic_review (__main__.CompletionAcceptance.test_matching_normalized_inputs_pass_and_mismatch_allows_diagnostic_review) ... ok
+
+======================================================================
+FAIL: test_mismatched_input_coverage_cannot_support_pass_review (__main__.CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review) (proof_includes_config=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 316, in test_mismatched_input_coverage_cannot_support_pass_review
+    self.rejects(repo.review(proof, regressions=(regression,)))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 121, in rejects
+    self.assertNotEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : verification_receipt: /private/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/completion-acceptance-dz3q1dje/docs/features/sample/proof/runs/20260925T081550865192Z/review.json
+
+
+======================================================================
+FAIL: test_mismatched_input_coverage_cannot_support_pass_review (__main__.CompletionAcceptance.test_mismatched_input_coverage_cannot_support_pass_review) (proof_includes_config=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 316, in test_mismatched_input_coverage_cannot_support_pass_review
+    self.rejects(repo.review(proof, regressions=(regression,)))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 121, in rejects
+    self.assertNotEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : verification_receipt: /private/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/completion-acceptance-j2e5kbx0/docs/features/sample/proof/runs/20260925T081551134104Z/review.json
+
+
+======================================================================
+FAIL: test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete (__main__.CompletionAcceptance.test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 334, in test_legacy_pass_receipt_with_mismatched_inputs_cannot_complete
+    self.completion_rejected_unchanged(repo, proof)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 137, in completion_rejected_unchanged
+    self.rejects(repo.transition(run=run, owner=owner))
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/current-completion-evidence/proof/acceptance.py", line 121, in rejects
+    self.assertNotEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"id": "sample", "feature_dir": "docs/features/sample", "priority": 1, "status": "done", "owner": null, "proof_run": "docs/features/sample/proof/runs/20260925T081551406365Z", "notes": ""}
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.480s
+
+FAILED (failures=3)

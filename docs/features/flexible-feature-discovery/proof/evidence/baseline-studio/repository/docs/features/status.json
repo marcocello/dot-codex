@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "features": [
+    {
+      "id": "member-overview",
+      "feature_dir": "docs/features/member-overview",
+      "priority": 1,
+      "status": "draft",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Member access, source of truth, and balance meaning unresolved; independent proof pending."
+    },
+    {
+      "id": "book-class",
+      "feature_dir": "docs/features/book-class",
+      "priority": 2,
+      "status": "draft",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Depends on member-overview; booking/credit policy and independent proof pending."
+    },
+    {
+      "id": "cancel-booking",
+      "feature_dir": "docs/features/cancel-booking",
+      "priority": 3,
+      "status": "draft",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Depends on book-class; cancellation scope/refund policy and independent proof pending."
+    },
+    {
+      "id": "move-booking",
+      "feature_dir": "docs/features/move-booking",
+      "priority": 4,
+      "status": "draft",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Depends on book-class and cancellation policy; move rules and independent proof pending."
+    },
+    {
+      "id": "waiting-list",
+      "feature_dir": "docs/features/waiting-list",
+      "priority": 5,
+      "status": "draft",
+      "owner": null,
+      "proof_run": null,
+      "notes": "Depends on booking/cancellation; promotion policy and independent proof pending."
+    }
+  ]
+}

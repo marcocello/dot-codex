@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "c121f44548739ffa5a34944cd637f1e55973a20afa2a884b94584f35d3cd4c60",
+  "evidence_digest": "8776589d5cf4c8c6b2ecde8eccbecdcd8d8fd667a70281d369d834fb831106bc",
+  "feature_dir": "docs/features/feature-proof-integrity",
+  "feature_id": "feature-proof-integrity",
+  "implementer": "01a0ee99-7dfb-7cb1-9600-35491b78d726",
+  "proof_run": "docs/features/feature-proof-integrity/proof/runs/20261002T100428361670Z",
+  "receipt_digest": "69d80596310641581ca078d0f9856bcc61ef5ccc7d6c9cd53d6aff222c325b51",
+  "recorded_at": "2026-10-02T10:05:02.430666+00:00",
+  "summary": "Checked the feature contract and final source. Actual CLI acceptance rejects old proof after spec/mapping changes, completes unaffected mapped features, preserves standalone and round history without raw runs, rejects tampering and refuses history as new proof. Existing journey, scope and attribution regressions run once. Evaluation roles and criterion-ID guidance are aligned. Semantic assertion adequacy and live target identity remain observational responsibilities.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

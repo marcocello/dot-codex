@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "042b327296a559af05c7112f429edcbad5c81a14c980d688c4f7520af756eb80",
+  "evidence_digest": "53224fc4633547a31e8224290bc4ce9b0d98cb2f14288e5e4c0040dca1f926c8",
+  "feature_dir": "docs/features/shared-journey-verification",
+  "feature_id": "shared-journey-verification",
+  "implementer": "01a0ee99-7dfb-7cb1-9600-35491b78d726",
+  "proof_run": "docs/features/shared-journey-verification/proof/runs/20260929T222221427426Z",
+  "receipt_digest": "8cd7315f98569976e9d601bd197442588f9c30ff84b2c9e5c14d27efeb1e01b7",
+  "recorded_at": "2026-10-02T10:04:28.093380+00:00",
+  "summary": "Independent final review PASS: shared criterion mappings, implemented state, current scoped check reuse and stable round completion verified through actual CLIs; retained legacy completion and applicable capture checks pass. Held-out contact author trial demonstrated shared coverage and honest readiness. Scope adequacy and semantic coverage remain reviewer judgments; obsolete receiptless-completion baseline failure retained. No Arbitrator acceptance or speedup claim.",
+  "target": "local-harness-cli",
+  "verdict": "PASS",
+  "version": 1
+}

@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "6d7a6fddd07adfef749c0c9774f3b64eef16d1e6302e692631bbf2094caec5ce",
+  "feature_dir": "docs/features/knowledge-unified",
+  "feature_id": "knowledge-unified",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-unified/proof/runs/20260919T191537126899Z",
+  "receipt_digest": "3e584ecbc24289921a43fc702d21878852ff403d0168c17be4801519d6791d55",
+  "recorded_at": "2026-10-02T10:04:28.089889+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

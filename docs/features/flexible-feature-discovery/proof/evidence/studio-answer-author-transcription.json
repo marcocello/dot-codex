@@ -1,0 +1,9 @@
+{
+  "kind": "author-transcribed-original-tool-input",
+  "author": "/root/discovery_proof",
+  "target": "/root/discovery_proof/candidate_studio",
+  "native_call_id": "call_IWKjHXMpvW8Lvy65EDpMiRGk",
+  "message": "This repository is a prototype. Reception keeps real bookings in a spreadsheet; all sessions are group classes. The biggest pain is members messaging us to check which classes they are booked into, so I agree that seeing upcoming bookings should be first. Reception can export CSV with member_email, member_name, class_id and starts_at; each member has one unique email. For this first release, staff can import that export manually and members should see when it was last refreshed. Members should sign in using a code sent to their email and only see their own bookings. Keep payments at reception. The remaining credits are already net of existing bookings, but leave credit display, making/moving/cancelling bookings and waiting lists for later. Please now write the narrow first feature specification. Do not implement application changes or author its acceptance proof in this task.",
+  "provenance": "Verbatim transcription from the original collaboration.followup_task input still visible in the proof author conversation context. This is an author attestation, not independently recovered plaintext from disk. The persisted native dispatch arguments and delivered agent message are encrypted; read_thread on both tasks exposes action/results but omits that delivered payload. No decoding or reconstruction from the candidate specification was used.",
+  "limitation": "Independent reviewer can verify the retained encrypted dispatch identity and subsequent actions, but cannot compare this transcription against independently recovered native plaintext."
+}

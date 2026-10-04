@@ -1,0 +1,1 @@
+The portal will use the bundled ArchiveBox client. The provider documentation is in docs/api.md. A vendor source copy matching our pinned package is in vendor/archivebox.py. No credentials or network service are available. The portal currently stores only account_id.

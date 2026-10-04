@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "40ab54d4d5f837d8eee04fe22bf8a1b3cafed6efb9b406d25766399ebfeea5f9",
+  "feature_dir": "docs/features/proactive-outcome-discovery",
+  "feature_id": "proactive-outcome-discovery",
+  "implementer": null,
+  "proof_run": "docs/features/proactive-outcome-discovery/proof/runs/20260917T215304711653Z",
+  "receipt_digest": "f38d8ff5f6efbd00a78a361fbfff3696bbf5fecca93f6f5bd2634eec6d10c11f",
+  "recorded_at": "2026-10-02T10:04:28.087303+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

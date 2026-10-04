@@ -1,0 +1,10 @@
+{
+  "worker_id": "/root/baseline_integration",
+  "model": "gpt-6-astra",
+  "effort": "medium (inherited)",
+  "instruction_selection": "forced",
+  "source_session": "collaboration /root/baseline_integration; parent 01a0ed9e-8476-7c80-be7a-11ea90f01280",
+  "outcome": "completed",
+  "observation_kind": "instrumented-tool-receipts",
+  "observation_limit": "Full child native trace unavailable. Commands and subprocess outputs retained during execution by worker instrumentation; dispatch and delivered final retained by coordinator. This is not independent runtime attestation."
+}

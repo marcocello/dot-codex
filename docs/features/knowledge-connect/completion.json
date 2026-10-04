@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "8ef5171d7bb36bee529ffc1e6c99d7d9fde12854eecef41d29326ebc4dd72018",
+  "feature_dir": "docs/features/knowledge-connect",
+  "feature_id": "knowledge-connect",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-connect/proof/runs/20260919T091422243937Z",
+  "receipt_digest": "140eb1ab2450ea741e13f366f1864adadde83585cfbf1e9de8389d69ba67774a",
+  "recorded_at": "2026-10-02T10:04:28.088982+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

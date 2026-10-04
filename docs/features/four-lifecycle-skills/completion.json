@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "b9902478f4babc72807efe2d64ff28890d95eff22e655d402dc4c806b38f6e7e",
+  "feature_dir": "docs/features/four-lifecycle-skills",
+  "feature_id": "four-lifecycle-skills",
+  "implementer": null,
+  "proof_run": "docs/features/four-lifecycle-skills/proof/runs/20260917T154103710409Z",
+  "receipt_digest": "6683c10bf6e302adffe82af3e1280f79ba653064c7ef12dc983954d2780a2ed7",
+  "recorded_at": "2026-10-02T10:04:28.085855+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

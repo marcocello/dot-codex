@@ -1,0 +1,1 @@
+Fix the local formatting bug: format_count(1) currently returns “1 items”; it should return “1 item”. Zero and all other counts should retain “items”. Make the smallest local repair and verify it. Do not commit.

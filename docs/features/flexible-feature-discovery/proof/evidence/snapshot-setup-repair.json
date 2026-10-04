@@ -1,0 +1,10 @@
+{
+  "kind": "setup defect",
+  "reason": "The frozen instruction snapshot copied three pre-existing shared script paths; candidate feature_status.py also imports the newly introduced verification_receipt.py. The first supplementary studio attempt retained its missing-import failure. Add that dependency only; no contract, scenarios, oracle, instruction, worker request or application changed.",
+  "changed_files": {
+    "scripts/verification_receipt.py": "9c61f19ea72c052435148472faebf2d51e6bc8abf752d1b4063dae005f03c1a9"
+  },
+  "before_snapshot_sha256": "70b82de1a995c08d31390c0d4672e45f6c5566f7aa1bef16851557c992337738",
+  "after_snapshot_sha256": "437df21b4e839511a5dedb83658b71dd0fd0e5a248bb3dd07c85da09be2b8edd",
+  "snapshot_path": "/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/harness-candidate-4hz_sf_b"
+}

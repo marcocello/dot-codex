@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "23b8ab355c4ece69debccbff86defd081ff7a5cb1dae63aaaf1e0cdeee956d0d",
+  "feature_dir": "docs/features/knowledge-routing",
+  "feature_id": "knowledge-routing",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-routing/proof/runs/20260919T103545205294Z",
+  "receipt_digest": "09ecf6b7e2c1eb3472c150ef0fb9959219a3f35df4e7b7658522cc08e416c5f6",
+  "recorded_at": "2026-10-02T10:04:28.089399+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

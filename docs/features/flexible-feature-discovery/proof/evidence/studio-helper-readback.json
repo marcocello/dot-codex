@@ -1,0 +1,14 @@
+{
+  "kind": "setup-repair-readback",
+  "actor": "/root/discovery_proof",
+  "command": [
+    "python3",
+    "/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/harness-candidate-final-tools-lp7z55t6/scripts/feature_status.py",
+    "--help"
+  ],
+  "exit_code": 0,
+  "stdout": "usage: feature_status.py [-h] [--root ROOT] --id ID --owner OWNER\n                         --from {new,draft,ready,active,blocked,done}\n                         --to {active,blocked,done,draft,ready}\n                         [--proof-run PROOF_RUN] [--notes NOTES]\n\nAtomically update one feature entry. No scheduler or automatic ownership\ntakeover.\n\noptions:\n  -h, --help            show this help message and exit\n  --root ROOT\n  --id ID\n  --owner OWNER         Stable calling task id, not a feature name\n  --from {new,draft,ready,active,blocked,done}\n  --to {active,blocked,done,draft,ready}\n  --proof-run PROOF_RUN\n  --notes NOTES\n",
+  "stderr": "",
+  "snapshot_sha256": "000b9edef687104bb59d6a135fb04f194f8b380ae9832b7138f66f8cf6ed3d46",
+  "scope": "Re-execution of the exact failed --help activation with stable dependencies. Original worker had not invoked the status update command; its final message loosely called this registration failure. This read-back establishes helper availability only and does not imply status registration or additional candidate behavior."
+}

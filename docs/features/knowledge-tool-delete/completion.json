@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "d74dcfcac5b3c6c58375a2a4a89774798846ebc2827cf98195b5a91799fde09c",
+  "feature_dir": "docs/features/knowledge-tool-delete",
+  "feature_id": "knowledge-tool-delete",
+  "implementer": null,
+  "proof_run": "docs/features/knowledge-tool-delete/proof/runs/20260920T125646515420Z",
+  "receipt_digest": "d841f2747b8e13bcc6a086d11bef9e47e82bfd3c71d82e0d5d50c67cf1ed5f26",
+  "recorded_at": "2026-10-02T10:04:28.090931+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

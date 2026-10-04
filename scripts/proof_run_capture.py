@@ -16,6 +16,8 @@ from pathlib import Path
 from types import FrameType
 from typing import Any
 
+from verification_receipt import candidate, digest
+
 
 class CaptureSignal(Exception):
     def __init__(self, signum: int) -> None:
@@ -48,14 +50,14 @@ def parse_args() -> argparse.Namespace:
         epilog=(
             "Output: prints the retained attempt directory. Exit status: runner status; "
             "2 for invalid input, 124 for timeout, 125 for cleanup failure, or 128+signal "
-            "for interruption; 126 when a would-be passing runner changes accepted proof inputs."
+            "for interruption; 126 when a would-be passing runner changes observed candidate or proof inputs."
         ),
     )
     parser.add_argument(
-        "--feature-dir",
+        "--feature-dir", "--package-dir",
         required=True,
         type=Path,
-        help="Feature directory containing FEATURE.md and PROOF.md; proof mode also requires proof/run.sh.",
+        help="Feature or docs/verification/<check> package; shared checks require PROOF.md but no FEATURE.md. Proof mode also requires proof/run.sh.",
     )
     parser.add_argument(
         "--timeout-seconds",
@@ -70,6 +72,9 @@ def parse_args() -> argparse.Namespace:
         help="Non-empty reason retained with this attempt.",
     )
     parser.add_argument("--kind", choices=("proof", "regression"), default="proof")
+    parser.add_argument("--target", type=nonempty_note, default="local-worktree", help="Tested target label; metadata, not remote attestation.")
+    parser.add_argument("--include", action="append", default=[], help="Repository-relative ignored file/directory to include in the candidate fingerprint; repeat as needed.")
+    parser.add_argument("--scope", action="append", default=[], help="Additional determining source path; extends proof/inputs.json scope when present. Owning acceptance is always included. Without either: whole visible repository.")
     parser.add_argument("--cwd", type=Path, help="Regression working directory within the repository; defaults to its root.")
     parser.add_argument("command", nargs=argparse.REMAINDER, help="Regression command and arguments after --; executed without an implicit shell.")
     args = parser.parse_args()
@@ -268,6 +273,9 @@ def main() -> int:
     proof = feature_dir / "PROOF.md"
     runner = feature_dir / "proof" / "run.sh"
     inputs = (("FEATURE.md", feature), ("PROOF.md", proof))
+    relative_package = feature_dir.relative_to(root)
+    if len(relative_package.parts) == 3 and relative_package.parts[:2] == ("docs", "verification") and relative_package.name != "rounds":
+        inputs = (("PROOF.md", proof),)
     if args.kind == "proof":
         inputs += (("run.sh", runner),)
     for label, path in inputs:
@@ -299,12 +307,20 @@ def main() -> int:
     if uses_symlink(unresolved_attempt_base):
         print("proof_run_capture: attempt directory must not use symlinks", file=sys.stderr)
         return 2
+    try:
+        manifest = candidate(root, feature_dir.relative_to(root).as_posix(), args.include, args.scope)
+    except (OSError, ValueError) as exc:
+        print(f"proof_run_capture: cannot fingerprint candidate: {exc}", file=sys.stderr)
+        return 2
     run_dir = attempt_base / timestamp()
     run_dir.mkdir(parents=True)
     command = [runner.relative_to(root).as_posix()] if args.kind == "proof" else args.command
     started_at = now()
     started_clock = time.monotonic()
     execution: dict[str, Any] = {
+        "evidence_version": 1,
+        "candidate_digest": digest(manifest),
+        "target": args.target,
         "capture_pid": os.getpid(),
         "kind": args.kind,
         "command": command,
@@ -313,6 +329,7 @@ def main() -> int:
         "started_at": started_at,
         "timeout_seconds": args.timeout_seconds,
     }
+    write_json(run_dir / "candidate.json", manifest)
     write_json(run_dir / "attempt-start.json", {**execution, "status": "STARTED"})
     for label, path in inputs:
         shutil.copy2(path, run_dir / label)
@@ -393,6 +410,14 @@ def main() -> int:
             stderr.write(b"proof_run_capture: process group cleanup failed\n")
 
     input_changes = changed_proof_inputs(run_dir, inputs, input_baselines)
+    try:
+        current = candidate(root, manifest["feature_dir"], manifest["include"], manifest.get("scope"))
+        candidate_changes = sorted(name for name in manifest["files"].keys() | current["files"].keys()
+                                   if manifest["files"].get(name) != current["files"].get(name))
+        if current != manifest and not candidate_changes:
+            candidate_changes = ["candidate selection"]
+    except (OSError, ValueError) as exc:
+        candidate_changes = [f"candidate unavailable: {exc}"]
     if input_changes:
         with stderr_path.open("ab") as stderr:
             stderr.write(
@@ -402,6 +427,12 @@ def main() -> int:
                     + "\n"
                 ).encode()
             )
+        if status == "PASS":
+            status = "FAIL"
+            final_returncode = 126
+    if candidate_changes:
+        with stderr_path.open("ab") as stderr:
+            stderr.write(("proof_run_capture: candidate changed during run: " + ", ".join(candidate_changes) + "\n").encode())
         if status == "PASS":
             status = "FAIL"
             final_returncode = 126
@@ -419,6 +450,8 @@ def main() -> int:
         result["signal"] = interrupted_signal
     if input_changes:
         result["input_changes"] = input_changes
+    if candidate_changes:
+        result["candidate_changes"] = candidate_changes
     write_json(run_dir / "result.json", result)
     print(f"proof_run_capture: {run_dir}")
     return final_returncode

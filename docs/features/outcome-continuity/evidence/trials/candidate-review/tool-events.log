@@ -1,0 +1,207 @@
+$ cat REQUEST.md; ls instructions
+Review this change against the original request: “Add saved report presets so I can save a report's filters, close the app, and load that preset next time.” The implementation and supplied checks are here. Give a completion verdict with evidence in REVIEW.md. This is a read-only review; do not fix or extend the change.
+guidance.md
+implement.md
+partner.md
+proof.md
+repair.md
+spec.md
+
+$ cat instructions/guidance.md instructions/proof.md; find . -maxdepth 3 -type f | sort
+# Designing and challenging acceptance
+
+Load the relevant brief or example when authoring or reviewing an unfamiliar proof boundary. These are techniques, not additional lifecycle stages; [proof.md](proof.md) owns the rules.
+
+## Independent Author
+
+Start from the accepted outcome and original user context. Identify how a real user or consumer activates it, where its authoritative result lives, and how a separate observation can contradict a false success. Inspect enough implementation to find those boundaries without deriving expected results from the candidate.
+
+Choose the smallest realistic proof that would fail for a plausible incomplete implementation. Explain what it establishes and leaves unknown. Use established test infrastructure; do not build a bespoke framework when a process invocation, browser interaction, and read-back suffice. Exercise uncertain helpers before long runs. Return product ambiguity to Product Partner rather than choosing the easiest oracle.
+
+Give the implementer the contract, runnable command, prerequisites, input versions, and relevant gaps. Preserve original failures and repair rationale. Independence is about who establishes acceptance and from which evidence, not merely a different agent name.
+
+## Final Reviewer
+
+Start with the original request/corrections and form an expectation of the ordinary user outcome before reading completion summaries and PASS results. Then inspect the accepted feature, changed surface, proof boundary, results, and repairs. Follow the highest-consequence shared assumption to independent source or consumer evidence; agreement between specification, fixture, and implementation is not corroboration. Challenge the completion claim against the tested candidate and target:
+
+- Which ordinary promised action could still fail while every assertion passes?
+- Did proof activate the real path and observe the authoritative result? Could a fake, prefilled state, stale build, or shared implementation assumption hide the defect?
+- Did implementation or proof repair change the accepted meaning? Does a separate product choice remain unsupported?
+- Are relevant regressions and the reviewed files current? Does the evidence establish local behavior, a live target, or only a narrower prerequisite?
+
+Return a clear verdict with evidence-backed blockers and demonstrated limits. Keep stylistic preferences optional. Review stays read-only; the coordinator records the actual verdict and attribution, and re-verifies affected behavior after repairs. Passing output is evidence to assess, not a verdict to echo.
+
+## Boundary Examples
+
+| Promised outcome | Useful activation and independent read-back | False confidence to challenge |
+| --- | --- | --- |
+| Save a customer | Normal authenticated API or UI; reload and read the authoritative store | Handler returns success but transaction never commits |
+| Provider delivery | Normal producer; authorized sandbox provider read-back and consumer result | Adapter returns an invented ID; local queue acceptance mistaken for delivery |
+| Worker processing | Start the actual worker, submit input, observe durable result and relevant retry behavior | Calling an internal function bypasses scheduling, configuration, or persistence |
+| Local startup | Run the documented default command in its actual terminal/process mode; check readiness and shutdown | Detached-only smoke test misses an attached-terminal failure |
+| UI feature | Real browser actions, persisted result after reload, appropriate permissions and failure state | Screenshot or direct handler invocation skips actual interaction |
+| Generated report/export | Invoke normal generation/download and inspect meaningful content and format | File existence or HTTP 200 accepts empty or incorrect output |
+| First-use automation | Begin without saved preferences and observe a useful permitted result | Prefilled fixtures hide the missing selection or fallback policy |
+| Refactor | Exercise the preserved public contract or invariant through affected consumers | Snapshot of private structure rewards the rewrite without checking equivalence |
+| Harness instruction change | Fresh task execution with raw context and withheld expectations | Retained text judgments or heading checks presented as actual agent behavior |
+
+Select relevant error/recovery cases from the promise. These examples are neither a quota nor a reason to expand a narrow feature. For provider variability or sampled model behavior, explain the sampling limit rather than turning one pass into a reliability claim.
+# Shared Proof Contract
+
+Acceptance rules for Design Specs and Proof, Implement, and feature-owned Repair. [AGENTS.md](../../../AGENTS.md) owns authorization.
+
+Choose technique and depth for the accepted slice. Use [role briefs and boundary examples](proof-guidance.md) when helpful; they introduce no additional stage, quota, or approval.
+
+## Separate Authorship
+
+- Use a separate author before implementation. Supply FEATURE, dialogue/corrections, app context, and target.
+- Apply [product discovery and autonomy](../../../skills/coding-product-partner/SKILL.md#discovery-and-autonomy): ground acceptance in the request, actual decisions, and justified explicit assumptions. Return unresolved consequential user choices before freezing dependent acceptance; no extra discovery round is required for sufficiently clear authorized behavior.
+- The author writes PROOF, dedicated tests, and executable `proof/run.sh`.
+- The author may inspect code and reuse utilities; it cannot implement behavior or edit FEATURE.
+- Derive the starting state, ordinary action, and consumer result from the original request/corrections before reconciling the proposed FEATURE. Investigate disagreement instead of letting the specification and fixtures validate the same unsupported assumption. Return product gaps to Product Partner; never narrow the promise silently.
+- An unavailable author does not permit implementer-authored acceptance.
+- Keep acceptance under feature `proof/`; record framework-required alternative paths.
+- Map scenarios to tests and all determining fixtures/helpers/configuration.
+- Keep implementer regressions separate. Never import another feature's whole proof or relabel generic tests.
+
+## Required Boundary
+
+- Name input/producer, public activation, state owner, consumer, read-back, target, and external edge.
+- Make bypassing the central behavior fail. Fake only unsafe/unavailable outer edges, never claimed behavior.
+- Select relevant starting states, restart, errors, retries, concurrency, permissions, and provider variability.
+- Carry accepted discovery cases into assertions.
+- Prefilled fixtures alone cannot prove first-use defaults.
+- Map plausible incomplete implementations to failing assertions. Uncovered material risks remain gaps.
+- Reuse infrastructure. Reduce redundant machinery, not accepted coverage.
+- At authoring and final review, ask: **Which promised ordinary action could fail while this proof passes?**
+- Exercise the real entry/launch mode. Resolve material response-time expectations through Product Partner.
+- Report measured limits without guessing causes. A generous timeout does not establish usability.
+- UI: real browser/user actions and loaded, decoded, visible resources; no handler calls or dispatched DOM events.
+- Domain effects: normal protected API plus read-back. Label presentation-only scope.
+- API/worker/CLI: actual route/process plus observable results.
+- Judge semantic outcomes across paraphrases, not exact wording.
+- Gates, builds, source inspection, unobserved writes, and assistant claims are not acceptance.
+- Source success is intermediate for live targets.
+
+## Contract
+
+PROOF records:
+
+- Done, Command, environment/target, and evidence method.
+- Scenario/test mapping: activation, consumer, read-back, fake, defect caught.
+- Proves/Does not prove, false-green risks, and gaps.
+- Deterministic assertions, sampled evidence, and unavailable live/manual checks.
+- Case/repetition rationale and pass criteria for variable behavior; one sample cannot prove reliability.
+
+Runner rules:
+
+- Fail fast (`set -euo pipefail` unless deliberately aggregating).
+- Emit non-secret readiness facts. Never edit application/acceptance, daemonize, or escape capture.
+- Before expensive runs, the author checks changed helpers, readiness, fault synchronization, browser events, and cleanup as applicable.
+- Reuse short checks; no mandatory preflight framework. Syntax or missing-environment exits do not prove runnable scenarios.
+- Substitutes validate machinery only. Keep unavailable integration checks as prerequisites.
+- Repeat machinery checks only for relevant changes or failures.
+
+Blocked setup:
+
+- Inspect docs, local tools, and authorized access first.
+- Name the prerequisite, blocked step, safe target, success read-back, owner, and unblocking action.
+- Use established credential setup; never expose secrets. Record gaps in existing evidence.
+- Respect pending questions and continue independent work.
+
+## Fixed Acceptance
+
+- Freeze FEATURE, PROOF, runner, tests, and all determining shared inputs before Implement.
+- Compare inputs before verification/completion. Implementers edit application and separate regressions only.
+
+### Decision Boundary
+
+- **Setup defect:** independent author repairs between attempts. Keep FEATURE, PROOF, scenarios, assertions, outcomes, selection, target, and real/fake boundaries unchanged.
+- **Technical contract error:** author may repair without asking when accepted intent is established. Preserve outcomes, coverage, assertion strength, target, observation independence, and real/fake boundaries.
+- **Missing assertion:** author may add coverage for already-agreed outcomes. New product choices return to Product Partner.
+- **Unresolved choice:** ask if behavior, scope, cost, permissions, meaningful risk, or accepted outcomes differ. Explain consequences; pause dependent work until answered.
+
+Every repair:
+
+- Ground it in retained contracts/dialogue and independent evidence, not candidate failure alone.
+- Retain original failures/inputs, author, exact diff, rationale, and revised hashes.
+- Keep setup repair records outside PROOF. Stay in the same feature/claim/Goal.
+- Refreeze, rerun complete proof and affected checks, and obtain final review.
+- An unavailable author pauses the repair.
+
+Never:
+
+- Infer the oracle from the candidate, relax requirements, skip assertions, or seed the tested result.
+- Move claimed behavior into a fake or narrow the promise because a provider is unavailable.
+- Treat read-only calls as authorization for broader credentials.
+- Require approval merely because a frozen file changes, or bypass boundaries by switching modes.
+
+After an agreed consequential revision, align FEATURE/Goal and have the author revise proof. Observed failure overrides a pass.
+
+## Restore Unrunnable Proof
+
+- Have a separate author restore required proof from retained contracts, history, and corrections.
+- Existing verification authority covers restoration; preserve scenarios, assertions, outcomes, target, and real/fake boundaries.
+- Document path mappings. Apply repair evidence and decision rules above.
+- Run full captured restored proof and required review. Old passes remain history.
+
+## Official Attempts
+
+- Use [evidence capture](evidence.md#evidence-for-one-feature); keep regressions separate.
+- Retain meaningful red, distinct failures, interruptions, and final green.
+- A newer failed/unfinished official attempt invalidates an older PASS. Regressions never establish acceptance.
+- Capture checks the recorded repository candidate and owning acceptance tree before/after execution, retaining scope and target. Include otherwise ignored determining inputs explicitly; see [capture limits](evidence.md#current-candidate-and-review).
+- New completion requires current evidence and an attributed independent review receipt. Historical passes remain history, not current regression assurance.
+- Hashes and role identifiers are audit evidence, not enforced write isolation, authentication, or external runtime attestation.
+./README.md
+./REQUEST.md
+./instructions/guidance.md
+./instructions/implement.md
+./instructions/partner.md
+./instructions/proof.md
+./instructions/repair.md
+./instructions/spec.md
+./presets.py
+./test_presets.py
+./tool-events.log
+
+$ cat README.md presets.py test_presets.py
+Run python3 test_presets.py to run the supplied checks. The CLI is the application entry point: python3 presets.py save NAME FILTER or python3 presets.py load NAME.
+import sys
+PRESETS = {}
+def save(name, filters):
+    PRESETS[name] = filters
+def load(name):
+    return PRESETS.get(name)
+if __name__ == '__main__':
+    command, name = sys.argv[1:3]
+    if command == 'save':
+        save(name, sys.argv[3])
+        print('Saved ' + name)
+    elif command == 'load':
+        print(load(name))
+import unittest
+from presets import save, load
+class PresetTests(unittest.TestCase):
+    def test_roundtrip(self):
+        save('weekly', 'last_7_days')
+        self.assertEqual(load('weekly'), 'last_7_days')
+if __name__ == '__main__':
+    unittest.main()
+
+$ python3 test_presets.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+exit_code=0
+
+$ python3 presets.py save weekly last_7_days
+Saved weekly
+exit_code=0
+
+$ python3 presets.py load weekly
+None
+exit_code=0
+

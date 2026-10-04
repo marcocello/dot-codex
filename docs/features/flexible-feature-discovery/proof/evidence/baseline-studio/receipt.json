@@ -1,0 +1,114 @@
+{
+  "id": "baseline-studio",
+  "variant": "baseline",
+  "case": "studio",
+  "final_for_case": false,
+  "worker_id": "01a0d4d6-dda9-7e30-97e9-d6354b431f85",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "fixture_sha256": "18e22386ac841cd5afa5e0949cc04538b6b36563268d7c99a0e5d2a4bda62418",
+  "instruction_snapshot": "18cca1685573ff1197d3249adfc8afe9df787aeb0ec3badf7aa297a40e7b669f",
+  "native_trace": {
+    "path": "evidence/baseline-studio/native-visible-events.json",
+    "sha256": "7cccd9712eabf6f23fbd6a43d5c1f87d8f1350d04939e7c89aaa7ed3376fa4d7"
+  },
+  "artifacts": [
+    {
+      "path": "evidence/baseline-studio/repository/README.md",
+      "sha256": "fd79e2f40480201f879a82c431c14476da768065b83201d78bbcf3c858ae9799"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/REQUEST.txt",
+      "sha256": "6de5736d9233b9069bdbec2687b39ce860b6897fc515fc829f7cc65060cd7cca"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/APP.md",
+      "sha256": "493d7c88c6f01e0fe83d302601c33da0d894bc36eff9bacc105ccf31c97b15fd"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/ARCHITECTURE.md",
+      "sha256": "ab4219ec1b48f354ec7267e5c79828a642e3c157702a57eb02447131b6393121"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/DISCOVERY.md",
+      "sha256": "3953ad4f439006f099728782b74afad206f233c65e7e233ff0289833456c96a0"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/book-class/FEATURE.md",
+      "sha256": "786cf7757243480841c95c7e20abb63c3823e88e019f40ae08baecec0f59637a"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/book-class/PROOF.md",
+      "sha256": "e98fdff030ef28c80ff151325f397f6681cdc084781908040c49eb50dc47d2ff"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/book-class/proof/run.sh",
+      "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/FEATURE.md",
+      "sha256": "2da0e8f6c18eeeb91f7e4e267dda62755050fe7cbb7047f777d355ec929f501d"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/PROOF.md",
+      "sha256": "5ff1d28f13ee6a95467c31ef9d6fd0ac560ead9598b0c2c1d4ffa9e7e8a4ab31"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/cancel-booking/proof/run.sh",
+      "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/member-overview/FEATURE.md",
+      "sha256": "4ef6a87f3a2268142666128e761687041fbde506957c9f0cd5abe0d7a85869b5"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/member-overview/PROOF.md",
+      "sha256": "f7c7c6001d57b0533188321c69605a9308cd57e8ca678be91977007e2104a3d7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/member-overview/proof/run.sh",
+      "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/move-booking/FEATURE.md",
+      "sha256": "b19a862ef627e06b8317ef76296767ed760e4f531c4cb976cf71d2bb9a0baf4c"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/move-booking/PROOF.md",
+      "sha256": "bef1f3f4979485ea258fc2b1101d90e0f9be3908fc03e87eef050087fb643a8b"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/move-booking/proof/run.sh",
+      "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/status.json",
+      "sha256": "be63aa7a8f5a92faa49fda664d7974814ce249d521eb977faecb4c6ade012524"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/waiting-list/FEATURE.md",
+      "sha256": "c736a144eba6e3389baa206ed5c56adb00c122a8f8b0fce497557981525ca50d"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/waiting-list/PROOF.md",
+      "sha256": "7e4266fd9d5c8ffa2e8a6af0235136aaa678f08db9ad6b44634897b6be9c7b11"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/docs/features/waiting-list/proof/run.sh",
+      "sha256": "945e9e971536f31ad57f3b16856ab49013b53f9d25699684b21106f59e473cb7"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/schedule.json",
+      "sha256": "ad72d5ddd5657f1de1c0979a24036d67dd1628223e0c1766d02b68c066915c1d"
+    },
+    {
+      "path": "evidence/baseline-studio/repository/studio.py",
+      "sha256": "ad2313f41687a28a5b7a9fbbdafecda2a9288b766ba202b46b0f2de525ae8658"
+    }
+  ],
+  "limitations": [
+    "Single-turn isolated task; no live user answers.",
+    "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+    "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+  ]
+}

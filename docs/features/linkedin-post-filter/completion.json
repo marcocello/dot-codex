@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "cc4e6c9938d03b43e9d81fc48a53d851fea0df99c7e750d69af7e381005708e0",
+  "feature_dir": "docs/features/linkedin-post-filter",
+  "feature_id": "linkedin-post-filter",
+  "implementer": null,
+  "proof_run": "docs/features/linkedin-post-filter/proof/runs/20260904T215744715768Z",
+  "receipt_digest": "65c563097064a2e6bad5378b44f666bbf3b849fb0ef39731b75820b8d500fdf3",
+  "recorded_at": "2026-10-02T10:04:28.085460+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

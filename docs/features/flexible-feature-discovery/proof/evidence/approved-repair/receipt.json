@@ -1,0 +1,38 @@
+{
+  "id": "approved-repair",
+  "variant": "approved",
+  "case": "repair",
+  "final_for_case": false,
+  "worker_id": "01a0d4e6-61d2-7e82-a8ca-b2728beabab6",
+  "model": "gpt-6-astra",
+  "effort": "xhigh",
+  "fixture_sha256": "226b13587aba0761b6f57276c5571dea904f5f3b8d01908b2ef016a70431264f",
+  "instruction_snapshot": "000b9edef687104bb59d6a135fb04f194f8b380ae9832b7138f66f8cf6ed3d46",
+  "native_trace": {
+    "path": "evidence/approved-repair/native-visible-events.json",
+    "sha256": "4fac4e5364a676fde2fcfe45531b0a6326e5e0b20b5df178f86498f69ff7423e"
+  },
+  "artifacts": [
+    {
+      "path": "evidence/approved-repair/repository/README.md",
+      "sha256": "c492ad338e2495fb7cc2bc11bf50be530be3c2ab89d394197018cce4677b9b4d"
+    },
+    {
+      "path": "evidence/approved-repair/repository/REQUEST.txt",
+      "sha256": "f4fee95b0aa638983e62c1083639e8f201101e1e8219a572d3e182b99b0a1004"
+    },
+    {
+      "path": "evidence/approved-repair/repository/capacity.py",
+      "sha256": "5f154bcabadbb2e8f53649d222854d14b9feccae7099790d204ba0ca443c50b1"
+    },
+    {
+      "path": "evidence/approved-repair/repository/test_capacity.py",
+      "sha256": "0d0108cfc47984b56a3dc0b27c911a78e90ac5e92935522d4ccba12ef46cb575"
+    }
+  ],
+  "limitations": [
+    "Single-turn isolated task; no live user answers.",
+    "Explicit snapshot routing; native Goal and external actions prohibited for isolation.",
+    "Shared host tools and developer instructions remain present; isolation is contextual and by workspace, not a separate model runtime."
+  ]
+}

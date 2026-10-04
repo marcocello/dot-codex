@@ -9,7 +9,7 @@ metadata:
 
 Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the repo's design system and frontend conventions.
 
-The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; invoking it does not bypass Shape for undefined behavior or require a feature package for a focused Fix.
+The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; apply [product discovery and autonomy](../coding-product-partner/SKILL.md#discovery-and-autonomy) to inspect surrounding interactions even for clear requests; keep focused Repairs lightweight.
 
 ## Scope
 - Applies when:
@@ -20,8 +20,8 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
   - Feature includes user-facing interaction
 
 ## Structure expectations
-- UI components -> hooks/state -> API client -> shared utils
-- No business logic inside UI components
+- Separate rendering, reusable state, and external I/O when those responsibilities need independent ownership or testing; a small component need not acquire layers merely to match a diagram.
+- Keep shared domain policy and permission decisions out of presentation components. Local display and interaction logic can stay with the component.
 - Keep components focused and composable
 - Follow the greenfield component locations owned by `coding-prepare-environment`: frontend application code lives in `frontend/app`.
 
@@ -34,10 +34,8 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 ## Default UI baseline
 - Preserve an existing repo design system when one is already established.
 - For new React/Next.js frontend work with no existing design system, use `shadcn/ui` by default.
-- When the task requires creating a frontend and the user/repo does not specify a different starter, clone [satnaing/shadcn-admin](https://github.com/satnaing/shadcn-admin) as the default UI baseline and modify that cloned codebase as the frontend baseline.
-- Do not recreate a generic shadcn app from scratch when this default applies; adapt the cloned `satnaing/shadcn-admin` project in place.
-- If `frontend/app` is missing or has no existing frontend package, clone before adding package scaffolding, tests, routes, or UI files. Clone the baseline into `frontend/app` first, then make feature changes inside that cloned codebase.
-- Do not create a minimal Vite, Next.js, or generic React skeleton when the default clone applies.
+- For an admin/dashboard product with no selected starter, consider [satnaing/shadcn-admin](https://github.com/satnaing/shadcn-admin) when its navigation, framework, and components fit the accepted experience. Inspect fit before cloning; a landing page or focused tool may be better served by a smaller scaffold.
+- Explicit starter choices take precedence. Reuse useful patterns without importing unrelated demo pages or product behavior. A starter's People/Tasks pages do not determine the application's entities or workflows; resolve consequential mappings in Product Partner.
 
 ## Design principles
 - Avoid generic “AI-safe” layouts
@@ -51,13 +49,13 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Reuse existing components before creating new ones
 - Follow existing lint/build conventions
 - No large refactors unless required
-- Avoid backward compatibility work by default; do it only when explicitly requested
+- Preserve established consumers and accepted contracts. Add compatibility machinery only for an actual supported consumer or migration need; ask before consequential breaking changes outside the request.
 
 ## Verification
 - Reuse the existing test setup and select checks for affected components, shared hooks/state, API clients, and consuming screens.
 - Add a focused regression test when a concrete behavior risk lacks coverage; reproduce the failure when practical. Small copy, spacing, or internal cleanup does not automatically require a new test.
-- For material UI features, the separate proof author should exercise the real browser journey and assert observable DOM state, navigation, persisted data, or API effects. Screenshots alone do not establish interaction correctness.
-- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), which distinguishes independent setup repair from user-owned acceptance decisions; this skill cannot rewrite frozen proof inputs. Repair introduced regressions within the current feature run.
+- For material UI features, exercise the real browser journey and assert observable DOM state, navigation, persisted data, or API effects. Screenshots alone do not establish interaction correctness.
+- Implement against the fixed proof. Route proof defects through the [central proof procedure](../../docs/harness/coding/proof.md#fixed-acceptance), preserving accepted behavior when repairing test setup or assertions. Repair introduced regressions within the current feature run.
 
 ## Reference repos (Frontend)
 Use only when the current repository lacks a needed pattern.

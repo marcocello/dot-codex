@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "6accf83b8870d0888a42a253ab7fbe41e0b0c4ddfe9fb6348ceeda7ade543b3a",
+  "feature_dir": "docs/features/four-mode-coding-workflow",
+  "feature_id": "four-mode-coding-workflow",
+  "implementer": null,
+  "proof_run": "docs/features/four-mode-coding-workflow/proof/runs/20260910T085059213376Z",
+  "receipt_digest": "b665e0d61a13b3dcea12a3c630003b26380ee83e20ded37cc8bd91d027673fba",
+  "recorded_at": "2026-10-02T10:04:28.082506+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

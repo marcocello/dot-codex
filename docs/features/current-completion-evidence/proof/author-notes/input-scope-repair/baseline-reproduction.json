@@ -1,0 +1,26 @@
+{
+  "baseline_script_sha256": "9c61f19ea72c052435148472faebf2d51e6bc8abf752d1b4063dae005f03c1a9",
+  "command_returncodes": {
+    "done_transition": 0,
+    "pass_review": 0,
+    "proof_after_change": 0,
+    "regression_before_change": 0,
+    "same_regression_after_change": 1
+  },
+  "completion_output": "{\"id\": \"sample\", \"feature_dir\": \"docs/features/sample\", \"priority\": 1, \"status\": \"done\", \"owner\": null, \"proof_run\": \"docs/features/sample/proof/runs/20260925T081507421813Z\", \"notes\": \"\"}\n",
+  "review_output": "verification_receipt: /private/var/folders/nf/8g90cw3d5pv1smp4vpxnvh4w0000gn/T/completion-acceptance-fzx2d852/docs/features/sample/proof/runs/20260925T081507421813Z/review.json\n",
+  "state_after_completion": {
+    "features": [
+      {
+        "feature_dir": "docs/features/sample",
+        "id": "sample",
+        "notes": "",
+        "owner": null,
+        "priority": 1,
+        "proof_run": "docs/features/sample/proof/runs/20260925T081507421813Z",
+        "status": "done"
+      }
+    ],
+    "version": 2
+  }
+}

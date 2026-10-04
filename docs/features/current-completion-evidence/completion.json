@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "c0cdc98857600085745263e9136c8aad092b2288a320251f928f0c0fd6caa789",
+  "evidence_digest": "b28e40864044aa708449a024aa0743262e9cea84cb7ec5a6d4c6dd59d8a95ffc",
+  "feature_dir": "docs/features/current-completion-evidence",
+  "feature_id": "current-completion-evidence",
+  "implementer": "01a0d45e-c436-7c40-b267-964194757d71",
+  "proof_run": "docs/features/current-completion-evidence/proof/runs/20260925T081706636815Z",
+  "receipt_digest": "96de0a4fcb74f39b599f4c1174c826de5af184416d74f968f7d2d9a420cd9d93",
+  "recorded_at": "2026-10-02T10:04:28.092611+00:00",
+  "summary": "Independent final reviewer confirmed input selection, includes and file fingerprints match at PASS review and completion; legacy mismatched receipts are rejected, compatible cross-feature support and diagnostic FAIL remain valid. Acceptance extended by input_scope_proof from original completion_proof without weakened assertions. Implementation UI prompt matches discovery autonomy. Full acceptance and selected regressions passed against the same current local-harness-cli candidate; undeclared ignored inputs and external state remain outside observation.",
+  "target": "local-harness-cli",
+  "verdict": "PASS",
+  "version": 1
+}

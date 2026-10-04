@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hand off coding context"
+  short_description: "Keep focused context for the next coding session"
+  default_prompt: "Use $code-handoff for the relevant coding task in this project."

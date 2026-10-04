@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {"label": "backend", "type": "shell", "command": "make backend", "isBackground": true, "problemMatcher": []},
+    {"label": "frontend", "type": "shell", "command": "make frontend", "isBackground": true, "problemMatcher": []},
+    {"label": "fullstack", "dependsOn": ["backend", "frontend"], "problemMatcher": []},
+    {"label": "check", "type": "shell", "command": "make check", "group": "test", "problemMatcher": []}
+  ]
+}

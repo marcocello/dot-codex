@@ -1,0 +1,13 @@
+# Pi adaptation verification — 2026-09-24
+
+Scope: the SSH core, its five Pi-inspired coding skills, their metadata and references, and discovery alongside the existing React/FastAPI scaffold. The scaffold implementation was unchanged by this adaptation; its earlier runtime evidence is summarized in the root README.
+
+Native discovery passed using installed `codex-cli 0.151.0`. A temporary Codex home contained only a copy of SSH's core, configuration, and skills; the working directory was a separate empty project. An app-server initialization followed by `skills/list` with `forceReload: true` returned all six SSH skills enabled with no discovery errors. No model turn, credentials, Pi process, or extra skill root was used. This checks discoverability, not guaranteed model selection. The protocol used is documented in the official [Codex app-server skill interface](https://learn.chatgpt.com/docs/app-server#skills).
+
+An independent agent exercised `code-explore` on a disposable pricing fixture under an explicit diagnosis-only request. It inspected the contract, reproduced the failing calculation with Python `-B`, and proposed the correct ordering of discount and tax. The existing regression test failed as expected; a separate in-memory proposal returned the intended values. The fixture was not repaired because repair was outside that request. Before/after file inventories and SHA-256 hashes were identical, with no created directories.
+
+The same agent exercised `code-review` and `code-release` for a review and release-preparation request that prohibited publishing and remote mutations. It reviewed the proposed correction, drafted a clearly unshipped release note, and identified missing release metadata instead of inventing it. No commits, pushes, publications, issue changes, or messages occurred. These focused scenarios support scope adherence; they do not establish reliability across every task or model.
+
+Every skill passed the bundled skill validator. Names match directories, descriptions are concise, UI invocation metadata references the correct skills, relative documentation links resolve, the Pi license matches the inspected source, and new source files are visible to Git. Both the SSH-scoped and final dot-codex repository gates passed, along with whitespace checks. The Pi checkout remained clean at the inspected revision.
+
+No remote release, external deployment, provider integration, session-tree implementation, or Pi extension compatibility is claimed. Browser/terminal checking is guidance for available native tools, not a newly installed browser or terminal service. The broader dot-codex checkout is independently edited by another task; its gate is separate from SSH's validation.

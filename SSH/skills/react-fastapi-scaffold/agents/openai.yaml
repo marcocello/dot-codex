@@ -1,0 +1,4 @@
+interface:
+  display_name: "React + FastAPI scaffold"
+  short_description: "Start an app with SSH's opinionated full stack"
+  default_prompt: "Use $react-fastapi-scaffold to create a new web app using the default SSH stack."

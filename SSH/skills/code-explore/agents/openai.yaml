@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explore code"
+  short_description: "Trace code and resolve the next useful change"
+  default_prompt: "Use $code-explore for the relevant coding task in this project."

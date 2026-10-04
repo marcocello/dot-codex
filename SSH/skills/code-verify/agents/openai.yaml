@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify behavior"
+  short_description: "Prove outcomes through real user interactions"
+  default_prompt: "Use $code-verify for the relevant coding task in this project."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review code"
+  short_description: "Find defects or simplify when requested"
+  default_prompt: "Use $code-review for the relevant coding task in this project."

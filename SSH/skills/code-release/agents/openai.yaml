@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prepare and deliver releases"
+  short_description: "Prepare releases and verify authorized delivery"
+  default_prompt: "Use $code-release for the relevant coding task in this project."

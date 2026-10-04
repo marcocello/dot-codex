@@ -1,0 +1,39 @@
+{
+  "apiVersion": "networking.k8s.io/v1",
+  "kind": "Ingress",
+  "metadata": {
+    "name": "web"
+  },
+  "spec": {
+    "ingressClassName": "APP_INGRESS_CLASS",
+    "tls": [
+      {
+        "hosts": [
+          "APP_DOMAIN"
+        ],
+        "secretName": "app-tls"
+      }
+    ],
+    "rules": [
+      {
+        "host": "APP_DOMAIN",
+        "http": {
+          "paths": [
+            {
+              "path": "/",
+              "pathType": "Prefix",
+              "backend": {
+                "service": {
+                  "name": "web",
+                  "port": {
+                    "number": 80
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

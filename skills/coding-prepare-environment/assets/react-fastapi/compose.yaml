@@ -1,0 +1,64 @@
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  db:
+    logging: *logging
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python3 scripts/setup.py first}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U app -d app"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    logging: *logging
+    build: ./backend
+    environment: &api_environment
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+      DATABASE_URL: postgresql+psycopg://app:${POSTGRES_PASSWORD}@db:5432/app?connect_timeout=5
+    command: [python, -m, alembic, upgrade, head]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  backend:
+    logging: *logging
+    build: ./backend
+    environment: *api_environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/ready', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    restart: unless-stopped
+
+  web:
+    logging: *logging
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - 127.0.0.1:${WEB_PORT:-8080}:80
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

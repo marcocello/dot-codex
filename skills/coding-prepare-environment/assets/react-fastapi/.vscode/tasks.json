@@ -1,0 +1,191 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "setup"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "dev:ready",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "dev-ready"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "backend:app",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "backend"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "dev:ready"
+      ],
+      "isBackground": true
+    },
+    {
+      "label": "frontend",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "frontend"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "dev:ready"
+      ],
+      "isBackground": true
+    },
+    {
+      "label": "check",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "check"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": "test"
+    },
+    {
+      "label": "containers:up",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "up"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "containers:down",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "down"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "logs",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "logs"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "status",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "status"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "smoke",
+      "type": "process",
+      "command": "make",
+      "args": [
+        "smoke"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "backend",
+      "dependsOn": [
+        "backend:app"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "fullstack",
+      "dependsOn": [
+        "backend:app",
+        "frontend"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+services:
+  web:
+    ports: !override
+      - 80:80
+      - 443:443
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?Set your domain, e.g. app.example.com}
+      DEPLOY_USER: ${DEPLOY_USER:?Set a deployment login}
+      DEPLOY_PASSWORD_HASH: ${DEPLOY_PASSWORD_HASH:?Set a Caddy password hash}
+    volumes:
+      - ./deploy/Caddyfile.production:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

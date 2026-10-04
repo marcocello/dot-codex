@@ -1,0 +1,13 @@
+{$SITE_ADDRESS} {
+	basic_auth {
+		{$DEPLOY_USER} {$DEPLOY_PASSWORD_HASH}
+	}
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

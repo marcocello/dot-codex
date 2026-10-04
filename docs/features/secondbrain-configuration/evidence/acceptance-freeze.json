@@ -1,0 +1,10 @@
+{
+  "author": "/root/secondbrain_proof",
+  "stage": "independent acceptance authored before implementation",
+  "sha256": {
+    "FEATURE.md": "5b92037b01ee91515180c6846f555a7350ad7b666775f5ffb86a4ab299232b8f",
+    "PROOF.md": "b4ea209576dd25a3262baef5dcd39e860e11bffb92af03bc830a19dbc25888f5",
+    "proof/run.sh": "ba330540644bc87364df795efd136f7d8ba425f1d398ab4e0ecf64a27013f6c0",
+    "proof/acceptance.py": "4091c9d9aa942355d4b161c0e7c134a962772d3d44bfc51fdadfed2a1dbaec9b"
+  }
+}

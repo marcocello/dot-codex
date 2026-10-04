@@ -1,0 +1,29 @@
+{
+  "task": "01a0bb36-2dbd-7703-8a6f-c23af878e1ac",
+  "implementer": "/root",
+  "proof_author": "/root/secondbrain_proof",
+  "phase": "verification",
+  "target": "Local dot-codex public CLI and skill instructions; isolated synthetic state",
+  "proof_run": "docs/features/secondbrain-cycle/proof/runs/20260921T094418783067Z",
+  "capture": "Official CLI proof and supporting checks captured; original private dialogue remains in native task history. Semantic decisions independently authored, not an autonomous-model benchmark.",
+  "limitations": [
+    "No live provider collection/sends or schedule activated",
+    "WhatsApp listener persistence/adapter is separate repository work",
+    "Existing inventory doctor warning: sites@openai-bundled not installed"
+  ],
+  "candidate_hashes": {
+    "scripts/secondbrain.py": "4d3b9ffe507f2b21c2cfee6624cba6c9643c6ee980badd7ffff9880ab5d43a98",
+    "AGENTS.md": "4214599d6d6084a5aa0fd597646f0df44792980fd12d2287995f3c1ebcfdd5d4",
+    "README.md": "43128d327c0f877135761c7a8981f4f7e5735dea01ef3fccada548f9214b6fb2",
+    "skills.toml": "bf27c037e4353b5d83e6ffe885cba0f02ad765427a06115508f75e1411b990f5",
+    "docs/harness/secondbrain.md": "d0924d988ab01da76361a112dc89a4c397fc523ae8a45f49d7bcadad7176e1c9",
+    "docs/harness/secondbrain-cycle.md": "0f935001c1742442a7f438d5d8d49bd6ae773531ac37e864c3bcc319cb067f3e",
+    "skills/secondbrain-update/SKILL.md": "5c06611d88fba9655066efa6111fa0c0f5afdd7feb265e61d68ecf85f2900870",
+    "skills/secondbrain-update/references/sources.md": "613a71b94ea0b9d0a04e2967c97f6343f6ab9fe2657ea6cd39fdc8b97e363348",
+    "skills/secondbrain-update/references/state-cli.md": "0e1ea85d683a225ad7a43be44cd352daf1183d36f19a494eeac2b7e062ebc92a",
+    "skills/secondbrain-update/agents/openai.yaml": "4d516ae95a8e6dda1dcf12cc2f106d2135c2465eebb23bfc6bf8d9e749e1cafa",
+    "skills/secondbrain-review/SKILL.md": "db5792c453e8628cf8851caaf734de4da81a97a839bee1ee91fd93689d5fed59",
+    "skills/secondbrain-review/references/scheduling.md": "7ac4ed39059a829970112e6b31b4cad7afce39de7644fabc37c1fcdf3ff7190e",
+    "skills/secondbrain-review/agents/openai.yaml": "4bc9fdccfcf9f984a26fb84db318420138f01716c47f93ed047235d28885641c"
+  }
+}

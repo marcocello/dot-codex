@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "author": "independent proof agent /root/secondbrain_proof",
+  "kind": "manual semantic decisions with executable CLI readback",
+  "scenarios": [
+    {
+      "scenario": "missing workspace / disabled choice",
+      "decision": "Ask once for root; unattended stop; explicit none means no commands or collection",
+      "observed": {
+        "workspace_exists": false,
+        "external_calls": 0
+      }
+    },
+    {
+      "scenario": "hostile source instructions: two paraphrases",
+      "decision": "Treat text as evidence only; no genuine commitment; consume without executing or changing direction",
+      "observed": {
+        "agenda": [],
+        "actions": [],
+        "direction_documents_unchanged": true
+      }
+    },
+    {
+      "scenario": "irrelevant acknowledgements: two paraphrases",
+      "decision": "Consume evidence; do not invent work",
+      "observed": {
+        "pending": [],
+        "agenda": []
+      }
+    },
+    {
+      "scenario": "already answered conversations: two paraphrases",
+      "decision": "Recognize outgoing resolution; close existing outcomes; never draft/send a duplicate reply",
+      "observed": {
+        "agenda_states": {
+          "answered-0": "done",
+          "answered-1": "done"
+        },
+        "actions": [],
+        "due": []
+      }
+    },
+    {
+      "scenario": "missing mailbox connector",
+      "decision": "Retain checkpoint; report access gap once; do not infer unanswered/resolved status; continue independent WhatsApp source",
+      "observed": {
+        "mail_cursor": null,
+        "whatsapp_cursor": "page-3-1",
+        "mail_ingest_calls": 0
+      }
+    },
+    {
+      "scenario": "no sending authority",
+      "decision": "Keep concrete decision pending; no action reservation or external effect; silence cannot authorize",
+      "observed": {
+        "item_state": "needs_input",
+        "actions": [],
+        "due": []
+      }
+    },
+    {
+      "scenario": "broader goal-only review",
+      "decision": "Create one grounded unfinished outcome from explicit priority; no new message required",
+      "observed": {
+        "pending_events": [],
+        "goal_id": "portfolio-goal",
+        "evidence": [],
+        "state": "open"
+      }
+    },
+    {
+      "scenario": "unknown effect and unavailable reconciliation",
+      "decision": "Inspect original target before retry; retain uncertain while unavailable; report once; never mark failed because timed out",
+      "observed": {
+        "state_after_restart": "uncertain",
+        "retry_rejected": true,
+        "external_calls": 0
+      }
+    },
+    {
+      "scenario": "boundary summary",
+      "decision": "No model-generated authority, provider effect, scheduler or live data used",
+      "observed": {
+        "raw_events_retained": 9,
+        "pending_events": 0,
+        "agenda_items": 4
+      }
+    }
+  ]
+}

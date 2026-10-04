@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain Update"
+  short_description: "Maintain shared context and unfinished outcomes"
+  default_prompt: "Use $secondbrain-update to collect changes from my selected sources into my established second-brain workspace."

@@ -1,0 +1,6 @@
+test_replays_revisions_empty_pages_and_atomic_cursors (__main__.CycleAcceptance.test_replays_revisions_empty_pages_and_atomic_cursors) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.421s
+
+OK

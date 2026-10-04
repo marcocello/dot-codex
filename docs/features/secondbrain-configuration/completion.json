@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "ee3b41a985324e4caf642fc6bdce6cbb40b6cd52216d0c44ce77390bf2cbccdb",
+  "feature_dir": "docs/features/secondbrain-configuration",
+  "feature_id": "secondbrain-configuration",
+  "implementer": null,
+  "proof_run": "docs/features/secondbrain-configuration/proof/runs/20260921T184918786650Z",
+  "receipt_digest": "8301bf9d1fdde1a40e21afa9a903c8f5aca3a1246cf644dd04477d0bdde18b6c",
+  "recorded_at": "2026-10-02T10:04:28.091877+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

@@ -1,0 +1,14 @@
+{
+  "candidate_digest": null,
+  "evidence_digest": "2eedfe2244c9657263f189e46218f1aed9eaa624a05d1f28d522fdd688fd6e22",
+  "feature_dir": "docs/features/secondbrain-cycle",
+  "feature_id": "secondbrain-cycle",
+  "implementer": null,
+  "proof_run": "docs/features/secondbrain-cycle/proof/runs/20260921T094418783067Z",
+  "receipt_digest": "cb2d1d31c64dfe0fe52de77bccc3b46aed36ea0b7db173b84b6e632fea63fd42",
+  "recorded_at": "2026-10-02T10:04:28.091435+00:00",
+  "summary": "Retained historical PASS; original run has no review attribution.",
+  "target": "unrecorded",
+  "verdict": "PASS",
+  "version": 1
+}

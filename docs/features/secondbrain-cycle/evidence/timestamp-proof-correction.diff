@@ -1,0 +1,21 @@
+--- proof/acceptance.py (frozen original)
++++ proof/acceptance.py (independent author correction)
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python3
+ """Independent acceptance: only activate the public CLI in fresh processes."""
+ import concurrent.futures
++from datetime import datetime, timedelta
+ import json
+ from pathlib import Path
+ import subprocess
+@@ -138,7 +139,9 @@
+         self.call('source-put', {'id':'wa','provider':'whatsapp','scope':'synthetic-account/chat-1','enabled':True})
+         self.ingest([self.event('new',occurred_at='2031-01-01T12:00:00+02:00')], 'c4','c5')
+         latest = self.pending()[-1]
+-        self.assertIn(latest['occurred_at'], ['2031-01-01T10:00:00Z','2031-01-01T10:00:00+00:00'])
++        normalized = datetime.fromisoformat(latest['occurred_at'].replace('Z', '+00:00'))
++        self.assertEqual(normalized.utcoffset(), timedelta(0))
++        self.assertEqual(normalized, datetime.fromisoformat('2031-01-01T10:00:00+00:00'))
+         self.assertEqual(len(self.call('pending', {'limit':1}, file_input=True)['events']),1)
+         self.call('pending', {'limit':0}, file_input=True,ok=False)
+ 

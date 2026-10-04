@@ -1,0 +1,13 @@
+Second-brain acceptance: real CLI processes, isolated temporary state, synthetic provider edge.
+test_apply_atomic_versions_and_evidence (__main__.CycleAcceptance.test_apply_atomic_versions_and_evidence) ... ok
+test_concurrent_action_and_interpretation (__main__.CycleAcceptance.test_concurrent_action_and_interpretation) ... ok
+test_durable_journey_due_resolution_and_irrelevant_evidence (__main__.CycleAcceptance.test_durable_journey_due_resolution_and_irrelevant_evidence) ... ok
+test_first_use_explicit_root_and_preservation (__main__.CycleAcceptance.test_first_use_explicit_root_and_preservation) ... ok
+test_freshness_action_claim_and_uncertain_reconciliation (__main__.CycleAcceptance.test_freshness_action_claim_and_uncertain_reconciliation) ... ok
+test_goals_states_and_due_order (__main__.CycleAcceptance.test_goals_states_and_due_order) ... ok
+test_replays_revisions_empty_pages_and_atomic_cursors (__main__.CycleAcceptance.test_replays_revisions_empty_pages_and_atomic_cursors) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.896s
+
+OK

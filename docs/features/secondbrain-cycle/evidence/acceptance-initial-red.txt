@@ -1,0 +1,223 @@
+Second-brain acceptance: real CLI processes, isolated temporary state, synthetic provider edge.
+test_apply_atomic_versions_and_evidence (__main__.CycleAcceptance.test_apply_atomic_versions_and_evidence) ... FAIL
+test_concurrent_action_and_interpretation (__main__.CycleAcceptance.test_concurrent_action_and_interpretation) ... FAIL
+test_durable_journey_due_resolution_and_irrelevant_evidence (__main__.CycleAcceptance.test_durable_journey_due_resolution_and_irrelevant_evidence) ... FAIL
+test_first_use_explicit_root_and_preservation (__main__.CycleAcceptance.test_first_use_explicit_root_and_preservation) ... FAIL
+test_freshness_action_claim_and_uncertain_reconciliation (__main__.CycleAcceptance.test_freshness_action_claim_and_uncertain_reconciliation) ... FAIL
+test_goals_states_and_due_order (__main__.CycleAcceptance.test_goals_states_and_due_order) ... FAIL
+test_replays_revisions_empty_pages_and_atomic_cursors (__main__.CycleAcceptance.test_replays_revisions_empty_pages_and_atomic_cursors) ... FAIL
+
+======================================================================
+FAIL: test_apply_atomic_versions_and_evidence (__main__.CycleAcceptance.test_apply_atomic_versions_and_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 146, in test_apply_atomic_versions_and_evidence
+    self.boot()
+    ~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 45, in boot
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_concurrent_action_and_interpretation (__main__.CycleAcceptance.test_concurrent_action_and_interpretation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 205, in test_concurrent_action_and_interpretation
+    seq = self.prepare_agenda()
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 67, in prepare_agenda
+    self.boot()
+    ~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 45, in boot
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_durable_journey_due_resolution_and_irrelevant_evidence (__main__.CycleAcceptance.test_durable_journey_due_resolution_and_irrelevant_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 96, in test_durable_journey_due_resolution_and_irrelevant_evidence
+    seq = self.prepare_agenda()
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 67, in prepare_agenda
+    self.boot()
+    ~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 45, in boot
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_first_use_explicit_root_and_preservation (__main__.CycleAcceptance.test_first_use_explicit_root_and_preservation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 80, in test_first_use_explicit_root_and_preservation
+    self.call('context', ok=False)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: context: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_freshness_action_claim_and_uncertain_reconciliation (__main__.CycleAcceptance.test_freshness_action_claim_and_uncertain_reconciliation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 182, in test_freshness_action_claim_and_uncertain_reconciliation
+    seq = self.prepare_agenda()
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 67, in prepare_agenda
+    self.boot()
+    ~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 45, in boot
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_goals_states_and_due_order (__main__.CycleAcceptance.test_goals_states_and_due_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 168, in test_goals_states_and_due_order
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+======================================================================
+FAIL: test_replays_revisions_empty_pages_and_atomic_cursors (__main__.CycleAcceptance.test_replays_revisions_empty_pages_and_atomic_cursors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 33, in call
+    result = json.loads(proc.stdout)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 116, in test_replays_revisions_empty_pages_and_atomic_cursors
+    self.boot()
+    ~~~~~~~~~^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 45, in boot
+    self.call('init')
+    ~~~~~~~~~^^^^^^^^
+  File "/Users/marcocello/software/marcocello/dot-codex/docs/features/secondbrain-cycle/proof/acceptance.py", line 35, in call
+    self.fail(f'{command}: expected a JSON object, exit={proc.returncode}, stdout={proc.stdout!r}, stderr={proc.stderr!r}')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: init: expected a JSON object, exit=2, stdout='', stderr="/opt/homebrew/Cellar/python@3.14/3.14.4/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/marcocello/software/marcocello/dot-codex/scripts/secondbrain.py': [Errno 2] No such file or directory\n"
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.132s
+
+FAILED (failures=7)

@@ -1,0 +1,11 @@
+# Delivery
+
+Implemented two registered skills, a standard-library durable state CLI, shared operational/command/source/scheduling references, and routing integration in dot-codex. The CLI preserves source checkpoints and immutable changes, maintains sourced current facts and versioned agenda items, selects due work, and records mutually exclusive action attempts and verified/failed/uncertain receipts.
+
+The independent acceptance demonstrates a source request becoming a waiting outcome and later resolving from outgoing evidence across separate processes. It exercises replay, missed-range checkpoint continuation, atomic rejection, optimistic conflict handling, concurrent claims, stale evidence, goal-driven outcomes and uncertain-action reconciliation. Independent semantic decisions exercise hostile/irrelevant/answered paraphrases and missing root, access or authority with actual local read-back. This is synthetic/local proof, not a reliability claim about unattended model judgment or remote providers.
+
+Final official proof: `../proof/runs/20260921T094418783067Z` (PASS). Affected edge, skill and connector checks: `../tests/runs/20260921T094418790583Z` (PASS). Semantic decision replay: `../tests/runs/20260921T094252047035Z` (PASS). Independent final review: final-review.md (PASS). One independent assertion-format correction and one reviewer-found implementation repair are retained with evidence. Original private conversation remains in native task history; capture is partial and does not reproduce private dialogue.
+
+Preserved pre-existing edits in coding-shape and knowledge-tool-connect and unchanged ordinary knowledge capture/review entrypoints. Inventory additions used skill_inventory.py. Its doctor reports the pre-existing missing `sites@openai-bundled` installation; this does not prevent the two owned skills from being registered. The existing repository .venv supplies PyYAML for the gate and skill validators; the state CLI itself requires no added dependency.
+
+No live workspace initialized, source account selected, listener modified, external action performed or recurrence activated. Those operational choices are documented as explicit setup, not silently inferred from the request to change dot-codex. Changes remain local and uncommitted.

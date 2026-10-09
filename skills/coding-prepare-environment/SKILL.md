@@ -1,6 +1,6 @@
 ---
 name: coding-prepare-environment
-description: "Scaffold greenfield React/FastAPI projects with local tasks, logging, Docker and Kubernetes; prepare existing Python, Node, PHP, Laravel, WordPress or mixed environments with selective adoption."
+description: "Scaffold greenfield React/FastAPI projects with local tasks, logging, Docker, Kubernetes and component-local Terraform roots; prepare existing Python, Node, PHP, Laravel, WordPress or mixed environments with selective adoption."
 ---
 
 # Prepare Environment
@@ -78,6 +78,12 @@ This skill owns the default component locations for environment preparation acro
 - Explicit user choices and explicitly selected platform requirements take precedence. Preserve existing repository layouts unless the user approves the concrete adoption proposal under Starter Selection or a specific relocation; defaults alone do not authorize moving an existing project.
 - Before relocating existing folders, show the proposed source and destination paths and ask the user for approval. A general environment-preparation request or complaint about layout does not authorize relocation. If the user has already explicitly authorized the specific relocation, proceed without asking again; otherwise continue setup that preserves the current layout while awaiting their answer.
 - Before reporting readiness, verify the selected component paths and documented command working directories as well as dependencies. For a changed `.gitignore`, use `git check-ignore` to verify representative nested source/config files are visible and dependencies, secrets, and generated artifacts remain ignored. A successful dependency check or generic gate alone does not establish those outcomes.
+
+## Terraform Deployment Structure
+
+When authorized work includes Terraform scaffolding or deployment layout, read [Terraform conventions](references/terraform.md). Use its component-local roots, file responsibilities, naming locals, and HCL formatting. Select the sanitized [Azure root template](assets/terraform/azure-root) for Azure. For DigitalOcean, read [DigitalOcean adaptations](references/terraform-digitalocean.md) and use the [DigitalOcean root template](assets/terraform/digitalocean-root). Other providers can reuse the organization with their own resource and state configuration.
+
+Terraform assets are separate from the React/FastAPI copier and are not added to every application. Create only requested components and environments. Preserve existing roots, state keys, and resource addresses; adding this convention does not authorize a migration, cloud provisioning, or deployment.
 
 ## Gitignore Policy
 

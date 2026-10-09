@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Prepare Environment"
-  short_description: "Scaffold full-stack projects or prepare existing environments."
-  default_prompt: "Use $coding-prepare-environment to use the bundled React/FastAPI scaffold for greenfield work, or inspect an existing project and propose selective scaffold adoption before changing its conventions. Verify the resulting setup and run journey."
+  short_description: "Prepare applications and Terraform deployment structure."
+  default_prompt: "Use $coding-prepare-environment to use the bundled React/FastAPI scaffold for greenfield work, prepare an existing application environment, or scaffold requested Terraform roots using the bundled conventions. Inspect existing projects and propose selective adoption before changing their conventions. Verify the resulting setup and run journey."
 policy:
   allow_implicit_invocation: true

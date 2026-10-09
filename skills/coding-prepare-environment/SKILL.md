@@ -5,6 +5,8 @@ description: "Scaffold greenfield React/FastAPI projects with local tasks, loggi
 
 # Prepare Environment
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: centralize repo setup policy so other skills and AGENTS.md do not duplicate stack-specific environment rules.
 
 The coding lifecycle skills own routing, acceptance, execution, and completion. Prepare only the environment needed for that work; setup does not require its own feature package or review.

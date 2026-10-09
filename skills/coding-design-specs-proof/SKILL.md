@@ -5,6 +5,8 @@ description: Turn sufficiently understood product intent into narrow feature spe
 
 # Design Specs and Proof
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Proof and acceptance test mean the same realistic check through UI, API, or CLI. Read the original request, corrections, existing contracts and relevant repository context. Apply [Product Partner](../coding-product-partner/SKILL.md) to inspect surrounding behavior and surface useful adjacent proposals before fixing scope, including when the request is clear. Derive routine details yourself and distinguish accepted decisions from assumptions.
 
 ## Specify A Small Outcome

@@ -7,6 +7,8 @@ metadata:
 
 # Frontend
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: implement, bootstrap, or refactor user-facing React/Next.js work while preserving the repo's design system and frontend conventions.
 
 The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies frontend technique; apply [product discovery and autonomy](../coding-product-partner/SKILL.md#discovery-and-autonomy) to inspect surrounding interactions even for clear requests; keep focused Repairs lightweight.

@@ -7,6 +7,8 @@ metadata:
 
 # Python Backend
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: implement or bootstrap Python backend API/application work with clear boundaries, repo-native setup, and pytest coverage.
 
 The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, review, and recording. This skill supplies Python technique; use the light Repair path for known defects and Design Specs and Proof/Implement for material accepted behavior changes, following [product discovery and autonomy](../coding-product-partner/SKILL.md#discovery-and-autonomy).

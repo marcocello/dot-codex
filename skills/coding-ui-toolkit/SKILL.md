@@ -5,6 +5,8 @@ description: Select and coordinate UI approaches, specialist skills, and curated
 
 # UI Toolkit
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 This is a meta skill: choose the smallest useful combination of UI capabilities, then use their maintained instructions. It does not duplicate specialist design, component API, or implementation playbooks.
 
 ## Inspect and route

@@ -5,6 +5,8 @@ description: Explain how a software kit works through its business purpose, desi
 
 # Explain a Kit
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Help a technically literate reader who is unfamiliar with the domain build a causal understanding of a kit. Explain why the system has this shape before walking through what executes. Remain read-only toward the assessed system unless changes are separately requested.
 
 ## Establish what is being explained

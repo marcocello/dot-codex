@@ -4,6 +4,8 @@ In this harness, **proof** and **acceptance test** mean the same thing: a realis
 
 Acceptance rules for Design Specs and Proof, Implement, and feature-owned Repair. [AGENTS.md](../../../AGENTS.md) owns authorization.
 
+Read [Coding writing](writing.md) for proof plans and reports. Preserve accepted outcomes, assertion strength, uncertainty, and observation boundaries when simplifying prose. Style checks do not establish acceptance.
+
 Choose technique and depth for the accepted slice. Every criterion needs evidence; no feature is required to have a separate runner. Prefer [mapped focused checks and shared journeys](rounds.md) for multi-feature work. Use [boundary examples](proof-guidance.md) when helpful.
 
 ## Acceptance Authorship

@@ -5,6 +5,8 @@ description: Repair known defects or small maintenance, distinguishing standalon
 
 # Repair
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Restore known expected behavior with the smallest verified change. Use [AGENTS.md](../../AGENTS.md#understand-and-route) when discovery changes the route.
 
 ## Classify And Explain The Scope

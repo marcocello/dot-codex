@@ -5,6 +5,8 @@ description: "Review code, architecture, runtime, tests, proof, and function mai
 
 # Anti-pattern Review
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: identify harmful recurring practices without turning a catalog match, scanner alert, or style preference into a finding.
 
 Use directly for analysis. The review is read-only; authorized remediation can follow in the same task through the appropriate workflow.

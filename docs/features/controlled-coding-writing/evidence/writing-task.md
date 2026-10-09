@@ -1,0 +1,11 @@
+# Fresh writing task
+
+Worker: `/root/writing_trial`, with no inherited conversation. It received the shared reference and the tasks below, without this feature's acceptance criteria or the reviewer assessment. It was instructed to write only the outputs in a temporary file, without application execution, external calls, or repository edits.
+
+1. Rewrite this technical note as a short specification without deciding new behavior: “Users must have the export permission before exports can commence. When they select a maximum of 500 orders, the export must contain those selected orders exclusively. The worker should retry a transient failure after 30 seconds. It may return a cached response, but we have not verified the cache behavior. The streaming API must return status 403 when the caller lacks export permission. The export should be fast and handle permanent failures gracefully.”
+2. Write a proof plan for the selected-order export given only those decisions. The public interface is a browser. There are three available orders A, B, and C. All have normal identifiers and distinct amounts. Do not execute the plan.
+3. Rewrite this status note for the user: “The unit tests with a fake payment provider passed. The staging browser export ran, and its downloaded CSV contained only A and B. We have not deployed to production. A separate log said exactly ‘upstream timed out’. We suspect the provider but have not established the cause. The next deployment action needs the user's authorization.”
+4. Rewrite this technical instruction for clarity: “For commencing the streaming worker, use `python worker.py --timeout 30`; the request field is `retry_after_ms` and an observed literal error is `Cannot acquire lock; retry later`. Keep the established timeout of 30 seconds.”
+5. Respond in Italian to “Mi dici in breve cosa è verificato e cosa manca?” using these facts: the local CLI export produced the expected CSV; the real provider was unavailable; deployment requires user authorization; the user has not authorized deployment.
+
+After a source correction, the same worker reread the updated guide and repeated tasks 1 and 2 with the same raw facts. The follow-up did not disclose the diagnosis or intended output. It is a follow-up exercise, not a second independent sample.

@@ -56,6 +56,8 @@ Route the request directly: answer a question, diagnose an operational symptom, 
 
 The [proof procedure](docs/harness/coding/proof.md) defines trustworthy observations, and [shared journeys](docs/harness/coding/rounds.md) explain reuse. Checks can declare their inputs once; scoped completion stays valid across unrelated edits. Shared runs automatically bind the feature specs they cover, and completion retains a compact portable history record. There is no risk classification or role-selection layer.
 
+Coding skills share [STE-inspired writing guidance](docs/harness/coding/writing.md) for specifications, acceptance tests, reports, and human interaction. Use short sentences, explicit actors, stable terms, and observable results while preserving requirement strength, uncertainty, technical content, and the user's language. This adaptation does not claim ASD-STE100 compliance or introduce a language gate.
+
 ### Feature records and ownership
 
 `docs/features/` holds feature descriptions, accepted decisions, and verification evidence. Its `status.json` records ownership and completion references. The [status procedure](docs/harness/coding/status.md) owns the schema, migration, transitions, concurrent work, and handoff rules.

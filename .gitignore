@@ -65,6 +65,7 @@ skills/reui/
 
 # Bundled environment starter source (narrow file types, no runtime trees).
 !skills/coding-prepare-environment/assets/**/*.toml
+!skills/coding-prepare-environment/assets/terraform/**/*.tf
 !skills/coding-prepare-environment/assets/**/*.lock
 !skills/coding-prepare-environment/assets/**/*.ini
 !skills/coding-prepare-environment/assets/**/*.mako

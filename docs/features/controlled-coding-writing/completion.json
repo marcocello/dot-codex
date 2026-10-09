@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "610760a7e47dd5fab01b67d3a843e5d74d4c31711c00a08f6307c86909e42b4c",
+  "evidence_digest": "b761160310413380388e487124384f47a2d30bae37366adc873106cdb43de6fe",
+  "feature_dir": "docs/features/controlled-coding-writing",
+  "feature_id": "controlled-coding-writing",
+  "implementer": "01a105fa-0827-7e90-853b-61d80537dc13",
+  "proof_run": "docs/features/controlled-coding-writing/proof/runs/20261004T084149674783Z",
+  "receipt_digest": "6ba3877625ffa431c43c4ec83f81e17dc2d295486f759c3b0c2f30bb2bcfcc3d",
+  "recorded_at": "2026-10-04T08:42:09.380660+00:00",
+  "summary": "Canonical guide installed in all coding skills, metadata and links PASS; source reviewed against AC1-AC4 and bounded writing samples preserve meaning after assumption clarification. Direct guide loading only; future automatic loading and reliability unverified. Gate retains pre-existing tracked vendor fixture failure documented in evidence.",
+  "target": "local-worktree",
+  "verdict": "PASS",
+  "version": 1
+}

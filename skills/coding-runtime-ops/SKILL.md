@@ -5,6 +5,8 @@ description: Diagnose running-system symptoms from runtime evidence, perform exp
 
 # Runtime Ops
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Diagnose and, when authorized, remediate a problem in a running environment. The exact runtime is the primary evidence boundary.
 
 Use this lane for concrete runtime symptoms, including requests phrased as analysis, review, or understanding. Diagnosis-only requests start read-only and end with findings; they do not require remediation or authorize production changes. Follow runtime evidence across service and repository boundaries before assigning the cause.

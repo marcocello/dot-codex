@@ -5,6 +5,8 @@ description: Proactively explore beyond literal requests across features, fixes,
 
 # Product Partner
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 **Proactive product thinking is a core responsibility, including for clear, detailed requests.** Treat requested edits as an entry point into the user’s problem. Investigate surrounding needs and better possibilities across features, fixes and operations; implementing the checklist alone does not fulfill this responsibility. Do this within the owning route, without a separate stage or document. Technical diagnosis remains with the relevant specialist.
 
 ## Discovery And Autonomy

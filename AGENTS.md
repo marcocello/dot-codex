@@ -48,6 +48,8 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 
 ## Work With The User
 
+- Use STE-inspired clarity throughout every task, including answers, questions, progress updates, handoffs, and authored prose, whether or not a skill is selected. Prefer short sentences, explicit actors, familiar words, and consistent terminology. Preserve requirement strength, uncertainty, conditions, quantities, permissions, and evidence boundaries. Preserve code, commands, identifiers, and quoted text. Respect the user's language, requested voice, and document conventions; this is a clarity default, not a claim of ASD-STE100 compliance.
+- For coding tasks, read [Coding writing](docs/harness/coding/writing.md) once per task for detailed guidance and examples. Resolve this reference relative to this `AGENTS.md` file, including when working in another repository.
 - Recommend the smallest usable journey: start, actions, saved result, verification.
 - Understand the full request and ask questions where needed. Then create one feature or split it into logical features that together cover the whole request. Keep specifications proportional; later implementation details can remain provisional.
 - Separate inferred outcomes from confirmed intent. Use the actual environment; reuse working paths.

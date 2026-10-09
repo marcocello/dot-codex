@@ -5,6 +5,8 @@ description: "Assess one component's architecture, logic, implementation risks, 
 
 # Architecture Deep Dive
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: produce a precise, evidence-based architectural assessment for one component or one current-versus-reference decision.
 
 Use directly for analysis. The assessment is read-only; an already authorized implementation can follow in the same task through the appropriate workflow.

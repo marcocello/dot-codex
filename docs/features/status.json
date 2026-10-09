@@ -423,6 +423,15 @@
       "owner": null,
       "proof_run": "docs/features/feature-proof-integrity/proof/runs/20261002T100428361670Z",
       "notes": ""
+    },
+    {
+      "id": "controlled-coding-writing",
+      "feature_dir": "docs/features/controlled-coding-writing",
+      "priority": 48,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/controlled-coding-writing/proof/runs/20261004T084149674783Z",
+      "notes": "Shared STE-inspired coding writing integrated; metadata/link checks and bounded semantic review PASS. Existing tracked-vendor-fixture gate failure retained; future automatic loading and universal adherence unverified."
     }
   ]
 }

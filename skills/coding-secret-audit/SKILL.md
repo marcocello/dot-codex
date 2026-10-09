@@ -5,6 +5,8 @@ description: Audit tracked and non-ignored untracked checkout files for hardcode
 
 # Secret And Personal Information Audit
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: detect exposed credentials and personal information, keep credentials redacted, and show exact personal-information matches in the conversation.
 
 This is a focused supporting audit, not a mandatory stage for every coding task. The coding lifecycle skills own any active feature's acceptance and completion; an audit result does not replace its proof or final review.

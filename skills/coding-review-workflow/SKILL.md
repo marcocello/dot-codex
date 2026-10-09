@@ -5,6 +5,8 @@ description: "Review coding runs, proof attempts, and user corrections to propos
 
 # App Improvement Review
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Purpose: extract useful improvements from actual coding runs, including successful, failed, and interrupted work. Separate discovery, implementation, proof, environment, and reusable harness issues.
 
 Use directly for analysis. Review is read-only: no status changes, acceptance edits, or automatic global rule changes. Authorized improvements can follow in the same task through the appropriate workflow. Recording belongs to the coding lifecycle skills; this skill reads linked evidence without duplicating dialogue or requiring a second-brain action.

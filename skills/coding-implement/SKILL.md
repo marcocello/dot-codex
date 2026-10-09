@@ -5,6 +5,8 @@ description: Implement authorized features through a scoped native Goal, prepari
 
 # Implement
 
+Read [Coding writing](../../docs/harness/coding/writing.md) once per task and apply it to specifications, proof, reports, and human interaction.
+
 Deliver every authorized outcome in narrow useful slices. Choose tactics from dependencies and evidence; delegation and separate review are optional.
 
 ## Enter And Persist

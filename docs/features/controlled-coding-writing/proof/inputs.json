@@ -1,0 +1,9 @@
+{
+  "scope": [
+    "skills",
+    "docs/harness/coding/writing.md",
+    "docs/harness/coding/proof.md",
+    "docs/features/controlled-coding-writing/evidence",
+    "README.md"
+  ]
+}

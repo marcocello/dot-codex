@@ -31,11 +31,6 @@ kind = "owned"
 path = "coding-python-backend"
 
 [[skills]]
-name = "coding-secret-audit"
-kind = "owned"
-path = "coding-secret-audit"
-
-[[skills]]
 name = "prospecting-linkedin-content-manager"
 kind = "owned"
 path = "prospecting-linkedin-content-manager"

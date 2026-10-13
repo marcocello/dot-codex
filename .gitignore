@@ -57,12 +57,6 @@ docs/interactions
 /secondbrain-state/
 # Separate minimal harness experiment; its own allowlist protects runtime state.
 !/SSH/
-
-# BEGIN skill_inventory.py managed skills
-skills/bento-slides/
-skills/reui/
-# END skill_inventory.py managed skills
-
 # Bundled environment starter source (narrow file types, no runtime trees).
 !skills/coding-prepare-environment/assets/**/*.toml
 !skills/coding-prepare-environment/assets/terraform/**/*.tf
@@ -94,3 +88,8 @@ skills/coding-prepare-environment/assets/**/logs/
 docs/verification/*/proof/runs/**
 docs/verification/*/tests/runs/**
 docs/verification/rounds/**
+
+# BEGIN skill_inventory.py managed skills
+skills/bento-slides/
+skills/reui/
+# END skill_inventory.py managed skills

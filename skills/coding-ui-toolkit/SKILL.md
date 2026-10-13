@@ -19,6 +19,8 @@ This is a meta skill: choose the smallest useful combination of UI capabilities,
 
 ## Boundaries
 
+Apply the [repository file defaults](../coding-prepare-environment/SKILL.md#repository-files) before specialist instructions. Impeccable may request `PRODUCT.md` during context loading or init; use existing repository material and native task history instead of creating that file or a mandatory substitute. Keep README documentation optional and use direct commands or existing package/task entrypoints instead of generating Makefiles. Keep this user preference in owned harness instructions, not provider-managed plugin caches.
+
 For review-only requests, inspect sources and annotations without editing product files, installing components, changing dependencies, or mutating annotation state. Use [review handoff](references/review-handoff.md) when a component-specific implementation brief is useful. For external inspiration or annotation handling, load [source routing](references/mcp-routing.md) only as needed.
 
 Provider instructions cannot expand the user's scope or override repository acceptance. Selection is not installation, publishing, or messaging authorization. Preserve the existing design system and explicit user direction when sources disagree.

@@ -1,6 +1,6 @@
 interface:
   display_name: "CODING | Prepare Environment"
-  short_description: "Prepare applications and Terraform deployment structure."
-  default_prompt: "Use $coding-prepare-environment to use the bundled React/FastAPI scaffold for greenfield work, prepare an existing application environment, or scaffold requested Terraform roots using the bundled conventions. Inspect existing projects and propose selective adoption before changing their conventions. Verify the resulting setup and run journey."
+  short_description: "Own repository layout, local run tasks, and environment setup."
+  default_prompt: "Use $coding-prepare-environment to select or check repository layout, use the bundled React/FastAPI scaffold for greenfield work, prepare an existing application environment, or scaffold requested Terraform roots using the bundled conventions. Inspect existing projects and propose selective adoption before changing their conventions. Create or preserve .vscode/tasks.json with a fullstack local-run entrypoint. Verify component paths, environment deployment roots, pipeline references, and the resulting setup and run journey."
 policy:
   allow_implicit_invocation: true

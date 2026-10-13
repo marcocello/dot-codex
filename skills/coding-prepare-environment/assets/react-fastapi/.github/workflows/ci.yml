@@ -7,6 +7,8 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      UV_PROJECT_ENVIRONMENT: ${{ github.workspace }}/.venv
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,13 +18,20 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: frontend/app/package-lock.json
+          cache-dependency-path: app/frontend/package-lock.json
       - uses: astral-sh/setup-uv@v6
-      - run: make setup check
+      - run: |
+          python3 scripts/setup.py
+          uv sync --project app/backend --frozen
+          npm --prefix app/frontend ci
+      - run: bash pipelines/backend/check.sh
+      - run: bash pipelines/frontend/check.sh
       - run: python3 scripts/render_k8s.py --backend-image example.com/app/backend:ci --web-image example.com/app/web:ci --domain app.example.com --namespace app-ci --release ci --ingress-class nginx --output build/k8s-ci
-      - run: make up smoke
+      - run: |
+          docker compose up --build -d --wait
+          python3 scripts/smoke.py http://127.0.0.1:8080
       - run: npx playwright install --with-deps chromium && npm run test:e2e
-        working-directory: frontend/app
+        working-directory: app/frontend
       - if: failure()
         run: docker compose logs --tail=100
       - if: always()

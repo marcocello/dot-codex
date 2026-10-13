@@ -2,14 +2,17 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "setup",
+      "label": "setup:env",
       "type": "process",
-      "command": "make",
+      "command": "python3",
       "args": [
-        "setup"
+        "scripts/setup.py"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
@@ -18,32 +21,198 @@
       }
     },
     {
-      "label": "dev:ready",
+      "label": "setup:backend",
       "type": "process",
-      "command": "make",
+      "command": "uv",
       "args": [
-        "dev-ready"
+        "sync",
+        "--project",
+        "app/backend",
+        "--frozen"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "setup:frontend",
+      "type": "process",
+      "command": "npm",
+      "args": [
+        "ci"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/app/frontend",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "db",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.dev.yaml",
+        "up",
+        "-d",
+        "--wait",
+        "db"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "setup"
+      ]
+    },
+    {
+      "label": "migrate",
+      "type": "process",
+      "command": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "-m",
+        "alembic",
+        "upgrade",
+        "head"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/app/backend",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "db"
+      ]
+    },
+    {
+      "label": "check:backend",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "pipelines/backend/check.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "check:frontend",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "pipelines/frontend/check.sh"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "setup",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "setup:env",
+        "setup:backend",
+        "setup:frontend"
+      ],
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "dev:ready",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "dependsOn": [
+        "migrate"
+      ]
     },
     {
       "label": "backend:app",
       "type": "process",
-      "command": "make",
+      "command": "${workspaceFolder}/.venv/bin/python",
       "args": [
-        "backend"
+        "-m",
+        "uvicorn",
+        "app.main:app",
+        "--reload",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/app/backend",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
-      "problemMatcher": [],
+      "problemMatcher": {
+        "owner": "local-run",
+        "pattern": {
+          "regexp": "^(?!)()(\\d+)()$",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^(?!)",
+          "endsPattern": "Application startup complete\\."
+        }
+      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
@@ -51,19 +220,39 @@
       "dependsOn": [
         "dev:ready"
       ],
-      "isBackground": true
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      }
     },
     {
       "label": "frontend",
       "type": "process",
-      "command": "make",
+      "command": "npm",
       "args": [
-        "frontend"
+        "run",
+        "dev"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/app/frontend",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
-      "problemMatcher": [],
+      "problemMatcher": {
+        "owner": "local-run",
+        "pattern": {
+          "regexp": "^(?!)()(\\d+)()$",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^(?!)",
+          "endsPattern": "Local:.*https?://"
+        }
+      },
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
@@ -71,50 +260,64 @@
       "dependsOn": [
         "dev:ready"
       ],
-      "isBackground": true
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      }
     },
     {
       "label": "check",
-      "type": "process",
-      "command": "make",
-      "args": [
-        "check"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
       },
-      "group": "test"
+      "group": "test",
+      "dependsOn": [
+        "check:backend",
+        "check:frontend"
+      ],
+      "dependsOrder": "sequence"
     },
     {
       "label": "containers:up",
       "type": "process",
-      "command": "make",
+      "command": "docker",
       "args": [
-        "up"
+        "compose",
+        "up",
+        "--build",
+        "-d",
+        "--wait"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
-      }
+      },
+      "dependsOn": [
+        "setup:env"
+      ]
     },
     {
       "label": "containers:down",
       "type": "process",
-      "command": "make",
+      "command": "docker",
       "args": [
+        "compose",
         "down"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
@@ -125,29 +328,42 @@
     {
       "label": "logs",
       "type": "process",
-      "command": "make",
+      "command": "docker",
       "args": [
-        "logs"
+        "compose",
+        "logs",
+        "--follow",
+        "--tail=100"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
       },
-      "isBackground": true
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      }
     },
     {
       "label": "status",
       "type": "process",
-      "command": "make",
+      "command": "docker",
       "args": [
-        "status"
+        "compose",
+        "ps"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
@@ -158,12 +374,16 @@
     {
       "label": "smoke",
       "type": "process",
-      "command": "make",
+      "command": "bash",
       "args": [
-        "smoke"
+        "-c",
+        "python3 scripts/smoke.py \"http://127.0.0.1:${WEB_PORT:-8080}\""
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
+        }
       },
       "problemMatcher": [],
       "presentation": {
@@ -181,8 +401,8 @@
     {
       "label": "fullstack",
       "dependsOn": [
-        "backend:app",
-        "frontend"
+        "frontend",
+        "backend"
       ],
       "dependsOrder": "parallel",
       "problemMatcher": []

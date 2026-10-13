@@ -8,7 +8,7 @@ services:
       DEPLOY_USER: ${DEPLOY_USER:?Set a deployment login}
       DEPLOY_PASSWORD_HASH: ${DEPLOY_PASSWORD_HASH:?Set a Caddy password hash}
     volumes:
-      - ./deploy/Caddyfile.production:/etc/caddy/Caddyfile:ro
+      - ./deployments/prod/Caddyfile.production:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
 

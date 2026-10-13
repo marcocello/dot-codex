@@ -32,7 +32,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - **Python backend implementation:** [coding-python-backend](skills/coding-python-backend/SKILL.md)
 - **React/Next.js implementation:** [coding-frontend](skills/coding-frontend/SKILL.md)
 - **UI design, critique, components, refinement:** [coding-ui-toolkit](skills/coding-ui-toolkit/SKILL.md), plus frontend for implementation
-- **Unknown/broken local setup:** [coding-prepare-environment](skills/coding-prepare-environment/SKILL.md)
+- **Repository layout/alignment or unknown/broken local setup:** [coding-prepare-environment](skills/coding-prepare-environment/SKILL.md)
 - **Requested commit, commit message, or push:** [coding-commit](skills/coding-commit/SKILL.md); push only on explicit request
 - **Requested or policy-required secret/privacy audit:** [coding-secret-audit](skills/coding-secret-audit/SKILL.md)
 - **Skill creation/editing:** `skill-creator`
@@ -82,7 +82,8 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - Repo-local setup and declared dependencies are authorized.
 - Global installs, paid resources, destructive actions, deployments, force pushes, secret edits, credential entry, and external mutations need applicable explicit authorization.
 - PR review grants no commenting, merging, or mutation authority.
-- `coding-prepare-environment` owns greenfield locations; domain skills own internal structure.
+- Save requested standalone documents, reports, presentations, and their local exports under `docs/artifacts/` by default. Use a task-named subdirectory when a deliverable has multiple files. Honor the user's chosen destination and existing repository documentation paths.
+- `coding-prepare-environment` owns repository layout, structure alignment checks, greenfield locations, and [generated repository files](skills/coding-prepare-environment/SKILL.md#repository-files); domain skills own internal application structure. Do not generate `Makefile` or `PRODUCT.md` by default; `README.md` is optional. These user defaults override specialist file requirements, including Impeccable init; use existing repository context and native task history instead of requiring a product file. Preserve existing files unless the user authorizes their removal, and honor an explicit request for a different artifact.
 - Sites requires explicit selection or a pre-existing `.openai/hosting.json`. Creating the manifest grants no authority.
 - One writer per shared file/runtime. Never displace another task.
 - One active feature per task; one owner per feature. Independent investigation and preparation may continue. Lifecycle skills define responsibilities and completion boundaries, not a compulsory sequence for every request.

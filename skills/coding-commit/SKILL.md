@@ -13,7 +13,8 @@ Committing is a supporting action, not a new feature workflow or a completion ve
 
 ## Default behavior
 - Keep commits local by default. An explicit push request authorizes pushing the requested branch without asking for confirmation again, subject to higher-priority instructions and runtime permissions.
-- Create local commits only when the user explicitly asks to commit.
+- Create local commits only on an explicit request. A bare `$coding-commit` invocation, including a lone app-generated skill link, is an explicit request to commit the full non-ignored change set locally. Inspect it and proceed without asking which Git action to take.
+- If accompanying text requests only a draft message, a push of existing commits, or narrower scope, follow it. A bare invocation never authorizes a push.
 - If the user only asks for a commit message, do not stage files and do not commit.
 - Task provenance is not a commit-scope boundary. Changes may predate the current task or come from other tasks, chats, agents, or sessions.
 - Apply commit scope in this order:

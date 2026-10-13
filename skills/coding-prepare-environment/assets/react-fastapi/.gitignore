@@ -34,7 +34,6 @@
 !*.sh
 !*.yaml
 !*.yml
-!Makefile
 !Dockerfile
 !Caddyfile
 !Caddyfile.production

@@ -326,6 +326,9 @@ def python_manifests(root: Path) -> list[Path]:
         "pyproject.toml",
         "requirements.txt",
         "requirements-dev.txt",
+        "app/backend/pyproject.toml",
+        "app/backend/requirements.txt",
+        "app/backend/requirements-dev.txt",
         "backend/pyproject.toml",
         "backend/requirements.txt",
         "backend/app/requirements.txt",
@@ -351,7 +354,7 @@ def python_profile(gate: Gate) -> None:
 
 
 def node_manifests(root: Path) -> list[Path]:
-    candidates = (root / "package.json", root / "frontend/package.json", root / "frontend/app/package.json")
+    candidates = (root / "package.json", root / "app/frontend/package.json", root / "frontend/package.json", root / "frontend/app/package.json")
     return [path for path in candidates if path.is_file()]
 
 

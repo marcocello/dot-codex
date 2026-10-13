@@ -2,7 +2,7 @@
 
 The included single-replica baseline follows the reference projects' separate application/database deployments, probes, resource budgets, and persistent storage. It needs an existing cluster, default storage class, ingress controller, registry access, and a TLS Secret named `app-tls`. There is no cloud provisioning or certificate-controller installation. PostgreSQL is a single StatefulSet, not a highly available managed database. Back up and restore-test data before upgrades.
 
-Build and push the backend (`docker build -t REGISTRY/backend:RELEASE backend`) and web (`docker build -f frontend/Dockerfile -t REGISTRY/web:RELEASE .`) only when publishing is authorized. Use immutable release tags or digests. Configure image pull credentials on the namespace service account if the registry is private. Select the target context explicitly for every cluster command.
+Build and push the backend (`docker build -t REGISTRY/backend:RELEASE app/backend`) and web (`docker build -f app/frontend/Dockerfile -t REGISTRY/web:RELEASE .`) only when publishing is authorized. Use immutable release tags or digests. Configure image pull credentials on the namespace service account if the registry is private. Select the target context explicitly for every cluster command.
 
 Render locally, without credentials or cluster access:
 

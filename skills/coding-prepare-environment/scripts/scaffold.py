@@ -8,6 +8,7 @@ from pathlib import Path
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("destination", type=Path)
+    parser.add_argument("--readme", action="store_true", help="Include the optional root README")
     args = parser.parse_args()
     target = args.destination.expanduser().absolute()
     source = Path(__file__).resolve().parents[1] / "assets" / "react-fastapi"
@@ -23,12 +24,17 @@ def main() -> None:
     )
 
     def source_only(directory: str, names: list[str]) -> set[str]:
-        return ignored(directory, names) | {
+        omitted = ignored(directory, names) | {
             name for name in names if name.startswith(".env") and name != ".env.example"
         }
+        if Path(directory) == source:
+            omitted.update({"Makefile", "PRODUCT.md"})
+            if not args.readme:
+                omitted.add("README.md")
+        return omitted
 
     shutil.copytree(source, target, dirs_exist_ok=True, ignore=source_only)
-    print(f"Created {target}\nNext: cd into the project and run make up")
+    print(f"Created {target}\nNext: cd into the project, run python3 scripts/setup.py, then docker compose up --build -d --wait")
 
 
 if __name__ == "__main__":

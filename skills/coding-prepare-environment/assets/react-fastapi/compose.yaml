@@ -23,7 +23,7 @@ services:
 
   migrate:
     logging: *logging
-    build: ./backend
+    build: ./app/backend
     environment: &api_environment
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       LOG_FORMAT: ${LOG_FORMAT:-json}
@@ -35,7 +35,7 @@ services:
 
   backend:
     logging: *logging
-    build: ./backend
+    build: ./app/backend
     environment: *api_environment
     depends_on:
       migrate:
@@ -52,7 +52,7 @@ services:
     logging: *logging
     build:
       context: .
-      dockerfile: frontend/Dockerfile
+      dockerfile: app/frontend/Dockerfile
     ports:
       - 127.0.0.1:${WEB_PORT:-8080}:80
     depends_on:

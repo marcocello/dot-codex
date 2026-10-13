@@ -17,7 +17,7 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Applies when:
   - The feature affects UI
   - React / Next.js project detected
-  - Greenfield work needs a frontend skeleton or `frontend/app`
+  - Greenfield work needs a frontend skeleton or the selected frontend component
   - No existing frontend package exists and the feature requires user-facing UI
   - Feature includes user-facing interaction
 
@@ -25,7 +25,7 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Separate rendering, reusable state, and external I/O when those responsibilities need independent ownership or testing; a small component need not acquire layers merely to match a diagram.
 - Keep shared domain policy and permission decisions out of presentation components. Local display and interaction logic can stay with the component.
 - Keep components focused and composable
-- Follow the greenfield component locations owned by `coding-prepare-environment`: frontend application code lives in `frontend/app`.
+- Follow the greenfield component locations owned by `coding-prepare-environment`: use that skill's selected frontend component path.
 
 ## Platform ownership
 - Sites remains available but does not own generic frontend construction.

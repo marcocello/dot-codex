@@ -17,8 +17,8 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Applies when:
   - The feature affects backend logic
   - The feature mentions backend, API layer, endpoints, routes, services, data persistence, or server-side behavior
-  - Python project detected (`backend/pyproject.toml`, `backend/requirements*.txt`, `backend/app/requirements*.txt`, or equivalent)
-  - Greenfield work needs a backend API layer or `backend/app`
+  - Python project detected (dependency manifests or Python source in the selected backend component)
+  - Greenfield work needs a backend API layer or the selected backend component
   - No existing backend package exists and the feature requires Python API/application code
   - FastAPI / service-layer architecture is in use
 
@@ -29,8 +29,8 @@ The coding lifecycle skills own routing, discovery, fixed acceptance, Goals, rev
 - Keep reusable domain policy and substantial orchestration outside transport handlers; straightforward request/response mapping may stay local.
 
 ## Implementation rules
-- Follow the greenfield component locations owned by `coding-prepare-environment`: backend application code lives in `backend/app`.
-- Backend dependency and tool configuration files live under `backend/` unless repo docs provide a different established layout.
+- Follow the greenfield component locations owned by `coding-prepare-environment`: use that skill's selected backend component path.
+- Keep backend dependency and tool configuration with the component selected by `coding-prepare-environment`, preserving established repository conventions.
 - Reuse existing patterns before creating new modules
 - Follow existing naming and folder structure exactly
 - Smallest change that satisfies the feature

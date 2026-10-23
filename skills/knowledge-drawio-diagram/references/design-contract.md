@@ -2,7 +2,7 @@
 
 ## Authority
 
-When installed beside `diagram-design`, its current `references/style-guide.md` overrides the fallback values below. Read its selected type reference as the diagram grammar. Translate intent into Draw.io cells; do not imitate browser SVG implementation details that have no Draw.io equivalent.
+The user's chosen style owns visual tokens. The style-selection question in `SKILL.md` takes precedence over upstream onboarding or defaults. For academic paper style, use [paper-style.md](paper-style.md). The tokens and typography below apply to editorial style. When installed beside `diagram-design`, its current `references/style-guide.md` can override editorial fallback values only. Translate intent into Draw.io cells; do not imitate browser SVG implementation details that have no Draw.io equivalent.
 
 ## Fallback light tokens
 
@@ -55,7 +55,7 @@ Maximum radius is visually equivalent to 6–8 px. Use `arcSize=8`; never use pi
 - Use `edgeStyle=orthogonalEdgeStyle`, `rounded=1`, `curved=0`, and an end arrow.
 - Use `strokeColor=#4f5d75` for internal flow, `#2e5aa8` for external/API flow, and `#eb6c36` for one primary highlighted flow.
 - Use `dashed=1;dashPattern=4 3` for optional, passive, return, or async flow.
-- Store labels in separate vertex cells with `fillColor=#f5f5f5`, no border, and a `data-edge-id` attribute. The edge cell value remains empty.
+- Store labels in separate vertex cells with an opaque fill matching the page background, no border, and a `data-edge-id` attribute. Route labeled segments outside colored panels so this mask matches the surface beneath them. The edge cell value remains empty.
 - Use explicit `exitX`, `exitY`, `entryX`, and `entryY`. Never let two connectors share the same source-edge or target-edge attachment.
 - Add explicit waypoints where automatic orthogonal routing might cross a box, overlap another connector, or obscure a label.
 - Prefer a layout without crossings. When a crossing is unavoidable, use Draw.io's line-jump style on the less important connector and verify the editor preserves it.

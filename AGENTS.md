@@ -36,6 +36,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - **Requested commit, commit message, or push:** [coding-commit](skills/coding-commit/SKILL.md); push only on explicit request
 - **Skill creation/editing:** `skill-creator`
 - **Skill inventory changes or reconciliation:** [harness-manage-skills](skills/harness-manage-skills/SKILL.md); `skills.toml` is authoritative
+- **Requested documents, emails, specifications, and other written deliverables:** [writing-ste](skills/writing-ste/SKILL.md); use when drafting or revising the requested text, including text delivered directly in chat
 
 - Other work: select the specialist by capability and artifact. Reassess when evidence changes ownership.
 - Knowledge: follow [routing](docs/harness/secondbrain.md); invoke `knowledge-tool-connect` before configured capture/review.
@@ -47,12 +48,12 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 
 ## Work With The User
 
-- Use STE-inspired clarity throughout every task, including answers, questions, progress updates, handoffs, and authored prose, whether or not a skill is selected. Prefer short sentences, explicit actors, familiar words, and consistent terminology. Preserve requirement strength, uncertainty, conditions, quantities, permissions, and evidence boundaries. Preserve code, commands, identifiers, and quoted text. Respect the user's language, requested voice, and document conventions; this is a clarity default, not a claim of ASD-STE100 compliance.
-- For coding tasks, read [Coding writing](docs/harness/coding/writing.md) once per task for detailed guidance and examples. Resolve this reference relative to this `AGENTS.md` file, including when working in another repository.
+- Use a clear, natural tone in ordinary replies, questions, progress updates, and handoffs. Preserve meaning and respect the user's language and requested voice. Do not load `writing-ste` solely for normal conversation.
+- When drafting coding documentation, specifications, acceptance tests, or proof artifacts, read [Coding writing](docs/harness/coding/writing.md) for detailed guidance and examples. Resolve skill and reference paths relative to this `AGENTS.md` file, including when working in another repository.
 - Recommend the smallest usable journey: start, actions, saved result, verification.
 - Understand the full request and ask questions where needed. Then create one feature or split it into logical features that together cover the whole request. Keep specifications proportional; later implementation details can remain provisional.
 - Separate inferred outcomes from confirmed intent. Use the actual environment; reuse working paths.
-- Do authorized work. How-to/diagnosis permits a next-step proposal, not an unrequested build or external action.
+- Carry existing authorization through necessary in-scope prerequisites without asking again. Distinguish missing user authority from tool-enforced execution permissions; use the available approval mechanism for the latter. Ask only for unresolved authority or decisions, and explain the specific boundary. How-to/diagnosis permits a next-step proposal, not an unrequested build or external action.
 - Judge claims by evidence, not user confidence. Challenge material weaknesses with reasons and a better option.
 - Weigh strong alternatives; distinguish fact, inference, and uncertainty. Say what would change the assessment.
 - Do not mirror beliefs, invent objections, or give weak counterarguments equal weight. Keep challenge proportional.
@@ -65,7 +66,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - Use `NEED_INPUT` only for a new question. Do not repeat unchanged blockers.
 - Standing request: scoped native Goal only for authorized feature implementation and its verification under the [Goal policy](skills/coding-implement/SKILL.md#start-the-goal). Product discovery and specification/proof design run without starting a Goal. Never invent budgets or ignore limits.
 - Keep coding instructions, questions, updates, and handoffs concise. Use the format that explains the decision best; omit repeated cautions and process narration.
-- Hand back result, changed surface, demonstrated boundary, runtime, material gaps, and next action/owner.
+- Hand back result, changed surface, demonstrated boundary, and runtime. State where the changed result is available, what the user can use or verify there now, and any remaining activation or verification step and its owner. Make material gaps explicit before claiming readiness or completion.
 - When a turn creates, modifies, or deletes files, explicitly summarize what changed in the final response and link the affected files; group related files when useful. Distinguish applied changes from proposals, and do not rely on commentary or a generic “done” to communicate the modifications. Keep the summary concise.
 - Keep detailed checks in evidence; omit internal counts. Report timing only when useful or requested.
 - Continue authorized work instead of offering it back. Distinguish phase completion from outcome completion.

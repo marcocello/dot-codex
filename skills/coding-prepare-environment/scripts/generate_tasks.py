@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 from typing import Any
 
-DEFAULT_BACKEND_CWD = "${workspaceFolder}/app/backend"
+DEFAULT_BACKEND_CWD = "${workspaceFolder}/backend"
 PROJECT_VENV_PYTHON = "${workspaceFolder}/.venv/bin/python"
 
 
@@ -266,7 +266,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--components", choices=["auto", "backend", "frontend", "fullstack"], default="auto")
     parser.add_argument("--replace", action="store_true", help="Replace selected standard labels after reviewing their commands and dependencies")
     parser.add_argument("--frontend-command")
-    parser.add_argument("--frontend-cwd", default="${workspaceFolder}/app/frontend")
+    parser.add_argument("--frontend-cwd", default="${workspaceFolder}/frontend/app")
     parser.add_argument("--backend-cwd", default=DEFAULT_BACKEND_CWD)
     parser.add_argument("--backend-app-command")
     parser.add_argument("--backend-down-command")

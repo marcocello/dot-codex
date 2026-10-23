@@ -18,13 +18,13 @@ Environment files follow the established repository layout or the greenfield com
 Order of preference:
 
 1. Existing `.env*` required by the app.
-2. Closest checked-in example, such as `.env.example`, `.env.local.example`, `app/backend/.env.example`, `app/frontend/.env.local.example`, or `wp-config-sample.php`.
+2. Closest checked-in example, such as `deployments/dev/.env.example`, `backend/.env.example`, `frontend/app/.env.local.example`, or `wp-config-sample.php`.
 3. Documentation that lists required keys.
 4. A blocker report listing missing keys or files.
 
 Python backend convention:
 
-- For the default layout, use `app/backend/.env` when the application expects a component-local env file. The bundled starter explicitly reads root `.env`. Preserve established alternatives such as `backend/.env`.
+- For the default layout, use `backend/.env` when the application expects a component-local env file. The bundled starter explicitly reads `deployments/dev/.env` for host development. Preserve established alternatives such as root `.env`.
 - If the selected component env file is missing, copy its closest checked-in example without overwriting an existing file.
 - If only root `.env.example` exists, use it only when repo docs or code clearly read root `.env`.
 - Do not move env files between root and component directories without an explicit repo pattern.
@@ -120,7 +120,7 @@ Rules:
 
 ## Python
 
-Detect Python with `app/backend/pyproject.toml`, `app/backend/requirements*.txt`, root manifests, test/tool configuration, or Python source under documented package directories. Also recognize established layouts such as `backend/pyproject.toml` and `backend/app`.
+Detect Python with `backend/pyproject.toml`, `backend/requirements*.txt`, root manifests, test/tool configuration, or Python source under documented package directories. Also recognize established layouts such as `app/backend/pyproject.toml`.
 
 Setup:
 
@@ -129,10 +129,10 @@ Setup:
 3. Create the venv with `python3 -m venv .venv` when missing.
 4. Upgrade packaging only when needed by the repo: `.venv/bin/python -m pip install -U pip`.
 5. Install dependencies with the repo's chosen mechanism:
-   - `app/backend/requirements.txt`: `.venv/bin/python -m pip install -r app/backend/requirements.txt`
+   - `backend/requirements.txt`: `.venv/bin/python -m pip install -r backend/requirements.txt`
    - For established component paths, install from their actual requirements file without relocating it.
    - `requirements.txt`: `.venv/bin/python -m pip install -r requirements.txt`
-   - `app/backend/pyproject.toml`: prefer documented `uv`, `poetry`, or `pip install -e app/backend` pattern. The starter uses `UV_PROJECT_ENVIRONMENT="$PWD/.venv" uv sync --project app/backend --frozen` from the repo root.
+   - `backend/pyproject.toml`: prefer documented `uv`, `poetry`, or `pip install -e backend` pattern. The starter uses `UV_PROJECT_ENVIRONMENT="$PWD/.venv" uv sync --project backend --frozen` from the repo root.
    - `pyproject.toml`: prefer documented `uv`, `poetry`, or `pip install -e .` pattern.
 
 Command policy:
@@ -140,13 +140,13 @@ Command policy:
 - Run Python tooling through `.venv/bin/python -m <tool>`.
 - Use `.venv/bin/python -m pytest ...` for pytest.
 - Use `.venv/bin/python -m ruff ...`, `.venv/bin/python -m mypy ...`, etc. when installed.
-- For FastAPI apps with `app = FastAPI()` in `app/backend/main.py`, run the dev server from `app/backend` with `../../.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`, or use the quoted absolute path to the repository's `.venv/bin/python` when the app lives elsewhere.
-- For the bundled starter's packaged app in `app/backend/app/main.py`, run `app.main:app` from `app/backend` with the same root venv.
+- For FastAPI apps with `app = FastAPI()` in `backend/main.py`, run the dev server from `backend` with `../.venv/bin/python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000`, or use the quoted absolute path to the repository's `.venv/bin/python` when the app lives elsewhere.
+- For the bundled starter's packaged app in `backend/app/main.py`, run `app.main:app` from `backend` with the same root venv.
 - Do not assume shell activation.
 
 ## React and Node
 
-Detect Node backends and frontends with `app/backend/package.json`, `app/frontend/package.json`, component lockfiles, root manifests, or framework-specific config. Also recognize established alternatives such as `backend/app/package.json` and `frontend/package.json`.
+Detect Node backends and frontends with `backend/package.json`, `frontend/app/package.json`, component lockfiles, root manifests, or framework-specific config. Also recognize established alternatives such as `app/backend/package.json` and `frontend/package.json`.
 
 Package manager priority:
 
@@ -164,7 +164,7 @@ Setup:
   - npm: `npm ci` when `package-lock.json` exists, otherwise `npm install`.
   - bun: `bun install --frozen-lockfile` when a lockfile exists.
 - Create local env files only from examples, commonly `.env.local` from `.env.local.example` or `.env.example`, without overwriting existing files.
-- Run package-manager commands from the selected package directory: by default `app/backend` for Node backends and `app/frontend` for frontends. Preserve established alternatives such as `frontend/package.json`, which requires commands from `frontend/`.
+- Run package-manager commands from the selected package directory: by default `backend` for Node backends and `frontend/app` for frontends. Preserve established alternatives such as `frontend/package.json`, which requires commands from `frontend/`.
 
 Command policy:
 

@@ -39,7 +39,7 @@ def main():
                 value = value.replace(key, replacement)
         return value
 
-    source = Path(__file__).resolve().parents[1] / "deployments" / args.environment / "k8s"
+    source = Path(__file__).resolve().parent / args.environment / "k8s"
     paths = sorted(source.glob("*.json"))
     if not paths:
         parser.error(f"no Kubernetes manifests found in {source}")

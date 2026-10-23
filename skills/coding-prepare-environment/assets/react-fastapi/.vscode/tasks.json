@@ -6,7 +6,7 @@
       "type": "process",
       "command": "python3",
       "args": [
-        "scripts/setup.py"
+        "deployments/setup.py"
       ],
       "options": {
         "cwd": "${workspaceFolder}",
@@ -27,7 +27,7 @@
       "args": [
         "sync",
         "--project",
-        "app/backend",
+        "backend",
         "--frozen"
       ],
       "options": {
@@ -50,7 +50,7 @@
         "ci"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/app/frontend",
+        "cwd": "${workspaceFolder}/frontend/app",
         "env": {
           "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
         }
@@ -67,10 +67,12 @@
       "command": "docker",
       "args": [
         "compose",
+        "--env-file",
+        "deployments/dev/.env",
         "-f",
-        "compose.yaml",
+        "deployments/compose.base.yaml",
         "-f",
-        "compose.dev.yaml",
+        "deployments/dev/compose.yaml",
         "up",
         "-d",
         "--wait",
@@ -102,7 +104,7 @@
         "head"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/app/backend",
+        "cwd": "${workspaceFolder}/backend",
         "env": {
           "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
         }
@@ -121,7 +123,7 @@
       "type": "process",
       "command": "bash",
       "args": [
-        "pipelines/backend/check.sh"
+        "backend/check.sh"
       ],
       "options": {
         "cwd": "${workspaceFolder}",
@@ -140,7 +142,7 @@
       "type": "process",
       "command": "bash",
       "args": [
-        "pipelines/frontend/check.sh"
+        "frontend/app/check.sh"
       ],
       "options": {
         "cwd": "${workspaceFolder}",
@@ -194,7 +196,7 @@
         "8000"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/app/backend",
+        "cwd": "${workspaceFolder}/backend",
         "env": {
           "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
         }
@@ -234,7 +236,7 @@
         "dev"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/app/frontend",
+        "cwd": "${workspaceFolder}/frontend/app",
         "env": {
           "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.venv"
         }
@@ -285,6 +287,12 @@
       "command": "docker",
       "args": [
         "compose",
+        "--env-file",
+        "deployments/dev/.env",
+        "-f",
+        "deployments/compose.base.yaml",
+        "-f",
+        "deployments/dev/compose.yaml",
         "up",
         "--build",
         "-d",
@@ -311,6 +319,12 @@
       "command": "docker",
       "args": [
         "compose",
+        "--env-file",
+        "deployments/dev/.env",
+        "-f",
+        "deployments/compose.base.yaml",
+        "-f",
+        "deployments/dev/compose.yaml",
         "down"
       ],
       "options": {
@@ -331,6 +345,12 @@
       "command": "docker",
       "args": [
         "compose",
+        "--env-file",
+        "deployments/dev/.env",
+        "-f",
+        "deployments/compose.base.yaml",
+        "-f",
+        "deployments/dev/compose.yaml",
         "logs",
         "--follow",
         "--tail=100"
@@ -357,6 +377,12 @@
       "command": "docker",
       "args": [
         "compose",
+        "--env-file",
+        "deployments/dev/.env",
+        "-f",
+        "deployments/compose.base.yaml",
+        "-f",
+        "deployments/dev/compose.yaml",
         "ps"
       ],
       "options": {
@@ -377,7 +403,7 @@
       "command": "bash",
       "args": [
         "-c",
-        "python3 scripts/smoke.py \"http://127.0.0.1:${WEB_PORT:-8080}\""
+        "python3 deployments/dev/smoke.py \"http://127.0.0.1:${WEB_PORT:-8080}\""
       ],
       "options": {
         "cwd": "${workspaceFolder}",

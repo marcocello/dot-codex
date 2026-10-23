@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" compressed="false" data-title="Evidence-backed research assistant" data-description="Illustrative architecture: curated knowledge informs retrieval and synthesis; cited answers are delivered to a reader." data-type="architecture" data-audience="mixed" data-detail="balanced">
+  <diagram id="paper-example" name="Research assistant">
+    <mxGraphModel page="1" pageScale="1" pageWidth="1000" pageHeight="936" background="#ffffff" grid="0" gridSize="4" guides="1" connect="1" arrows="1" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="frame" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="zone" data-kind="plain">
+          <mxGeometry x="48" y="80" width="904" height="628" as="geometry" />
+        </mxCell>
+        <mxCell id="knowledge" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#d5e2f0;strokeColor=#7ca6d8;strokeWidth=2;" vertex="1" parent="1" data-role="zone" data-kind="plain">
+          <mxGeometry x="72" y="136" width="856" height="312" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=none;exitX=0.21495327102803738;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="knowledge" target="retriever" data-role="connector" data-label="Retrieve">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="context" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=none;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="retriever" target="writer" data-role="connector" data-label="Context">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="memory" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=block;startFill=1;exitX=0.5;exitY=0;entryX=0.794392523364486;entryY=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="writer" target="knowledge" data-role="connector" data-label="Read · Write">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ingest" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=none;exitX=0.5;exitY=0;entryX=0.5;entryY=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="library" target="retriever" data-role="connector" data-label="Ingest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="publish" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=none;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="writer" target="answer" data-role="connector" data-label="Publish">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="citations" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;curved=0;strokeColor=#000000;strokeWidth=2;endArrow=block;endFill=1;endSize=10;startArrow=none;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="answer" target="library" data-role="connector" data-label="Cite sources">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sources" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#edf3f9;strokeColor=#9dbde3;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="96" y="204" width="388" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="rules" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#edf3f9;strokeColor=#9dbde3;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="508" y="204" width="396" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="findings" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#edf3f9;strokeColor=#9dbde3;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="508" y="316" width="396" height="108" as="geometry" />
+        </mxCell>
+        <mxCell id="retriever" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="96" y="528" width="320" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="writer" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffe4c8;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="600" y="528" width="304" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="library" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="96" y="772" width="320" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="answer" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="node" data-kind="plain">
+          <mxGeometry x="600" y="772" width="304" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="title" value="Evidence-backed research assistant" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=32;fontStyle=1;" vertex="1" parent="1" data-role="header" data-kind="plain">
+          <mxGeometry x="76" y="60" width="500" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="knowledge-title" value="Curated knowledge" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=32;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="100" y="152" width="720" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sources-title" value="Evidence sources" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="216" width="344" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="rules-title" value="Research rules" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="528" y="212" width="352" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="rules-body" value="Verify claims · preserve citations" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=20;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="528" y="252" width="352" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="findings-title" value="Findings log" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="528" y="324" width="352" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="findings-body" value="Claims · evidence · open questions" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=20;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="528" y="364" width="352" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="papers" value="papers/" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#b7cfe8;strokeColor=#7ca6d8;strokeWidth=1;fontFamily=Menlo;fontSize=20;spacingLeft=8;align=left;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="268" width="160" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="notes" value="notes.md" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#b7cfe8;strokeColor=#7ca6d8;strokeWidth=1;fontFamily=Menlo;fontSize=20;spacingLeft=8;align=left;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="316" width="160" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="refs" value="refs.bib" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#b7cfe8;strokeColor=#7ca6d8;strokeWidth=1;fontFamily=Menlo;fontSize=20;spacingLeft=8;align=left;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="364" width="160" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="papers-desc" value="Primary literature" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=20;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="296" y="268" width="168" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="notes-desc" value="Reviewed notes" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=20;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="296" y="316" width="168" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="refs-desc" value="Source metadata" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=20;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="296" y="364" width="168" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="retriever-title" value="Evidence retrieval" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="540" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="retriever-body" value="Search · rank · select" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="584" width="280" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="writer-title" value="Synthesis agent" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="620" y="540" width="264" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="writer-body" value="Draft · cite · reflect" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="620" y="584" width="264" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="library-label" value="Document library" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="116" y="788" width="280" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="answer-label" value="Cited answer" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=28;fontStyle=1;" vertex="1" parent="1" data-role="primitive" data-kind="plain">
+          <mxGeometry x="620" y="788" width="264" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve-label" value="Retrieve" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="retrieve">
+          <mxGeometry x="268" y="472" width="120" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="memory-label" value="Read · Write" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="memory">
+          <mxGeometry x="764" y="472" width="152" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="context-label" value="Context" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="context">
+          <mxGeometry x="448" y="548" width="120" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="ingest-label" value="Ingest" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="ingest">
+          <mxGeometry x="156" y="716" width="92" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="publish-label" value="Publish" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="publish">
+          <mxGeometry x="764" y="716" width="100" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="citations-label" value="Cite sources" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffffff;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="edge-label" data-kind="plain" data-edge-id="citations">
+          <mxGeometry x="432" y="768" width="152" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-blue" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#d5e2f0;strokeColor=#7ca6d8;strokeWidth=2;" vertex="1" parent="1" data-role="legend" data-kind="plain">
+          <mxGeometry x="220" y="884" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-blue-label" value="Curated artifacts" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="legend" data-kind="plain">
+          <mxGeometry x="260" y="880" width="244" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-peach" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=#ffe4c8;strokeColor=#000000;strokeWidth=2;" vertex="1" parent="1" data-role="legend" data-kind="plain">
+          <mxGeometry x="552" y="884" width="28" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-peach-label" value="LLM at runtime" style="rounded=1;arcSize=8;whiteSpace=wrap;html=0;shadow=0;glass=0;gradientColor=none;fontFamily=Times New Roman;fontColor=#000000;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;spacing=0;fontSize=24;fontStyle=0;" vertex="1" parent="1" data-role="legend" data-kind="plain">
+          <mxGeometry x="592" y="880" width="232" height="36" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

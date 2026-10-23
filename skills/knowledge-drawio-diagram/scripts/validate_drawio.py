@@ -108,7 +108,7 @@ def validate_budget(root: ET.Element, cells: list[ET.Element], errors: list[str]
         errors.append(f"focal element count {len(focal)} exceeds limit 2")
 
 
-def validate_connectors(cells: list[ET.Element], errors: list[str]) -> None:
+def validate_connectors(cells: list[ET.Element], errors: list[str], paper: str = "#f5f5f5") -> None:
     edges = [cell for cell in cells if cell.get("data-role") == "connector"]
     labels = [cell for cell in cells if cell.get("data-role") == "edge-label"]
     labels_by_edge = Counter(cell.get("data-edge-id") for cell in labels)
@@ -139,7 +139,7 @@ def validate_connectors(cells: list[ET.Element], errors: list[str]) -> None:
             errors.append(f"connector {edge_id} needs exactly one separate label cell")
     for label in labels:
         style = label.get("style", "")
-        if "fillColor=#f5f5f5" not in style:
+        if (style_value(style, "fillColor") or "").lower() != paper.lower():
             errors.append(f"edge label {label.get('id')} lacks the paper mask fill")
 
 
@@ -177,7 +177,9 @@ def main() -> int:
     validate_metadata(root, errors)
     cells = validate_cells(root, errors, warnings)
     validate_budget(root, cells, errors)
-    validate_connectors(cells, errors)
+    model = root.find("./diagram/mxGraphModel")
+    paper = model.get("background", "#f5f5f5") if model is not None else "#f5f5f5"
+    validate_connectors(cells, errors, paper)
     validate_page(root, cells, errors)
     if errors:
         print("INVALID DRAWIO", file=sys.stderr)

@@ -1,46 +1,41 @@
-# Reusable React + FastAPI environment
+# React + FastAPI scaffold
 
-Use this bundle for an authorized greenfield full-stack application. It is self-contained under this skill; it does not depend on the original reference repositories or the separate SSH harness. For an explicitly different framework or a single component, follow that scope instead of generating an unwanted full stack.
+Use this bundle for an authorized greenfield full-stack application. It contains a replaceable notes example, not a product requirement. For a different framework or one component, prepare only the selected stack.
 
-```sh
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/scaffold.py" /absolute/empty/project
-```
+    python3 "${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/scaffold.py" /absolute/empty/project
 
-The copier omits root `Makefile`, `PRODUCT.md`, and `README.md` by default. Pass `--readme` to include the optional root README; nested capability documentation is preserved. The copier refuses nonempty targets, files, and destination symlinks. It does not merge brownfield files, initialize Git, install tools globally, start services, publish images, or deploy. Generate outside this skill's assets. Repository-local installation and service startup follow the user's active setup/implementation authority.
+The copier refuses nonempty destinations and destination symlinks. It does not install dependencies, initialize Git, start services, publish images, or deploy. It creates the source layout in the skill's Greenfield Layout section. The root .venv appears only after dependency setup. Pass --github-actions only when the user chooses GitHub Actions; this is the sole option that adds .github to the generated root.
 
-## What is reused
+## Generated run journey
 
-Patterns inspected in `meshify-monorepo`, `fieldmate`, and `twyd-portal`:
+From the generated repository root:
 
-| Reference surface | Reusable decision |
-| --- | --- |
-| All three: `frontend/app`, Vite, React, TypeScript | Component-local package and lockfile, API client, proxy, production static build |
-| All three: `.vscode/tasks.json` | Named backend/frontend/fullstack tasks, explicit cwd, dedicated terminals; add readiness prerequisites and stop/log tasks |
-| Meshify/Fieldmate: `backend/app/config/log.py` and `log_context.py`; TWYD: `backend/app/log.py` | Shared component logger, severity, safe structured details, context isolation; generic request IDs replace product-specific user/job metadata |
-| All three: backend deployment Compose files | Healthy persistent PostgreSQL, isolated service networking, development vs production exposure |
-| Meshify/Fieldmate/TWYD: production Kubernetes deployment assets | Separate app/database lifecycle, probes, resources, persistent storage; use Secret references and migration sequencing |
+    python3 deployments/setup.py
+    UV_PROJECT_ENVIRONMENT=$PWD/.venv uv sync --project backend --frozen
+    npm --prefix frontend/app ci
+    docker compose --env-file deployments/dev/.env -f deployments/compose.base.yaml -f deployments/dev/compose.yaml up -d --wait db
+    (cd backend && ../.venv/bin/python -m alembic upgrade head)
+    (cd backend && ../.venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000)
+    npm --prefix frontend/app run dev
 
-The existing SSH React/FastAPI starter supplied the working notes round trip, SQLAlchemy/Alembic, lockfiles, Caddy, Compose and CI baseline. This bundle adds portable operational patterns from the references. It does not copy product logic, service accounts, customer domains, identity integrations, worker fleets, tunnels, or secret values. The notes feature is a replaceable persistence example, not a product requirement. Cloud provisioning, scheduler services, CI registry publication and application authentication are added when the chosen product and deployment target call for them. For requested Terraform deployment roots, use the separate [Terraform conventions and template](terraform.md); the application copier does not include Terraform. Its Kubernetes assets live under `deployments/prod/k8s`; Caddy configuration lives under the selected deployment environment.
+Open http://localhost:5173. VS Code's fullstack task performs the same prerequisite chain and starts both servers in dedicated terminals. The setup script creates deployments/dev/.env once with mode 0600. An existing file is preserved. Stop host servers through VS Code and stop the database with the containers:down task; keep the database volume.
 
-## Verify the generated journey
+For the complete container stack, use the same Compose prefix followed by up --build -d --wait. Run python3 deployments/dev/smoke.py http://127.0.0.1:8080. The smoke script writes a note, then reads it back. Use disposable or development data. Verify frontend, API readiness, validation failure, and saved state through the public web endpoint.
 
-- On a disposable generated project, run `python3 scripts/setup.py`, `UV_PROJECT_ENVIRONMENT="$PWD/.venv" uv sync --project app/backend --frozen`, and `npm --prefix app/frontend ci`. From `app/backend/`, run `../../.venv/bin/python -m ruff check .` and `../../.venv/bin/python -m pytest`; from `app/frontend`, run `npm run check` and `npm run build`. Start the stack with `docker compose up --build -d --wait`, then run `python3 scripts/smoke.py http://127.0.0.1:8080` to save/read through the web proxy against PostgreSQL.
-- Install the locked Playwright browser and run `npm run test:e2e` from `app/frontend` against the running stack. The persistence test reloads the page and the failure test preserves an unsaved draft.
-- For host development, VS Code's `dev:ready` task prepares locked dependencies, the DB, and migrations; `backend:app` and `frontend` start reload servers. The optional bundled README contains equivalent direct commands. Use Tasks: Run Task → `fullstack` for the entire app. Validate its dependency graph, task commands/cwd, Uvicorn/Vite readiness matchers, and actual frontend/API startup. Stop host servers with Tasks: Terminate Task and stop the development database with `containers:down`; retain volumes. The generic generator preserves these starter labels and prerequisite chains by default.
-- Verify `/api/health`, `/api/ready`, request IDs, and that logging omits request secrets. Check Git visibility of nested source, lockfiles, migrations and dotfiles; dependencies, build products and `.env` stay ignored.
-- Render Kubernetes locally using `scripts/render_k8s.py --environment prod` with the documented image/namespace/output flags; an explicitly prepared alternative environment can be selected with the same flag. It fails when that environment has no manifests. Review the generated manifests and migration order in `deployments/prod/k8s/README.md`. A real rollout requires an explicitly selected authorized cluster, namespace, registry, TLS and Secret configuration; local validation does not prove deployment.
-- Use a unique Compose project and port for evaluation, stop its services afterward, and preserve user data. Report unavailable runtime checks rather than treating generated files as proof.
+Run bash backend/check.sh and bash frontend/app/check.sh. Install the locked Playwright browser, then run npm run test:e2e from frontend/app against the running stack. The browser test covers persistence and failed saves. The component scripts and VS Code tasks use the component working directories.
 
-## Existing-project adoption
+## Deployment assets
 
-Inspect the existing app boundaries, package managers, lockfiles, task labels, environment loading, data schema/migrations, logs, deployment tooling and CI before proposing adoption. Present the smallest useful set of changes: source/destination paths, overwritten commands, dependency changes, deployment target, and migration/data implications. Ask the user whether to adopt that concrete proposal or retain the current setup, unless the same proposal is already authorized. Keep ordinary setup and diagnosis moving without requiring adoption.
+The shared Compose base is deployments/compose.base.yaml. Development and production overlays live in deployments/dev/compose.yaml and deployments/prod/compose.yaml. Invoke Compose with an explicit --env-file and both files. Relative build contexts and Caddy mounts resolve from deployments/, the first Compose file's directory. The backend and frontend Dockerfiles stay with their components. The frontend image receives the selected Caddyfile at runtime through the environment overlay.
 
-Never run the copier on an existing repository, including one containing only docs or Git metadata. Apply approved additions selectively and preserve unrelated task entries/settings, source, secrets, data, and existing deployment paths. Do not replace a working application with the notes demo. A folder migration or platform switch requires specific authorization; adding a log helper or run task does not imply that migration. Record the resulting repository's actual entrypoints so later work uses them instead of generic commands.
+The production setup command is python3 deployments/setup.py --environment prod. It creates deployments/prod/.env with a generated database password and blank deployment values. The operator must set the domain and authentication values before running the production Compose pair. Publishing or rolling out requires authorization.
+
+The Kubernetes templates live under deployments/prod/k8s. Render them locally with deployments/render_k8s.py and explicit image, domain, namespace, release, ingress class, and output flags. An environment without manifests fails before creating output. Review deployment order in deployments/prod/k8s/README.md. Rendering does not contact a cluster.
+
+## Brownfield adoption
+
+Inspect existing component paths, package managers, lockfiles, task labels, env loading, data and migrations, deployment commands, and CI. Present the smallest useful source-to-destination mapping and command changes before asking to relocate existing files. Do not run the copier on a nonempty repository. Preserve existing private env files, data, dependencies, and unrelated work. A clean greenfield root does not authorize deleting or moving a brownfield root without that proposal.
 
 ## Maintainer verification
 
-Verified on 2026-09-28 using disposable generated projects: locked dependency installation; Python lint and API/logging tests; TypeScript checks and production build; Docker Compose build, PostgreSQL migrations, readiness and save/read-back; Playwright persistence and failed-save behavior against both container and host-development entrypoints; configured database port; Kubernetes manifest rendering and authenticated Caddy configuration; copy refusal/preservation; Git visibility; existing task-generator regressions; skill validator and repository gate. Independent skill forward-testing found no remaining blocker after repairs. Evidence is retained in native task/tool history (partial capture, not a deployment receipt). That historical run preceded the environment-based layout; current layout checks are recorded in the task that changed it.
-
-Kubernetes cluster admission, registry publication, TLS provisioning, rollout, cloud infrastructure and backup restoration were not exercised. Before deployment, follow the generated target-specific checks. TCP web readiness verifies a listener; the authenticated HTTP readiness check verifies the proxy and application.
-
-For bundle maintenance, run `python3 -m unittest discover -s skills/coding-prepare-environment/tests -v` from the harness root, then repeat the generated-project journey above for changes affecting runtime behavior. Keep installations and build output in disposable copies, outside the bundled assets.
+Run the skill's unit tests and quick validator. On a disposable generated project, check the exact root entries, root .venv creation after setup, Git visibility, VS Code task dependency paths, both Compose configurations, both Docker builds, manifest rendering, and the public smoke journey. Use a distinct Compose project and stop containers afterward. Report checks that could not run; file presence alone does not establish readiness.

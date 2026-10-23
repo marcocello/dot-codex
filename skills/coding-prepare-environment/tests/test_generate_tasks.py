@@ -16,9 +16,9 @@ class GenerateTasksTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / "project with spaces"
         (self.root / ".vscode").mkdir(parents=True)
-        (self.root / "app/backend").mkdir(parents=True)
-        (self.root / "app/frontend").mkdir()
-        (self.root / "app/frontend/package.json").write_text(
+        (self.root / "backend").mkdir(parents=True)
+        (self.root / "frontend/app").mkdir(parents=True)
+        (self.root / "frontend/app/package.json").write_text(
             json.dumps({"scripts": {"dev": "vite"}})
         )
         self.path = self.root / ".vscode/tasks.json"
@@ -52,7 +52,7 @@ class GenerateTasksTests(unittest.TestCase):
     def test_backend_process_starts_in_workspace_with_spaces(self):
         (self.root / ".venv/bin").mkdir(parents=True)
         (self.root / ".venv/bin/python").symlink_to(sys.executable)
-        (self.root / "app/backend/main.py").write_text('print("backend started")\n')
+        (self.root / "backend/main.py").write_text('print("backend started")\n')
         task = next(t for t in self.read_generated()["tasks"] if t["label"] == "backend:app")
         self.assertEqual(task["type"], "process")
         command = task["command"].replace("${workspaceFolder}", str(self.root))
@@ -62,8 +62,8 @@ class GenerateTasksTests(unittest.TestCase):
         self.assertEqual(result.stdout.strip(), "backend started")
 
     def test_fastapi_and_explicit_shell_override(self):
-        (self.root / "app/backend/main.py").write_text("from fastapi import FastAPI\napp = FastAPI()\n")
-        (self.root / "app/backend/requirements.txt").write_text("fastapi\nuvicorn\n")
+        (self.root / "backend/main.py").write_text("from fastapi import FastAPI\napp = FastAPI()\n")
+        (self.root / "backend/requirements.txt").write_text("fastapi\nuvicorn\n")
         task = next(t for t in self.read_generated()["tasks"] if t["label"] == "backend:app")
         self.assertEqual(task["type"], "process")
         self.assertEqual(task["args"], ["-m", "uvicorn", "main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"])
@@ -79,28 +79,28 @@ class GenerateTasksTests(unittest.TestCase):
         self.assertIn(custom, self.read_generated()["tasks"])
 
     def test_packaged_fastapi_uses_component_working_directory(self):
-        (self.root / "app/backend/app").mkdir()
-        (self.root / "app/backend/app/main.py").write_text(
+        (self.root / "backend/app").mkdir()
+        (self.root / "backend/app/main.py").write_text(
             "from fastapi import FastAPI\napp = FastAPI()\n"
         )
-        (self.root / "app/backend/pyproject.toml").write_text(
+        (self.root / "backend/pyproject.toml").write_text(
             '[project]\ndependencies = ["fastapi", "uvicorn"]\n'
         )
         tasks = self.read_generated()["tasks"]
         backend = next(t for t in tasks if t["label"] == "backend:app")
-        self.assertEqual(backend["options"]["cwd"], "${workspaceFolder}/app/backend")
+        self.assertEqual(backend["options"]["cwd"], "${workspaceFolder}/backend")
         self.assertEqual(backend["args"][2], "app.main:app")
         frontend = next(t for t in tasks if t["label"] == "frontend")
-        self.assertEqual(frontend["options"]["cwd"], "${workspaceFolder}/app/frontend")
+        self.assertEqual(frontend["options"]["cwd"], "${workspaceFolder}/frontend/app")
 
     def test_existing_layout_can_be_selected_without_relocation(self):
-        legacy = self.root / "backend/app"
+        legacy = self.root / "app/backend"
         legacy.mkdir(parents=True)
         (legacy / "main.py").write_text('print("existing backend")\n')
         (self.root / ".venv/bin").mkdir(parents=True)
         (self.root / ".venv/bin/python").symlink_to(sys.executable)
         tasks = self.read_generated(
-            "--backend-cwd", "${workspaceFolder}/backend/app",
+            "--backend-cwd", "${workspaceFolder}/app/backend",
             "--frontend-cwd", "${workspaceFolder}/frontend/app",
         )["tasks"]
         task = next(t for t in tasks if t["label"] == "backend:app")
@@ -126,7 +126,7 @@ class GenerateTasksTests(unittest.TestCase):
 
     def test_existing_startup_dependencies_and_environment_are_preserved(self):
         backend = {"label": "backend:app", "type": "shell", "command": "existing backend",
-                   "dependsOn": ["db:ready"], "options": {"cwd": "${workspaceFolder}/app/backend",
+                   "dependsOn": ["db:ready"], "options": {"cwd": "${workspaceFolder}/backend",
                    "env": {"CONFIG": "local"}}}
         ready = {"label": "db:ready", "command": "prepare database"}
         fullstack = {"label": "fullstack", "dependsOn": ["backend:app"], "dependsOrder": "sequence"}
@@ -137,22 +137,22 @@ class GenerateTasksTests(unittest.TestCase):
         self.assertEqual(len([t for t in actual if t["label"] == "backend:app"]), 1)
 
     def test_single_component_projects_have_no_missing_component_dependency(self):
-        (self.root / "app/frontend/package.json").unlink()
-        (self.root / "app/frontend").rmdir()
+        (self.root / "frontend/app/package.json").unlink()
+        (self.root / "frontend/app").rmdir()
         tasks = {t["label"]: t for t in self.read_generated()["tasks"]}
         self.assertNotIn("frontend", tasks)
         self.assertEqual(tasks["fullstack"]["dependsOn"], ["backend"])
         self.path.unlink()
-        (self.root / "app/backend").rmdir()
-        (self.root / "app/frontend").mkdir()
-        (self.root / "app/frontend/package.json").write_text(json.dumps({"scripts": {"dev": "vite"}}))
+        (self.root / "backend").rmdir()
+        (self.root / "frontend/app").mkdir(parents=True)
+        (self.root / "frontend/app/package.json").write_text(json.dumps({"scripts": {"dev": "vite"}}))
         tasks = {t["label"]: t for t in self.read_generated()["tasks"]}
         self.assertNotIn("backend", tasks)
         self.assertNotIn("backend:app", tasks)
         self.assertEqual(tasks["fullstack"]["dependsOn"], ["frontend"])
 
     def test_package_manager_prerequisites_and_optional_compose_stop(self):
-        (self.root / "app/frontend/package.json").write_text(
+        (self.root / "frontend/app/package.json").write_text(
             json.dumps({"packageManager": "pnpm@10.0.0", "scripts": {"dev": "vite"}})
         )
         ready = {"label": "db:ready", "command": "prepare database"}
@@ -178,7 +178,7 @@ class GenerateTasksTests(unittest.TestCase):
     def test_missing_package_script_does_not_overwrite_existing_file(self):
         original = '{"tasks":[{"label":"custom","command":"keep"}]}'
         self.path.write_text(original)
-        (self.root / "app/frontend/package.json").write_text('{}')
+        (self.root / "frontend/app/package.json").write_text('{}')
         self.assertNotEqual(self.generate().returncode, 0)
         self.assertEqual(self.path.read_text(), original)
 

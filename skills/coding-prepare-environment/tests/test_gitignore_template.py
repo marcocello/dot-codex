@@ -12,26 +12,26 @@ class GitignoreTemplateTests(unittest.TestCase):
     def test_nested_sources_and_runtime_artifacts(self):
         template = REFERENCE.read_text().split("```gitignore\n", 1)[1].split("```", 1)[0]
         visible = [
-            ".gitignore", "README.md", "app/backend/package.json",
-            "app/backend/package-lock.json", "app/backend/tsconfig.json",
-            "app/backend/src/index.ts", "app/backend/pyproject.toml",
-            "app/backend/requirements-dev.txt", "app/backend/main.py",
-            "app/frontend/package.json", "app/frontend/src/App.tsx",
-            "app/frontend/src/style.css", ".vscode/tasks.json",
-            "app/backend/.env.example", "app/frontend/.env.local.example",
-            "custom/existing/layout/main.py", "app/backend/src/index.mts",
-            "app/backend/routes/web.php",
+            ".gitignore", "docs/README.md", "backend/package.json",
+            "backend/package-lock.json", "backend/tsconfig.json",
+            "backend/src/index.ts", "backend/pyproject.toml",
+            "backend/requirements-dev.txt", "backend/main.py",
+            "frontend/app/package.json", "frontend/app/src/App.tsx",
+            "frontend/app/src/style.css", ".vscode/tasks.json",
+            "deployments/dev/.env.example", "frontend/app/.env.local.example",
+            "custom/existing/layout/main.py", "backend/src/index.mts",
+            "backend/routes/web.php",
         ]
         ignored = [
-            "app/backend/src/unclassified.bin", "app/backend/src/credentials.json",
-            "app/backend/.env", "app/frontend/.env.local", "app/backend/.env.production",
-            "app/backend/node_modules/pkg/index.js", ".venv/lib/module.py",
-            "app/frontend/dist/index.js", "app/frontend/.next/server/page.js",
-            "app/backend/__pycache__/module.py", "coverage/README.md",
-            "app/backend/auth_info_baileys/creds.json", "app/backend/.auth/session.ts",
-            "app/backend/sessions/session.js", "uploads/note.md",
-            "app/backend/private.key", "app/backend/local.sqlite3",
-            "app/backend/node_modules/pkg/.env.example",
+            "backend/src/unclassified.bin", "backend/src/credentials.json",
+            "deployments/dev/.env", "frontend/app/.env.local", "backend/.env.production",
+            "backend/node_modules/pkg/index.js", ".venv/lib/module.py",
+            "frontend/app/dist/index.js", "frontend/app/.next/server/page.js",
+            "backend/__pycache__/module.py", "coverage/README.md",
+            "backend/auth_info_baileys/creds.json", "backend/.auth/session.ts",
+            "backend/sessions/session.js", "uploads/note.md",
+            "backend/private.key", "backend/local.sqlite3",
+            "backend/node_modules/pkg/.env.example",
         ]
         with tempfile.TemporaryDirectory(prefix="ignore-template-") as directory:
             subprocess.run(["git", "init", "-q", directory], check=True)

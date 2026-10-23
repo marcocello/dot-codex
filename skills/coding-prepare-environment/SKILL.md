@@ -30,8 +30,8 @@ Apply the kernel's end-to-end journey to the operator's setup: connect the start
    - `docs/ARCHITECTURE.md` if it exists.
    - `docs/TESTING.md`, `docs/CONVENTIONS.md`, `README*`, `Makefile`, and package/tool config when relevant.
 2. Resolve the layout before creating manifests or installing dependencies: for web applications, apply Starter Selection below; preserve the existing layout until any proposed adoption is approved. Explicit user choices take precedence; otherwise use the greenfield layout below. Detect stack signals:
-   - Python: `app/backend/pyproject.toml`, `app/backend/requirements*.txt`, Python source under `app/backend`, root manifests, `pytest.ini`, `tox.ini`, and established alternatives such as `backend/pyproject.toml` or `backend/app`.
-   - Node (backend or frontend): `app/backend/package.json`, `app/frontend/package.json`, component lockfiles, `vite.config.*`, `next.config.*`, root manifests, and established alternatives such as `backend/app/package.json` or `frontend/package.json`.
+   - Python: `backend/pyproject.toml`, `backend/requirements*.txt`, Python source under `backend/app`, root manifests, `pytest.ini`, `tox.ini`, and established alternatives such as `app/backend/pyproject.toml`.
+   - Node (backend or frontend): `backend/package.json`, `frontend/app/package.json`, component lockfiles, `vite.config.*`, `next.config.*`, root manifests, and established alternatives such as `app/frontend/package.json` or `frontend/package.json`.
    - PHP/Laravel: `composer.json`, `artisan`, `phpunit.xml`, `pest.php`, `.php-version`.
    - WordPress: `wp-config.php`, `wp-config-sample.php`, `wp-content/`, or WordPress Composer packages.
    - Other: Docker, devcontainer, Nix, direnv, mise, asdf, language lockfiles, or custom scripts.
@@ -61,18 +61,18 @@ Apply the kernel's end-to-end journey to the operator's setup: connect the start
 ## Repository Files
 
 - Do not generate `Makefile` or `PRODUCT.md` by default. Preserve existing files unless the user requests removal; an explicit artifact request can override these defaults.
-- `README.md` is optional. Keep useful existing documentation, and add a README only when requested or when a concrete handoff needs it. The bundled copier omits its root README unless `--readme` is selected.
+- `README.md` is optional. Keep useful existing documentation. The bundled copier places its guide at `docs/README.md` and does not create a root README.
 - Use direct tool commands, established package scripts, or VS Code tasks for local work. Do not introduce Make as a dependency or replace it with a new umbrella task runner solely to enforce a convention.
 - Read product context from existing repository material and native task history. Do not create a mandatory replacement document under another name. Apply these defaults when a specialist such as Impeccable asks for `PRODUCT.md`; its absence does not block the user's work.
 
 ## Starter Selection
 
-For full-stack web applications, prefer the bundled [React + FastAPI scaffold](assets/react-fastapi/README.md): React/TypeScript/Vite, FastAPI, PostgreSQL, Docker Compose, and Kubernetes deployment assets. Read [scaffold guide](references/scaffold.md) for the source patterns, generation command, verification journey, and brownfield adoption checklist. Explicit stack or platform choices take precedence; frontend-only or backend-only work still creates only the required components.
+For full-stack web applications, prefer the bundled [React + FastAPI scaffold](assets/react-fastapi/docs/README.md): React/TypeScript/Vite, FastAPI, PostgreSQL, Docker Compose, and Kubernetes deployment assets. Read [scaffold guide](references/scaffold.md) for the source patterns, generation command, verification journey, and brownfield adoption checklist. Explicit stack or platform choices take precedence; frontend-only or backend-only work still creates only the required components.
 
 - Greenfield: use the [scaffold script](scripts/scaffold.py) for an absent or empty destination. A repository containing only Git metadata or documentation is not empty; prepare a selective integration instead of overwriting it.
 - Brownfield: offer concrete selective scaffold adoption when useful and obtain the user's explicit decision before applying it, even when the existing stack or layout already matches. First inspect the project and show a concrete proposal covering affected paths, dependencies, run commands, and any data or behavior migration; ask whether to adopt it or retain the existing setup. Do not make scaffold adoption a prerequisite for routine dependency repair or readiness checks. Honor an explicit decision already given for that proposal without asking again. While the decision is pending or if adoption is declined, continue only authorized setup that preserves the existing project.
 - Never run the copy script over existing work or bypass its nonempty-directory guard. Apply approved brownfield changes selectively, preserving application behavior, data, secrets, and unrelated work; migration beyond setup belongs to the coding lifecycle and domain skills.
-- Use the starter's direct commands, locked dependencies, root `.env`, and existing VS Code tasks. Its backend runs `app.main:app` from `app/backend/`; do not replace that with the generic `main:app` command or introduce ngrok into its run tasks.
+- Use the starter's direct commands, locked dependencies, environment-specific `.env`, and existing VS Code tasks. Its backend runs `app.main:app` from `backend/`; do not replace that with the generic `main:app` command or introduce ngrok into its run tasks.
 - This skill owns starter selection and environment readiness. Domain skills own application implementation; the active coding lifecycle owns product acceptance and proof. The included notes demo does not define the requested product.
 
 ## Greenfield Layout
@@ -80,27 +80,25 @@ For full-stack web applications, prefer the bundled [React + FastAPI scaffold](a
 This skill is the single owner of repository placement and alignment across stacks. Use this default for new repositories; domain skills own internal application architecture and framework scaffolding:
 
 ```text
-app/
-  backend/
-  frontend/
+.vscode/
+.venv/                 created during setup; ignored by Git
+backend/
+  app/
+frontend/
+  app/
 docs/
 deployments/
   dev/
-    tf/
-    k8s/
   prod/
-    tf/
-    k8s/
-pipelines/
-  backend/
-  frontend/
+.gitignore
 ```
 
-- Backend applications, including Node bots, workers, and APIs, live in `app/backend`; frontend applications live in `app/frontend`. A standalone backend still uses `app/backend`. Do not infer frontend ownership merely from Node or npm. Framework package directories, such as the starter's `app/backend/app`, remain inside their component.
-- Keep package manifests, lockfiles, dependency files, tool configuration, Dockerfiles, and application tests with their component (`app/backend` or `app/frontend`). Run installs and package scripts there. Python `.venv` remains at the repository root.
+- Keep the greenfield root to these entries, plus `.git/` when initialized. Do not create root `Makefile`, `Dockerfile`, Compose files, `.env` examples, `.dockerignore`, `scripts/`, or `pipelines/`. Include `.github/` only when the user explicitly chooses GitHub Actions; its workflow path is fixed by that platform.
+- Backend applications, including Node bots, workers, and APIs, live in `backend/`; frontend applications live in `frontend/app/`. A standalone backend still uses `backend/`. Do not infer frontend ownership merely from Node or npm. Framework package directories, such as the starter's `backend/app`, remain inside their component.
+- Keep package manifests, lockfiles, dependency files, tool configuration, Dockerfiles, application tests, and reusable component scripts with their component. Run installs and package scripts there. Create the Python `.venv` at the repository root during setup; never copy an environment into source control.
 - Keep shared architecture, development, and operational documentation under `docs/`; existing capability-local documentation can remain with its subject.
-- Group deployment configuration by environment under `deployments/<environment>/`. Terraform belongs in `tf/`, Kubernetes manifests in `k8s/`, and other environment configuration beside them. Components can have separate named files within the same environment.
-- Keep reusable component build, test, and release scripts under `pipelines/backend` and `pipelines/frontend`. CI entrypoint files remain where the selected CI platform requires them and call these scripts. Shared local setup helpers and root Compose entrypoints can remain at the repository root or under `scripts/`.
+- Group deployment configuration, private env files and examples, Compose files, shared setup, rendering, and smoke helpers under `deployments/`. Put environment-specific files under `deployments/<environment>/`; a shared Compose base may live directly in `deployments/`. Terraform belongs in `tf/`, Kubernetes manifests in `k8s/`.
+- Keep CI entrypoints only where a selected CI platform requires them. Do not add a platform workflow by default. Existing repository entrypoints may remain when preserving a brownfield layout; propose exact moves before clearing an existing root.
 - Create only requested components, environments, and required files. The tree shows placement, not mandatory empty folders; do not add Terraform, Kubernetes, cloud resources, or a frontend solely to fill it. Environment-only setup does not authorize implementing application behavior.
 - Explicit user choices and explicitly selected platform requirements take precedence. Preserve existing repository layouts unless the user approves the concrete adoption proposal under Starter Selection or a specific relocation; defaults alone do not authorize moving an existing project.
 - Before relocating existing folders, show the proposed source and destination paths and ask the user for approval. A general environment-preparation request or complaint about layout does not authorize relocation. If the user has already explicitly authorized the specific relocation, proceed without asking again; otherwise continue setup that preserves the current layout while awaiting their answer.
@@ -154,7 +152,7 @@ Generate missing standard tasks:
 "${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/generate_tasks.py" <repo-root>
 ```
 
-The generator selects components present at `app/backend` and `app/frontend`, detects Node package-manager and dev/start scripts, and uses the root `.venv` for Python. Override paths for established layouts. It detects `main:app` or `app.main:app` for FastAPI; other backends can provide an explicit command. Use `--components backend|frontend|fullstack` when directory detection cannot describe the accepted runtime.
+The generator selects components present at `backend` and `frontend/app`, detects Node package-manager and dev/start scripts, and uses the root `.venv` for Python. Override paths for established layouts. It detects `main:app` or `app.main:app` for FastAPI; other backends can provide an explicit command. Use `--components backend|frontend|fullstack` when directory detection cannot describe the accepted runtime.
 
 For a TWYD-style container backend, adapt these arguments to the inspected project:
 
@@ -180,11 +178,11 @@ Use concise handoff text:
 ```text
 Environment prepared:
 - detected: Python + React
-- changed: created app/backend/.env from app/backend/.env.example; updated whitelist `.gitignore`
-- commands: .venv/bin/python -m pip install -r app/backend/requirements.txt;
-  cd app/frontend && pnpm install --frozen-lockfile
+- changed: created deployments/dev/.env from deployments/dev/.env.example; updated whitelist `.gitignore`
+- commands: .venv/bin/python -m pip install -r backend/requirements.txt;
+  cd frontend/app && pnpm install --frozen-lockfile
 - use: .venv/bin/python -m pytest ... from the repo root;
-  ../../.venv/bin/python -m uvicorn main:app --reload from app/backend;
-  pnpm test ... from app/frontend
+  ../.venv/bin/python -m uvicorn app.main:app --reload from backend;
+  pnpm test ... from frontend/app
 - blockers: none
 ```

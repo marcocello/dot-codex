@@ -18,21 +18,21 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: app/frontend/package-lock.json
+          cache-dependency-path: frontend/app/package-lock.json
       - uses: astral-sh/setup-uv@v6
       - run: |
-          python3 scripts/setup.py
-          uv sync --project app/backend --frozen
-          npm --prefix app/frontend ci
-      - run: bash pipelines/backend/check.sh
-      - run: bash pipelines/frontend/check.sh
-      - run: python3 scripts/render_k8s.py --backend-image example.com/app/backend:ci --web-image example.com/app/web:ci --domain app.example.com --namespace app-ci --release ci --ingress-class nginx --output build/k8s-ci
+          python3 deployments/setup.py
+          uv sync --project backend --frozen
+          npm --prefix frontend/app ci
+      - run: bash backend/check.sh
+      - run: bash frontend/app/check.sh
+      - run: python3 deployments/render_k8s.py --backend-image example.com/app/backend:ci --web-image example.com/app/web:ci --domain app.example.com --namespace app-ci --release ci --ingress-class nginx --output build/k8s-ci
       - run: |
-          docker compose up --build -d --wait
-          python3 scripts/smoke.py http://127.0.0.1:8080
+          docker compose --env-file deployments/dev/.env -f deployments/compose.base.yaml -f deployments/dev/compose.yaml up --build -d --wait
+          python3 deployments/dev/smoke.py http://127.0.0.1:8080
       - run: npx playwright install --with-deps chromium && npm run test:e2e
-        working-directory: app/frontend
+        working-directory: frontend/app
       - if: failure()
-        run: docker compose logs --tail=100
+        run: docker compose --env-file deployments/dev/.env -f deployments/compose.base.yaml -f deployments/dev/compose.yaml logs --tail=100
       - if: always()
-        run: docker compose down
+        run: docker compose --env-file deployments/dev/.env -f deployments/compose.base.yaml -f deployments/dev/compose.yaml down

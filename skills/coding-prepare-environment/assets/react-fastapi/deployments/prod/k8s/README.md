@@ -2,12 +2,12 @@
 
 The included single-replica baseline follows the reference projects' separate application/database deployments, probes, resource budgets, and persistent storage. It needs an existing cluster, default storage class, ingress controller, registry access, and a TLS Secret named `app-tls`. There is no cloud provisioning or certificate-controller installation. PostgreSQL is a single StatefulSet, not a highly available managed database. Back up and restore-test data before upgrades.
 
-Build and push the backend (`docker build -t REGISTRY/backend:RELEASE app/backend`) and web (`docker build -f app/frontend/Dockerfile -t REGISTRY/web:RELEASE .`) only when publishing is authorized. Use immutable release tags or digests. Configure image pull credentials on the namespace service account if the registry is private. Select the target context explicitly for every cluster command.
+Build and push the backend (`docker build -t REGISTRY/backend:RELEASE backend`) and web (`docker build -t REGISTRY/web:RELEASE frontend/app`) only when publishing is authorized. Use immutable release tags or digests. Configure image pull credentials on the namespace service account if the registry is private. Select the target context explicitly for every cluster command.
 
 Render locally, without credentials or cluster access:
 
 ```sh
-python3 scripts/render_k8s.py --backend-image registry.example.com/app/backend:r1 --web-image registry.example.com/app/web:r1 --domain app.example.com --namespace my-app --release r1 --ingress-class nginx --output build/k8s-r1
+python3 deployments/render_k8s.py --backend-image registry.example.com/app/backend:r1 --web-image registry.example.com/app/web:r1 --domain app.example.com --namespace my-app --release r1 --ingress-class nginx --output build/k8s-r1
 ```
 
 Create the namespace and an `app-secrets` Secret through your secret manager or a private env file using `kubectl --context CONTEXT -n my-app create secret generic app-secrets --from-env-file=/private/path/k8s.env`. Required keys: `POSTGRES_PASSWORD`, `DATABASE_URL` (SQLAlchemy `postgresql+psycopg` URL pointing to `db:5432/app`, user `app`, with the same URL-encoded password), `DEPLOY_USER`, `DEPLOY_PASSWORD_HASH` (Caddy bcrypt hash). Do not reuse the host-development database URL. The Secret file must be outside the checkout, mode 0600; never put it in rendered assets. Install `app-tls` separately. The web image gates all paths with Basic Auth; replace that shared demo gate only after implementing appropriate application access controls.

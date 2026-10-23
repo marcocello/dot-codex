@@ -219,3 +219,8 @@ path = "coding-repair"
 name = "coding-runtime-ops"
 kind = "owned"
 path = "coding-runtime-ops"
+
+[[skills]]
+name = "writing-ste"
+kind = "owned"
+path = "writing-ste"

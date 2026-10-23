@@ -1,26 +1,6 @@
 # Clear coding writing
 
-Apply this STE-inspired adaptation to coding specifications, acceptance tests, proof plans and reports, reviews, explanations, questions, progress updates, and handoffs. Read it once when a coding skill loads and reuse it during the task. It changes how the agent expresses meaning; existing skills and contracts still own behavior, authority, evidence, and completion.
-
-This is a coding adaptation, not a claim of ASD-STE100 compliance. Use the user's requested language, style, and document conventions. For languages other than English, retain the clarity principles without imposing the English dictionary or grammar.
-
-## Preserve meaning first
-
-- Preserve the actor, action, condition, scope, quantity, timing, negation, permission, and evidence boundary. A shorter sentence that changes one of these is a worse sentence.
-- Use one term for one concept. Keep established domain terms, including technical nouns and verbs such as `streaming`, `cache`, and `deploy`. Define unfamiliar terms when readers need them; do not add a mandatory glossary.
-- Preserve requirement strength. Use `must` for accepted obligations, `should` for recommendations, and `may` for permission or an explicitly uncertain possibility. State which meaning applies when it is ambiguous. Use `can` for capability and `will` for a plan or established future behavior. Do not turn advice or uncertainty into a requirement or guarantee.
-- Keep facts, observations, assumptions, recommendations, and open decisions distinct. Name an unknown instead of inventing a value, actor, cause, or product decision to make the sentence sound precise.
-- Preserve code blocks, identifiers, commands, file paths, schema keys, official names, quoted source text, and exact errors. Improve the surrounding prose. Rewrite product copy only when that work is in scope and consistent with its audience and voice.
-
-## Make prose easy to follow
-
-Prefer active sentences with an explicit actor: “The API rejects the request.” Use the imperative for a reader's action: “Run the migration.” State the condition before a dependent action: “If the migration fails, stop the release.” If the actor is unknown, say so; passive voice is acceptable when it preserves that uncertainty.
-
-Put one main idea in each sentence and one topic in each paragraph. Separate sequential instructions when their order matters. Keep conjunctions and qualifiers that express a real relationship; do not remove them to satisfy a length target.
-
-Aim for instructions of about 20 words or fewer and explanations of about 25 words or fewer when practical. These are editing guides, not pass criteria. Keep necessary technical detail. Use a list for a sequence and a table for a comparison. Do not force every conversation into a template or count its words.
-
-Use familiar words and stable names. Remove ornamental synonyms, idioms, filler, and long noun chains. Prefer a short sentence to a semicolon. Use full forms in formal artifacts when they improve clarity; ordinary conversation can remain natural.
+When drafting or revising documentation, specifications, acceptance tests, proof plans, or written reports and reviews, apply [writing-ste](../../../skills/writing-ste/SKILL.md). This reference adds examples for those deliverables. Reading this guide during a coding task does not require loading the skill for ordinary replies, questions, progress updates, or handoffs. Use a clear, natural tone for those interactions. Existing skills and contracts still own behavior, authority, evidence, and completion.
 
 ## Specifications and acceptance criteria
 

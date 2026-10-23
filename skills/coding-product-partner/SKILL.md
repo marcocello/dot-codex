@@ -21,7 +21,7 @@ Wait only on work requiring an unresolved consequential user decision or missing
 
 ## Discover And Decide
 
-Ground the next outcome in a concrete starting state, ordinary action and useful result. Investigate the assumption most likely to break that journey using source, references or an authorized probe; missing documentation alone does not establish missing capability.
+Ground the next outcome in a concrete starting state, ordinary action and useful result. Identify the user's intended entry point and environment from existing context. Check how the changed result becomes available there, and surface any missing authority or access before dependent work. Ask only when a consequential choice remains unresolved; identifying the target does not authorize changing it. Investigate the assumption most likely to break that journey using source, references or an authorized probe; missing documentation alone does not establish missing capability.
 
 Group questions around direction and the user's actual work, not a technical questionnaire. Revise the recommendation from their answers. Follow up only when new consequential uncertainty appears; do not repeat pending questions or ask for a closing confirmation once the slice is understood and authorized.
 

@@ -41,4 +41,4 @@ Require current target-valid PASS evidence for every mapped criterion and affect
 
 Historical completion does not establish current behavior; use `check-round` when claiming a retained whole round is current. Integration changes require affected verification. A status-only update needs the repository gate, not another proof run.
 
-Complete the Goal only when its entire objective is met. Hand back the feature/proof mapping, observed boundary, runtime, material gaps and blockers. Proof success does not authorize deployment.
+Complete the Goal only when its entire objective is met. Hand back the feature/proof mapping and the observed boundary and runtime. Match readiness claims to the changed version actually available at the user's intended entry point. If it is unavailable there, state the remaining activation step, authority or access needed, and owner. Separate availability from behavior still awaiting verification. Continue already-authorized delivery steps; proof success does not authorize deployment.

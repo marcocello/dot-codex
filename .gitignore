@@ -53,6 +53,8 @@ skills/.system/
 
 docs/features/**/proof/runs/**
 docs/features/**/tests/runs/**
+# Generated trial vendor inputs are restored from the hash-checked fixture seed.
+docs/features/outcome-continuity/evidence/trials/*/fixture/vendor/
 docs/interactions
 # Private harness connection settings and lock
 /knowledge.toml

@@ -1,6 +1,8 @@
 # Install and recover Codex and dot-codex
 
-Run `./install.sh` from this checkout. The guided selector lists the available phases. Enter names or numbers separated by commas, or `all` for the complete journey. Explicit commands provide the same operations without navigating the menu.
+Run `./install.sh` from this checkout. The wizard explains one phase at a time and asks `Run this step? [y/N]`. Enter skips it; only `y` or `yes` selects it. After the last question, review the selected plan and answer `Run this plan? [y/N]`. Enter cancels without executing any selected phase. Skipping every phase exits successfully without changes or new state. Invalid answers are retried. Explicit commands provide the same operations without walking through the wizard.
+
+The English interface follows [OpenClaw's installer style](https://openclaw.ai/install.sh): coral headings, cyan checkmarks, amber warnings, muted details, and red failure marks. A wide terminal shows a rounded banner; narrow terminals and redirected output show a simple banner. Color is automatic for supported terminals. Redirected output and `TERM=dumb` stay plain. Use `--color always` to force ANSI output or `--color never` to disable it. `NO_COLOR` disables colors even when `--color always` is supplied. All messages remain understandable without color. No additional UI package is required.
 
 ## Prerequisites
 
@@ -12,8 +14,10 @@ Run the installer as the intended login user. Close Codex terminals, the desktop
 
 | Command | Result |
 | --- | --- |
-| `./install.sh` | Open the guided phase selector |
+| `./install.sh` | Walk through each phase with default-No questions |
 | `./install.sh all` | CLI, harness, dependencies, login, service, pairing, then doctor |
+| `./install.sh --wizard all` | Ask about each phase in the complete journey |
+| `./install.sh --wizard --steps cli,harness,service` | Ask only about these phases |
 | `./install.sh copy --destination ~/software/dot-codex-next` | Prepare another checkout without activating it |
 | `./install.sh harness --mode merge` | Activate this checkout and merge absent old state |
 | `./install.sh harness --destination ~/software/dot-codex-next --mode replace` | Activate the prepared checkout without merging old state; keep a backup |
@@ -28,7 +32,7 @@ Run the installer as the intended login user. Close Codex terminals, the desktop
 
 Use `--steps copy,cli,harness,dependencies --destination PATH --mode merge` to select several phases. Put `copy` first. `all --destination PATH` also copies the harness when PATH does not exist. Copy includes Git-owned source and the bundled installer modules, preserves Git history, and excludes ignored runtime files. An existing copy destination is refused.
 
-`--dry-run` prints the plan without downloading, activating, signing in, or starting a service. `--yes` accepts a selected plan. It does not choose merge or replacement for a nonempty home: supply `--mode` explicitly. Prompt cancellation, EOF, and Ctrl+C are never interpreted as consent.
+`--dry-run` prints the plan without downloading, activating, signing in, or starting a service. `--yes` accepts a selected plan and skips its final confirmation; wizard phase questions still require opt-in. It does not choose merge or replacement for a nonempty home: supply `--mode` explicitly. Prompt cancellation, EOF, and Ctrl+C are never interpreted as consent. `q` cancels a wizard question before any selected phase runs. Use the explicit `resume` and `restore` commands for recovery.
 
 ## Home activation and backups
 
@@ -92,6 +96,6 @@ Run `./install.sh resume` from the same source checkout. Review and provide any 
 
 ## Design references and verification
 
-The implementation follows the separate bootstrap/onboarding structure in [OpenClaw's installer](https://github.com/openclaw/openclaw/blob/main/scripts/install.sh). Its [wizard uses TypeScript and @clack/prompts](https://github.com/openclaw/openclaw/blob/main/src/wizard/clack-prompter.ts). This repository keeps Python and a numbered selector to avoid requiring Node for first-use CLI installation. Package verification and managed service patterns come from the local codex-on-vm console.
+The implementation follows the separate bootstrap/onboarding structure in [OpenClaw's installer](https://openclaw.ai/install.sh), inspected as source on 2026-10-24. OpenClaw uses an optional Gum terminal interface and a separate [TypeScript wizard with @clack/prompts](https://github.com/openclaw/openclaw/blob/main/src/wizard/clack-prompter.ts). This repository keeps its existing Python runtime and sequential opt-in questions. Banner framing and status styling use the standard library, so first-use CLI installation needs no Node or UI download. Package verification and managed service patterns come from the local codex-on-vm console.
 
 Run `bash docs/features/guided-installer/proof/run.sh` for isolated CLI journeys, real filesystem transactions, signals, and fake outer account/service providers. `bash docs/features/guided-installer/proof/native-package.sh` downloads the official pinned package and verifies installation and rerun in a disposable home. Neither command installs services or signs in on your real machine.

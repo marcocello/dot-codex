@@ -82,20 +82,26 @@ For ongoing personal context and follow-through, [the second-brain cycle](docs/h
 
 ## Install
 
-Clone this repository as your Codex home, or point `CODEX_HOME` to the checkout:
+Clone this repository anywhere, then run its installer. Install Python 3.11+, Git, Node/npm, and the Codex CLI first. Close Codex before migrating an existing home.
 
 ```bash
 git clone https://github.com/marcocello/dot-codex /path/to/dot-codex
-export CODEX_HOME=/path/to/dot-codex
-cp "$CODEX_HOME/config.template.toml" "$CODEX_HOME/config.toml"
+cd /path/to/dot-codex
+./install.sh
 ```
 
-Review machine-specific paths and permissions. The template enables multiple agents when delegation or separate review is useful. Start a fresh Codex task to load updated skill discovery. Use `$harness-manage-skills sync` to reconcile declared dependencies and `$harness-manage-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
+If `~/.codex` contains data, choose **merge**, **discard**, or **cancel**. Merge copies absent files into this checkout and retains a private snapshot containing conflicts. Discard permanently deletes the old directory and requires typing `DELETE`; an existing symlink is only unlinked. The installer never stages, commits, or pushes copied data.
+
+The checkout becomes Codex Home. Shell startup files persist `CODEX_HOME`, and `~/.codex` links to the checkout so desktop launches use the same home. Open a new terminal and fully quit/reopen the desktop app after installation. Existing local configuration is preserved; a fresh home receives only the portable preferences in `config.template.toml`.
+
+The installer registers the bundled marketplace and reconciles `skills.toml`, including the public MCP plugin for Shadcn, Context7, Agentation, OpenAI Docs, and ReUI. Optional token-based integrations and the local Skills Registry use `./install.sh --with NAME`. Authentication, local server startup, and app-managed browser/Node wiring remain machine-specific. Failed dependencies produce a nonzero exit; rerun the installer after fixing the named prerequisite. `--skip-dependencies` configures only the home and explicitly leaves dependencies incomplete.
+
+Read [installation and migration](docs/harness/installation.md) for merge rules, environment behavior, optional integrations, and recovery. Start a fresh Codex chat after dependency installation. Use `$harness-manage-skills sync` for later dependency reconciliation and `$harness-manage-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
 
 Validate the repository:
 
 ```bash
-"${CODEX_HOME:-$HOME/.codex}/scripts/gate.py" --root "$CODEX_HOME"
+python3 ./scripts/gate.py --root "$PWD"
 ```
 
 ## Documentation

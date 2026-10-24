@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "landingfolio": {
+      "url": "https://mcp.landingfolio.com/mcp",
+      "bearer_token_env_var": "LANDINGFOLIO_MCP_TOKEN"
+    }
+  }
+}

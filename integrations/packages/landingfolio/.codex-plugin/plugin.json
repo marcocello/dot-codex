@@ -1,0 +1,13 @@
+{
+  "name": "landingfolio",
+  "version": "1.0.0",
+  "description": "dot-codex landingfolio MCP integration",
+  "author": {
+    "name": "Marco Cello"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "landingfolio",
+    "shortDescription": "dot-codex landingfolio integration"
+  }
+}

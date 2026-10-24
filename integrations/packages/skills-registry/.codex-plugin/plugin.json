@@ -1,0 +1,13 @@
+{
+  "name": "skills-registry",
+  "version": "1.0.0",
+  "description": "dot-codex skills-registry MCP integration",
+  "author": {
+    "name": "Marco Cello"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "skills-registry",
+    "shortDescription": "dot-codex skills-registry integration"
+  }
+}

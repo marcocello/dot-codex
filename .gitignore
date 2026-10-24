@@ -8,6 +8,8 @@
 !/docs/**/
 
 !/scripts/
+!/integrations/
+!/integrations/**/
 
 !/skills/
 !/skills/**/
@@ -25,6 +27,8 @@
 
 !scripts/*.sh
 !scripts/*.py
+!install.sh
+!integrations/**/*.json
 
 !skills/**/*.html
 !skills/**/*.py
@@ -55,6 +59,8 @@ docs/interactions
 /knowledge.toml.lock
 /secondbrain.yaml
 /secondbrain-state/
+/.install-backups/
+/.install.lock
 # Separate minimal harness experiment; its own allowlist protects runtime state.
 !/SSH/
 # Bundled environment starter source (narrow file types, no runtime trees).

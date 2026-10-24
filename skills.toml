@@ -224,3 +224,9 @@ path = "coding-runtime-ops"
 name = "writing-ste"
 kind = "owned"
 path = "writing-ste"
+
+[[skills]]
+name = "dot-codex-tools"
+kind = "plugin"
+selector = "dot-codex-tools@dot-codex"
+enabled = true

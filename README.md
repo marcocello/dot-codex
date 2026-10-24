@@ -82,7 +82,7 @@ For ongoing personal context and follow-through, [the second-brain cycle](docs/h
 
 ## Install
 
-Clone this repository anywhere, then run its installer. Install Python 3.11+, Git, Node/npm, and the Codex CLI first. Close Codex before migrating an existing home.
+Clone this repository, then run `./install.sh` for the guided phase selector. Use macOS or Linux with Python 3.11+ and Git. CLI downloads also need curl; the skills/plugins phase needs Node and npm.
 
 ```bash
 git clone https://github.com/marcocello/dot-codex /path/to/dot-codex
@@ -90,13 +90,20 @@ cd /path/to/dot-codex
 ./install.sh
 ```
 
-If `~/.codex` contains data, choose **merge**, **discard**, or **cancel**. Merge copies absent files into this checkout and retains a private snapshot containing conflicts. Discard permanently deletes the old directory and requires typing `DELETE`; an existing symlink is only unlinked. The installer never stages, commits, or pushes copied data.
+Select one or several phases: copy the harness, install Codex, activate/merge/replace the harness, install dependencies, sign in, configure the service, pair a device, or run diagnostics. `./install.sh all` runs the complete journey. Explicit commands work independently:
 
-The checkout becomes Codex Home. Shell startup files persist `CODEX_HOME`, and `~/.codex` links to the checkout so desktop launches use the same home. Open a new terminal and fully quit/reopen the desktop app after installation. Existing local configuration is preserved; a fresh home receives only the portable preferences in `config.template.toml`.
+```bash
+./install.sh --steps cli,harness,dependencies --mode merge --yes
+./install.sh service
+./install.sh pair
+./install.sh doctor
+```
 
-The installer registers the bundled marketplace and reconciles `skills.toml`, including the public MCP plugin for Shadcn, Context7, Agentation, OpenAI Docs, and ReUI. Optional token-based integrations and the local Skills Registry use `./install.sh --with NAME`. Authentication, local server startup, and app-managed browser/Node wiring remain machine-specific. Failed dependencies produce a nonzero exit; rerun the installer after fixing the named prerequisite. `--skip-dependencies` configures only the home and explicitly leaves dependencies incomplete.
+Close Codex before migrating an existing home. Merge preserves destination files and retains old state. Replacement also keeps a backup. The CLI lives outside the harness, so changing Codex Home cannot remove its executable. Ctrl+C rolls back an incomplete filesystem activation; completed phases remain available. Use `./install.sh resume` to retry or `./install.sh restore` to restore the previous home and shell setup.
 
-Read [installation and migration](docs/harness/installation.md) for merge rules, environment behavior, optional integrations, and recovery. Start a fresh Codex chat after dependency installation. Use `$harness-manage-skills sync` for later dependency reconciliation and `$harness-manage-skills` to change membership; system skills and runtime-managed plugins stay outside `skills.toml`.
+`./install.sh copy --destination PATH` prepares a checkout without activating it. `--dry-run` prints a plan without changes. Legacy `--skip-dependencies` still performs home-only activation. Optional integrations use `--with NAME`. Authentication and startup activation happen only in their selected phases. Linux boot persistence may require `service --enable-linger`; macOS startup uses a LaunchAgent at user login.
+
+Read [installation and recovery](docs/harness/installation.md) for commands, backups, prerequisites, service behavior, and verification limits. Open a new terminal and fully restart the desktop app after harness activation. Use `$harness-manage-skills` for later skill and plugin inventory changes.
 
 Validate the repository:
 

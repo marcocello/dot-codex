@@ -1,78 +1,97 @@
-# Install and migrate dot-codex
+# Install and recover Codex and dot-codex
 
-## Install from a checkout
+Run `./install.sh` from this checkout. The guided selector lists the available phases. Enter names or numbers separated by commas, or `all` for the complete journey. Explicit commands provide the same operations without navigating the menu.
 
-Use macOS or Linux with Python 3.11+, Git, Node/npm, and an installed Codex CLI that supports `codex plugin`. Install those tools separately; the installer does not perform global package installs. Install the desktop app if you use it.
+## Prerequisites
 
-```sh
-git clone https://github.com/marcocello/dot-codex.git /path/to/dot-codex
-cd /path/to/dot-codex
-./install.sh
-```
+Use macOS or Linux with Python 3.11+ and Git. Downloading the CLI also needs curl. The skills/plugins phase needs Node and npm. The installer does not install system packages or change a global npm prefix.
 
-The checkout is the permanent runtime home. It must remain at this path. The installer creates a private `config.toml` only when none exists, registers the `dot-codex` marketplace from `integrations/`, and reconciles declared skills and plugins through `scripts/skill_inventory.py`. Public MCP definitions are bundled in the `dot-codex-tools` plugin. The template contains portable preferences only.
+Run the installer as the intended login user. Close Codex terminals, the desktop app, and background Codex processes before migrating an existing home. Copying active SQLite databases is not supported. Installing this script does not activate it on another machine: run it on that machine, for example from an SSH session to `media.local`.
 
-You can use `--codex-bin /absolute/path/to/codex` when the CLI is not on PATH. `--user-home /temporary/user` selects a disposable user directory for verification; omit it for ordinary installation. Windows is rejected before mutation.
+## Select phases
 
-## Existing home choices
-
-Close the desktop app, Codex CLI sessions, and background Codex processes before migrating. Copying live SQLite databases is not a supported migration. When `~/.codex` is nonempty, the installer asks:
-
-- **merge:** Copy absent entries into the checkout. Preserve existing checkout files, including its configuration when present. Preserve the full original home, including conflicting files and symlinks, under private `.install-backups/<timestamp-id>/`. Replace the old default-home entry with a link only after the snapshot matches the original. The old directory is then removed; a symlink's external target is retained.
-- **discard:** Permanently remove the old directory after you type `DELETE`. No snapshot is retained. If the old entry is a symlink, only the link is removed; its target remains.
-- **cancel:** Leave the existing home unchanged. An empty answer or EOF also cancels.
-
-If the checkout already is the default home, rerunning installation does not migrate it. If the checkout sits inside the old home, installation refuses the overlap; clone outside that home first. Foreign symlinks are retained in the snapshot rather than activated, and merging never follows a destination symlink. Special files and state that changes during snapshotting stop migration.
-
-Copied histories, databases, credentials, and personal skills stay local. The installer adds exact destination exclusions at the end of `.gitignore`, because this repository's whitelist can override `.git/info/exclude`. It never runs `git add`, commits, or pushes. Review installer-generated ignore rules before committing unrelated configuration work. An old `AGENTS.md` or conflicting skill remains in the snapshot for deliberate reconciliation; it does not replace repository guidance.
-
-## Persistent home for terminal and desktop
-
-The installer adds one managed `CODEX_HOME` block to `~/.profile`, `~/.zshenv`, `~/.bashrc`, and `~/.bash_profile`. It also updates existing Zsh startup files and `.bash_login`, placing the block after older assignments. Paths containing spaces are shell-quoted. Existing content outside the managed block is preserved. Symlinked startup files are rejected with their path so you can resolve the intended destination explicitly.
-
-The installer links `~/.codex` to the checkout. Desktop launches can therefore use the default home without inheriting a terminal export. Existing processes retain their environment and open state. Fully quit and reopen the app, open a new terminal, or activate the variable in the current shell:
-
-```sh
-export CODEX_HOME=/absolute/path/to/dot-codex
-```
-
-Verify in a new terminal:
-
-```sh
-printf '%s\n' "$CODEX_HOME"
-ls -ld "$HOME/.codex"
-codex plugin list
-codex mcp list
-```
-
-Custom launchers, `ZDOTDIR`, Fish, system environment overrides, and shells that do not read these startup files need their own `CODEX_HOME` setup. A process that already has a different value will use that value until restarted or corrected. The installer does not change macOS launch services or install a login daemon.
-
-## Optional integrations
-
-The core plugin activates Shadcn, Context7, Agentation, OpenAI Docs, and ReUI. Context7 can inherit `CONTEXT7_API_KEY` from the launching environment when available; the package never contains a key. npm-backed servers download their packages when Codex starts them. Installing a plugin and listing its enabled MCP definitions does not prove network connectivity or tool execution.
-
-Optional plugins are available from the same bundled marketplace:
-
-| Selection | Prerequisite |
+| Command | Result |
 | --- | --- |
-| `--with landingfolio` | `LANDINGFOLIO_MCP_TOKEN` in the launching environment |
-| `--with originkit` | `ORIGINKIT_API_KEY` in the launching environment |
-| `--with skills-registry` | A separate registry listening at `http://127.0.0.1:5175/mcp` |
+| `./install.sh` | Open the guided phase selector |
+| `./install.sh all` | CLI, harness, dependencies, login, service, pairing, then doctor |
+| `./install.sh copy --destination ~/software/dot-codex-next` | Prepare another checkout without activating it |
+| `./install.sh harness --mode merge` | Activate this checkout and merge absent old state |
+| `./install.sh harness --destination ~/software/dot-codex-next --mode replace` | Activate the prepared checkout without merging old state; keep a backup |
+| `./install.sh cli` | Install or repair the user-local Codex CLI |
+| `./install.sh dependencies` | Reconcile declared skills and plugins |
+| `./install.sh login` | Reuse existing authentication or start device sign-in |
+| `./install.sh service` | Configure and verify persistent Remote Control |
+| `./install.sh pair` | Verify connectivity, then display a temporary pairing code |
+| `./install.sh doctor` | Inspect current paths, CLI, and configured startup service without changing them |
+| `./install.sh resume` | Retry unfinished phases from the private checkpoint |
+| `./install.sh restore` | Restore the previous home and shell setup; retain the new harness files |
 
-Repeat `--with` to select several plugins. The installer records the selection in `skills.toml` through the inventory manager, then installs it normally. Keep personal selections local unless they belong in the shared inventory. Configure credentials through your machine's environment or the integration's connection flow; never put tokens in manifests or source. Desktop launches need access to those credentials independently of your terminal.
+Use `--steps copy,cli,harness,dependencies --destination PATH --mode merge` to select several phases. Put `copy` first. `all --destination PATH` also copies the harness when PATH does not exist. Copy includes Git-owned source and the bundled installer modules, preserves Git history, and excludes ignored runtime files. An existing copy destination is refused.
 
-The app owns browser and Node REPL runtime configuration. The installer does not copy app binaries, runtime paths, access pipes, or browser trust hashes from another machine. Existing configuration can retain them during merge, so review stale machine paths after moving state between machines. Sign in on the new machine and connect account-based integrations through their normal setup.
+`--dry-run` prints the plan without downloading, activating, signing in, or starting a service. `--yes` accepts a selected plan. It does not choose merge or replacement for a nonempty home: supply `--mode` explicitly. Prompt cancellation, EOF, and Ctrl+C are never interpreted as consent.
 
-## Retry and updates
+## Home activation and backups
 
-Rerun `./install.sh` after repairing an unavailable provider or prerequisite. The installer keeps completed migration and local preferences, avoids duplicate environment blocks, and retries dependencies. A provider failure returns a nonzero exit and identifies the affected dependency without printing provider output that might contain credentials. Run the named provider or inventory command locally for detail. Unavailable external marketplace snapshots must be configured through `codex plugin marketplace` or the desktop app; the installer does not invent marketplace sources or treat missing runtime-owned plugins as installed.
+The selected checkout becomes Codex Home. Shell startup files persist `CODEX_HOME`; `~/.codex` links to the checkout for desktop launches. Open a new terminal and fully quit/reopen the desktop app after activation. Existing processes retain their previous environment.
 
-`./install.sh --skip-dependencies` performs home setup only and reports that dependencies are incomplete. Use it for offline migration, then rerun without that flag. For later skill refreshes, use `$harness-manage-skills sync`. Native plugin files are cached copies; after changing a bundled plugin, use `$harness-manage-skills update dot-codex-tools` to refresh it rather than assuming the installed copy follows source edits.
+Choose `merge` to copy absent state while preserving files already present in the checkout. Conflicts remain in the retained old home. Validated internal standalone-package links are rebased into the new home so a working published CLI remains usable. Foreign links remain in the backup and are not activated. Copied private state is ignored by Git; the installer never stages or commits that state.
 
-If migration stops during copying, the original default home remains until a full snapshot has been verified. If a later step fails after activation, the checkout is already the runtime home and the retained snapshot remains available. Fix the reported error and rerun. Resolve conflicts manually from `.install-backups/`; do not delete a needed snapshot until you have checked the copied history, configuration, and personal skills in the new app.
+Choose `replace` to use the new harness without importing old state. `discard` remains a legacy alias, with its typed confirmation, but now retains a backup too. The installer does not permanently delete the old home.
 
-## Design references
+A real home on the same filesystem is atomically renamed under private `.install-backups/<id>/`. An old home symlink, or a home on another filesystem, is retained as `~/.codex.backup.<id>`; the checkout also retains a private snapshot. The installer prints the recovery path. Cross-filesystem migration needs space for that additional snapshot. Old external symlink targets are retained.
 
-Astro-code's `bin/install.mjs`, `lib/install.mjs`, and `lib/hosts/codex.mjs` informed the separation between installation and activation, repeated reconciliation, and self-hosted path guards. dot-codex keeps the user's selected checkout as its home rather than creating Astro's separate mirror.
+`restore` restores the previous home and shell files. It refuses to overwrite shell files changed since activation. New harness state is kept for inspection, including data created after activation. A repeated activation of the same home retains the original restore receipt.
 
-Codex stores local configuration and state under [`CODEX_HOME`, defaulting to `~/.codex`](https://developers.openai.com/codex/config-advanced/#config-and-state-locations). The integration catalog follows the official [local marketplace and plugin format](https://developers.openai.com/plugins/build/plugins#how-local-marketplaces-work).
+## CLI installation
+
+The managed CLI is installed outside Codex Home:
+
+- Releases: `~/.local/share/dot-codex/cli/releases/`
+- Active release: `~/.local/share/dot-codex/cli/current`
+- Published command: `~/.local/bin/codex`
+
+Changing the harness cannot remove this CLI. The CLI phase persists an idempotent PATH block in shell startup files. Open a new terminal after installation, or use the published absolute path immediately. The installer prefers this executable for later phases, even when the current shell has another Codex on PATH. Existing working CLIs remain usable unless the CLI phase is selected. Previously installed `/usr/local/bin/codex` links that point to `~/.local/bin/codex` work after the user-local publication is repaired.
+
+The default pinned release is `0.151.0`. Use `--version X.Y.Z` to select another release. The installer reads the official GitHub release metadata, verifies its SHA-256 digest, checks the extracted version, and atomically replaces the publication. A rejected package or interruption before publication keeps the current executable. Repeated installation reuses identical release files.
+
+For an offline or audited package:
+
+```bash
+./install.sh cli --version X.Y.Z --package-file /path/to/package.tar.gz --sha256 DIGEST
+```
+
+`--package-url HTTPS_URL --sha256 DIGEST` is also supported. Custom package URLs are not retained in checkpoints; supply the URL again when resuming that phase. `--codex-bin /absolute/path/to/codex` selects an existing CLI for other phases.
+
+## Skills and plugins
+
+The dependencies phase registers the bundled marketplace, reconciles `skills.toml`, and verifies the native inventory. The public plugin supplies Shadcn, Context7, Agentation, OpenAI Docs, and ReUI. Use `--with landingfolio`, `--with originkit`, or `--with skills-registry` for explicit optional integrations. Credential-based integrations require their named environment variables. The installer never prints those values or writes them into its checkpoint.
+
+Provider failures return a nonzero exit and name an actionable retry. Completed phases remain available. For later inventory changes, use `$harness-manage-skills`. Native plugin files are cached copies; source edits require a plugin update. Installing a plugin does not establish MCP network connectivity or authenticate external services.
+
+Legacy `./install.sh --skip-dependencies` still performs only home activation. Existing explicit `--codex-bin` and `--with` home/dependency invocations remain supported; new automation should select phases explicitly.
+
+## Sign-in, services, and pairing
+
+Login, service setup, and pairing are separate operations. Login uses native Codex device authentication only when login status fails. Pairing codes are displayed directly and are not stored in checkpoints. Pairing requires a connected Remote Control result with an environment identity and no timeout.
+
+On Linux, the service phase writes `codex-remote-control.service`, a health service, and a one-minute health timer under `~/.config/systemd/user/`. It uses the managed daemon lifecycle from codex-on-vm and preserves the detached daemon when a oneshot launcher exits. Missing executables fail visibly rather than skipping the health unit. A healthy daemon is not torn down during relay outages.
+
+Boot persistence requires user lingering. If it is absent, rerun `./install.sh service --enable-linger`; this may request sudo through `loginctl`. The script verifies the setting, service activation, and the live Remote Control result. It does not reboot the machine. A successful service phase proves the current connection and startup configuration; an actual reboot remains a separate operator check.
+
+On macOS, a LaunchAgent under `~/Library/LaunchAgents/` runs the persistent health helper. It starts at user login and requires a logged-in GUI session. It does not start before login as a system daemon. Both platforms keep the runner under `~/.local/share/dot-codex/`, so later checkout moves do not remove the runner.
+
+Doctor reads the current executable and version, the resolved home, service-manager state, and the local daemon when a startup service is configured. It does not start Remote Control or prove relay connectivity. Run the service phase for a live connection check.
+
+## Interruptions and retry
+
+Private state lives under `~/.local/state/dot-codex/` with a per-user mutation lock. `install.json` records phase names and statuses, selected paths, and non-secret retry options. It does not contain provider output, passwords, or pairing codes. Starting a new plan replaces the phase checkpoint; activation undo records and old-home backups remain available.
+
+Ctrl+C stops the child process group and marks the current phase interrupted. Filesystem activation rolls back the active home, new copied state, and shell changes. Previously completed phases remain available. Package downloads and extraction occur before publication. After an uncatchable process termination, the next mutating invocation reads the pending undo record and restores the previous filesystem state before retrying.
+
+Run `./install.sh resume` from the same source checkout. Review and provide any missing choices or credentials. Service-manager operations and authentication belong to their providers: cancellation can leave a valid service definition or completed sign-in, and rerunning reconciles that state. The installer does not claim to undo remote pairing or account authentication.
+
+## Design references and verification
+
+The implementation follows the separate bootstrap/onboarding structure in [OpenClaw's installer](https://github.com/openclaw/openclaw/blob/main/scripts/install.sh). Its [wizard uses TypeScript and @clack/prompts](https://github.com/openclaw/openclaw/blob/main/src/wizard/clack-prompter.ts). This repository keeps Python and a numbered selector to avoid requiring Node for first-use CLI installation. Package verification and managed service patterns come from the local codex-on-vm console.
+
+Run `bash docs/features/guided-installer/proof/run.sh` for isolated CLI journeys, real filesystem transactions, signals, and fake outer account/service providers. `bash docs/features/guided-installer/proof/native-package.sh` downloads the official pinned package and verifies installation and rerun in a disposable home. Neither command installs services or signs in on your real machine.

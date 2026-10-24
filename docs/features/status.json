@@ -448,8 +448,8 @@
       "priority": 50,
       "status": "done",
       "owner": null,
-      "proof_run": "docs/features/guided-installer/proof/runs/20261024T100706253275Z",
-      "notes": "Guided installer verified through public CLI journeys on macOS/Linux, signal/crash recovery, original native plugin regression and official package installation/rerun on both platforms. Real-host activation and reboot remain operator actions; unrelated pre-existing tracked-fixture gate failure retained."
+      "proof_run": "docs/features/guided-installer/proof/runs/20261024T113133104731Z",
+      "notes": "Verified default-No wizard and OpenClaw English terminal style through macOS/Linux disposable homes and existing checkout/native-plugin regression; host service and reboot remain operator verification."
     }
   ]
 }

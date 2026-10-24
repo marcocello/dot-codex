@@ -17,6 +17,7 @@ import time
 import unittest
 
 ROOT = Path(__file__).resolve().parents[4]
+WIZARD_PHASES = ["copy", "cli", "harness", "dependencies", "login", "service", "pair", "doctor"]
 FAKE_CODEX = '''#!/usr/bin/env python3
 import json, os, sys, time
 from pathlib import Path
@@ -318,7 +319,8 @@ class GuidedInstallJourneys(unittest.TestCase):
         self.assertFalse((self.home / ".profile").exists())
 
     def test_plain_wizard_selection_and_eof(self):
-        result = self.run_install("--wizard", answer="doctor\n")
+        answers = "\n" * 7 + "y\ny\n"
+        result = self.run_install("--wizard", answer=answers)
         self.assertIn("harness", result.stdout.lower())
         self.assertFalse((self.home / ".codex").exists())
         cancelled = self.run_install("--wizard", answer="")
@@ -327,9 +329,93 @@ class GuidedInstallJourneys(unittest.TestCase):
 
     def test_wizard_executes_only_the_confirmed_phase(self):
         self.good(self.run_install("--wizard", "--codex-bin", str(self.provider),
-                                   answer="harness\ny\n"))
+                                   answer="\n\ny\n" + "\n" * 5 + "y\n"))
         self.assertEqual((self.home / ".codex").resolve(), self.repo)
         self.assertEqual(self.checkpoint()["phases"], {"harness": "done"})
+
+    def test_wizard_defaults_skip_every_phase_without_mutation(self):
+        self.old_home()
+        before = sorted(str(path.relative_to(self.home)) for path in self.home.rglob("*"))
+        result = self.run_install("--wizard", answer="\n" * 8)
+        self.good(result)
+        self.assertEqual(result.stdout.count("Run this step? [y/N]"), 8)
+        self.assertIn("No phases selected", result.stdout)
+        self.assertEqual(before, sorted(str(path.relative_to(self.home)) for path in self.home.rglob("*")))
+        self.assertFalse((self.base / "calls").exists())
+
+    def test_wizard_final_confirmation_defaults_to_no(self):
+        self.old_home()
+        result = self.run_install("--wizard", answer="\n\ny\n" + "\n" * 6)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Run this plan? [y/N]", result.stdout)
+        self.assertFalse((self.home / ".codex").is_symlink())
+        self.assertFalse((self.home / ".local/state/dot-codex/install.json").exists())
+
+    def test_wizard_retries_invalid_answer_and_restricts_explicit_steps(self):
+        result = self.run_install("--wizard", "--steps", "cli,doctor", answer="maybe\n\n\n")
+        self.good(result)
+        self.assertEqual(result.stdout.count("Run this step? [y/N]"), 3)
+        self.assertNotIn("Sign in to Codex", result.stdout)
+        self.assertFalse((self.home / ".local").exists())
+
+    def test_wizard_colors_can_be_forced_disabled_or_suppressed(self):
+        env = dict(self.env, TERM="xterm-256color")
+        env.pop("NO_COLOR", None)
+        forced = self.run_install("--wizard", "--color", "always", answer="\n" * 8, env=env)
+        self.good(forced)
+        self.assertIn("\x1b[1;38;2;255;77;77m", forced.stdout)
+        self.assertIn("\x1b[38;2;255;176;32m!", forced.stdout)
+        self.assertIn("dot-codex Installer", forced.stdout)
+        self.assertIn("[1/8] Copy the harness", forced.stdout)
+        self.assertNotIn("╭", forced.stdout)  # Redirected output uses the simple banner.
+        selected = self.run_install("--wizard", "--steps", "harness", "--color", "always",
+                                    answer="y\n\n", env=env)
+        self.assertNotEqual(selected.returncode, 0)
+        self.assertIn("\x1b[38;2;0;229;204m✓", selected.stdout)
+        self.assertIn("Install plan", selected.stdout)
+        self.assertIn("\x1b[38;2;90;100;128mUser home:", selected.stdout)
+        self.assertIn("\x1b[38;2;230;57;70m✗", selected.stderr)
+        for options, selected_env in [([], env), (["--color", "never"], env),
+                                      (["--color", "always"], dict(env, NO_COLOR="1"))]:
+            result = self.run_install("--wizard", *options, answer="\n" * 8, env=selected_env)
+            self.good(result)
+            self.assertNotIn("\x1b[", result.stdout + result.stderr)
+
+    def test_automatic_colors_in_a_real_terminal_respect_term_and_no_color(self):
+        for term, no_color, columns, expected in [
+            ("xterm-256color", False, 80, True), ("dumb", False, 80, False),
+            ("xterm-256color", True, 80, False), ("xterm-256color", False, 30, True),
+        ]:
+            with self.subTest(term=term, no_color=no_color, columns=columns):
+                env = dict(self.env, TERM=term)
+                env["COLUMNS"] = str(columns)
+                env.pop("NO_COLOR", None)
+                if no_color:
+                    env["NO_COLOR"] = "1"
+                master, slave = pty.openpty()
+                process = subprocess.Popen(self.command("--wizard"), stdin=slave, stdout=slave,
+                                           stderr=slave, env=env, start_new_session=True)
+                os.close(slave)
+                output = b""
+                try:
+                    os.write(master, b"\n" * 8)
+                    deadline = time.monotonic() + 10
+                    while time.monotonic() < deadline:
+                        if select.select([master], [], [], 0.2)[0]:
+                            try:
+                                chunk = os.read(master, 8192)
+                            except OSError:
+                                break
+                            if not chunk:
+                                break
+                            output += chunk
+                    self.assertEqual(process.wait(timeout=5), 0)
+                    self.assertIn(b"No phases selected", output)
+                    self.assertEqual(b"\x1b[" in output, expected)
+                    self.assertEqual("╭".encode() in output, term != "dumb" and columns == 80)
+                finally:
+                    os.close(master)
+                    self.stop_process(process)
 
     def test_ctrl_c_in_terminal_menu_leaves_home_unchanged(self):
         old = self.old_home()
@@ -340,10 +426,10 @@ class GuidedInstallJourneys(unittest.TestCase):
         self.addCleanup(os.close, master)
         output = b""
         deadline = time.monotonic() + 10
-        while b"Select" not in output and time.monotonic() < deadline:
+        while b"Run this step?" not in output and time.monotonic() < deadline:
             if select.select([master], [], [], 0.2)[0]:
                 output += os.read(master, 8192)
-        self.assertIn(b"Select", output)
+        self.assertIn(b"Run this step?", output)
         process.send_signal(signal.SIGINT)
         self.assertEqual(process.wait(timeout=5), 130)
         self.assertEqual((old / "history.jsonl").read_text(), "private history")

@@ -82,7 +82,7 @@ For ongoing personal context and follow-through, [the second-brain cycle](docs/h
 
 ## Install
 
-Clone this repository, then run `./install.sh` for the guided phase selector. Use macOS or Linux with Python 3.11+ and Git. CLI downloads also need curl; the skills/plugins phase needs Node and npm.
+Clone this repository, then run `./install.sh` for the multistep wizard. Use macOS or Linux with Python 3.11+ and Git. CLI downloads also need curl; the skills/plugins phase needs Node and npm.
 
 ```bash
 git clone https://github.com/marcocello/dot-codex /path/to/dot-codex
@@ -90,7 +90,7 @@ cd /path/to/dot-codex
 ./install.sh
 ```
 
-Select one or several phases: copy the harness, install Codex, activate/merge/replace the harness, install dependencies, sign in, configure the service, pair a device, or run diagnostics. `./install.sh all` runs the complete journey. Explicit commands work independently:
+The wizard asks about each phase with `[y/N]`: Enter skips it. Review the selected plan and answer the final `[y/N]` before anything runs. Skipping every phase leaves the installation unchanged. Its English interface follows [OpenClaw's installer style](https://openclaw.ai/install.sh), with a terminal banner, coral headings, cyan checkmarks, and amber warnings. Use `--color auto|always|never` or `NO_COLOR` to control colors. Copy the harness, install Codex, activate/merge/replace the harness, install dependencies, sign in, configure the service, pair a device, or run diagnostics. `./install.sh all` explicitly runs the complete journey; add `--wizard` for per-step questions. Explicit commands work independently:
 
 ```bash
 ./install.sh --steps cli,harness,dependencies --mode merge --yes

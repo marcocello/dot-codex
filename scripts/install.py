@@ -29,13 +29,81 @@ OPTIONAL = {
     "originkit": "ORIGINKIT_API_KEY",
     "skills-registry": None,
 }
+COLOR_MODE = "auto"
+# Palette inspired by https://openclaw.ai/install.sh; no UI dependency is needed.
+COLORS = {
+    "heading": "1;38;2;255;77;77", "prompt": "38;2;255;110;110",
+    "success": "38;2;0;229;204", "skip": "38;2;255;176;32",
+    "error": "38;2;230;57;70", "muted": "38;2;90;100;128",
+    "info": "38;2;136;146;176",
+}
+
+
+def usable_terminal(stream) -> bool:
+    return stream.isatty() and os.environ.get("TERM", "") not in {"", "dumb"}
+
+
+def style(message: str, tone: str, *, stream=None) -> str:
+    stream = stream or sys.stdout
+    enabled = COLOR_MODE == "always" or (COLOR_MODE == "auto" and usable_terminal(stream))
+    if not enabled or COLOR_MODE == "never" or "NO_COLOR" in os.environ:
+        return message
+    return f"\033[{COLORS[tone]}m{message}\033[0m"
+
+
+def ui_message(message: str, tone="info", *, stream=None) -> None:
+    stream = stream or sys.stdout
+    mark = {"success": "✓", "skip": "!", "error": "✗"}.get(tone, "·")
+    print(f"{style(mark, tone, stream=stream)} {message}", file=stream, flush=True)
+
+
+def ui_section(title: str) -> None:
+    print("\n" + style(title, "heading"), flush=True)
+
+
+def ui_kv(key: str, value) -> None:
+    print(f"{style(key + ':', 'muted')} {value}", flush=True)
+
+
+def ui_banner() -> None:
+    lines = [
+        ("dot-codex Installer", "heading"),
+        ("Your Codex setup, one step at a time.", "info"),
+        ("macOS and Linux", "muted"),
+    ]
+    width = max(len(message) for message, _ in lines)
+    framed = usable_terminal(sys.stdout) and shutil.get_terminal_size().columns >= width + 6
+    print()
+    if framed:
+        print(style("╭" + "─" * (width + 4) + "╮", "heading"))
+    for message, tone in lines:
+        if framed:
+            print(style("│", "heading") + "  " + style(message.ljust(width), tone)
+                  + "  " + style("│", "heading"))
+        else:
+            print("  " + style(message, tone))
+    if framed:
+        print(style("╰" + "─" * (width + 4) + "╯", "heading"))
+    print(flush=True)
 
 
 def ask(message: str) -> str:
     try:
-        return input(message).strip()
+        return input(style(message, "prompt")).strip()
     except EOFError:
         raise InstallError("No answer received; installation cancelled.") from None
+
+
+def confirm(message: str) -> bool:
+    while True:
+        answer = ask(message + " [y/N]: ").lower()
+        if answer in {"", "n", "no"}:
+            return False
+        if answer in {"y", "yes"}:
+            return True
+        if answer in {"q", "quit", "cancel"}:
+            raise InstallError("Installation cancelled; no phase started.")
+        ui_message("Enter y or n. Press Enter to choose No.", "skip")
 
 
 def plain_file(path: Path) -> None:
@@ -161,13 +229,13 @@ def install_dependencies(args: argparse.Namespace, env: dict[str, str]) -> None:
     for entry in entries:
         try:
             checked(manager + ["sync", "--only", entry["name"]], env, f"Install {entry['name']}")
-            print(f"Dependency ready: {entry['name']}")
+            ui_message(f"Dependency ready: {entry['name']}", "success")
         except InstallError as error:
             failures.append(str(error))
     if failures:
         raise InstallError("\n".join(failures) + "\nHome is configured; dependency installation is incomplete.")
     checked(manager + ["doctor"], env, "Verify declared skill and plugin installation")
-    print("Declared skills and plugins installed and enabled.")
+    ui_message("Declared skills and plugins installed and enabled.", "success")
 
 
 PHASES = {
@@ -181,6 +249,12 @@ PHASES = {
     "doctor": "Inspect executable, active home, and configured startup service",
 }
 ALL_PHASES = ["cli", "harness", "dependencies", "login", "service", "pair", "doctor"]
+PHASE_TITLES = {
+    "copy": "Copy the harness", "cli": "Install Codex CLI",
+    "harness": "Activate the harness", "dependencies": "Install skills and plugins",
+    "login": "Sign in to Codex", "service": "Configure Remote Control",
+    "pair": "Pair a device", "doctor": "Check installation", "restore": "Restore the previous home",
+}
 
 
 def parser() -> argparse.ArgumentParser:
@@ -189,7 +263,9 @@ def parser() -> argparse.ArgumentParser:
         "--mode merge --yes | ./install.sh all | ./install.sh resume | ./install.sh restore"))
     result.add_argument("phase", nargs="?", choices=[*PHASES, "all", "resume", "restore"])
     result.add_argument("--steps", help="Comma-separated phases; 'all' selects the complete journey")
-    result.add_argument("--wizard", action="store_true", help="Open the guided phase selector")
+    result.add_argument("--wizard", action="store_true", help="Walk through each phase with default-No confirmations")
+    result.add_argument("--color", choices=["auto", "always", "never"], default="auto",
+                        help="Terminal colors; NO_COLOR always disables color")
     result.add_argument("--yes", action="store_true", help="Accept the displayed plan; never choose a migration mode implicitly")
     result.add_argument("--dry-run", action="store_true", help="Show the plan without making changes")
     result.add_argument("--destination", type=Path, help="Harness directory; copy requires a new destination")
@@ -215,30 +291,40 @@ def select_phases(args) -> list[str]:
         # Preserve the original explicitly selected home/dependency entrypoints.
         if args.skip_dependencies or args.codex_bin != "codex" or args.with_integration:
             return ["harness"] + ([] if args.skip_dependencies else ["dependencies"])
-    if not selection:
-        print("\n  DOT-CODEX  /  Installation and recovery\n", flush=True)
-        for number, (name, description) in enumerate(PHASES.items(), 1):
-            print(f"  {number}. {name:14} {description}")
-        print("\n  all    Complete installation (copy is optional)")
-        print("  resume Retry unfinished phases    restore Undo the last home activation")
-        print("  q      Cancel; Ctrl+C also cancels safely\n", flush=True)
-        selection = ask("Select phases by name or number, separated by commas: ")
     if selection in {"q", "quit", "cancel", ""}:
         raise InstallError("Installation cancelled; no new phase started.")
-    if selection == "all":
-        return list(ALL_PHASES)
     if selection in {"resume", "restore"}:
         return [selection]
     names = list(PHASES)
-    phases = []
-    for value in selection.split(","):
-        value = value.strip()
-        if value.isdigit() and 1 <= int(value) <= len(names):
-            value = names[int(value) - 1]
-        if value not in PHASES:
-            raise InstallError(f"Unknown phase: {value}. Run ./install.sh --help.")
-        if value not in phases:
-            phases.append(value)
+    if not selection:
+        phases = list(ALL_PHASES) if args.dry_run else names
+    elif selection == "all":
+        phases = list(ALL_PHASES)
+        if args.destination and not args.destination.exists():
+            phases.insert(0, "copy")
+    else:
+        phases = []
+        for value in selection.split(","):
+            value = value.strip()
+            if value.isdigit() and 1 <= int(value) <= len(names):
+                value = names[int(value) - 1]
+            if value not in PHASES:
+                raise InstallError(f"Unknown phase: {value}. Run ./install.sh --help.")
+            if value not in phases:
+                phases.append(value)
+    if args.guided and not args.dry_run:
+        ui_message("Choose your steps. Press Enter to skip; q or Ctrl+C cancels.")
+        ui_message("Nothing runs until you confirm the install plan.")
+        chosen = []
+        for number, name in enumerate(phases, 1):
+            ui_section(f"[{number}/{len(phases)}] {PHASE_TITLES[name]}")
+            print(style(PHASES[name], "info"), flush=True)
+            if confirm("Run this step?"):
+                chosen.append(name)
+                ui_message(f"Selected: {name}", "success")
+            else:
+                ui_message(f"Skipped: {name}", "skip")
+        return chosen
     return phases
 
 
@@ -251,7 +337,7 @@ def check_paths(args, phases):
         if path and any(character in str(path) for character in "\n\r\x00"):
             raise InstallError("Paths must not contain control characters.")
     if "copy" in phases and not args.destination:
-        if args.yes:
+        if args.yes or args.dry_run:
             raise InstallError("copy requires --destination pointing to a new directory.")
         value = ask("New harness directory (copy only; not activated): ")
         if not value:
@@ -348,10 +434,12 @@ def activate_harness(args, state: Path, env: dict):
         if not old.is_symlink() and not old.is_dir():
             raise InstallError("Existing .codex is not a directory; resolve it before activation.")
         if not choice and (old.is_symlink() or any(old.iterdir())):
-            print(f"\nExisting home: {old}\nNew harness: {ROOT}")
-            print("Close Codex sessions before migration; live databases must not be copied.")
-            print("merge: keep destination files and copy absent state; retain a full backup.")
-            print("replace/discard: use the new harness without old state; retain a full backup.")
+            ui_section("Choose how to activate")
+            ui_kv("Existing home", old)
+            ui_kv("New harness", ROOT)
+            ui_message("Close Codex sessions before migration; live databases must not be copied.", "skip")
+            ui_kv("merge", "Keep destination files and copy missing state. A full backup is retained.")
+            ui_kv("replace/discard", "Use the new harness without old state. A full backup is retained.")
             if args.yes:
                 raise InstallError("Choose --mode merge or --mode replace explicitly.")
             choice = ask("Choose merge / replace / discard / cancel [cancel]: ").lower()
@@ -409,7 +497,7 @@ def activate_harness(args, state: Path, env: dict):
                     if backup.exists():
                         shutil.copytree(backup, snapshot, symlinks=True)
                         os.chmod(snapshot, 0o700)
-                print(f"Previous home retained: {backup}", flush=True)
+                ui_message(f"Previous home retained: {backup}")
                 if choice == "merge":
                     before = tree_fingerprint(backup.resolve())
                     plan = merge_plan(backup, ROOT)
@@ -440,9 +528,9 @@ def activate_harness(args, state: Path, env: dict):
     except BaseException:
         transaction.rollback()
         raise
-    print(f"Harness active: {ROOT}", flush=True)
+    ui_message(f"Harness active: {ROOT}", "success")
     if not previous_cli:
-        print("CLI not installed yet. Run ./install.sh cli; this phase configured the harness only.")
+        ui_message("CLI not installed yet. Run ./install.sh cli; this phase configured the harness only.", "skip")
 
 
 def dependency_prerequisites(args, env):
@@ -461,11 +549,11 @@ def doctor(args, env):
     if (args.user_home / ".local/state/dot-codex/pending.json").exists():
         raise InstallError("An interrupted filesystem phase needs recovery. Run ./install.sh resume.")
     binary = find_cli(args.user_home, args.codex_bin)
-    print(f"CLI: {binary} ({version_of(binary, env)})")
+    ui_kv("CLI", f"{binary} ({version_of(binary, env)})")
     home = args.user_home / ".codex"
     if not home.is_dir():
         raise InstallError(f"Codex home unavailable: {home}. Run ./install.sh harness.")
-    print(f"Codex home: {home.resolve()}")
+    ui_kv("Codex home", home.resolve())
     service_manifest = args.user_home / ".local/share/dot-codex/service.json"
     if service_manifest.is_file():
         configured = json.loads(service_manifest.read_text())
@@ -484,14 +572,15 @@ def doctor(args, env):
         if linger.stdout.strip() != "yes":
             raise InstallError("Service lacks boot persistence. Run ./install.sh service --enable-linger.")
         run([binary, "app-server", "daemon", "version"], env, "Read the live local daemon", timeout=20)
-        print("Startup service: enabled and active; lingering enabled.")
+        ui_kv("Startup service", "enabled and active; lingering enabled.")
     elif (args.user_home / "Library/LaunchAgents/com.marcocello.codex-remote-control.plist").exists():
         run(["launchctl", "print", f"gui/{os.getuid()}/com.marcocello.codex-remote-control"], env, "Read LaunchAgent")
         run([binary, "app-server", "daemon", "version"], env, "Read the live local daemon", timeout=20)
-        print("Startup service: LaunchAgent loaded (starts at user login).")
+        ui_kv("Startup service", "LaunchAgent loaded (starts at user login).")
     else:
-        print("Startup service: not configured. Run ./install.sh service when needed.")
-    print("Doctor passed. Relay connectivity and an actual reboot were not tested by this read-only check.")
+        ui_kv("Startup service", "not configured. Run ./install.sh service when needed.")
+    ui_message("Doctor passed.", "success")
+    ui_message("Relay connectivity and an actual reboot were not tested by this read-only check.")
 
 
 def restore(state: Path):
@@ -528,7 +617,7 @@ def execute_phase(name, args, state, env, source):
             if status.returncode:
                 run([binary, "login", "--device-auth"], env, "Device sign-in", visible=True)
             require_login(binary, env)
-            print("Codex login verified.")
+            ui_message("Codex login verified.", "success")
         elif name == "service":
             active = args.user_home / ".codex"
             if not active.is_dir():
@@ -550,8 +639,9 @@ def retry_options(args):
 
 
 def main() -> int:
-    global ROOT
+    global ROOT, COLOR_MODE
     args = parser().parse_args()
+    COLOR_MODE = args.color
     explicit_flags = {value.split("=", 1)[0] for value in sys.argv[1:] if value.startswith("--")}
     args.guided = args.wizard or (not args.phase and not args.steps and not
                                  (args.skip_dependencies or args.codex_bin != "codex" or args.with_integration))
@@ -563,11 +653,15 @@ def main() -> int:
         args.user_home = args.user_home.expanduser().resolve()
         if args.destination:
             args.destination = args.destination.expanduser().absolute()
+        ui_banner()
         phases = select_phases(args)
+        if not phases:
+            ui_message("No phases selected. No changes made.", "skip")
+            return 0
         check_paths(args, phases)
         if args.destination:
             ROOT = args.destination.resolve()
-            if (args.phase == "all" or args.steps == "all") and not ROOT.exists():
+            if (args.phase == "all" or args.steps == "all") and not ROOT.exists() and "copy" not in phases and not args.guided:
                 phases.insert(0, "copy")
         if "copy" in phases and phases.index("copy") != 0:
             raise InstallError("Put copy first so later phases use the prepared destination.")
@@ -591,12 +685,18 @@ def main() -> int:
                 flag = "--with" if key == "with_integration" else "--" + key.replace("_", "-")
                 if flag not in explicit_flags:
                     setattr(args, key, Path(value) if key == "package_file" and value else value)
-        print(f"\nUser home: {args.user_home}\nHarness:   {ROOT}\nPlan:      {' -> '.join(phases)}", flush=True)
+        ui_section("Install plan")
+        ui_kv("User home", args.user_home)
+        ui_kv("Harness", ROOT)
+        ui_kv("Plan", " -> ".join(phases))
         if args.dry_run:
             for name in phases:
                 print(f"  {name}: {PHASES.get(name, 'Recover the previous installation')}")
-            print("Dry run: no changes made.")
+            ui_message("Dry run: no changes made.", "success")
             return 0
+        if args.guided and not args.yes:
+            if not confirm("Run this plan?"):
+                raise InstallError("Installation cancelled; no phase started.")
         if phases == ["doctor"] and not getattr(args, "resuming", False):
             doctor(args, env)
             return 0
@@ -604,9 +704,6 @@ def main() -> int:
             dependency_prerequisites(args, env)
             if "cli" not in phases:
                 find_cli(args.user_home, args.codex_bin)
-        if args.guided and not args.yes:
-            if ask("Run this plan? [y/N]: ").lower() not in {"y", "yes"}:
-                raise InstallError("Installation cancelled; no phase started.")
         with installation_lock(args.user_home) as state:
             if checkpoint is None:
                 checkpoint = {"destination": str(ROOT), "plan": phases, "phases": {}, "options": {}}
@@ -616,12 +713,12 @@ def main() -> int:
                     checkpoint["phases"][name] = "running"
                     checkpoint["options"] = retry_options(args)
                     save_json(checkpoint_path, checkpoint)
-                    print(f"\n  [{number}/{len(phases)}] {name.upper()}", flush=True)
+                    ui_section(f"[{number}/{len(phases)}] {PHASE_TITLES[name]}")
                     execute_phase(name, args, state, env, source)
                     checkpoint["phases"][name] = "done"
                     checkpoint["options"] = retry_options(args)
                     save_json(checkpoint_path, checkpoint)
-                    print(f"  Done: {name}", flush=True)
+                    ui_message(f"Done: {name}", "success")
             except BaseException as error:
                 if current:
                     checkpoint["phases"][current] = "interrupted" if isinstance(error, KeyboardInterrupt) else "failed"
@@ -629,16 +726,21 @@ def main() -> int:
                     with ignore_interrupts():
                         save_json(checkpoint_path, checkpoint)
                 raise
-        print("\nSelected phases completed. Open a new terminal after harness activation.")
+        print()
+        ui_message("Selected phases completed.", "success")
+        if "harness" in phases:
+            ui_message("Open a new terminal to use the activated harness.")
         if args.skip_dependencies:
-            print("Dependencies skipped: rerun ./install.sh dependencies to complete them.")
+            ui_message("Dependencies skipped: rerun ./install.sh dependencies to complete them.", "skip")
         return 0
     except KeyboardInterrupt:
-        print("\nCancelled safely. Completed phases retained; rerun ./install.sh resume.", file=sys.stderr)
+        message = ("Cancelled safely. Completed phases retained; rerun ./install.sh resume."
+                   if checkpoint is not None else "Cancelled safely. No phase started.")
+        ui_message(message, "skip", stream=sys.stderr)
         return 130
     except (InstallError, OSError, ValueError, KeyError, tarfile.ReadError) as error:
         message = str(error) if isinstance(error, InstallError) else f"{type(error).__name__}; check paths, permissions, and local configuration"
-        print(f"Install: {message}", file=sys.stderr)
+        ui_message(f"Install: {message}", "error", stream=sys.stderr)
         return 1
 
 

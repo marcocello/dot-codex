@@ -30,9 +30,9 @@ OPTIONAL = {
     "skills-registry": None,
 }
 COLOR_MODE = "auto"
-# Palette inspired by https://openclaw.ai/install.sh; no UI dependency is needed.
+# Palette adapted from https://openclaw.ai/install.sh with a blue accent.
 COLORS = {
-    "heading": "1;38;2;255;77;77", "prompt": "38;2;255;110;110",
+    "heading": "1;38;2;51;153;255", "prompt": "38;2;102;178;255",
     "success": "38;2;0;229;204", "skip": "38;2;255;176;32",
     "error": "38;2;230;57;70", "muted": "38;2;90;100;128",
     "info": "38;2;136;146;176",

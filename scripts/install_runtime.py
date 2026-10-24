@@ -128,6 +128,11 @@ def extract_package(archive: Path, stage: Path):
     for name in ("bin/codex", "bin/codex-code-mode-host", "codex-path/rg", "codex-package.json"):
         if not (stage / name).is_file():
             raise InstallError(f"Codex package is missing {name}.")
+    if (stage / "codex").exists():
+        raise InstallError("Unexpected root entrypoint in Codex package; publication cancelled.")
+    # The native daemon invokes <CODEX_HOME>/packages/standalone/current/codex.
+    # Match the official installer's generated alias after validating the archive.
+    (stage / "codex").symlink_to("bin/codex")
 
 
 def persist_cli_path(home: Path, transaction: Transaction):
@@ -192,12 +197,13 @@ def install_cli(args, state: Path, env: dict) -> Path:
         release_dir = releases / f"{args.version}-{target}-{actual[:12]}"
         reusable = False
         if release_dir.is_dir() and not release_dir.is_symlink():
-            reusable = all(
+            alias = release_dir / "codex"
+            reusable = alias.is_symlink() and os.readlink(alias) == "bin/codex" and all(
                 (release_dir / path.relative_to(stage)).is_file()
                 and not (release_dir / path.relative_to(stage)).is_symlink()
                 and (path.stat().st_mode & 0o777) == ((release_dir / path.relative_to(stage)).stat().st_mode & 0o777)
                 and path.read_bytes() == (release_dir / path.relative_to(stage)).read_bytes()
-                for path in stage.rglob("*") if path.is_file()
+                for path in stage.rglob("*") if path.is_file() and not path.is_symlink()
             )
         if not reusable:
             # Keep release directories immutable, including when repairing a corrupt prior copy.
@@ -249,6 +255,39 @@ def systemd_quote(value: str, *, executable=False) -> str:
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"').replace("%", "%%") + '"'
 
 
+def prepare_service_package(home: Path, state: Path, binary: Path, codex_home: Path, env: dict):
+    """Expose the external CLI root at the native daemon's fixed managed path."""
+    packages = codex_home / "packages"
+    native_root = packages / "standalone"
+    native_binary = native_root / "current/codex"
+    if native_binary.is_file() and native_binary.resolve() == binary.resolve():
+        version_of(native_binary, env)
+        return
+    managed = home / ".local/share/dot-codex/cli"
+    candidate = managed / "current/codex"
+    if not candidate.is_file() or candidate.resolve() != binary.resolve():
+        if native_binary.is_file():
+            raise InstallError("Native daemon uses a different CLI. Select its executable with --codex-bin, or run ./install.sh cli before retrying service.")
+        raise InstallError("Native daemon needs the managed standalone layout. Run ./install.sh cli, then retry service.")
+    if packages.is_symlink() or (packages.exists() and not packages.is_dir()):
+        raise InstallError("Native package parent must be a real directory; retain the existing path before retrying service.")
+    packages.mkdir(parents=True, exist_ok=True)
+    transaction = Transaction(state)
+    try:
+        if native_root.is_dir() and not native_root.is_symlink():
+            backup = packages / ("standalone.backup." + uuid.uuid4().hex[:12])
+            transaction.move_path(native_root, backup)
+            print(f"Previous native package retained: {backup}", flush=True)
+        else:
+            transaction.remember(native_root)
+        publish_link(native_root, managed)
+        version_of(native_binary, env)
+        transaction.commit()
+    except BaseException:
+        transaction.rollback()
+        raise
+
+
 def configure_service(args, state: Path, binary: Path, codex_home: Path, env: dict):
     require_login(binary, env)
     if args.user_home != Path.home().resolve():
@@ -259,6 +298,7 @@ def configure_service(args, state: Path, binary: Path, codex_home: Path, env: di
     for tool in (("systemctl", "loginctl") if manager == "systemd" else ("launchctl",)):
         if not shutil.which(tool, path=env.get("PATH")):
             raise InstallError(f"{tool} is unavailable. Run service in a login session with {manager}.")
+    prepare_service_package(args.user_home, state, binary, codex_home, env)
     helper = args.user_home / ".local/share/dot-codex/service-health.py"
     helper.parent.mkdir(parents=True, exist_ok=True)
     atomic_write(helper, Path(__file__).with_name("install_service.py").read_text(), 0o700)

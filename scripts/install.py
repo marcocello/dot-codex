@@ -561,6 +561,9 @@ def doctor(args, env):
             raise InstallError("Startup service uses another Codex Home. Rerun ./install.sh service.")
         configured_binary = Path(configured["binary"])
         version_of(configured_binary, env)
+        native_binary = home / "packages/standalone/current/codex"
+        if not native_binary.is_file() or native_binary.resolve() != configured_binary.resolve():
+            raise InstallError("Native daemon package publication is missing or uses another CLI. Rerun ./install.sh cli, then service.")
     for path in [args.user_home / ".local/bin/codex", Path("/usr/local/bin/codex")]:
         if path.is_symlink() and not path.exists() and path.resolve().is_relative_to(args.user_home):
             raise InstallError(f"Broken executable publication: {path}. Run ./install.sh cli.")

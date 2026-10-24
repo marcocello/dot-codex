@@ -37,6 +37,12 @@ elif args == ["login", "--device-auth"]:
         Path(os.environ["HOME"], ".login-running").touch()
         time.sleep(120)
     Path(os.environ["HOME"], ".signed-in").touch()
+elif args[:3] == ["app-server", "daemon", "bootstrap"]:
+    native = Path(os.environ["CODEX_HOME"], "packages/standalone/current/codex")
+    if not native.is_file() or native.resolve() != Path(__file__).resolve():
+        print("managed standalone Codex install not found", file=sys.stderr)
+        sys.exit(1)
+    print("{}")
 elif args[:2] == ["remote-control", "start"]:
     print(json.dumps({"status": os.environ.get("FAKE_REMOTE_STATUS", "connected"),
       "timedOut": os.environ.get("FAKE_TIMED_OUT") == "1",
@@ -508,15 +514,91 @@ class GuidedInstallJourneys(unittest.TestCase):
         bindir.mkdir(exist_ok=True)
         for name in ("systemctl", "loginctl", "launchctl"):
             path = bindir / name
-            path.write_text("#!/bin/sh\n" +
-                ("echo " + linger + "\n" if name == "loginctl" else
-                 "case \"$*\" in *is-active*) exit " + ("1" if failed else "0") + ";; esac\n"))
+            if name == "systemctl":
+                path.write_text('''#!/usr/bin/env python3
+import os, pathlib, shlex, subprocess, sys
+args = sys.argv[1:]
+if "is-active" in args:
+    sys.exit(__FAILED__)
+if "restart" in args or ("enable" in args and "--now" in args):
+    for unit in args:
+        if not unit.endswith(".service"):
+            continue
+        definition = pathlib.Path.home().joinpath(".config/systemd/user", unit).read_text()
+        env = dict(os.environ)
+        command = None
+        for line in definition.splitlines():
+            if line.startswith("Environment="):
+                for value in shlex.split(line.split("=", 1)[1]):
+                    key, value = value.split("=", 1)
+                    env[key] = value
+            if line.startswith("ExecStart="):
+                command = shlex.split(line.split("=", 1)[1])
+        if command:
+            result = subprocess.run(command, env=env)
+            if result.returncode:
+                sys.exit(result.returncode)
+'''.replace("__FAILED__", "1" if failed else "0"))
+            else:
+                path.write_text("#!/bin/sh\n" + ("echo " + linger + "\n" if name == "loginctl" else "exit 0\n"))
             path.chmod(0o755)
         return dict(self.env, PATH=str(bindir) + os.pathsep + self.env["PATH"])
+
+    def existing_native_package(self):
+        native = self.home / ".codex/packages/standalone/current"
+        native.mkdir(parents=True)
+        (native / "codex").symlink_to(self.provider)
+
+    def test_service_publishes_native_layout_for_external_cli(self):
+        (self.home / ".signed-in").touch()
+        self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.good(self.run_install(*self.package()))
+        self.good(self.run_install("service", "--yes", env=self.fake_service_manager()))
+        native = self.home / ".codex/packages/standalone/current/codex"
+        self.assertEqual(native.resolve(), (self.home / ".local/bin/codex").resolve())
+        self.assertEqual((native.parent.parent).resolve(), self.home / ".local/share/dot-codex/cli")
+
+    def test_doctor_detects_missing_native_package_publication(self):
+        (self.home / ".signed-in").touch()
+        self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.good(self.run_install(*self.package()))
+        env = self.fake_service_manager()
+        self.good(self.run_install("service", "--yes", env=env))
+        (self.home / ".codex/packages/standalone").unlink()
+        result = self.run_install("doctor", env=env)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Native daemon package publication", result.stderr)
+
+    def test_service_retains_conflicting_native_package_directory_as_backup(self):
+        (self.home / ".signed-in").touch()
+        self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.good(self.run_install(*self.package()))
+        native = self.home / ".codex/packages/standalone"
+        native.mkdir(parents=True)
+        marker = native / "old-state"
+        marker.write_text("retain")
+        result = self.run_install("service", "--yes", env=self.fake_service_manager())
+        self.good(result)
+        backups = list(native.parent.glob("standalone.backup.*"))
+        self.assertEqual(len(backups), 1)
+        self.assertEqual((backups[0] / "old-state").read_text(), "retain")
+        self.assertTrue(native.is_symlink())
+
+    def test_service_refuses_a_different_native_cli(self):
+        (self.home / ".signed-in").touch()
+        self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.existing_native_package()
+        other = self.base / "other-codex"
+        shutil.copy2(self.provider, other)
+        result = self.run_install("service", "--codex-bin", str(other), "--yes", env=self.fake_service_manager())
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("different CLI", result.stderr)
+        self.assertEqual((self.home / ".codex/packages/standalone/current/codex").resolve(), self.provider)
 
     def test_service_definition_and_missing_linger_or_connection_fail(self):
         (self.home / ".signed-in").touch()
         self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.existing_native_package()
         args = ("service", "--service-manager", "systemd", "--codex-bin", str(self.provider), "--yes")
         no_linger = self.run_install(*args, env=self.fake_service_manager(linger="no"))
         self.assertNotEqual(no_linger.returncode, 0)
@@ -533,6 +615,7 @@ class GuidedInstallJourneys(unittest.TestCase):
     def test_launchagent_and_persisted_health_runner(self):
         (self.home / ".signed-in").touch()
         self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.existing_native_package()
         self.good(self.run_install("service", "--service-manager", "launchd", "--yes",
                                    "--codex-bin", str(self.provider), env=self.fake_service_manager()))
         path = self.home / "Library/LaunchAgents/com.marcocello.codex-remote-control.plist"
@@ -551,6 +634,7 @@ class GuidedInstallJourneys(unittest.TestCase):
     def test_doctor_detects_service_bound_to_previous_harness(self):
         (self.home / ".signed-in").touch()
         self.good(self.run_install("harness", "--mode", "merge", "--yes"))
+        self.existing_native_package()
         env = self.fake_service_manager()
         self.good(self.run_install("service", "--service-manager", "systemd", "--yes",
                                    "--codex-bin", str(self.provider), env=env))
@@ -567,6 +651,10 @@ class GuidedInstallJourneys(unittest.TestCase):
         self.good(result)
         self.assertEqual(self.checkpoint()["phases"], {
             name: "done" for name in ["cli", "harness", "dependencies", "login", "service", "pair", "doctor"]})
+        native = self.home / ".codex/packages/standalone/current/codex"
+        published = self.home / ".local/bin/codex"
+        self.assertEqual(native.resolve(), published.resolve())
+        self.assertEqual((native.parent.parent).resolve(), self.home / ".local/share/dot-codex/cli")
         self.assertTrue((self.repo / ".test-plugin").exists())
         self.assertTrue((self.home / ".signed-in").exists())
         self.assertIn("PAIRING-SECRET-FIXTURE", result.stdout)

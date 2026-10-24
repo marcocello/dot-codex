@@ -56,6 +56,8 @@ The managed CLI is installed outside Codex Home:
 
 Changing the harness cannot remove this CLI. The CLI phase persists an idempotent PATH block in shell startup files. Open a new terminal after installation, or use the published absolute path immediately. The installer prefers this executable for later phases, even when the current shell has another Codex on PATH. Existing working CLIs remain usable unless the CLI phase is selected. Previously installed `/usr/local/bin/codex` links that point to `~/.local/bin/codex` work after the user-local publication is repaired.
 
+The service phase publishes `<CODEX_HOME>/packages/standalone` as a compatibility link to the external CLI root. The native daemon requires its `current/codex` entrypoint; verified releases include a generated `codex -> bin/codex` alias. Existing native package directories are retained as `packages/standalone.backup.<id>` before publication. A matching existing native installation is reused. A different custom CLI is refused with an actionable command. The package files remain outside the harness.
+
 The default pinned release is `0.151.0`. Use `--version X.Y.Z` to select another release. The installer reads the official GitHub release metadata, verifies its SHA-256 digest, checks the extracted version, and atomically replaces the publication. A rejected package or interruption before publication keeps the current executable. Repeated installation reuses identical release files.
 
 For an offline or audited package:
@@ -84,7 +86,7 @@ Boot persistence requires user lingering. If it is absent, rerun `./install.sh s
 
 On macOS, a LaunchAgent under `~/Library/LaunchAgents/` runs the persistent health helper. It starts at user login and requires a logged-in GUI session. It does not start before login as a system daemon. Both platforms keep the runner under `~/.local/share/dot-codex/`, so later checkout moves do not remove the runner.
 
-Doctor reads the current executable and version, the resolved home, service-manager state, and the local daemon when a startup service is configured. It does not start Remote Control or prove relay connectivity. Run the service phase for a live connection check.
+Doctor reads the current executable and version, the resolved home, native package publication, service-manager state, and the local daemon when a startup service is configured. It does not start Remote Control or prove relay connectivity. Run the service phase for a live connection check.
 
 ## Interruptions and retry
 
@@ -98,4 +100,4 @@ Run `./install.sh resume` from the same source checkout. Review and provide any 
 
 The implementation follows the separate bootstrap/onboarding structure in [OpenClaw's installer](https://openclaw.ai/install.sh), inspected as source on 2026-10-24. OpenClaw uses an optional Gum terminal interface and a separate [TypeScript wizard with @clack/prompts](https://github.com/openclaw/openclaw/blob/main/src/wizard/clack-prompter.ts). This repository keeps its existing Python runtime and sequential opt-in questions. Banner framing and status styling use the standard library, so first-use CLI installation needs no Node or UI download. Package verification and managed service patterns come from the local codex-on-vm console.
 
-Run `bash docs/features/guided-installer/proof/run.sh` for isolated CLI journeys, real filesystem transactions, signals, and fake outer account/service providers. `bash docs/features/guided-installer/proof/native-package.sh` downloads the official pinned package and verifies installation and rerun in a disposable home. Neither command installs services or signs in on your real machine.
+Run `bash docs/features/guided-installer/proof/run.sh` for isolated CLI journeys, real filesystem transactions, signals, and fake outer account/service providers. `bash docs/features/guided-installer/proof/native-package.sh` downloads the official pinned package and verifies installation, rerun, and native app-server start/version/stop in a disposable home. Neither command installs host services or signs in on your real machine.

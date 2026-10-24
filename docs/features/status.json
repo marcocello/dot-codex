@@ -448,8 +448,8 @@
       "priority": 50,
       "status": "done",
       "owner": null,
-      "proof_run": "docs/features/guided-installer/proof/runs/20261024T113650155544Z",
-      "notes": "Blue banner/headings/prompts verified through the full public installer acceptance; runtime and service behavior unchanged."
+      "proof_run": "docs/features/guided-installer/proof/runs/20261024T115454534971Z",
+      "notes": "Native managed-package layout repaired and verified on macOS/Linux; live media.local installer and Remote Control pass. Actual reboot is a separate operational check awaiting host authentication."
     }
   ]
 }

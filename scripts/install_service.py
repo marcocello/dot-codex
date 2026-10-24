@@ -40,6 +40,10 @@ def main():
     if not binary.is_file() or not os.access(binary, os.X_OK):
         print("Codex executable missing; rerun ./install.sh cli, then service.", file=sys.stderr)
         return 1
+    native = Path(args.codex_home) / "packages/standalone/current/codex"
+    if not native.is_file() or native.resolve() != binary.resolve():
+        print("Native daemon package publication is missing or uses another CLI; rerun ./install.sh cli, then service.", file=sys.stderr)
+        return 1
     env = dict(os.environ, HOME=args.user_home, CODEX_HOME=args.codex_home)
     if args.bootstrap or args.watch:
         try:

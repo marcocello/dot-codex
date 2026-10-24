@@ -130,7 +130,10 @@ class Transaction:
         self.persist()
 
     def move_home(self, path: Path, backup: Path):
-        self.record["actions"].append({"kind": "move", "role": "home", "path": str(path),
+        self.move_path(path, backup, role="home")
+
+    def move_path(self, path: Path, backup: Path, *, role="generated"):
+        self.record["actions"].append({"kind": "move", "role": role, "path": str(path),
                                        "backup": str(backup)})
         self.persist()
         os.replace(path, backup)

@@ -448,8 +448,8 @@
       "priority": 50,
       "status": "done",
       "owner": null,
-      "proof_run": "docs/features/guided-installer/proof/runs/20261024T113133104731Z",
-      "notes": "Verified default-No wizard and OpenClaw English terminal style through macOS/Linux disposable homes and existing checkout/native-plugin regression; host service and reboot remain operator verification."
+      "proof_run": "docs/features/guided-installer/proof/runs/20261024T113650155544Z",
+      "notes": "Blue banner/headings/prompts verified through the full public installer acceptance; runtime and service behavior unchanged."
     }
   ]
 }

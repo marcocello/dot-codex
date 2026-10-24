@@ -2,7 +2,7 @@
 
 Run `./install.sh` from this checkout. The wizard explains one phase at a time and asks `Run this step? [y/N]`. Enter skips it; only `y` or `yes` selects it. After the last question, review the selected plan and answer `Run this plan? [y/N]`. Enter cancels without executing any selected phase. Skipping every phase exits successfully without changes or new state. Invalid answers are retried. Explicit commands provide the same operations without walking through the wizard.
 
-The English interface follows [OpenClaw's installer style](https://openclaw.ai/install.sh): coral headings, cyan checkmarks, amber warnings, muted details, and red failure marks. A wide terminal shows a rounded banner; narrow terminals and redirected output show a simple banner. Color is automatic for supported terminals. Redirected output and `TERM=dumb` stay plain. Use `--color always` to force ANSI output or `--color never` to disable it. `NO_COLOR` disables colors even when `--color always` is supplied. All messages remain understandable without color. No additional UI package is required.
+The English interface follows [OpenClaw's installer style](https://openclaw.ai/install.sh): blue headings, cyan checkmarks, amber warnings, muted details, and red failure marks. A wide terminal shows a rounded banner; narrow terminals and redirected output show a simple banner. Color is automatic for supported terminals. Redirected output and `TERM=dumb` stay plain. Use `--color always` to force ANSI output or `--color never` to disable it. `NO_COLOR` disables colors even when `--color always` is supplied. All messages remain understandable without color. No additional UI package is required.
 
 ## Prerequisites
 

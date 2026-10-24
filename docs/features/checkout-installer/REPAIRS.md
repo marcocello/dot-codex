@@ -1,0 +1,5 @@
+# Verification repairs
+
+- The first implemented run passed six journeys, including the real local Codex plugin lifecycle. Fresh-install read-back compared a resolved `/private/var/...` path with its equivalent unresolved `/var/...` path on macOS. Normalize the disposable test root before creating fixtures. This preserves the expected physical checkout and the real filesystem boundary; it does not change the installer or weaken the assertion.
+- Extend existing accepted failure coverage with a deterministic outer-provider failure/retry case and explicit nested-symlink and symlink-discard observations. These check AC2–AC4 without claiming remote integration success.
+- The existing inventory regression suite's repository snapshot assertion was already stale at committed HEAD: it expects 44 entries, while HEAD has 43, and the tracked skills-registry-guide is undeclared there. Leave this historical fixture unchanged. Run the functional manager tests as the relevant regression selection. The initial HTTP-provider fixture also needed sandbox permission to bind its disposable localhost server; rerun through the supported approval mechanism.

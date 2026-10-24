@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "b9ee1595bdbc906a6b17a3f85176ff6d7dbf49de0b57364214d9a46bc48580ac",
+  "evidence_digest": "fb51bff437279c8c2a44fb32dfa4c9451b653e89b37053662d59cc50b641a429",
+  "feature_dir": "docs/features/checkout-installer",
+  "feature_id": "checkout-installer",
+  "implementer": "01a16add-1928-7142-b116-cc0839408348",
+  "proof_run": "docs/features/checkout-installer/proof/runs/20261023T224817681694Z",
+  "receipt_digest": "2aa3cd341d08c33769f4c8b00e324ad88fb9bf43ce08649322e6e3046e3fd55f",
+  "recorded_at": "2026-10-23T22:49:18.592889+00:00",
+  "summary": "Reviewed installer against AC1-AC5: isolated real CLI install, persistent shell home/default-home symlink, merge privacy and conflicts, discard/cancel guards, optional prerequisite and retry checks; native Codex reads enabled core and optional MCP definitions. Functional inventory regressions pass. Remote provider execution/authentication, live desktop restart and active-machine migration are outside this delivered installer verification. Historical inventory snapshot assertion and tracked fixture gate failures predate this change.",
+  "target": "disposable-user-homes",
+  "verdict": "PASS",
+  "version": 1
+}

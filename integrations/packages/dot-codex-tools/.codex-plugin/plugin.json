@@ -1,0 +1,13 @@
+{
+  "name": "dot-codex-tools",
+  "version": "1.0.0",
+  "description": "dot-codex dot-codex-tools MCP integration",
+  "author": {
+    "name": "Marco Cello"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "dot-codex-tools",
+    "shortDescription": "dot-codex dot-codex-tools integration"
+  }
+}

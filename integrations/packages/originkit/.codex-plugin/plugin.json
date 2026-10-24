@@ -1,0 +1,13 @@
+{
+  "name": "originkit",
+  "version": "1.0.0",
+  "description": "dot-codex originkit MCP integration",
+  "author": {
+    "name": "Marco Cello"
+  },
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "originkit",
+    "shortDescription": "dot-codex originkit integration"
+  }
+}

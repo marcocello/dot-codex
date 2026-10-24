@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "shadcn@latest",
+        "mcp"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env_vars": [
+        "CONTEXT7_API_KEY"
+      ]
+    },
+    "agentation": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agentation-mcp@1.2.0",
+        "server"
+      ],
+      "startup_timeout_sec": 30,
+      "tool_timeout_sec": 120
+    },
+    "openaiDeveloperDocs": {
+      "url": "https://developers.openai.com/mcp"
+    },
+    "reui": {
+      "url": "https://mcp.reui.io"
+    }
+  }
+}

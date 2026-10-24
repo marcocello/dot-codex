@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "originkit": {
+      "url": "https://mcp.originkit.dev/mcp",
+      "bearer_token_env_var": "ORIGINKIT_API_KEY"
+    }
+  }
+}

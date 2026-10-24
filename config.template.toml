@@ -1,59 +1,20 @@
 #:schema https://developers.openai.com/codex/config-schema.json
+# Portable preferences only. ./install.sh installs skills and MCP plugins.
 
-model = "gpt-5.6-sol"
-model_reasoning_effort = "xhigh"
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
+service_tier = "default"
 personality = "pragmatic"
-
 approval_policy = "on-request"
-default_permissions = "projects-write"
 approvals_reviewer = "auto_review"
+default_permissions = "projects-write"
 web_search = "live"
-
-notify = ["/path/to/local/notification-client", "turn-ended"]
 
 [permissions.projects-write]
 extends = ":workspace"
-
-[permissions.projects-write.workspace_roots]
-"/path/to/your/workspace/example-project" = true
-"/path/to/your/local/state" = true
 
 [permissions.projects-write.network]
 enabled = true
 
 [features]
 multi_agent = true
-
-[mcp_servers.shadcn]
-command = "npx"
-args = ["shadcn@latest", "mcp"]
-
-[mcp_servers.context7]
-command = "npx"
-args = ["-y", "@upstash/context7-mcp"]
-env_vars = ["CONTEXT7_API_KEY"]
-
-[mcp_servers.langsmith]
-url = "https://api.smith.langchain.com/mcp"
-oauth_resource = "https://api.smith.langchain.com/mcp"
-
-[mcp_servers.node_repl]
-args = ["/path/to/node-repl-server.js"]
-command = "node"
-startup_timeout_sec = 30
-
-[mcp_servers.node_repl.env]
-NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/path/to/node_modules"
-NODE_REPL_NODE_PATH = "/path/to/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/path/to/trusted/code"
-CODEX_HOME = "/path/to/codex/home"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "browser-client-sha256-placeholder"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Use for local browser automation."
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "stable"
-BROWSER_USE_CODEX_APP_VERSION = "0.0.0"
-CODEX_CLI_PATH = "/path/to/codex"
-
-[projects."/path/to/your/workspace/example-project"]
-trust_level = "trusted"

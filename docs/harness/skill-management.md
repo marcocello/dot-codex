@@ -33,7 +33,7 @@ Use `--no-sync` on `add` or `update` only when recording desired state before an
 
 A Codex plugin is a first-class bundle. Codex reads its plugin manifest, installs it from a configured marketplace snapshot, caches it, exposes bundled skills/MCP/apps, and tracks enabled state. Use `codex plugin add PLUGIN@MARKETPLACE` directly or a `kind = "plugin"` inventory entry.
 
-`npx PACKAGE@VERSION ...` downloads and runs an npm package binary. It is an execution mechanism, not a Codex package lifecycle: the binary decides what files or configuration it changes, and Codex does not automatically know its provenance, version, removal procedure, or contributed capabilities. The existing `npx` MCP launchers in `config.toml` therefore remain outside `skills.toml`; npm version policy stays with that configuration rather than this inventory.
+`npx PACKAGE@VERSION ...` downloads and runs an npm package binary. It is an execution mechanism, not a Codex package lifecycle. dot-codex bundles its public MCP launchers in `integrations/packages/dot-codex-tools/.mcp.json` and declares that native plugin in `skills.toml`. Optional integrations are separate plugins in the same local marketplace. The installer registers the catalog before reconciliation. npm version policy stays with each plugin's MCP definition; machine-specific overrides and secrets stay in private configuration. See [installation](installation.md).
 
 Impeccable uses the already-installed native plugin. Its separate Git-skill declaration has been removed; do not recreate a raw-skill fallback. Its optional npm installer and project hooks remain a separate, explicit workflow.
 

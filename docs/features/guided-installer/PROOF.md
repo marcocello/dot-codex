@@ -1,0 +1,11 @@
+# Guided installer verification
+
+Run `bash docs/features/guided-installer/proof/run.sh` from the repository root. The runner invokes the real public `install.sh` in disposable checkouts and homes. Filesystem, Git, shell activation, package extraction, digest verification, publication, rollback, checkpoints, and signal handling are real. Test package executables implement the documented CLI boundary; downloads, sign-in, pairing, systemd, and launchd are isolated outer providers.
+
+AC1 uses plain-input and pseudo-terminal menu journeys, explicit commands, dry-run, EOF, and cancellation. AC2 uses Git source read-back, conflicting files, internal and foreign links, an existing CLI publication, and failed activation. AC3 reads the executable after fresh/repeated/version-changing installations and rejected archives. AC4 sends a real signal while the installer is awaiting input or executing a controlled subprocess, checks the old home and publication, and resumes through the public command. AC5 reads provider calls and checkpoint contents. AC6 independently reads generated service definitions and checks failure versus connected provider responses. AC7 is checked against the actual help and maintained installation documentation.
+
+The existing checkout-installer suite is an affected regression and retains its real Codex marketplace/MCP read-back. These checks do not establish an actual reboot, a live relay connection, real account authentication, or native service-manager activation. Those operations are exposed to the operator and must not be described as verified on media.local.
+
+Run `bash docs/features/guided-installer/proof/native-package.sh` as supporting verification for real official-release download, digest checking, archive extraction, executable version, and repeated publication on the current platform. It creates and removes a disposable HOME and does not activate this checkout, install services, or sign in.
+
+`python3 docs/features/guided-installer/proof/linux-fixture.py --host media.local` copies only the installer source and fixtures into a temporary Linux tree and runs the same journeys there. Add `--native-package` to exercise official Linux package installation and repeated publication in a disposable HOME instead. Both temporary trees are removed; the real media.local installation and services are not changed.

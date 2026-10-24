@@ -24,7 +24,7 @@ class InstallJourneys(unittest.TestCase):
         for name in ("install.sh", "config.template.toml", ".gitignore"):
             shutil.copy2(ROOT / name, self.repo / name)
         (self.repo / "scripts").mkdir()
-        for name in ("install.py", "skill_inventory.py"):
+        for name in ("install.py", "install_runtime.py", "install_state.py", "install_service.py", "skill_inventory.py"):
             shutil.copy2(ROOT / "scripts" / name, self.repo / "scripts" / name)
         shutil.copytree(ROOT / "integrations", self.repo / "integrations")
         (self.repo / "skills.toml").write_text(
@@ -170,7 +170,9 @@ import json, os, sys
 from pathlib import Path
 root = Path(os.environ["CODEX_HOME"])
 args = sys.argv[1:]
-if args[:2] == ["plugin", "list"]:
+if args == ["--version"]:
+    print("codex-cli 0.151.0")
+elif args[:2] == ["plugin", "list"]:
     installed = [] if not (root / ".provider-ready").exists() else [{"pluginId":"dot-codex-tools@dot-codex", "installed":True, "enabled":True}]
     print(json.dumps({"installed":installed}))
 elif args[:2] == ["plugin", "add"]:

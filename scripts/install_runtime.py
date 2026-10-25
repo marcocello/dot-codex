@@ -280,7 +280,7 @@ def prepare_service_package(home: Path, state: Path, binary: Path, codex_home: P
             print(f"Previous native package retained: {backup}", flush=True)
         else:
             transaction.remember(native_root)
-        publish_link(native_root, managed)
+        publish_link(native_root, managed.resolve())
         version_of(native_binary, env)
         transaction.commit()
     except BaseException:
@@ -305,6 +305,12 @@ def configure_service(args, state: Path, binary: Path, codex_home: Path, env: di
     command = [sys.executable, str(helper), "--codex-bin", str(binary), "--codex-home", str(codex_home),
                "--user-home", str(args.user_home)]
     if manager == "systemd":
+        environment_file = getattr(args, "environment_file", None)
+        if environment_file:
+            environment_file = environment_file.expanduser().absolute()
+            if (environment_file.is_symlink() or not environment_file.is_file() or environment_file.stat().st_mode & 0o077
+                    or any(character in str(environment_file) for character in "\n\r\x00")):
+                raise InstallError("Service environment file must be a private regular file without control characters in its path")
         linger = run(["loginctl", "show-user", str(os.getuid()), "--property=Linger", "--value"],
                      env, "Read boot persistence", check=False)
         if linger.returncode or linger.stdout.strip() != "yes":
@@ -319,7 +325,9 @@ def configure_service(args, state: Path, binary: Path, codex_home: Path, env: di
         common = ("[Unit]\nDescription=Codex managed Remote Control\n\n[Service]\nType=oneshot\n"
                   "KillMode=process\nTimeoutStartSec=240\n"
                   f"Environment={systemd_quote('HOME=' + str(args.user_home))}\n"
-                  f"Environment={systemd_quote('CODEX_HOME=' + str(codex_home))}\n")
+                  f"Environment={systemd_quote('CODEX_HOME=' + str(codex_home))}\n"
+                  f"Environment={systemd_quote('PATH=' + env.get('PATH', '/usr/local/bin:/usr/bin:/bin'))}\n"
+                  + (f"EnvironmentFile={systemd_quote(str(environment_file))}\n" if environment_file else ""))
         boot = directory / "codex-remote-control.service"
         health = directory / "codex-remote-control-health.service"
         timer = directory / "codex-remote-control-health.timer"

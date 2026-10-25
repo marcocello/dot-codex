@@ -1,0 +1,17 @@
+[Unit]
+Description=Collect selected second-brain context
+After=network-online.target
+Wants=network-online.target
+RequiresMountsFor=%h/projects
+
+[Service]
+Type=simple
+WorkingDirectory=%h/projects/dot-codex
+ExecStart=%h/projects/dot-codex/secondbrain.sh context watch --config %h/projects/.secondbrain/context.toml
+Restart=on-failure
+RestartSec=30
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

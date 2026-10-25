@@ -2,6 +2,8 @@
 
 This is an opt-in workflow for maintaining context and following unfinished outcomes across sources. It uses two skills, `secondbrain.yaml`, one private workspace, the existing Codex harness, and existing provider tools. It does not start merely because a knowledge skill is installed.
 
+The [consolidated runtime](secondbrain-platform.md) adds scoped Outlook/wacli collection and read-only retrieval in a separate private workspace configured by `context.toml`. Its mutable source payloads and rebuildable vectors do not change this cycle's immutable evidence contract. No raw-payload migration runs automatically.
+
 ## Components and ownership
 
 | Component | Responsibility |

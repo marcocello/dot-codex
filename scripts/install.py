@@ -280,6 +280,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--sha256", help="Expected package digest for an explicit file or URL")
     result.add_argument("--service-manager", choices=["systemd", "launchd"], help="Default: the native platform manager")
     result.add_argument("--enable-linger", action="store_true", help="Allow the Linux service phase to request sudo for boot persistence")
+    result.add_argument("--environment-file", type=Path, help="Private systemd credential environment file; values are never copied to unit definitions")
     return result
 
 
@@ -634,7 +635,7 @@ def execute_phase(name, args, state, env, source):
 
 def retry_options(args):
     fields = ("codex_bin", "version", "package_file", "sha256", "mode", "service_manager",
-              "with_integration", "enable_linger")
+              "with_integration", "enable_linger", "environment_file")
     values = {key: str(getattr(args, key)) if isinstance(getattr(args, key), Path) else getattr(args, key)
               for key in fields}
     values["custom_package_url"] = bool(args.package_url)
@@ -687,7 +688,7 @@ def main() -> int:
                     continue
                 flag = "--with" if key == "with_integration" else "--" + key.replace("_", "-")
                 if flag not in explicit_flags:
-                    setattr(args, key, Path(value) if key == "package_file" and value else value)
+                    setattr(args, key, Path(value) if key in {"package_file", "environment_file"} and value else value)
         ui_section("Install plan")
         ui_kv("User home", args.user_home)
         ui_kv("Harness", ROOT)

@@ -1,0 +1,8 @@
+Host prerequisites → persistent harness copy/activation → verified Codex installation/login
+skills.toml: ALL declared skills/plugins/MCPs → individual authentication/readiness report
+Python .venv: backend/context + backend/telegram; Node runtime: backend/whatsapp
+Qdrant local (default); optional Pinecone cloud index with explicit creation approval
+One Outlook mailbox + selected WhatsApp chats → device/QR login → initial context sync
+Read-only context MCP → Remote Control + ingestion + wacli + selected gateway services
+Live verification → private resumable receipt; incomplete login/service returns nonzero
+Repeat setup to reconcile resources. --component selects dependency-only setup.

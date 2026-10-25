@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "920fe8ef6eae8455fced6baab83ba2dd50a838e2e748f982983749516a99cb7f",
+  "evidence_digest": "a903ec860e175db145d132da442d0b10a34de0ffdd7c9d19b234a797c1f7feb3",
+  "feature_dir": "docs/features/searchable-secondbrain-context",
+  "feature_id": "searchable-secondbrain-context",
+  "implementer": "secondbrain-consolidation-20261024",
+  "proof_run": "docs/features/searchable-secondbrain-context/proof/runs/20261024T130417756901Z",
+  "receipt_digest": "d714f9830e4ad54860847923028826bf4454410e01ba15c4fe890c4db9225d33",
+  "recorded_at": "2026-10-24T13:08:16.431961+00:00",
+  "summary": "Self-review: scoped CLI ingestion, Graph HTTP pagination/account checks/cap/expiry, anchored read-only wacli archive snapshots and journal replay, durable retries, source disable/scope isolation, deletion/erasure, real multilingual FastEmbed/Qdrant search, and read-only stdio MCP meet C1-C5 on synthetic sources with real local persistence and inference. The repository gate passes. Microsoft consent, selected live mailbox/chats, actual archive coverage, and unattended VM collection remain activation checks; no real account was accessed.",
+  "target": "local-consolidated-checkout",
+  "verdict": "PASS",
+  "version": 1
+}

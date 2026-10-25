@@ -1,0 +1,5 @@
+# Copy this file to backend.hcl and replace every placeholder.
+resource_group_name  = "<terraform-state-resource-group>"
+storage_account_name = "<terraform-state-storage-account>"
+container_name       = "<terraform-state-container>"
+key                  = "<terraform-state-key>"

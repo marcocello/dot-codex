@@ -1,0 +1,3 @@
+# Copy this file to terraform.tfvars and replace every placeholder.
+subscription_id = "<azure-subscription-id>"
+owner           = "platform-team"

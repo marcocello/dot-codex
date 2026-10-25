@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "11af0ea0f1a6a3055e9b1eff6cf8050ab189d095037eb1979c5f87be615d52fa",
+  "evidence_digest": "54181bd64f1bf7b1b5d0813c3fce4d4a8c3ec8602e63080d3215598da98795fb",
+  "feature_dir": "docs/features/installer-bootstrap",
+  "feature_id": "installer-bootstrap",
+  "implementer": "openclaw-bootstrap",
+  "proof_run": "docs/features/installer-bootstrap/proof/runs/20261024T220950675109Z",
+  "receipt_digest": "2abacf1971e5b0da2066848c87e58063b48db724c9b49d2ec44002b61aa4a15f",
+  "recorded_at": "2026-10-24T22:11:50.273321+00:00",
+  "summary": "Self-review: C1-C3 exercised actual Bash 3.2 entry, Python compatibility probes, apt/Homebrew edges, repeated setup, immutable plans and real PTY routing. C4 exercised nonzero failures, INT/TERM recovery, real journal summaries and finite download budgets. C5 retained comprehensive host/context/MCP/Pinecone/Azure and legacy installer journeys; export includes both bootstrap assets. macOS arm64, Python 3.12.11. OS/package/provider/service boundaries are fixtures; no live VM installation, account login, paid resources or reboot survival claimed. Applicable OpenClaw mechanisms adapted without executing or copying upstream code. Dialogue capture is partial native history.",
+  "target": "macos-isolated-bootstrap",
+  "verdict": "PASS",
+  "version": 1
+}

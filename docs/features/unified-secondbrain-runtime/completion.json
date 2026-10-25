@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "35d93ea3b5bfa7abbdcd71c3b09b80d49fbf83921e66676b3734f0c8d8f084e7",
+  "evidence_digest": "2b038813d9c7cb72626f8e4b68356a5a4b89a54b26d67ffc1f4e5e4d9fecd268",
+  "feature_dir": "docs/features/unified-secondbrain-runtime",
+  "feature_id": "unified-secondbrain-runtime",
+  "implementer": "secondbrain-consolidation-20261024",
+  "proof_run": "docs/features/unified-secondbrain-runtime/proof/runs/20261024T130249207475Z",
+  "receipt_digest": "a66dd932a17c026ca5264ad2bfbac60c2619ce1e0f5f92244e4a3bdb1df2d176",
+  "recorded_at": "2026-10-24T13:08:16.346214+00:00",
+  "summary": "Self-review: the unified CLI, isolated VM payloads, local-Git remote-bootstrap fixture, built Telegram distributions, native gateway behavior, and real npm/Python bot lifecycle meet R1-R4 on the local checkout. Installer regressions, Terraform mock plans, and offline bot readiness pass. No source checkout or live service was migrated; Azure/VPN, real messaging, pairing, and reboot remain operator activation checks.",
+  "target": "local-consolidated-checkout",
+  "verdict": "PASS",
+  "version": 1
+}

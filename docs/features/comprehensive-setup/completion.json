@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "afa56325cdfdca8312e8821a2dddc9823ea75388e3e7ced68206ba571a296692",
+  "evidence_digest": "d04b56941833f4784cf832dc3541bb21ea315a72f18e727db8bc178420f8d714",
+  "feature_dir": "docs/features/comprehensive-setup",
+  "feature_id": "comprehensive-setup",
+  "implementer": "unified-setup",
+  "proof_run": "docs/features/comprehensive-setup/proof/runs/20261024T202333587699Z",
+  "receipt_digest": "e777097b31b42d6cb73edbe714a779e5b7f4444c2b5562fe51687c3c80f3d8c1",
+  "recorded_at": "2026-10-24T20:25:44.307308+00:00",
+  "summary": "Self-review of C1-C5 against the accepted setup request and final source. Public dry plans remain read-only and dependency-only setup is preserved. The integrated journey exercises the real harness installer, inventory reconciliation, persistent CLI storage, context ingestion/indexing, MCP registration, private credentials and service definitions; repeated setup preserves state and repairs a removed application. Telegram configuration and getMe use the real model/client with HTTP replaced. Baileys consumer readback uses the actual CLI/Python boundary and a synthetic transport. Real multilingual embeddings, Qdrant and Pinecone 10.2 SDK cover projection migration, scope/revision guards and erasure. Real OpenSSL/VPN scripts verify first bootstrap without SSH, repeated CA preservation and refusal of mismatched restored trust through simulated ARM. Source export protects private files, independent edits and concurrent remote setup. Terraform changes require approval. A Telegram HTTP-fixture alias error was corrected without weakening assertions; failed attempts and repair notes remain retained. All attached acceptance and regressions PASS. Live Ubuntu/Azure provisioning, tenant consent, real WhatsApp/Telegram delivery, live Pinecone consistency and reboot survival were not verified; these remain operator activation checks. Code is available in the local checkout; no paid resources, real account pairing, commit, push or deployment was performed.",
+  "target": "macos-local-provider-fixtures",
+  "verdict": "PASS",
+  "version": 1
+}

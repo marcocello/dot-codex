@@ -1,5 +1,9 @@
 # dot-codex
 
+dot-codex also contains a VM-first second-brain runtime: Codex and harness installation, the VM operator, Telegram access, an optional WhatsApp bot, and scoped Outlook/WhatsApp context retrieval. Applications live under `backend/`; non-secret VM infrastructure lives under `deployments/prod/`.
+
+Run `./secondbrain.sh setup` or `./install.sh setup` for the complete guided installation. It supports an Ubuntu VM directly and Mac-to-Azure provisioning, bootstraps compatible Python, installs all harness-declared dependencies, configures Qdrant or optional Pinecone, connects selected sources and starts services. Repeat the command to recheck and resume. Use `--dry-run` for a read-only preview that also works before Python is installed. The [setup and migration guide](docs/harness/secondbrain-platform.md) explains credentials, cloud approvals, local development and verification boundaries.
+
 In December 2025, I stopped writing code. Codex now does the implementation work.
 
 That changed where I put my engineering effort: understanding the problem, deciding what should happen, and checking whether the result works. A convincing response or a passing test suite can still leave the user's problem unresolved. Completion needs evidence from the place where the software is actually used.

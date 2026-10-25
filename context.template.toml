@@ -1,0 +1,29 @@
+# Copy to a private context.toml. Sources stay disabled until scopes are selected.
+schema = 1
+workspace = "~/projects/.secondbrain/context"
+sync_every_seconds = 300
+
+[search]
+backend = "qdrant"
+# Local multilingual inference. First indexing downloads the public model.
+model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+
+[[sources]]
+id = "outlook"
+provider = "microsoft_graph"
+enabled = false
+[sources.scope]
+account = "SELECTED-MAILBOX@example.com"
+client_id = "APPLICATION-CLIENT-ID"
+tenant_id = "organizations"
+folders = ["inbox", "sentitems"]
+since = "2026-10-24T00:00:00Z"
+
+[[sources]]
+id = "whatsapp"
+provider = "wacli"
+enabled = false
+[sources.scope]
+store = "~/projects/.secondbrain/wacli"
+chats = ["SELECTED_CHAT_JID@s.whatsapp.net"]
+since = "2026-10-24T00:00:00Z"

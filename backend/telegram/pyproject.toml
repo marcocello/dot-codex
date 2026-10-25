@@ -1,0 +1,172 @@
+[build-system]
+requires = ["hatchling>=1.28.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "telegram-to-agents"
+version = "0.1.0"
+description = "Linux Telegram gateway for native Codex and Claude harnesses with pass-through prompts and audio transcription."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Marco Cello" }]
+keywords = [
+    "agents", "ai", "telegram", "bot", "codex", "claude", "cli",
+    "remote-control", "audio-transcription",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Communications :: Chat",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pydantic>=2.12.5",
+    "aiogram>=3.24.0,<4.0.0",
+    "rich>=14.3.2",
+    "questionary>=2.1.1",
+    "filetype>=1.2.0",
+    "openai>=2.53.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist>=3.8.0",
+]
+lint = [
+    "ruff>=0.15.0",
+    "mypy>=1.19.1",
+]
+dev = ["telegram-to-agents[test,lint]"]
+
+[project.urls]
+Homepage = "https://github.com/marcocello/telegram-to-agents"
+Repository = "https://github.com/marcocello/telegram-to-agents"
+Documentation = "https://github.com/marcocello/telegram-to-agents#readme"
+Issues = "https://github.com/marcocello/telegram-to-agents/issues"
+Changelog = "https://github.com/marcocello/telegram-to-agents/releases"
+
+[project.scripts]
+telegram-to-agents = "telegram_to_agents.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/telegram_to_agents"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"config.example.json" = "telegram_to_agents/_config_example.json"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/telegram_to_agents/",
+    "config.example.json",
+    "LICENSE",
+    "README.md",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = ["config.example.json"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "E501",
+    "W191",
+    "COM812",
+    "ISC001",
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
+    "D203",
+    "D213",
+    "ANN401",
+    "TD002", "TD003",
+    "FIX002",
+    "ERA001",
+    "S101",
+    "TRY003",
+    "EM101", "EM102",
+    "T201",
+    "FBT001", "FBT002",
+    "S603", "S607",
+    "SLF001",
+    "TC001", "TC003",
+    "PLR2004",
+    "PLC0415",
+    "BLE001",
+    "ARG002",
+    "PERF203",
+    "RUF012",
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"**/tests/*" = [
+    "S101", "ANN", "D",
+    "S105", "S106", "S107", "S108", "S603",  # test tokens/paths/subprocess are not secrets
+    "PT019",                          # @patch injections look like unused fixtures to ruff
+    "PLR0913", "PLR0915", "PLR0911",  # test helpers need flexible limits
+    "FBT003",                         # boolean positional args in patch/assert calls
+    "ASYNC240",                       # deterministic proof fixtures use pathlib
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["telegram_to_agents"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unreachable = true
+disallow_any_generics = true
+disallow_untyped_defs = true
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_reexport = true
+no_implicit_optional = true
+strict_equality = true
+extra_checks = true
+
+[[tool.mypy.overrides]]
+module = ["aiogram.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["questionary.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["filetype.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests/features", "tests/transcription"]
+asyncio_mode = "auto"

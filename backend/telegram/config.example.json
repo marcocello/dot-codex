@@ -1,0 +1,24 @@
+{
+    "provider": "codex",
+    "telegram_token": "YOUR_BOT_TOKEN_HERE",
+    "allowed_user_ids": [123456789],
+    "allowed_group_ids": [],
+    "allowed_channel_ids": [],
+    "group_mention_only": false,
+    "file_access": "all",
+    "project_root": "/home/you/code/my-project",
+    "project_roots": {},
+    "timeouts": {
+        "normal": 1800.0
+    },
+    "transcription": {
+        "automatic_audio": true,
+        "model": "gpt-4o-transcribe",
+        "timeout_seconds": 120.0
+    },
+    "scene": {
+        "status_reaction": true
+    },
+    "state_home": "~/.telegram-to-agents",
+    "log_level": "INFO"
+}

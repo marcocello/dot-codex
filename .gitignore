@@ -22,11 +22,51 @@
 !secondbrain.template.yaml
 !pyproject.toml
 !skills.toml
+!secondbrain.sh
+!context.template.toml
+
+# Bundled applications: allow source and declared manifests, never runtime state.
+!/backend/
+!/backend/**/
+!backend/**/*.py
+!backend/**/*.ts
+!backend/**/*.mjs
+!backend/**/*.toml
+!backend/**/*.lock
+!backend/**/*.json
+!backend/**/*.md
+!backend/**/*.sh
+!backend/**/LICENSE
+!backend/**/.nvmrc
+backend/**/node_modules/
+backend/**/.venv/
+backend/**/__pycache__/
+backend/**/.pytest_cache/
+backend/**/.auth/
+backend/**/runs/
+backend/**/.env*
+backend/**/config.json
+!/deployments/
+!/deployments/**/
+!deployments/**/*.tf
+!deployments/**/*.hcl
+!deployments/**/*.example
+!deployments/**/*.service
+!deployments/**/.terraform.lock.hcl
+deployments/**/.terraform/
+deployments/**/*.tfstate*
+deployments/**/*.tfvars
+deployments/**/backend.hcl
+!/.vscode/
+!/.vscode/tasks.json
+/context.toml
+/context-state/
 
 !docs/**/*
 
 !scripts/*.sh
 !scripts/*.py
+!scripts/setup-plan.txt
 !install.sh
 !integrations/**/*.json
 

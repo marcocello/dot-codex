@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "secondbrain:setup",
+      "type": "shell",
+      "command": "./secondbrain.sh setup",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "secondbrain:dependencies",
+      "type": "shell",
+      "command": "./secondbrain.sh setup --component all",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "fullstack",
+      "type": "shell",
+      "command": "./secondbrain.sh context watch --config context.toml",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "secondbrain:doctor",
+      "type": "shell",
+      "command": "./secondbrain.sh doctor",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "telegram",
+      "type": "shell",
+      "command": "./secondbrain.sh telegram",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

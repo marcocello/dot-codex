@@ -1,0 +1,11 @@
+# Installer bootstrap
+
+Rewrite the setup entry using the applicable mechanisms in OpenClaw's official shell installer. The complete setup remains `./secondbrain.sh setup`; `./install.sh setup` is an equivalent entry. Existing harness installation arguments retain their meaning.
+
+- C1: Help and a complete `--dry-run` / `--plan` work without Python, credentials, downloads or filesystem changes. Invalid or incomplete options fail before installation. `--no-prompt` aliases `--non-interactive` without accepting paid operations.
+- C2: Setup reuses an available Python 3.11–3.13. When none is available, the shell installs Python through Ubuntu 24.04 apt or an existing macOS Homebrew, then verifies the interpreter before handing off. Repeating setup does not reinstall a compatible interpreter. Unsupported hosts stop with an actionable message. The bootstrap does not edit shell profiles or replace existing Python executables.
+- C3: Interactive setup uses the controlling terminal when stdin is redirected. Without a usable terminal it stops before changing resources and explains the unattended invocation. Unattended setup never reads prompts or lets sudo request a password. Missing saved choices stop before bootstrap changes.
+- C4: Bootstrap failures and interrupts return nonzero with a safe stage-specific recovery message. Phase output distinguishes verified, incomplete and prerequisite-pending work. The final receipt lists incomplete phases and reports success only after all selected phases verify. Download retries have finite connection/transfer budgets; resource creation is never retried by this policy.
+- C5: Both public entries reach the existing complete wizard. Its host reconciliation, persistent data, declared dependencies, selected source scopes, Qdrant/Pinecone choices, Azure cost approvals and explicit dependency-only development mode remain covered by the existing comprehensive setup journey. Current-source export includes the bootstrap helper.
+
+The shell owns only argument preflight, terminal routing and the interpreter prerequisite. Python retains account, provider, state and service reconciliation. There is no new hosted installer URL or anonymous repository clone flow. The implementation adapts mechanisms without copying or executing OpenClaw code.

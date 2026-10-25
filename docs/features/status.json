@@ -450,6 +450,42 @@
       "owner": null,
       "proof_run": "docs/features/guided-installer/proof/runs/20261024T115454534971Z",
       "notes": "Native managed-package layout repaired and verified on macOS/Linux; live media.local installer and Remote Control pass. Actual reboot is a separate operational check awaiting host authentication."
+    },
+    {
+      "id": "unified-secondbrain-runtime",
+      "feature_dir": "docs/features/unified-secondbrain-runtime",
+      "priority": 51,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/unified-secondbrain-runtime/proof/runs/20261024T130249207475Z",
+      "notes": ""
+    },
+    {
+      "id": "searchable-secondbrain-context",
+      "feature_dir": "docs/features/searchable-secondbrain-context",
+      "priority": 52,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/searchable-secondbrain-context/proof/runs/20261024T130417756901Z",
+      "notes": ""
+    },
+    {
+      "id": "comprehensive-setup",
+      "feature_dir": "docs/features/comprehensive-setup",
+      "priority": 53,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/comprehensive-setup/proof/runs/20261024T202333587699Z",
+      "notes": ""
+    },
+    {
+      "id": "installer-bootstrap",
+      "feature_dir": "docs/features/installer-bootstrap",
+      "priority": 54,
+      "status": "done",
+      "owner": null,
+      "proof_run": "docs/features/installer-bootstrap/proof/runs/20261024T220950675109Z",
+      "notes": ""
     }
   ]
 }

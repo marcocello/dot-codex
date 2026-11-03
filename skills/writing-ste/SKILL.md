@@ -34,6 +34,7 @@ Use lists for sequences or parallel items and tables for comparisons. Follow the
 ## Adapt to the task
 
 - **Emails and messages:** State the purpose and any requested action clearly. Match the recipient and the user's requested tone. A casual draft can remain casual.
+- **Project updates:** Check capability and completion claims against supplied facts and available project evidence. Distinguish implemented behavior, verified availability, placeholders, and plans. A request for more confident wording changes tone, not capability or status; a button or prototype does not establish a working integration. Preserve qualifications when evidence is unavailable. A style-only rewrite must not introduce new factual claims or require a fresh project audit.
 - **Documentation and specifications:** State who acts, under which condition, and with which observable result. Split independent obligations. A clearer sentence must not create new acceptance criteria or product decisions.
 - **Procedures and instructions:** State prerequisites and conditions before dependent actions. Keep action order, limits, exceptions, and warnings intact. Prefer one instruction per sentence.
 - **Reports and reviews:** State what was observed, where it was observed, and what remains unverified. Separate a failure from a suspected cause. A wording change cannot extend the evidence boundary.

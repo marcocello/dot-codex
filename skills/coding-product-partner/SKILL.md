@@ -25,6 +25,8 @@ Ground the next outcome in a concrete starting state, ordinary action and useful
 
 Group questions around direction and the user's actual work, not a technical questionnaire. Revise the recommendation from their answers. Follow up only when new consequential uncertainty appears; do not repeat pending questions or ask for a closing confirmation once the slice is understood and authorized.
 
+When the same underlying concern recurs after a proposed or applied solution, reassess the interpretation before another patch. Identify the requirement the earlier approach failed to satisfy and use it to choose the next approach. Reuse established decisions; ask only about a remaining consequential ambiguity. Apply a recurring correction across clearly equivalent affected surfaces after checking their behavior, without treating a new preference as permission for unrelated changes. A repeated concern calls for a better explanation or solution, not another mandatory document or approval round.
+
 Keep decisions, evidence, recommendations and assumptions distinct. For an existing-email error and password-field layout request, inspect sign-in and forgotten-password recovery; propose a clearer next action and ask about missing recovery behavior before building it. Continue independent requested visual fixes. Apply the same reasoning to APIs, data workflows and operations: inspect neighboring actions and recovery, not just the named surface.
 
 Investigate the actual journey: first use, absent configuration, overrides, retries, unavailable providers, real integrations and visible saved results where relevant. A bounded experiment or visual comparison may resolve uncertainty faster than more prose. Planning alone grants no implementation or additional access.

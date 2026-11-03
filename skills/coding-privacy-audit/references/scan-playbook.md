@@ -23,22 +23,25 @@ A history filename listing is not a content scan. Read relevant historical versi
 
 Before reusing an earlier scan for staged content, verify that the index matches the audited tree with `git diff --cached --quiet <audited-commit>` and separately check unstaged/untracked release candidates. This establishes content identity only; an incomplete earlier scan remains incomplete. If the tree changes, scan the new material.
 
-## GitGuardian when available
+## GitGuardian through ggshield
 
-Discover a connected GitGuardian tool or an existing `ggshield` executable, including a known task-local installation. Check the CLI version and help. Missing software, unavailable authentication, denied network access, unsupported scope, and quota/rate-limit failures are distinct reasons for incomplete coverage. Do not install or sign in automatically.
+Use the existing `ggshield` executable, including a known task-local installation. Check `ggshield --version` and the selected command's help. Reuse the saved login; do not install or sign in automatically. Missing software, unavailable authentication, denied network access, unsupported scope, and quota/rate-limit failures are distinct reasons for incomplete coverage.
+
+If a sandboxed scan cannot access a saved login or the network, retry the same scoped command through the supported permission flow. A sandboxed "no token" result alone does not establish that the user is logged out. If the retry is denied or still fails, report that boundary without reading credential stores or requesting a new token automatically.
 
 Use masked output; never pass `--show-secrets`. Do not put an API key in command arguments or print environment values. Existing authentication can be passed privately to the child process. Place reports and caches in the private audit destination where the tool supports it; ensure a scanner does not modify the target's ignore rules or tracked files. Do not create persistent dashboard incidents or source registrations as a side effect of scanning.
 
 For the current supported CLI, inspect help for commands such as:
 
 ```text
+ggshield secret scan pre-commit --help
 ggshield secret scan repo --help
 ggshield secret scan commit-range --help
 ggshield secret scan changes --help
 ggshield secret scan path --help
 ```
 
-Select the commands needed to cover both committed history and release candidates. A repository history scan alone does not cover unstaged or untracked files. A connector that scans supplied files does not establish Git history coverage.
+For a before-commit audit, run `ggshield secret scan pre-commit --all-secrets` against the existing index. Do not change staging to make it match the working tree. For a bounded commit history, use `ggshield secret scan commit-range --all-secrets <range>`. Select `repo`, `changes`, or `path` when their documented scope matches the audit. A repository history scan alone does not cover unstaged or untracked files. Confirm the scanned surface in the report.
 
 Check whether the repository command actually covers reflog-only commits. If not, use supported commit-range syntax for the missing commits or report the omission. Where the installed CLI accepts Git revision expressions, `--all --reflog` can enumerate retained history; use the argument separator `--` when a revision argument starts with `-`. Confirm the resulting commit set against the intended set rather than inferring coverage from a command name.
 

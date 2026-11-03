@@ -1,6 +1,6 @@
 ---
 name: coding-privacy-audit
-description: Audit public-repository changes before each commit, or review broader release/existing exposure for credentials, personal information, private work, and system details. Optional for private-repository commits. Cover relevant staged changes, history, and exports; report scanner use and coverage without implying cleanup authority.
+description: Audit public-repository changes before each commit, or review broader release/existing exposure for credentials, personal information, private work, and system details. Use the ggshield CLI for secret scanning. Optional for private-repository commits. Cover relevant staged changes, history, and exports without implying cleanup authority.
 ---
 
 # Repository Privacy Audit
@@ -37,7 +37,7 @@ Read [Scan playbook](references/scan-playbook.md) when selecting Git/history com
 
 Look for API/access/refresh tokens, passwords, connection strings, credentials in URLs, cloud/service credentials, SSH and TLS private keys, PEM private-key blocks, keystores, and credential/config backups. Inspect suspicious contents, not just filenames: `.pem` can contain a public certificate, while a private key can have an unrelated extension. Distinguish usable-looking material from explicit placeholders, tests, public keys, certificates, and scanner mistakes. Do not test a candidate credential against its provider to prove it is real.
 
-Use an available GitGuardian CLI or connector with existing authorized authentication. Do not automatically install a scanner, obtain credentials, or substitute another scanning service when GitGuardian is unavailable. Never expand the authorized data-transfer scope merely because a connector is installed. Continue local inspection when the scanner is missing or blocked, but report that automated scanning did not complete. Do not present manual checks as equivalent coverage.
+Use GitGuardian through the `ggshield` CLI with existing authorized authentication. For a before-commit audit, scan the exact staged changes with `ggshield secret scan pre-commit --all-secrets`. For other scopes, select the CLI command from the [scan playbook](references/scan-playbook.md). Do not substitute a connector or another scanning service. If the sandbox blocks saved authentication or network access, retry the same authorized scan through the supported permission flow before declaring the CLI unavailable. Do not automatically install a scanner or obtain credentials. Continue local inspection when the CLI remains unavailable, and report the incomplete automated coverage. Do not present manual checks as equivalent coverage.
 
 Always state **GitGuardian used**, **partially used**, or **not used**, with the version/tool, scanned surfaces, completion status, and reason for any gap. Invocation alone is not a completed scan. Check scanner errors and coverage before interpreting alerts or a zero-finding result. Challenge each alert against its source context.
 

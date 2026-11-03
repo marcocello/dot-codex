@@ -31,70 +31,6 @@ kind = "owned"
 path = "coding-python-backend"
 
 [[skills]]
-name = "prospecting-linkedin-content-manager"
-kind = "owned"
-path = "prospecting-linkedin-content-manager"
-
-[[skills]]
-name = "prospecting-signal-context-builder"
-kind = "owned"
-path = "prospecting-signal-context-builder"
-
-[[skills]]
-name = "prospecting-signal-detector"
-kind = "owned"
-path = "prospecting-signal-detector"
-
-[[skills]]
-name = "zotero"
-kind = "plugin"
-selector = "zotero@openai-curated"
-enabled = true
-
-[[skills]]
-name = "clickup"
-kind = "plugin"
-selector = "clickup@openai-curated"
-enabled = true
-
-[[skills]]
-name = "sites"
-kind = "plugin"
-selector = "sites@openai-bundled"
-enabled = true
-
-[[skills]]
-name = "browser"
-kind = "plugin"
-selector = "browser@openai-bundled"
-enabled = true
-
-[[skills]]
-name = "chrome"
-kind = "plugin"
-selector = "chrome@openai-bundled"
-enabled = true
-
-[[skills]]
-name = "visualize"
-kind = "plugin"
-selector = "visualize@openai-bundled"
-enabled = true
-
-[[skills]]
-name = "remotion"
-kind = "plugin"
-selector = "remotion@openai-curated"
-enabled = true
-
-[[skills]]
-name = "bento-slides"
-kind = "git"
-repository = "https://github.com/nyblnet/bento.git"
-source_path = "plugins/bento-slides/skills/bento-slides"
-path = "bento-slides"
-
-[[skills]]
 name = "reui"
 kind = "bundle"
 url = "https://mcp.reui.io/api/skills/download"
@@ -111,39 +47,9 @@ kind = "owned"
 path = "harness-capture-interactions"
 
 [[skills]]
-name = "knowledge-capture"
-kind = "owned"
-path = "knowledge-capture"
-
-[[skills]]
-name = "career-answer-application"
-kind = "owned"
-path = "career-answer-application"
-
-[[skills]]
-name = "career-build-profile"
-kind = "owned"
-path = "career-build-profile"
-
-[[skills]]
-name = "career-curate-job-sources"
-kind = "owned"
-path = "career-curate-job-sources"
-
-[[skills]]
-name = "career-search-jobs"
-kind = "owned"
-path = "career-search-jobs"
-
-[[skills]]
 name = "knowledge-drawio-diagram"
 kind = "owned"
 path = "knowledge-drawio-diagram"
-
-[[skills]]
-name = "knowledge-keep-or-cringe"
-kind = "owned"
-path = "knowledge-keep-or-cringe"
 
 [[skills]]
 name = "harness-manage-skills"
@@ -151,44 +57,9 @@ kind = "owned"
 path = "harness-manage-skills"
 
 [[skills]]
-name = "app-photo-drop"
-kind = "owned"
-path = "app-photo-drop"
-
-[[skills]]
 name = "coding-review-workflow"
 kind = "owned"
 path = "coding-review-workflow"
-
-[[skills]]
-name = "knowledge-think-first-principles"
-kind = "owned"
-path = "knowledge-think-first-principles"
-
-[[skills]]
-name = "knowledge-rewrite-natural-message"
-kind = "owned"
-path = "knowledge-rewrite-natural-message"
-
-[[skills]]
-name = "knowledge-review"
-kind = "owned"
-path = "knowledge-review"
-
-[[skills]]
-name = "knowledge-tool-connect"
-kind = "owned"
-path = "knowledge-tool-connect"
-
-[[skills]]
-name = "secondbrain-update"
-kind = "owned"
-path = "secondbrain-update"
-
-[[skills]]
-name = "secondbrain-review"
-kind = "owned"
-path = "secondbrain-review"
 
 [[skills]]
 name = "coding-explain-kit"
@@ -230,6 +101,17 @@ name = "dot-codex-tools"
 kind = "plugin"
 selector = "dot-codex-tools@dot-codex"
 enabled = true
+
+[[skills]]
+name = "sites"
+kind = "plugin"
+selector = "sites@openai-curated-remote"
+enabled = true
+
+[[skills]]
+name = "skills-registry-guide"
+kind = "owned"
+path = "skills-registry-guide"
 
 [[skills]]
 name = "coding-privacy-audit"

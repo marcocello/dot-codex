@@ -1,0 +1,14 @@
+{
+  "candidate_digest": "9d8df6714b49e61cc237ad674ada2b9b3448b68bc9dda24ce83ad8bde3b57a4b",
+  "evidence_digest": "14d25e64bba47f3fe5a36e6218fa47829dac4f24a5832040b23df3d937fe725b",
+  "feature_dir": "docs/features/harness-secondbrain-split",
+  "feature_id": "harness-secondbrain-split",
+  "implementer": "01a1a067-946c-7143-9a76-30c404a0f369",
+  "proof_run": "docs/features/harness-secondbrain-split/proof/runs/20261103T095906449745Z",
+  "receipt_digest": "04b6dcadc948a5e5dd032e703b6912c030fe9f55aa93de378d2b3f99bb136070",
+  "recorded_at": "2026-11-03T10:00:27.512221+00:00",
+  "summary": "Reviewed owner-approved structure simplification: one public launcher; internal deployment templates and nested skill manifest; current private command defaults; no YAML state runtime, alias, native-app setup fallback or wrappers. Native Codex supervision and owner-only service credentials remain supported. Real source export/staging, profile/skills discovery, SQLite/MCP/worker/gateway regressions and vault integrity pass locally; accounts, deployed services and remote publication are outside this change.",
+  "target": "local-split",
+  "verdict": "PASS",
+  "version": 1
+}

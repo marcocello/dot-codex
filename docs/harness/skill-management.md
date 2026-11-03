@@ -33,13 +33,13 @@ Use `--no-sync` on `add` or `update` only when recording desired state before an
 
 A Codex plugin is a first-class bundle. Codex reads its plugin manifest, installs it from a configured marketplace snapshot, caches it, exposes bundled skills/MCP/apps, and tracks enabled state. Use `codex plugin add PLUGIN@MARKETPLACE` directly or a `kind = "plugin"` inventory entry.
 
-`npx PACKAGE@VERSION ...` downloads and runs an npm package binary. It is an execution mechanism, not a Codex package lifecycle. dot-codex bundles its public MCP launchers in `integrations/packages/dot-codex-tools/.mcp.json` and declares that native plugin in `skills.toml`. Optional integrations are separate plugins in the same local marketplace. The installer registers the catalog before reconciliation. npm version policy stays with each plugin's MCP definition; machine-specific overrides and secrets stay in private configuration. See [installation](installation.md).
+`npx PACKAGE@VERSION ...` downloads and runs an npm package binary. It is an execution mechanism, not a Codex package lifecycle. dot-codex bundles its public MCP launchers in `integrations/packages/dot-codex-tools/.mcp.json` and declares that native plugin in `skills.toml`. Optional integrations are separate plugins in the same local marketplace. The minimal installer only activates the local harness. To install optional plugins, register the catalog with `codex plugin marketplace add ./integrations --json` before inventory reconciliation. npm version policy stays with each plugin's MCP definition; machine-specific overrides and secrets stay in private configuration. See [installation](installation.md).
 
 Impeccable uses the already-installed native plugin. Its separate Git-skill declaration has been removed; do not recreate a raw-skill fallback. Its optional npm installer and project hooks remain a separate, explicit workflow.
 
 ## Update policy
 
-For presentation selection and locally owned narrative guidance, see [Presentation Guidance](presentations.md). Bento is the preferred browser-deck workflow; the separate `html-presentations` skill has been retired.
+Personal presentation capabilities and their guidance belong to the sibling secondbrain repository. This inventory contains coding tools only.
 
 - Owned skills change through normal Git review.
 - Git skills follow current repository `HEAD`; `sync` detects and installs a changed resolved commit.

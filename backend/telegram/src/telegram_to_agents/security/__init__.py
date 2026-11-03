@@ -1,1 +1,0 @@
-"""Telegram file-path validation."""

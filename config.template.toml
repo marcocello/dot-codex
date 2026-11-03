@@ -1,5 +1,5 @@
 #:schema https://developers.openai.com/codex/config-schema.json
-# Portable preferences only. ./install.sh installs skills and MCP plugins.
+# Portable coding preferences. ./install.sh activates the harness; external tools are optional.
 
 model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"

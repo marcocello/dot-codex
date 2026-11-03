@@ -1,0 +1,9 @@
+# Split acceptance
+
+Run `proof/run.sh` with the sibling repository present. The checks execute the real local installer in temporary homes, verify conflict preservation, parse both inventories, activate the second-brain profile without login, inspect container definitions, and invoke backend help from its own source. The native App Server lists personal skill metadata from the activated private profile without a model turn. The private artifact manifest is checked against destination hashes without exposing document contents.
+
+`proof/secondbrain-inputs.json` binds the relocated source files outside the coding checkout to the observed candidate. The proof checks their actual bytes. Raw captures belong to the coding feature; credentials, collected context and vault document contents are excluded from source fingerprints. Dialogue capture is partial and remains in native task history. The original coding index was verified byte-identical to its pre-migration snapshot; relocated source is staged in the newly initialized secondbrain repository, with no commit or remote.
+
+The original checkout's unrelated local state and live services are outside the test mutation boundary. Provider authentication and deployed behavior are not claimed.
+
+The owner's structural correction adds H5: one public launcher, deployment-owned templates, a capability-owned manifest and only the SQLite/MCP runtime. The proof exercises template staging and source export, rejects the removed component/setup fallback, and observes the launcher's private configuration defaults without invoking a provider. The SQLite worker regression fixture uses the current `agent` component name; its runtime assertions remain unchanged. Removed source is recoverable from the private vault snapshot rather than shipped as a compatibility layer.

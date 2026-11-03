@@ -39,12 +39,6 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - **Requested documents, emails, specifications, and other written deliverables:** [writing-ste](skills/writing-ste/SKILL.md); use when drafting or revising the requested text, including text delivered directly in chat
 
 - Other work: select the specialist by capability and artifact. Reassess when evidence changes ownership.
-- Knowledge: follow [routing](docs/harness/secondbrain.md); invoke `knowledge-tool-connect` before configured capture/review.
-- Missing knowledge configuration: run setup, ask once, then resume. Explicit `none` is configured; unrelated work needs no setup.
-- Delegate ClickUp/Notion MCP/API work, including setup discovery, to [knowledge-tool-connect](skills/knowledge-tool-connect/SKILL.md).
-- Explicit second-brain intake: [secondbrain-update](skills/secondbrain-update/SKILL.md). Agenda/action review: [secondbrain-review](skills/secondbrain-review/SKILL.md).
-- Both use the explicit private workspace and [cycle contract](docs/harness/secondbrain-cycle.md).
-- The cycle does not choose accounts, grant external authority, change ordinary capture/review, or enable schedules.
 
 ## Work With The User
 
@@ -82,7 +76,7 @@ Select the smallest relevant domain/supporting set alongside the lifecycle skill
 - Repo-local setup and declared dependencies are authorized.
 - Global installs, paid resources, destructive actions, deployments, force pushes, secret edits, credential entry, and external mutations need applicable explicit authorization.
 - PR review grants no commenting, merging, or mutation authority.
-- Keep personal, research, client-specific, and operational deliverables outside public repositories. Default private destination: `${XDG_DATA_HOME:-$HOME/.local/share}/codex-private/artifacts/`, with a task-named subdirectory. Use repository artifact directories only for deliverables explicitly intended for publication. Honor the user's chosen destination and existing product documentation paths.
+- Keep personal, research, analysis, client-specific and operational deliverables, presentations/slides and their exports in the Obsidian vault: `${OBSIDIAN_VAULT:-$HOME/ObsidianVault}/Dot-codex/`. Preserve existing topic folders and keep assets with their deliverable. If that vault is unavailable, resolve its location before saving; do not fall back to a public repository. Product documentation, acceptance contracts, verification evidence and reusable source assets stay with the repository they describe. Honor an explicit destination and publication intent.
 - `coding-prepare-environment` owns repository layout, structure alignment checks, greenfield locations, and [generated repository files](skills/coding-prepare-environment/SKILL.md#repository-files); domain skills own internal application structure. Do not generate `Makefile` or `PRODUCT.md` by default; `README.md` is optional. These user defaults override specialist file requirements, including Impeccable init; use existing repository context and native task history instead of requiring a product file. Preserve existing files unless the user authorizes their removal, and honor an explicit request for a different artifact.
 - Sites requires explicit selection or a pre-existing `.openai/hosting.json`. Creating the manifest grants no authority.
 - One writer per shared file/runtime. Never displace another task.

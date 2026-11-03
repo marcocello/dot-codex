@@ -12,7 +12,9 @@ import subprocess
 import sys
 import time
 from collections import Counter
+from contextlib import ExitStack
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -644,6 +646,100 @@ def repository_worktrees(project_root: Path) -> set[Path]:
     return worktrees
 
 
+def app_timestamp(value: object, *, milliseconds: bool = False) -> str | None:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return datetime.fromtimestamp(value / (1000 if milliseconds else 1), timezone.utc).isoformat()
+    return None
+
+
+def read_app_session(client: AppServerClient, thread: dict[str, Any]) -> ParsedSession:
+    """Read migrated history without resuming a thread or touching its source store."""
+    task_id = thread["id"]
+    result = client.request("thread/read", {"threadId": task_id, "includeTurns": False})
+    metadata = result.get("thread")
+    if not isinstance(metadata, dict) or metadata.get("id") != task_id:
+        raise RuntimeError("app history identity does not match visible task")
+    if not isinstance(metadata.get("cwd"), str) or normalize_path(metadata["cwd"]) != normalize_path(thread["cwd"]):
+        raise RuntimeError("app history workspace does not match visible task")
+    if metadata.get("historyMode") != "paginated":
+        raise RuntimeError("visible task has no readable legacy source or paginated history")
+    values: list[dict[str, Any]] = [{
+        "type": "session_meta", "timestamp": app_timestamp(metadata.get("createdAt")),
+        "payload": {"id": task_id, "cwd": thread["cwd"], "originator": metadata.get("originator")},
+    }]
+    cursor: str | None = None
+    seen_cursors: set[str] = set()
+    seen_turns: set[str] = set()
+    while True:
+        params: dict[str, Any] = {
+            "threadId": task_id, "limit": 100, "sortDirection": "asc", "itemsView": "full",
+        }
+        if cursor is not None:
+            params["cursor"] = cursor
+        page = client.request("thread/turns/list", params)
+        turns = page.get("data")
+        if not isinstance(turns, list):
+            raise RuntimeError("app history returned an invalid turn page")
+        for turn in turns:
+            if (not isinstance(turn, dict) or not isinstance(turn.get("id"), str)
+                    or not isinstance(turn.get("items"), list)
+                    or turn.get("itemsView", "full") != "full"):
+                raise RuntimeError("app history returned incomplete turn items")
+            turn_id = turn["id"]
+            if turn_id in seen_turns:
+                raise RuntimeError("app history repeated a turn across pages")
+            seen_turns.add(turn_id)
+            values.append({"type": "event_msg", "timestamp": app_timestamp(turn.get("startedAt")),
+                           "payload": {"type": "task_started", "turn_id": turn_id}})
+            for item in turn["items"]:
+                if not isinstance(item, dict):
+                    raise RuntimeError("app history returned an invalid item")
+                item_type = item.get("type")
+                if item_type == "userMessage":
+                    content = item.get("content")
+                    if not isinstance(content, list):
+                        raise RuntimeError("app history returned invalid user content")
+                    parts = []
+                    for part in content:
+                        if not isinstance(part, dict):
+                            continue
+                        if part.get("type") == "text":
+                            parts.append({"type": "input_text", "text": part.get("text")})
+                        elif part.get("type") in {"image", "localImage"}:
+                            parts.append({"type": "input_image"})
+                    payload = {"type": "message", "role": "user", "content": parts}
+                elif item_type == "agentMessage":
+                    payload = {"type": "message", "role": "assistant", "phase": item.get("phase"),
+                               "content": [{"type": "output_text", "text": item.get("text")}]}
+                else:
+                    # Count excluded items without copying reasoning or tool payloads.
+                    values.append({"type": "other"})
+                    continue
+                values.append({"type": "response_item", "payload": payload,
+                               "timestamp": app_timestamp(item.get("completedAtMs") or item.get("startedAtMs"), milliseconds=True)})
+            status = turn.get("status")
+            if status not in {"completed", "interrupted", "failed", "inProgress"}:
+                raise RuntimeError("app history returned an unknown turn status")
+            if status != "inProgress":
+                values.append({"type": "event_msg", "timestamp": app_timestamp(turn.get("completedAt")),
+                               "payload": {"type": "task_complete" if status == "completed" else "turn_aborted",
+                                           "turn_id": turn_id}})
+        next_cursor = page.get("nextCursor")
+        if next_cursor is None:
+            break
+        if not isinstance(next_cursor, str) or next_cursor in seen_cursors:
+            raise RuntimeError("app history returned an invalid pagination cursor")
+        seen_cursors.add(next_cursor)
+        cursor = next_cursor
+    candidate, issue = build_record(values, Path("<app-server>"))
+    if candidate is None:
+        raise RuntimeError(issue.message if issue else "cannot parse app history")
+    candidate.record["capture"]["source_format"] = "app-server-paginated"
+    return with_app_metadata(candidate, {**metadata, **thread})
+
+
 def load_workspace_hints(path: Path, worktree_count: int) -> dict[str, Path]:
     if not path.is_file():
         if worktree_count <= 1:
@@ -688,6 +784,7 @@ def matching_app_threads(
     project_root: Path,
     threads: list[dict[str, Any]],
     workspace_state: Path,
+    codex_bin: str = "codex",
 ) -> tuple[dict[str, ParsedSession], list[SourceIssue], set[str]]:
     worktrees = repository_worktrees(project_root)
     hints = load_workspace_hints(workspace_state, len(worktrees))
@@ -699,49 +796,36 @@ def matching_app_threads(
     selected: dict[str, ParsedSession] = {}
     issues: list[SourceIssue] = []
     visible_ids: set[str] = set()
+    # Migrated stores can list several legacy session entries for one chat.
+    unique_threads: dict[str, dict[str, Any]] = {}
     for thread in project_threads:
         task_id = thread.get("id")
-        source = thread.get("path")
         if not isinstance(task_id, str) or not TASK_ID_PATTERN.fullmatch(task_id):
             issues.append(SourceIssue(Path("<app-server>"), "unsafe task identity"))
             continue
         visible_ids.add(task_id)
-        if not isinstance(source, str):
-            issues.append(
-                SourceIssue(
-                    Path("<app-server>"),
-                    "visible task has no readable session path",
-                    task_id,
-                    project_root,
-                )
-            )
-            continue
-        path = normalize_path(source)
-        candidate, issue = parse_source(path)
-        if candidate is not None and candidate.task_id == task_id:
-            selected[task_id] = with_app_metadata(candidate, thread)
-        elif candidate is not None:
-            issues.append(
-                SourceIssue(
-                    path,
-                    "app task identity does not match session metadata",
-                    task_id,
-                    project_root,
-                )
-            )
-        elif issue is not None:
-            issues.append(
-                SourceIssue(path, issue.message, task_id, project_root)
-            )
-        else:
-            issues.append(
-                SourceIssue(
-                    path,
-                    "visible task could not be parsed",
-                    task_id,
-                    project_root,
-                )
-            )
+        previous = unique_threads.get(task_id)
+        if previous is None or thread.get("historyMode") == "paginated":
+            unique_threads[task_id] = thread
+    with ExitStack() as stack:
+        client: AppServerClient | None = None
+        for task_id, thread in unique_threads.items():
+            source = thread.get("path")
+            path = normalize_path(source) if isinstance(source, str) else Path("<app-server>")
+            if thread.get("historyMode") == "paginated" or not isinstance(source, str) or not path.is_file():
+                try:
+                    if client is None:
+                        client = stack.enter_context(AppServerClient(codex_bin))
+                    selected[task_id] = read_app_session(client, thread)
+                except RuntimeError as exc:
+                    issues.append(SourceIssue(path, str(exc), task_id, project_root))
+                continue
+            candidate, issue = parse_source(path)
+            if candidate is not None and candidate.task_id == task_id:
+                selected[task_id] = with_app_metadata(candidate, thread)
+            else:
+                message = issue.message if issue else "app task identity does not match session metadata"
+                issues.append(SourceIssue(path, message, task_id, project_root))
     return selected, issues, visible_ids
 
 
@@ -872,6 +956,7 @@ def main(argv: list[str] | None = None) -> int:
             project_root,
             app_threads,
             normalize_path(arguments.workspace_state),
+            str(arguments.codex_bin),
         )
         selected, selected_issues = select_mode(arguments, candidates, issues)
         counts = write_capture(

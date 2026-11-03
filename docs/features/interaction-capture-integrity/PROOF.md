@@ -1,5 +1,21 @@
 # Interaction Capture Integrity Proof
 
+## Paginated-history repair, November 1, 2026
+
+The live app migrated legacy JSONL history to its paginated store. All 103 distinct chats behind the 117 unavailable session entries have `history_mode=paginated`. The old exporter still attempted to open their removed JSONL paths. The app's read-only history API can read these chats.
+
+The current executable proof is `proof/acceptance.py`. The previously referenced `tests/unit/test_interaction_capture_integrity.py` is absent from this checkout. The historical scenarios below describe earlier verification; the following current scenarios replace that unavailable executable boundary without changing the accepted dialogue rules.
+
+- Run the production CLI against a fake outer app server that implements metadata reads and multiple full-history pages. Read back the persisted records and index. Verify completed dialogue, commentary, repeated messages, credential redaction, context/tool/reasoning exclusion, timestamps, incomplete turns, empty turns, duplicate session entries, and project filtering.
+- Repeat the capture unchanged and verify byte and modification-time stability. Complete a pending turn, capture the exact current chat, and verify the updated history. Remove chats from the visible list and verify retained history.
+- Make a history read fail and verify partial coverage plus preservation of the existing record. Reject summary-only pages and pagination cycles without publishing a truncated record.
+- Capture empty and interrupted turns. Verify empty-session suppression and exclusion of interrupted dialogue.
+- Capture legacy JSONL through the same CLI. Verify mirrored response/event messages appear once and injected context is excluded.
+
+Only the outer app server and temporary source data are fake. The capture CLI, parser, writer, lock, and persisted read-back are real. A separate authorized live recapture and aggregate read-back verify recovery in this project's `docs/interactions/` store. No real chats are resumed or modified.
+
+Paginated records add `capture.source_format=app-server-paginated`. Their event counts describe the normalized parser events, including an `other` placeholder for each excluded API item. Raw tool and reasoning payloads are never included in those normalized events. Legacy JSONL provenance remains unchanged.
+
 ## Done
 
 - Empty completed and empty unfinished lifecycle turns cannot appear as dialogue or falsely make a record partial.

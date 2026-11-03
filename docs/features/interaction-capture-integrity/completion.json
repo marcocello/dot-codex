@@ -1,14 +1,14 @@
 {
-  "candidate_digest": null,
-  "evidence_digest": "9d07999aefc8a08dbfaba96d2cd940c014e0d3911bd325993eba086871c44886",
+  "candidate_digest": "ad70e8c6294ec4aa12dd0ff86a3e99084a58f43caf09c14f0261a87e0bfdff89",
+  "evidence_digest": "fc2ab5dab9f3759bd2acb90b8a309b11b350adcf42a8516bb0adbb734dbcfca4",
   "feature_dir": "docs/features/interaction-capture-integrity",
   "feature_id": "interaction-capture-integrity",
-  "implementer": null,
-  "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20260910T121212495216Z",
-  "receipt_digest": "8bab4958c9e839dd030e0619958c23127e4f20afecb0f5666b0a087655c7e2d1",
-  "recorded_at": "2026-10-02T10:04:28.083200+00:00",
-  "summary": "Retained historical PASS; original run has no review attribution.",
-  "target": "unrecorded",
+  "implementer": "01a1993a-bcec-7622-82fc-5ba602605ced",
+  "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20261101T224029501770Z",
+  "receipt_digest": "b1639755c50834f602c63a3ffe0a492f5c19db8336fbe763e815527f33a05bf1",
+  "recorded_at": "2026-11-01T22:41:13.095305+00:00",
+  "summary": "Reviewed paginated-history normalization, read-only API use, identity/workspace checks, cursor/full-item guards, completed-turn filtering, redaction, duplicate-session handling, and legacy preservation. Real CLI proof passes. Live read-back verifies all 103 previously unavailable chats, 747 completed turns and 3241 messages against full app history; interrupted and unfinished turns remain excluded. Repository gate passes with repository Python.",
+  "target": "local-worktree",
   "verdict": "PASS",
   "version": 1
 }

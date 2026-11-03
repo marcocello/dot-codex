@@ -195,8 +195,8 @@
       "feature_dir": "docs/features/interaction-capture-integrity",
       "priority": 22,
       "status": "done",
-      "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20260910T121212495216Z",
-      "notes": "Response-item parser repair proven; live project recapture saved 31 new and updated 6 records, with 5 partial records and 0 unavailable. Fresh final oracle PASS.",
+      "proof_run": "docs/features/interaction-capture-integrity/proof/runs/20261101T224029501770Z",
+      "notes": "Paginated-history exporter repair proven; live recovery verified all 103 previously unavailable chats, 747 completed turns and 3241 messages. No unavailable chats remain; unfinished turns excluded. Fresh final review and repository gate PASS.",
       "owner": null
     },
     {

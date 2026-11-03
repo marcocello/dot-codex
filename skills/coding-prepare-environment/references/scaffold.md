@@ -4,7 +4,7 @@ Use this bundle for an authorized greenfield full-stack application. It contains
 
     python3 "${CODEX_HOME:-$HOME/.codex}/skills/coding-prepare-environment/scripts/scaffold.py" /absolute/empty/project
 
-The copier refuses nonempty destinations and destination symlinks. It does not install dependencies, initialize Git, start services, publish images, or deploy. It creates the source layout in the skill's Greenfield Layout section. The root .venv appears only after dependency setup. Pass --github-actions only when the user chooses GitHub Actions; this is the sole option that adds .github to the generated root.
+The copier refuses nonempty destinations and destination symlinks. It does not install dependencies, initialize Git, start services, publish images, or deploy. Its source layout uses `backend/` for the API and `frontend/app/` for the browser application, as shown in the [web/API layout example](../assets/layouts/web-api.md). Other component layouts do not change the copier's paths. The root .venv appears only after dependency setup. Pass --github-actions only when the user chooses GitHub Actions; this is the sole option that adds .github to the generated root.
 
 ## Generated run journey
 

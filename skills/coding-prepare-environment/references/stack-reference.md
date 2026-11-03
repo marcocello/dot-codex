@@ -24,7 +24,7 @@ Order of preference:
 
 Python backend convention:
 
-- For the default layout, use `backend/.env` when the application expects a component-local env file. The bundled starter explicitly reads `deployments/dev/.env` for host development. Preserve established alternatives such as root `.env`.
+- Use the selected component's `.env` when the application expects a component-local env file; `backend/.env` is one example. The bundled starter explicitly reads `deployments/dev/.env` for host development. Preserve established alternatives such as root `.env`.
 - If the selected component env file is missing, copy its closest checked-in example without overwriting an existing file.
 - If only root `.env.example` exists, use it only when repo docs or code clearly read root `.env`.
 - Do not move env files between root and component directories without an explicit repo pattern.
@@ -120,7 +120,7 @@ Rules:
 
 ## Python
 
-Detect Python with `backend/pyproject.toml`, `backend/requirements*.txt`, root manifests, test/tool configuration, or Python source under documented package directories. Also recognize established layouts such as `app/backend/pyproject.toml`.
+Detect Python with component `pyproject.toml` or `requirements*.txt`, root manifests, test/tool configuration, or Python source under documented package directories. Examples include `backend/pyproject.toml`, `rag-api/pyproject.toml`, and established layouts such as `app/backend/pyproject.toml`.
 
 Setup:
 
@@ -146,7 +146,7 @@ Command policy:
 
 ## React and Node
 
-Detect Node backends and frontends with `backend/package.json`, `frontend/app/package.json`, component lockfiles, root manifests, or framework-specific config. Also recognize established alternatives such as `app/backend/package.json` and `frontend/package.json`.
+Detect Node backends and frontends with component `package.json`, lockfiles, root manifests, or framework-specific config. Examples include `backend/package.json`, `frontend/app/package.json`, and `web/package.json`; preserve established alternatives such as `app/backend/package.json` and `frontend/package.json`.
 
 Package manager priority:
 
@@ -164,7 +164,7 @@ Setup:
   - npm: `npm ci` when `package-lock.json` exists, otherwise `npm install`.
   - bun: `bun install --frozen-lockfile` when a lockfile exists.
 - Create local env files only from examples, commonly `.env.local` from `.env.local.example` or `.env.example`, without overwriting existing files.
-- Run package-manager commands from the selected package directory: by default `backend` for Node backends and `frontend/app` for frontends. Preserve established alternatives such as `frontend/package.json`, which requires commands from `frontend/`.
+- Run package-manager commands from the selected package directory. The bundled scaffold uses `backend` and `frontend/app`; a `web/package.json` or `frontend/package.json` instead requires commands from `web/` or `frontend/`.
 
 Command policy:
 

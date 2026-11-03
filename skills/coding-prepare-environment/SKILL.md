@@ -30,8 +30,8 @@ Apply the kernel's end-to-end journey to the operator's setup: connect the start
    - `docs/ARCHITECTURE.md` if it exists.
    - `docs/TESTING.md`, `docs/CONVENTIONS.md`, `README*`, `Makefile`, and package/tool config when relevant.
 2. Resolve the layout before creating manifests or installing dependencies: for web applications, apply Starter Selection below; preserve the existing layout until any proposed adoption is approved. Explicit user choices take precedence; otherwise use the greenfield layout below. Detect stack signals:
-   - Python: `backend/pyproject.toml`, `backend/requirements*.txt`, Python source under `backend/app`, root manifests, `pytest.ini`, `tox.ini`, and established alternatives such as `app/backend/pyproject.toml`.
-   - Node (backend or frontend): `backend/package.json`, `frontend/app/package.json`, component lockfiles, `vite.config.*`, `next.config.*`, root manifests, and established alternatives such as `app/frontend/package.json` or `frontend/package.json`.
+   - Python: component `pyproject.toml` or `requirements*.txt`, documented source packages, root manifests, `pytest.ini`, and `tox.ini`. Recognize the bundled scaffold's `backend/app` without requiring that path elsewhere.
+   - Node (backend or frontend): component `package.json`, lockfiles, `vite.config.*`, `next.config.*`, and root manifests. Recognize the bundled scaffold's `frontend/app` without inferring component responsibility from its language.
    - PHP/Laravel: `composer.json`, `artisan`, `phpunit.xml`, `pest.php`, `.php-version`.
    - WordPress: `wp-config.php`, `wp-config-sample.php`, `wp-content/`, or WordPress Composer packages.
    - Other: Docker, devcontainer, Nix, direnv, mise, asdf, language lockfiles, or custom scripts.
@@ -77,27 +77,14 @@ For full-stack web applications, prefer the bundled [React + FastAPI scaffold](a
 
 ## Greenfield Layout
 
-This skill is the single owner of repository placement and alignment across stacks. Use this default for new repositories; domain skills own internal application architecture and framework scaffolding:
+This skill is the single owner of repository placement and alignment across stacks. Organize maintained applications by component responsibility; domain skills own each component's internal architecture and framework structure. Use `backend/` and `frontend/` when they represent the actual applications. Prefer named components when those categories would group unrelated services or split one full-stack application. Source ownership and runtime location may differ: an integration can own a PHP gateway that executes inside the supplied website.
 
-```text
-.vscode/
-.venv/                 created during setup; ignored by Git
-backend/
-  app/
-frontend/
-  app/
-docs/
-deployments/
-  dev/
-  prod/
-.gitignore
-```
+Use the [layout examples](assets/layouts/README.md) to choose a proportionate structure: [single service](assets/layouts/single-service.md), [web and API](assets/layouts/web-api.md), or [mixed components](assets/layouts/mixed-components.md). They illustrate placement, not additional components or runnable scaffolds. The existing React/FastAPI copier retains its supported `backend/` and `frontend/app/` paths.
 
-- Keep the greenfield root to these entries, plus `.git/` when initialized. Do not create root `Makefile`, `Dockerfile`, Compose files, `.env` examples, `.dockerignore`, `scripts/`, or `pipelines/`. Include `.github/` only when the user explicitly chooses GitHub Actions; its workflow path is fixed by that platform.
-- Backend applications, including Node bots, workers, and APIs, live in `backend/`; frontend applications live in `frontend/app/`. A standalone backend still uses `backend/`. Do not infer frontend ownership merely from Node or npm. Framework package directories, such as the starter's `backend/app`, remain inside their component.
-- Keep package manifests, lockfiles, dependency files, tool configuration, Dockerfiles, application tests, and reusable component scripts with their component. Run installs and package scripts there. Create the Python `.venv` at the repository root during setup; never copy an environment into source control.
+- Keep the root focused on actual components, shared documentation and deployment configuration, required tool files, and local ignored state. Create `.vscode/` for authorized runnable setup and the root `.venv/` only when Python setup needs it. Do not add umbrella folders merely to classify components by language or frontend/backend technology.
+- Keep package manifests, lockfiles, dependency files, tool configuration, Dockerfiles, application tests, installers, workflow definitions/generators, and reusable component utilities with their component. Run installs and package scripts there. Never copy a Python environment into source control.
 - Keep shared architecture, development, and operational documentation under `docs/`; existing capability-local documentation can remain with its subject.
-- Group deployment configuration, private env files and examples, Compose files, shared setup, rendering, and smoke helpers under `deployments/`. Put environment-specific files under `deployments/<environment>/`; a shared Compose base may live directly in `deployments/`. Terraform belongs in `tf/`, Kubernetes manifests in `k8s/`.
+- Group environment configuration, private env files and examples, Compose assemblies, and genuinely shared deployment setup, rendering, and smoke helpers under `deployments/`. Keep component-owned installers and diagnostics with their component even when deployment invokes them. Put environment-specific files under `deployments/<environment>/`; a shared Compose base may live directly in `deployments/`. Terraform belongs in `tf/`, Kubernetes manifests in `k8s/`.
 - Keep CI entrypoints only where a selected CI platform requires them. Do not add a platform workflow by default. Existing repository entrypoints may remain when preserving a brownfield layout; propose exact moves before clearing an existing root.
 - Create only requested components, environments, and required files. The tree shows placement, not mandatory empty folders; do not add Terraform, Kubernetes, cloud resources, or a frontend solely to fill it. Environment-only setup does not authorize implementing application behavior.
 - Explicit user choices and explicitly selected platform requirements take precedence. Preserve existing repository layouts unless the user approves the concrete adoption proposal under Starter Selection or a specific relocation; defaults alone do not authorize moving an existing project.

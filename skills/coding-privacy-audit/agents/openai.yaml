@@ -1,0 +1,4 @@
+interface:
+  display_name: "CODING | Repository Privacy Audit"
+  short_description: "Review secrets, private work, and personal exposure"
+  default_prompt: "Use $coding-privacy-audit to review this repository, its uncommitted changes, history, and exported assets for secrets and unintended personal, work, or system disclosures; state whether GitGuardian was used."

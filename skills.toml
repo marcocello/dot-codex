@@ -230,3 +230,8 @@ name = "dot-codex-tools"
 kind = "plugin"
 selector = "dot-codex-tools@dot-codex"
 enabled = true
+
+[[skills]]
+name = "coding-privacy-audit"
+kind = "owned"
+path = "coding-privacy-audit"

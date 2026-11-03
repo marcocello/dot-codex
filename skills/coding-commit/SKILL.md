@@ -1,6 +1,6 @@
 ---
 name: coding-commit
-description: Create coherent local Conventional Commits or draft messages from repository changes. Use for commit, commit-message, or explicit push requests; push only when requested.
+description: Create coherent local Conventional Commits or draft messages from repository changes. Require a privacy audit of selected changes before commits in public repositories; optional for private repositories. Use for commit, commit-message, or explicit push requests; push only when requested.
 ---
 
 # Commit
@@ -29,6 +29,7 @@ Committing is a supporting action, not a new feature workflow or a completion ve
 - Create multiple commits when the selected repository scope contains independently meaningful concerns that can be separated without leaving a misleading or broken intermediate state.
 - Keep each concern's dependent implementation, tests, documentation, and non-ignored retained proof artifacts in the same commit. Do not split by file type merely to produce more commits.
 - Stage selected files for each commit group; do not use `git add .`.
+- Before creating a commit in a public repository or for an intended public release, invoke [coding-privacy-audit](../coding-privacy-audit/SKILL.md) in its before-commit mode on that group's exact staged content and proposed commit message. For a confirmed private repository, this audit is optional unless requested or a specific disclosure concern warrants it. Message-only drafts and push-only requests do not create a commit and do not require this check.
 - For a feature commit, stage official failed, timed-out, interrupted, and passing directories under that feature's `proof/runs/` only when repository ignore rules allow them. Ignore rules take precedence over proof-retention guidance.
 - Preserve an explicit existing staged selection. Treat a coherent staged set as the first or only commit group; if it mixes concerns and splitting it would require rewriting ambiguous user staging, ask before reorganizing it.
 - After applying the explicit-versus-unscoped rules, ask only when the user's stated scope conflicts with the repository state or when proceeding would require rewriting ambiguous staging. Do not ask merely because selected changes came from outside the current task.
@@ -84,7 +85,11 @@ Committing is a supporting action, not a new feature workflow or a completion ve
    - Use `git add -p` only when partial-file staging is needed and interactive use is practical.
    - If a safe partial-file split is impractical, keep the inseparable concern in one commit instead of forcing a split.
    - Do not stage unrelated files just because they are present.
-   - Before committing, inspect `git diff --cached --stat` and inspect `git diff --cached` to confirm the index contains exactly that group and no ignored path is being newly introduced.
+   - Before committing, inspect `git diff --cached --stat` and inspect `git diff --cached` to confirm the index contains exactly that group and no ignored path is being newly introduced. Avoid echoing secret-bearing lines into user-visible output.
+   - Establish the intended repository's visibility using available host metadata or other reliable evidence; do not infer privacy from an authenticated URL or failed anonymous request. If visibility remains unknown, apply the public-repository audit requirement and report the uncertainty.
+   - For a public repository or intended public release, invoke `coding-privacy-audit` in before-commit mode. Check the exact staged version, relevant exports and context, and proposed message/metadata. Do not turn this into a full unrelated history audit. Reuse earlier inspection only when the selected content and context still match; recheck affected material after staging, content, or message changes.
+   - Do not commit a group containing confirmed credentials, unintended private information, or unresolved material disclosure concerns. Explain the affected scope with masked evidence and obtain any missing cleanup authority or publication decision without silently rewriting user staging. Unchanged historical findings are reported separately and do not by themselves block a safe correction or unrelated commit.
+   - GitGuardian is used when available with authorized access. If unavailable, complete the local privacy/secret review, state that GitGuardian was not used and why, and proceed when that review finds no unresolved disclosure concern. Scanner unavailability alone is not a new approval gate.
    - Run `git commit` with that group's final message to create that group's commit.
    - After each commit, re-run `git status --short` and confirm the remaining changes still match the plan.
 9. If staging or committing fails, resolve the current group's failure before proceeding to later groups:
@@ -107,6 +112,7 @@ Committing is a supporting action, not a new feature workflow or a completion ve
 - For a subject-only request, output only the final subject line in backticks.
 - For a full-message request with footers, include the subject, body, and footer.
 - For completed local commits, report every commit hash and message in creation order. Do not suggest pushing unless the user asks.
+- For public-repository commits, also give a concise privacy-review result and explicitly state whether GitGuardian was used, partially used, or not used, including the reason for a scanner gap. If the review blocks a commit, report the masked finding and decision needed instead of claiming that commit was created. This disclosure applies even when the remaining commit output is terse.
 - For a requested push, report the remote branch and verified result, or the exact blocker.
 - Do not add explanation unless the user asks for it.
 
